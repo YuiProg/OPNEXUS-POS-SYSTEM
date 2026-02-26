@@ -29,7 +29,3 @@ The Vaporya POS System provides:
 - 👤 User authentication & management
 
 Built with a modern JavaScript stack for performance, scalability, and maintainability.
-
----
-
-## 📂 Project Structure
