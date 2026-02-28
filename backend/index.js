@@ -5,7 +5,7 @@ import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import connectDB from './handler/DB.js';
+import connectDB from './lib/DB.js';
 import authRoutes from './routes/auth.routes.js';
 
 dotenv.config();

@@ -5,11 +5,7 @@ const userSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
-    },
-    email: {
-        type: String,
-        unique: [true, 'Email already exists'],
-        required: [true, 'Email is required'],
+        unique: [true, 'A user already has this username'],
     },
     password: {
         type: String,
@@ -43,6 +39,18 @@ userSchema.pre('save', async function () {
 userSchema.statics.registerUser = async function (data) {
     const createdUser = await this.create(data);
     return createdUser;
+}
+
+userSchema.statics.loginUser = async function (username, password) {
+    const user = await this.findOne({ username });
+    if (!user) {
+        throw new Error('Invalid username or password');
+    }
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+        throw new Error('Invalid username or password');
+    }
+    return user;
 }
 
 const User = mongoose.model('User', userSchema);
