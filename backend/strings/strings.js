@@ -24,6 +24,7 @@ const Strings = Object.freeze({
     UNAUTHORIZED_MESS: 'Unauthorized',
 
     //cred
+    usnm: 'username',
     pw: 'password',
     nm: 'name',
     rl: 'role',
