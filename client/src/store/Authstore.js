@@ -1,28 +1,55 @@
 import { isAxiosError } from 'axios';
 import {create} from 'zustand';
 import axiosInstance from '../helpers/axiosInstance';
-import ApiConfig from '../Api/ApiEndpoints';
+import ApiConfig from '../../../backend/Api/ApiConfig';
 import toast from 'react-hot-toast';
+import Strings from '../../../backend/strings/strings';
 
 const { 
-    loginUsers 
+    loginUsers,
+    getUser 
 } = ApiConfig;
 
-const AuthStore = create((set) => ({
-    AuthUser: null,
+const {
+    SERVER_ERROR
+} = Strings;
 
-    checkAuth: () => {},
+const AuthStore = create((set, get) => ({
+    AuthUser: null,
+    AuthLoading: false,
+    error: null,
+
+    checkAuth: async () => {
+        try {
+            const user = await axiosInstance.get(getUser);
+            set({AuthUser: user.data});
+        } catch (error) {
+            if (isAxiosError(error)) {
+                set({error: error.response?.data});
+            } else {
+                set({error: SERVER_ERROR});
+            }
+            set({AuthUser: null});
+        }
+    },
 
     loginUser: async (username, password) => {
         try {
+            set({AuthLoading: true, error: null});
             const authUser = await axiosInstance.post(loginUsers, {
                 username,
                 password
             }); 
-            toast.success('User logged in!');
-            console.log(authUser);
+            //toast.success('User logged in!');
+            set({AuthUser: authUser.data});
         } catch (error) {
-            console.log(error);
+            if (isAxiosError(error)) {
+                set({error: error.response?.data});
+            } else {
+                set({error: 'Network error'});
+            }
+        } finally {
+            set({AuthLoading: false});
         }
     }
 }));
