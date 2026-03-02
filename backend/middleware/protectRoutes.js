@@ -1,16 +1,23 @@
 import jwt from 'jsonwebtoken';
+import Strings from '../strings/strings.js';
+
+const {
+    UNAUTHORIZED,
+    UNAUTHORIZED_MESS,
+    ERROR_MESS
+} = Strings;
 
 const protectRoutes = (req, res, next) => {
     const token = req.cookies.jwt;
     if (!token) {
-        return res.status(401).json({status: 'error', message: 'Unauthorized'});
+        return res.status(UNAUTHORIZED).json({status: ERROR_MESS, message: UNAUTHORIZED_MESS});
     }
 
     const user = jwt.verify(token, process.env.JWT_SECRET);
     if (!user) {
-        return res.status(401).json({status: 'error', message: 'Unauthorized'});
+        return res.status(UNAUTHORIZED).json({status: ERROR_MESS, message: UNAUTHORIZED_MESS});
     }
-
+    
     req.user = user;
     next();
 }

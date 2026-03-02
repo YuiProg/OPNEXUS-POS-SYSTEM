@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 import bcrypt from 'bcrypt';
 import Strings from "../strings/strings.js";
 
@@ -8,6 +8,8 @@ const {
     ROLE_REQ,
     NAME_EXIST,
     CRED_ERROR,
+    USER_NOT_EXIST,
+    INVALID_ID,
     pw,
     us
 } = Strings;
@@ -61,6 +63,23 @@ userSchema.statics.loginUser = async function (username, password) {
     if (!isMatch) {
         throw new Error(CRED_ERROR);
     }
+    return user;
+}
+
+userSchema.statics.getUser = async function (_id) {
+    const user = await this.findOne(_id);
+
+    //check if valid ba yung id sa protected route
+    //new types.objectid(id)
+    //since string yung nirereturn na id i coconvert natin siya to mongoose id
+    if (!mongoose.Types.ObjectId.isValid(new Types.ObjectId(_id))) {
+        throw new Error(INVALID_ID);
+    }
+    //pag walang na return na user hindi naman to gagana kasi may checker na sa taas HAHAHA
+    if (!user) {
+        throw new Error(USER_NOT_EXIST);
+    }
+
     return user;
 }
 

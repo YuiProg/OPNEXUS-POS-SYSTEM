@@ -1,12 +1,22 @@
 import generateToken from "../lib/generateToken.js";
 import User from "../models/UserModel.js";
+import Strings from "../strings/strings.js";
+
+const {
+    SUCCESS_MESS,
+    SUCCESS,
+    ERROR_MESS,
+    ERROR,
+    CREATED,
+    USER_LOGOUT
+} = Strings;
 
 export const register = async (req, res) => {
     try {
         const createdUser = await User.registerUser(req.body);
-        res.status(201).json({status: 'success', user: createdUser});
+        res.status(CREATED).json({status: SUCCESS_MESS, user: createdUser});
     } catch (err) {
-        res.status(500).json({status: 'error', message: err.message});
+        res.status(ERROR).json({status: ERROR_MESS, message: err.message});
     }
 }
 
@@ -17,8 +27,24 @@ export const loginUser = async (req, res) => {
         
         const {password: _, ...userWithoutPassword} = user.toObject();
         generateToken(user._id, res);
-        res.status(200).json({status: 'success', user: userWithoutPassword});
+        res.status(SUCCESS).json({status: SUCCESS_MESS, user: userWithoutPassword});
     } catch (error) {
-        res.status(500).json({status: 'error', message: error.message});
+        res.status(ERROR).json({status: ERROR_MESS, message: error.message});
+    }
+}
+
+export const logoutUser = async (req, res) => {
+    res.cookie('jwt', '', {maxAge: 0});
+    res.status(SUCCESS).json({status: SUCCESS_MESS, message: USER_LOGOUT});
+}
+
+export const getAuthUser = async (req, res) => {
+    try {
+        const {_id} = req.user;
+        console.log(req.user);
+        const user = await User.getUser(_id);
+        res.status(SUCCESS).json({success: SUCCESS_MESS, data: user});
+    } catch (error) {
+        res.status(ERROR).json({status: ERROR_MESS, message: error.message});
     }
 }

@@ -2,7 +2,7 @@ const apiEndpoint = '/vaporyapos/';
 
 const ApiConfig = {
     //========authentication======== 
-    getUsers: apiEndpoint + 'getUsers',
+    getUser: apiEndpoint + 'getUser',
     loginUsers: apiEndpoint + 'login',
     registerUsers : apiEndpoint + 'register'
     //==============================
