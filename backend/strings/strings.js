@@ -1,4 +1,4 @@
-const Strings = {
+const Strings = Object.freeze({
     //server error remember to put the error message when development
     SERVER_ERROR: 'Server error.', 
     CRED_ERROR: 'Invalid username or password.',
@@ -36,6 +36,6 @@ const Strings = {
     CREATED: 201,
     NOT_FOUND: 404,
     UNAUTHORIZED: 401
-}
+})
 
 export default Strings;

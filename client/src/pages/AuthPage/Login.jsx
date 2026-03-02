@@ -1,6 +1,11 @@
 import React from "react";
 import './Login.css';
 import AuthStore from "../../store/Authstore";
+import Strings from "../../../../backend/strings/strings";
+
+const {
+    UNAUTHORIZED_MESS
+} = Strings;
 
 class Login extends React.Component {
     constructor(props) {
@@ -45,7 +50,7 @@ class Login extends React.Component {
                 <h1>Login</h1>
                 <p>Username</p>
                 <form onSubmit={this.handleLogin}>
-                    {error && <p className="error">{error.message || error}</p>}
+                    {error && error.message != UNAUTHORIZED_MESS && <p className="error">{error.message || error}</p>}
                     <input
                         type="text"
                         value={username}

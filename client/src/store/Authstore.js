@@ -1,7 +1,7 @@
 import { isAxiosError } from 'axios';
 import {create} from 'zustand';
 import axiosInstance from '../helpers/axiosInstance';
-import ApiConfig from '../Api/ApiEndpoints';
+import ApiConfig from '../../../backend/Api/ApiConfig';
 import toast from 'react-hot-toast';
 import Strings from '../../../backend/strings/strings';
 
@@ -14,7 +14,7 @@ const {
     SERVER_ERROR
 } = Strings;
 
-const AuthStore = create((set) => ({
+const AuthStore = create((set, get) => ({
     AuthUser: null,
     AuthLoading: false,
     error: null,
@@ -29,6 +29,7 @@ const AuthStore = create((set) => ({
             } else {
                 set({error: SERVER_ERROR});
             }
+            set({AuthUser: null});
         }
     },
 

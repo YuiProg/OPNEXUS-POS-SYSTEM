@@ -1,6 +1,6 @@
 import express from 'express';
 import { getAuthUser, loginUser, register, logoutUser } from '../controller/auth.Controller.js';
-import ApiConfig from '../ApiConfig/ApiConfig.js';
+import ApiConfig from '../Api/ApiConfig.js';
 import protectRoutes from '../middleware/protectRoutes.js';
 
 const router = express.Router();

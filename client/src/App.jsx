@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import {Navigate, Route, Router, Routes} from 'react-router-dom'
+import {Navigate, Route, Routes} from 'react-router-dom'
 import Login from './pages/AuthPage/Login'
 import {Toaster} from 'react-hot-toast'
 import AuthStore from './store/Authstore'
@@ -20,10 +20,10 @@ function App() {
       <Routes>
         <Route path='/' element={<Login/>}/>
         <Route path='/login' element={!AuthUser ? <Login/> : <Navigate to='/dashboard'/>}/>
-        <Route path='/dashboard' element={<Dashboard/>}/>
+        {/* DAT NAKA SUBSCRIBE TONG DASBOARD SA STATE PARA I CHECK KUNG MAY AUTHENTICATED NA USER */}
+        <Route path='/dashboard' element={AuthUser ? <Dashboard/> : <Navigate to='/login'/>}/>
       </Routes>
     </>
-
   )
 }
 
