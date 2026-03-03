@@ -7,12 +7,22 @@ import Login from './pages/AuthPage/Login'
 import {Toaster} from 'react-hot-toast'
 import AuthStore from './store/Authstore'
 import Dashboard from './pages/DashBoard/Dashboard'
+import Sidebar from './components/Sidebar'
 
 function App() {
-  const {checkAuth, AuthUser} = AuthStore();
+  const {checkAuth, AuthUser, AuthLoading} = AuthStore();
+  
   useEffect(() => {
     checkAuth();
-  }, []);
+  }, [checkAuth]);
+
+  if (AuthLoading && !AuthUser) {
+    return (
+      <div>
+        Loading...
+      </div>
+    );
+  }
 
   return (
     <>
@@ -21,7 +31,11 @@ function App() {
         <Route path='/' element={<Login/>}/>
         <Route path='/login' element={!AuthUser ? <Login/> : <Navigate to='/dashboard'/>}/>
         {/* DAT NAKA SUBSCRIBE TONG DASBOARD SA STATE PARA I CHECK KUNG MAY AUTHENTICATED NA USER */}
-        <Route path='/dashboard' element={AuthUser ? <Dashboard/> : <Navigate to='/login'/>}/>
+        <Route path='/dashboard' element={
+        <Sidebar user={AuthUser ? AuthUser.data : null}>
+          <Dashboard/>
+        </Sidebar>}
+        />
       </Routes>
     </>
   )

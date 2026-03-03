@@ -43,7 +43,10 @@ export const getAuthUser = async (req, res) => {
         const {_id} = req.user;
         console.log(req.user);
         const user = await User.getUser(_id);
-        res.status(SUCCESS).json({success: SUCCESS_MESS, data: user});
+
+        const {password: _, ...userWithoutPassword} = user.toObject();
+
+        res.status(SUCCESS).json({success: SUCCESS_MESS, data: userWithoutPassword});
     } catch (error) {
         res.status(ERROR).json({status: ERROR_MESS, message: error.message});
     }
