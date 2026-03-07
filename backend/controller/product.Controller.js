@@ -1,5 +1,5 @@
 import Product from "../models/Products.js"
-import Strings from "../strings/strings.js";
+import Strings from "../strings/strings-codes.js";
 
 const {
     ERROR,

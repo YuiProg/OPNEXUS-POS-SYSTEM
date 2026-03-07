@@ -1,5 +1,5 @@
 import { isAxiosError } from "axios";
-import Strings from "../../../backend/strings/strings";
+import Strings from "../../../backend/strings/strings-codes";
 
 const {SERVER_ERROR} = Strings;
 

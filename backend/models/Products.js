@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import Strings from '../strings/strings.js';
+import Strings from '../strings/strings-codes.js';
 
 const {
     FAILED_ADD,

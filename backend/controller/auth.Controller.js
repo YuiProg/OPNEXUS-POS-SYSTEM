@@ -1,6 +1,6 @@
 import generateToken from "../lib/generateToken.js";
 import User from "../models/UserModel.js";
-import Strings from "../strings/strings.js";
+import Strings from "../strings/strings-codes.js";
 
 const {
     SUCCESS_MESS,
