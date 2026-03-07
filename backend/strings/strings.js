@@ -97,7 +97,8 @@ const Strings = Object.freeze({
     INSUFFICIENT_STORAGE: 507,
     LOOP_DETECTED: 508,
     NOT_EXTENDED: 510,
-    NETWORK_AUTHENTICATION_REQUIRED: 511
+    NETWORK_AUTHENTICATION_REQUIRED: 511,
+    WTF: 999
 })
 
 export default Strings;
