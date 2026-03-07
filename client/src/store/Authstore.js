@@ -3,7 +3,7 @@ import {create} from 'zustand';
 import axiosInstance from '../helpers/axiosInstance';
 import ApiConfig from '../../../backend/Api/ApiConfig';
 import toast from 'react-hot-toast';
-import Strings from '../../../backend/strings/strings';
+import Strings from '../../../backend/strings/strings-codes';
 import axiosError from '../helpers/axiosError';
 
 const { 

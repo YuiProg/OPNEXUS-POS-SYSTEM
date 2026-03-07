@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import Strings from '../strings/strings.js';
+import Strings from '../strings/strings-codes.js';
 
 const {
     UNAUTHORIZED,

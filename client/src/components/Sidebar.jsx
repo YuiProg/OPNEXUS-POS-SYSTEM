@@ -1,6 +1,6 @@
 import React from "react";
 import AuthStore from "../store/Authstore";
-import Strings from "../../../backend/strings/strings";
+import Strings from "../../../backend/strings/strings-codes";
 import { Navigate, Link } from "react-router-dom";
 
 const { SUCCESS_MESS } = Strings;

@@ -1,6 +1,6 @@
 import mongoose, { Types } from "mongoose";
 import bcrypt from 'bcrypt';
-import Strings from "../strings/strings.js";
+import Strings from "../strings/strings-codes.js";
 
 const {
     BRANCH_REQ,
