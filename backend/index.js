@@ -1,12 +1,11 @@
 import express from 'express';
 import http from 'http';
-import { Server } from 'socket.io';
 import cookieParser from 'cookie-parser';
-import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import connectDB from './lib/DB.js';
 import authRoutes from './routes/auth.routes.js';
+import productRoutes from './routes/product.routes.js';
 
 dotenv.config();
 const app = express();
@@ -28,6 +27,7 @@ app.get('/test', (req, res) => {
 });
 
 app.use('/api', authRoutes);
+app.use('/api', productRoutes);
 
 
 server.listen(process.env.PORT, () => {
