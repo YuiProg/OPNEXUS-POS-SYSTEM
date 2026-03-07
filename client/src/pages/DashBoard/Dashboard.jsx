@@ -1,5 +1,6 @@
 import React from 'react';
 import Toast from '../../toast/Toast';
+import { AnimatePresence } from 'motion/react';
 import './Dashboard.css';
 
 class Dashboard extends React.Component {
@@ -24,19 +25,21 @@ class Dashboard extends React.Component {
         return (
             <div>
                 <h1>dashboard</h1>
-                <button onClick={() => this.showToast('Action completed.', true, () => this.hideToast())}>
+                <button onClick={() => this.showToast('Action completed.', false, () => this.hideToast())}>
                     TEST
                 </button>
 
-                {toast && (
-                    <Toast
-                        error
-                        message={toast.message}
-                        hasButton={toast.hasButton}
-                        CB={toast.CB}
-                        onClose={this.hideToast}
-                    />
-                )}
+                <AnimatePresence>
+                    {toast && (
+                        <Toast
+                            success
+                            message={toast.message}
+                            hasButton={toast.hasButton}
+                            CB={toast.CB}
+                            onClose={this.hideToast}
+                        />
+                    )}
+                </AnimatePresence>
             </div>
         );
     }

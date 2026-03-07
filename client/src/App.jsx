@@ -23,7 +23,7 @@ function App() {
     <>
       <Toaster position='bottom-right'/>
       <Routes>
-        <Route path='/' element={<Login/>}/>
+        <Route path='/' element={!AuthUser ? <Login/> : <Navigate to='/dashboard'/>}/>
         <Route path='/login' element={!AuthUser ? <Login/> : <Navigate to='/dashboard'/>}/>
         <Route path='/dashboard' element={
           <Sidebar user={AuthUser ? AuthUser.data : null}>
