@@ -19,7 +19,9 @@ class Sidebar extends React.Component {
     //mag reredirect siya sa login page
     componentDidMount() {
         const { checkAuth } = AuthStore.getState();
+        
         checkAuth();
+
         this.unsubscribe = AuthStore.subscribe((state) => {
             const { AuthUser } = state;
             if (AuthUser?.success !== SUCCESS_MESS) {
