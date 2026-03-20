@@ -79,7 +79,6 @@ userSchema.statics.getUser = async function (_id) {
     if (!user) {
         throw new Error(USER_NOT_EXIST);
     }
-
     return user;
 }
 

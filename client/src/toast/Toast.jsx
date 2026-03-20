@@ -1,6 +1,4 @@
 import React, { useEffect } from "react";
-// eslint-disable-next-line no-unused-vars
-import { motion } from "motion/react";
 import './Toast.css';
 
 const Toast = ({ success, error, message, hasButton, func, onClose }) => {
@@ -14,7 +12,7 @@ const Toast = ({ success, error, message, hasButton, func, onClose }) => {
     }, [onClose]);
 
     const toastContent = (type, label) => (
-        <motion.div
+        <div
             className={`toast ${type}`}
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
@@ -26,11 +24,12 @@ const Toast = ({ success, error, message, hasButton, func, onClose }) => {
                     <button onClick={func}>OK</button>
                 </div>
             )}
-        </motion.div>
+        </div>
     );
 
     if (success) return toastContent("success", "Success! ");
     if (error) return toastContent("error", "Error! ");
+    
     return null;
 };
 
