@@ -37,7 +37,7 @@ class Dashboard extends React.Component {
           <Toast
             success
             message={toast.message}
-            hasButton={toast.hasButton}
+            hasButton={false}
             CB={toast.CB}
             onClose={this.hideToast}
           />
