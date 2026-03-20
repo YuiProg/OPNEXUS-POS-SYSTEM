@@ -2,7 +2,7 @@ import React from "react";
 import Toast from "../../toast/Toast";
 import "./Dashboard.css";
 import LowStockItems from "../../components/LowStockItems/LowStockItems";
-import ProductSold from "../../components/DashboardComponents/ProductSold/ProductSold";
+import Notes from "../../components/Notes/Notes";
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -43,7 +43,7 @@ class Dashboard extends React.Component {
             onClose={this.hideToast}
           />
         )}
-        <ProductSold/>
+        <Notes />
         {/* <LowStockItems lowStockItems={['test1', 'test2', 'test3', 'test3', 'test4', 'test5', 'test6', 'test7']}/> */}
       </div>
     );

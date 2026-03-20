@@ -8,9 +8,9 @@ class Notes extends React.Component {
 
     render () {
         return (
-            <div>
-                <h1>NOTES: </h1>
-                <textarea name="" id="">
+            <div className="notes-container">
+                <h1 className="notes-label">Notes: </h1>
+                <textarea className="notes-text" id="">
                     {/* TEXT HERE */}
                 </textarea>
             </div>
