@@ -1,6 +1,7 @@
 import generateToken from "../lib/generateToken.js";
+import ApiResponseModel from "../models/ApiResponseModel.js";
 import User from "../models/UserModel.js";
-import Strings from "../strings/strings.js";
+import Strings from "../strings/strings-codes.js";
 
 const {
     SUCCESS_MESS,
@@ -14,9 +15,9 @@ const {
 export const register = async (req, res) => {
     try {
         const createdUser = await User.registerUser(req.body);
-        res.status(CREATED).json({status: SUCCESS_MESS, user: createdUser});
+        ApiResponseModel(res, CREATED, SUCCESS_MESS, createdUser);
     } catch (err) {
-        res.status(ERROR).json({status: ERROR_MESS, message: err.message});
+        ApiResponseModel(res, error.message, ERROR);
     }
 }
 
@@ -27,15 +28,16 @@ export const loginUser = async (req, res) => {
         
         const {password: _, ...userWithoutPassword} = user.toObject();
         generateToken(user._id, res);
-        res.status(SUCCESS).json({status: SUCCESS_MESS, user: userWithoutPassword});
+        ApiResponseModel(res, SUCCESS, SUCCESS_MESS, userWithoutPassword);
     } catch (error) {
-        res.status(ERROR).json({status: ERROR_MESS, message: error.message});
+        ApiResponseModel(res, error.message, ERROR);
     }
 }
 
 export const logoutUser = async (req, res) => {
     res.cookie('jwt', '', {maxAge: 0});
-    res.status(SUCCESS).json({status: SUCCESS_MESS, message: USER_LOGOUT});
+    //res.status(SUCCESS).json({status: SUCCESS_MESS, message: USER_LOGOUT});
+    ApiResponseModel(res, SUCCESS, SUCCESS_MESS);
 }
 
 export const getAuthUser = async (req, res) => {
@@ -45,9 +47,8 @@ export const getAuthUser = async (req, res) => {
         const user = await User.getUser(_id);
 
         const {password: _, ...userWithoutPassword} = user.toObject();
-
-        res.status(SUCCESS).json({success: SUCCESS_MESS, data: userWithoutPassword});
+        ApiResponseModel(res, SUCCESS, SUCCESS_MESS, userWithoutPassword);
     } catch (error) {
-        res.status(ERROR).json({status: ERROR_MESS, message: error.message});
+        ApiResponseModel(res, ERROR, error.message);
     }
 }

@@ -22,6 +22,7 @@ const Strings = Object.freeze({
     SUCCESS_MESS: 'Success',
     ERROR_MESS: 'Error',
     UNAUTHORIZED_MESS: 'Unauthorized',
+    FORBIDDEN_MESS: 'Forbidden',
 
     //cred
     usnm: 'username',
@@ -98,7 +99,8 @@ const Strings = Object.freeze({
     LOOP_DETECTED: 508,
     NOT_EXTENDED: 510,
     NETWORK_AUTHENTICATION_REQUIRED: 511,
-    WTF: 999
+    //ignore niyo to hahaha
+    WTF: 999 
 })
 
 export default Strings;

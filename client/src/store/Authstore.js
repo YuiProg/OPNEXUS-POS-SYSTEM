@@ -1,9 +1,9 @@
-import { isAxiosError } from 'axios';
+//import { isAxiosError } from 'axios';
 import {create} from 'zustand';
 import axiosInstance from '../helpers/axiosInstance';
 import ApiConfig from '../../../backend/Api/ApiConfig';
-import toast from 'react-hot-toast';
-import Strings from '../../../backend/strings/strings';
+//import toast from 'react-hot-toast';
+import Strings from '../../../backend/strings/strings-codes';
 import axiosError from '../helpers/axiosError';
 
 const { 
@@ -16,7 +16,7 @@ const {
     SUCCESS_MESS
 } = Strings;
 
-const AuthStore = create((set, get) => ({
+const AuthStore = create((set) => ({
     AuthUser: null,
     AuthLoading: false,
     error: null,
@@ -25,7 +25,7 @@ const AuthStore = create((set, get) => ({
         try {
             set({AuthLoading: true});
             const user = await axiosInstance.get(getUser);
-            set({AuthUser: user.data});
+            set({AuthUser: user.data.data});
         } catch (error) {
             set({error: axiosError(error)});
             set({AuthUser: null});
