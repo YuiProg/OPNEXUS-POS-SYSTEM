@@ -9,11 +9,11 @@ class TotalSales extends React.Component {
 
     render () {
         return (
-            <div>
-                <img src={totalsalesicon} alt="totalsalesicon" />
-                <h1>{'PHP 123123'}</h1>
-                <h2>Total Sales</h2>
-                <p>+8% from yesterday</p>
+            <div className="total-sales-container">
+                <img className="total-sales-icon" src={totalsalesicon} alt="totalsalesicon" />
+                <h1 className="total-sales-amount">{'PHP 123123'}</h1>
+                <h2 className="total-sales-label">Total Sales</h2>
+                <p className="total-sales-change">+8% from yesterday</p>
             </div>
         );
     }

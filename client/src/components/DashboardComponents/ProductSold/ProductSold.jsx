@@ -9,11 +9,11 @@ class ProductSold extends React.Component {
 
   render() {
     return (
-      <div>
-        <img src={productsold} alt="totalsalesicon" />
-        <h1>{"5"}</h1>
-        <h2>Product Sold</h2>
-        <p>+1.2% from yesterday</p>
+      <div className="products-sold-container">
+        <img className="products-sold-icon" src={productsold} alt="productsold" />
+        <h1 className="products-sold">{"5"}</h1>
+        <h2 className="products-sold-label">Product Sold</h2>
+        <p className="products-sold-change">+1.2% from yesterday</p>
       </div>
     );
   }

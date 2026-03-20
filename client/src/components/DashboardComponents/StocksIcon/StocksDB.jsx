@@ -9,11 +9,11 @@ class StocksDB extends React.Component {
 
   render() {
     return (
-      <div>
-        <img src={stocksicon} alt="totalsalesicon" />
-        <h1>{"321"}</h1>
-        <h2>Stocks</h2>
-        <p>+1.2% from yesterday</p>
+      <div className="stocks-container">
+        <img className="stocks-icon" src={stocksicon} alt="stocksicon" />
+        <h1 className="stocks-amount">{"321"}</h1>
+        <h2 className="stocks-label">Stocks</h2>
+        <p className="stocks-change">+1.2% from yesterday</p>
       </div>
     );
   }

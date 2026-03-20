@@ -1,0 +1,30 @@
+.products-sold-container {
+    background-color: #DCFCE7;
+    width: 180px;
+    height: 184px;  
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.products-sold-label {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-size: 24px;
+    font-weight: 400;
+    color: #333;
+}
+.products-sold {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+    color: #333;
+}
+.products-sold-change {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-size: 12px;
+    color: #2f33ec;
+}
+
+.products-sold-icon {
+    width: 60px;
+    height: 60px;
+}

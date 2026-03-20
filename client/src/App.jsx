@@ -26,7 +26,7 @@ function App() {
         <Route path='/' element={!AuthUser ? <Login/> : <Navigate to='/dashboard'/>}/>
         <Route path='/login' element={!AuthUser ? <Login/> : <Navigate to='/dashboard'/>}/>
         <Route path='/dashboard' element={
-          <Sidebar user={AuthUser && AuthUser}>
+          <Sidebar user = {AuthUser && AuthUser}>
             <Dashboard/>
           </Sidebar>}
         />
