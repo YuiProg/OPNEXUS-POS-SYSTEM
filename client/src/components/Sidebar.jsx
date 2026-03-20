@@ -19,17 +19,20 @@ class Sidebar extends React.Component {
     //mag reredirect siya sa login page
     componentDidMount() {
         const { checkAuth } = AuthStore.getState();
-        
         checkAuth();
+
+        const { AuthUser } = AuthStore.getState();
+        if (AuthUser) {
+            this.setState({ user: AuthUser });
+        }
 
         this.unsubscribe = AuthStore.subscribe((state) => {
             const { AuthUser } = state;
-            if (AuthUser?.success !== SUCCESS_MESS) {
-                this.setState({ redirect: true });
-            }
 
-            if (AuthUser?.data) {
-                this.setState({user: AuthUser.data});
+            if (!AuthUser) {
+                this.setState({ redirect: true, user: null });
+            } else {
+                this.setState({ user: AuthUser }); 
             }
         });
     }
@@ -59,7 +62,7 @@ class Sidebar extends React.Component {
                         <li><Link to="/users">Users</Link></li>
                     </ul>
                     <div>
-                        <p>{this.state.user?.username || 'LOADING...'}</p>
+                        <p>{this.state.user ? this.state.user.username : 'LOADING'}</p>
                         <button onClick={() => this.handleLogout()}>LOGOUT</button>
                     </div>
                 </aside>

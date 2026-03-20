@@ -25,7 +25,7 @@ const AuthStore = create((set) => ({
         try {
             set({AuthLoading: true});
             const user = await axiosInstance.get(getUser);
-            set({AuthUser: user.data});
+            set({AuthUser: user.data.data});
         } catch (error) {
             set({error: axiosError(error)});
             set({AuthUser: null});
