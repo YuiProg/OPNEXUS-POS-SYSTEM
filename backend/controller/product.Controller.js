@@ -1,3 +1,4 @@
+import ApiResponseModel from "../models/ApiResponseModel.js";
 import Product from "../models/Products.js"
 import Strings from "../strings/strings-codes.js";
 
@@ -12,20 +13,8 @@ export const newProduct = async (req, res) => {
     const data = req.body;
     try {
         const newProduct = await Product.addProduct(data);
-        res.status(CREATED).json(
-            {
-                success: true, 
-                message: NEW_PRODUCT, 
-                data: newProduct
-            }
-        );
+        ApiResponseModel(res, NEW_PRODUCT, CREATED, newProduct);
     } catch (error) {
-        res.status(ERROR).json(
-            {
-                success: false, 
-                message: SERVER_ERROR, 
-                err: err.message
-            }
-        );
+        ApiResponseModel(res, ERROR, error.message);
     }
 }
