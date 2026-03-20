@@ -61,13 +61,13 @@ class Login extends React.Component {
     };
 
     render() {
-        const { error, loading, username, password } = this.state;
+        const { loading, username, password } = this.state;
         
         return (
             <div>
                 <h1>Login</h1>
                 <form onSubmit={this.handleLogin}>
-                    {error && error.message != UNAUTHORIZED_MESS && <p>{error.message || error}</p>}
+                    {/* {error && error.message != UNAUTHORIZED_MESS && <p>{error.message || error}</p>} */}
                     {/* JAVASCRIPT STRIKES AGAIN TANGINA (USNM) DI PEDE PERO (PW) PEDE AMPUTA FUCK YOU */}
                     <input
                         type="text"

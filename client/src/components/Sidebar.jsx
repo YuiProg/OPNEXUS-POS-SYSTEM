@@ -28,7 +28,6 @@ class Sidebar extends React.Component {
 
         this.unsubscribe = AuthStore.subscribe((state) => {
             const { AuthUser } = state;
-
             if (!AuthUser) {
                 this.setState({ redirect: true, user: null });
             } else {
@@ -62,7 +61,7 @@ class Sidebar extends React.Component {
                         <li><Link to="/users">Users</Link></li>
                     </ul>
                     <div>
-                        <p>{this.state.user ? this.state.user.username : 'LOADING'}</p>
+                        {this.state.user ? <p>{this.state.user.username}</p> : <p>LOADING ...</p>}
                         <button onClick={() => this.handleLogout()}>LOGOUT</button>
                     </div>
                 </aside>
