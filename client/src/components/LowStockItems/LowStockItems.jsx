@@ -12,9 +12,9 @@ class LowStockItems extends React.Component {
         } = this.props;
         
         return (
-            <div>
-                <p>Low Stock Items</p>
-                <div>
+            <div className="low-stock-container">
+                <p className="low-stock-label">Low Stock Items</p>
+                <div className="low-stock-items">
                     {lowStockItems ? (
                         lowStockItems.map((l, i) => {
                             return (
