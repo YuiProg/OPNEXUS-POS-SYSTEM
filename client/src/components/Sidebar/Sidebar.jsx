@@ -3,6 +3,7 @@ import AuthStore from "../../store/Authstore";
 import Strings from "../../../../backend/strings/strings-codes";
 import { Navigate, Link } from "react-router-dom";
 import './Sidebar.css';
+import { LayoutDashboard, ShelvingUnit, IdCardLanyard, Logs, Settings } from 'lucide-react';
 
 const { SUCCESS_MESS } = Strings;
 
@@ -53,11 +54,31 @@ class Sidebar extends React.Component {
 
         //tanggalin muna error sa es-lint since dipa ginagamit tong variable nato pero eto yung items sa sidebar
         const sidebarItems = [
-            "Dashboard",
-            "Inventory",
-            "Staff Management",
-            "Logs",
-            "Settings"
+            {
+                title: "Dashboard",
+                icon: <LayoutDashboard />,
+                link: "/dashboard",
+            },
+            {
+                title: "Inventory",
+                icon: <ShelvingUnit />,
+                link: "/inventory",
+            },
+            {
+                title: "Staff Management",
+                icon: <IdCardLanyard />,
+                link: "/staff-management",
+            },
+            {
+                title: "Logs",
+                icon: <Logs />,
+                link: "/logs",
+            },
+            {
+                title: "Settings",
+                icon: <Settings />,
+                link: "/settings",
+            }
         ]
 
         return (
@@ -67,16 +88,16 @@ class Sidebar extends React.Component {
                     <ul className="sidebar-list">
                         {sidebarItems.map((l,i) => {
                             return (
-                                <div key={i}>
-                                    <li className="row"><Link to={l.toLowerCase()}>{l}</Link></li>
-                                </div>
+                                <li key={i} className="row" id={window.location.pathname == l.link ? "active" : ""}>
+                                    <Link to={l.link}>
+                                        <div className="sb-icon">{l.icon}</div>
+                                        <div className="sb-title">{l.title}</div>
+                                    </Link>
+                                </li>
                             );
                         })}
-                        {/* <li><Link to="/">Home</Link></li>
-                        <li><Link to="/dashboard">Dashboard</Link></li>
-                        <li><Link to="/products">Products</Link></li>
-                        <li><Link to="/users">Users</Link></li> */}
                     </ul>
+                    
                     <div className="user-panel">
                         {this.state.user ? (
                             <>
@@ -84,7 +105,7 @@ class Sidebar extends React.Component {
                             <p className="userRole">{this.state.user.role}</p>
                             </>
                         ) : <p>LOADING ...</p>}
-                        <button className="logout-button" onClick={() => this.handleLogout()}>LOGOUT</button>
+                        <button className="logout-button" onClick={() => this.handleLogout()}>LOG OUT</button>
                     </div>
                 </aside>
                 <main>
