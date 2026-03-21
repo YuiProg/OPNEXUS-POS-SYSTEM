@@ -34,6 +34,18 @@ export const loginUser = async (req, res) => {
     }
 }
 
+export const updateUser = async (req, res) => {
+    try {
+        const data = req.body;
+        const {id} = req.query;
+        console.log(id);
+        const updated_user = await User.updateUser(id, data);
+        ApiResponseModel(res, SUCCESS, SUCCESS_MESS, updated_user);
+    } catch (error) {
+        ApiResponseModel(res, error.message, ERROR);
+    }
+}
+
 export const logoutUser = async (req, res) => {
     res.cookie('jwt', '', {maxAge: 0});
     //res.status(SUCCESS).json({status: SUCCESS_MESS, message: USER_LOGOUT});
@@ -42,12 +54,12 @@ export const logoutUser = async (req, res) => {
 
 export const getAuthUser = async (req, res) => {
     try {
-        const {_id} = req.user;
-        console.log(req.user);
-        const user = await User.getUser(_id);
+        const {userId} = req.user;
+        console.log(req.user.userId);
+        const user = await User.getUser(userId);
 
-        const {password: _, ...userWithoutPassword} = user.toObject();
-        ApiResponseModel(res, SUCCESS, SUCCESS_MESS, userWithoutPassword);
+        //const {password: _, ...userWithoutPassword} = user.toObject();
+        ApiResponseModel(res, SUCCESS, SUCCESS_MESS, user);
     } catch (error) {
         ApiResponseModel(res, ERROR, error.message);
     }

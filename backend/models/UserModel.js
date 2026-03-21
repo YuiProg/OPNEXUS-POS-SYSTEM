@@ -1,6 +1,7 @@
 import mongoose, { Types } from "mongoose";
 import bcrypt from 'bcrypt';
 import Strings from "../strings/strings-codes.js";
+import { updateUser } from "../controller/auth.Controller.js";
 
 const {
     BRANCH_REQ,
@@ -66,8 +67,18 @@ userSchema.statics.loginUser = async function (username, password) {
     return user;
 }
 
+userSchema.statics.updateUser = async function (id, data) {
+    const updatedUser = await this.findByIdAndUpdate(id, data, {new: true}).select("-password");
+    
+    if (!mongoose.Types.ObjectId.isValid(new Types.ObjectId(id))) {
+        throw new Error(INVALID_ID);
+    }
+
+    return updatedUser;
+}
+
 userSchema.statics.getUser = async function (_id) {
-    const user = await this.findOne(_id);
+    const user = await this.findOne({_id}).select("-password");
 
     //check if valid ba yung id sa protected route
     //new types.objectid(id)

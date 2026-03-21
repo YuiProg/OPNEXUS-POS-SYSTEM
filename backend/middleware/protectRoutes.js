@@ -13,8 +13,8 @@ const protectRoutes = (req, res, next) => {
     if (!token) {
         return ApiResponseModel(res, FORBIDDEN, FORBIDDEN_MESS);
     }
-
     const user = jwt.verify(token, process.env.JWT_SECRET);
+
     if (!user) {
         return ApiResponseModel(res, FORBIDDEN, FORBIDDEN_MESS);
     }

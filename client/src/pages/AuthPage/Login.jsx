@@ -2,6 +2,7 @@ import React from "react";
 import './Login.css';
 import AuthStore from "../../store/Authstore";
 import Strings from "../../../../backend/strings/strings-codes.js";
+import InputField from "../../components/InputField/InputFIeld.jsx";
 
 const {
     UNAUTHORIZED_MESS,
@@ -61,7 +62,7 @@ class Login extends React.Component {
     };
 
     render() {
-        const { loading, username, password } = this.state;
+        const { loading } = this.state;
         
         return (
             <div>
@@ -69,20 +70,8 @@ class Login extends React.Component {
                 <form onSubmit={this.handleLogin}>
                     {/* {error && error.message != UNAUTHORIZED_MESS && <p>{error.message || error}</p>} */}
                     {/* JAVASCRIPT STRIKES AGAIN TANGINA (USNM) DI PEDE PERO (PW) PEDE AMPUTA FUCK YOU */}
-                    <input
-                        type="text"
-                        value={username}
-                        onChange={(e) => this.handleKeyChange(us.toLocaleLowerCase() + nm, e.target.value)}
-                        placeholder="Enter Username"
-                        required
-                    />
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => this.handleKeyChange(pw, e.target.value)}
-                        placeholder="Enter Password"
-                        required
-                    />
+                    <InputField required text onChange={(e) => this.setState({username: e})} placeholder={us + nm}/>
+                    <InputField required password onChange={(e) => this.setState({password: e})} placeholder={pw}/>
                     <button type="submit" disabled={loading}>{loading ? 'Logging in…' : 'Login'}</button>
                 </form>
             </div>

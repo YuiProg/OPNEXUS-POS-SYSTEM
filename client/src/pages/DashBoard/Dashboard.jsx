@@ -4,6 +4,11 @@ import "./Dashboard.css";
 import TodaysSales from "../../components/DashboardComponents/TodaysSales/TodaysSales";
 import LowStockItems from "../../components/LowStockItems/LowStockItems";
 import StocksDB from "../../components/DashboardComponents/StocksIcon/StocksDB";
+import TodaysRevenue from "../../components/DashboardComponents/TodaysRevenue/TodaysRevenue";
+import DropDown from "../../components/DropDown/Dropdown";
+import Recentactivity from "../../components/RecentActivity/Recentactivity";
+import InputField from "../../components/InputField/InputFIeld";
+
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -21,6 +26,10 @@ class Dashboard extends React.Component {
     this.setState({ toast: null });
   };
 
+  testonchange = (test) => {
+    console.log(test);
+  }
+
   render() {
     const { toast } = this.state;
 
@@ -34,7 +43,6 @@ class Dashboard extends React.Component {
         >
           TEST
         </button>
-
         {toast && (
           <Toast
             success
@@ -45,8 +53,8 @@ class Dashboard extends React.Component {
           />
         )}
         
-        <StocksDB/>
-        {/* <LowStockItems lowStockItems={['test1', 'test2', 'test3', 'test3', 'test4', 'test5', 'test6', 'test7']}/> */}
+        <InputField placeholder='Enter name' required password onChange={value => this.testonchange(value)}/>
+        {/* <DropDown options={['test1', 'test2']} onChange={(test) => this.testonchange(test)}/> */}
       </div>
     );
   }
