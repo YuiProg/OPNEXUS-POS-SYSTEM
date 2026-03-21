@@ -5,7 +5,7 @@ import Login from './pages/AuthPage/Login'
 import { Toaster } from 'react-hot-toast'
 import AuthStore from './store/Authstore'
 import Dashboard from './pages/DashBoard/Dashboard'
-import Sidebar from './components/Sidebar'
+import Sidebar from './components/Sidebar/Sidebar'
 
 function App() {
   const { checkAuth, AuthUser, AuthLoading } = AuthStore();
@@ -26,7 +26,7 @@ function App() {
         <Route path='/' element={!AuthUser ? <Login/> : <Navigate to='/dashboard'/>}/>
         <Route path='/login' element={!AuthUser ? <Login/> : <Navigate to='/dashboard'/>}/>
         <Route path='/dashboard' element={
-          <Sidebar user={AuthUser && AuthUser}>
+          <Sidebar user = {AuthUser && AuthUser}>
             <Dashboard/>
           </Sidebar>}
         />

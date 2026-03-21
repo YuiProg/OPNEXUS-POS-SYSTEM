@@ -1,0 +1,24 @@
+.notes-container {
+    width: 217px;
+    height: 303px;
+    padding: 10px;
+    padding-left: 30px;
+    background-color: #f9e7b0;
+}
+
+.notes-label {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+.notes-text {
+    resize: none;
+    width: 180px;
+    height: 220px;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-size: 14px;
+    background: none;
+    border: none;
+}

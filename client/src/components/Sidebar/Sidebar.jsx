@@ -1,7 +1,8 @@
 import React from "react";
-import AuthStore from "../store/Authstore";
-import Strings from "../../../backend/strings/strings-codes";
+import AuthStore from "../../store/Authstore";
+import Strings from "../../../../backend/strings/strings-codes";
 import { Navigate, Link } from "react-router-dom";
+import './Sidebar.css';
 
 const { SUCCESS_MESS } = Strings;
 
@@ -49,6 +50,18 @@ class Sidebar extends React.Component {
         if (this.state.redirect) {
             return <Navigate to="/login" />;
         }
+
+        //tanggalin muna error sa es-lint since dipa ginagamit tong variable nato pero eto yung items sa sidebar
+        // eslint-disable-next-line
+        const sidebarItems = [
+            "Dasboard",
+            "Inventory",
+            "Staff Management",
+            "Logs",
+            "Logs",
+            "Settings",
+            "Sign Out"
+        ]
 
         return (
             <div>

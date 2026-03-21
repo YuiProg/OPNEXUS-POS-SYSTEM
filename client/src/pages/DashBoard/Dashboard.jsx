@@ -1,6 +1,8 @@
 import React from "react";
 import Toast from "../../toast/Toast";
 import "./Dashboard.css";
+import TodaysSales from "../../components/DashboardComponents/TodaysSales/TodaysSales";
+import LowStockItems from "../../components/LowStockItems/LowStockItems";
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -36,11 +38,13 @@ class Dashboard extends React.Component {
           <Toast
             success
             message={toast.message}
-            hasButton={toast.hasButton}
+            hasButton={false}
             CB={toast.CB}
             onClose={this.hideToast}
           />
         )}
+        
+        <LowStockItems lowStockItems={['test1', 'test2', 'test3', 'test3', 'test4', 'test5', 'test6', 'test7']}/>
       </div>
     );
   }
