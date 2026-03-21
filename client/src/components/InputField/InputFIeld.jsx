@@ -14,7 +14,6 @@ class InputField extends React.Component {
     const value = e.target.value;
     const { number, text, password } = this.props;
     const regex = /^\d+$/;
-    console.log(text, password);
 
     if (value === "") {
       this.setState({ error: null, value: "" });

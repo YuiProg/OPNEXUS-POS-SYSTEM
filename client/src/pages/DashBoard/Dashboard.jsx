@@ -52,8 +52,7 @@ class Dashboard extends React.Component {
             onClose={this.hideToast}
           />
         )}
-        
-        <InputField placeholder='Enter name' required password onChange={value => this.testonchange(value)}/>
+        <InputField placeholder='Enter name' required text onChange={value => this.testonchange(value)}/>
         {/* <DropDown options={['test1', 'test2']} onChange={(test) => this.testonchange(test)}/> */}
       </div>
     );

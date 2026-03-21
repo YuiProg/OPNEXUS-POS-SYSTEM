@@ -68,8 +68,6 @@ class Login extends React.Component {
             <div>
                 <h1>Login</h1>
                 <form onSubmit={this.handleLogin}>
-                    {/* {error && error.message != UNAUTHORIZED_MESS && <p>{error.message || error}</p>} */}
-                    {/* JAVASCRIPT STRIKES AGAIN TANGINA (USNM) DI PEDE PERO (PW) PEDE AMPUTA FUCK YOU */}
                     <InputField required text onChange={(e) => this.setState({username: e})} placeholder={us + nm}/>
                     <InputField required password onChange={(e) => this.setState({password: e})} placeholder={pw}/>
                     <button type="submit" disabled={loading}>{loading ? 'Logging in…' : 'Login'}</button>
