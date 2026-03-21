@@ -49,6 +49,7 @@ body {
   width: 208px;
   height: 158px;
   position: absolute;
+  bottom: 20px;
   margin-left: 15px;
   color: #fff;
   display: flex;
@@ -83,4 +84,9 @@ body {
   flex: none;
   order: 0;
   flex-grow: 0;
+}
+
+.logout-button:hover {
+  cursor: pointer;
+  background: rgba(197, 34, 34, 1);
 }
