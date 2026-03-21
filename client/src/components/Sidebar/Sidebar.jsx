@@ -52,12 +52,10 @@ class Sidebar extends React.Component {
         }
 
         //tanggalin muna error sa es-lint since dipa ginagamit tong variable nato pero eto yung items sa sidebar
-        // eslint-disable-next-line
         const sidebarItems = [
             "Dasboard",
             "Inventory",
             "Staff Management",
-            "Logs",
             "Logs",
             "Settings",
             "Sign Out"
@@ -68,10 +66,17 @@ class Sidebar extends React.Component {
                 <aside>
                     <h3>Sidebar</h3>
                     <ul>
-                        <li><Link to="/">Home</Link></li>
+                        {sidebarItems.map((l,i) => {
+                            return (
+                                <div key={i}>
+                                    <li><Link to={l.toLowerCase()}>{l}</Link></li>
+                                </div>
+                            );
+                        })}
+                        {/* <li><Link to="/">Home</Link></li>
                         <li><Link to="/dashboard">Dashboard</Link></li>
                         <li><Link to="/products">Products</Link></li>
-                        <li><Link to="/users">Users</Link></li>
+                        <li><Link to="/users">Users</Link></li> */}
                     </ul>
                     <div>
                         {this.state.user ? <p>{this.state.user.username}</p> : <p>LOADING ...</p>}

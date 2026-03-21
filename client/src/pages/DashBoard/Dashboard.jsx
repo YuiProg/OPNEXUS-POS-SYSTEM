@@ -3,6 +3,7 @@ import Toast from "../../toast/Toast";
 import "./Dashboard.css";
 import TodaysSales from "../../components/DashboardComponents/TodaysSales/TodaysSales";
 import LowStockItems from "../../components/LowStockItems/LowStockItems";
+import StocksDB from "../../components/DashboardComponents/StocksIcon/StocksDB";
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -28,7 +29,7 @@ class Dashboard extends React.Component {
         <h1>dashboard</h1>
         <button
           onClick={() =>
-            this.showToast("Action completed.", false, () => this.hideToast())
+            this.showToast("Action completed.", true, () => this.hideToast())
           }
         >
           TEST
@@ -38,13 +39,14 @@ class Dashboard extends React.Component {
           <Toast
             success
             message={toast.message}
-            hasButton={false}
+            hasButton={toast.hasButton}
             CB={toast.CB}
             onClose={this.hideToast}
           />
         )}
         
-        <LowStockItems lowStockItems={['test1', 'test2', 'test3', 'test3', 'test4', 'test5', 'test6', 'test7']}/>
+        <StocksDB/>
+        {/* <LowStockItems lowStockItems={['test1', 'test2', 'test3', 'test3', 'test4', 'test5', 'test6', 'test7']}/> */}
       </div>
     );
   }
