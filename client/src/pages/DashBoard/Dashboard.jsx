@@ -34,7 +34,7 @@ class Dashboard extends React.Component {
     const { toast } = this.state;
 
     return (
-      <div>
+      <div className="dashboard-container">
         <h1>dashboard</h1>
         <button
           onClick={() =>
