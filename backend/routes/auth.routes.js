@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAuthUser, loginUser, register, logoutUser } from '../controller/auth.Controller.js';
+import { getAuthUser, loginUser, register, logoutUser, updateUser } from '../controller/auth.Controller.js';
 import ApiConfig from '../Api/ApiConfig.js';
 import protectRoutes from '../middleware/protectRoutes.js';
 
@@ -8,12 +8,15 @@ const {
     getUser, 
     loginUsers,
     registerUsers,
-    logoutUsers
+    logoutUsers,
+    updateUsers
 } = ApiConfig;
 
 router.post(registerUsers, register);
 router.post(loginUsers, loginUser);
 router.post(logoutUsers, logoutUser);
+
+router.put(updateUsers, updateUser);
 
 router.get(getUser, protectRoutes, getAuthUser);
 
