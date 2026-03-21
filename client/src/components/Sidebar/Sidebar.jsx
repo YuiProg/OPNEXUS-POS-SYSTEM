@@ -77,14 +77,14 @@ class Sidebar extends React.Component {
                         <li><Link to="/products">Products</Link></li>
                         <li><Link to="/users">Users</Link></li> */}
                     </ul>
-                    <div>
+                    <div className="user-panel">
                         {this.state.user ? (
                             <>
-                            <p>{this.state.user.username}</p>
-                            <p>{this.state.user.role}</p>
+                            <p className="userName">{this.state.user.username}</p>
+                            <p className="userRole">{this.state.user.role}</p>
                             </>
                         ) : <p>LOADING ...</p>}
-                        <button onClick={() => this.handleLogout()}>LOGOUT</button>
+                        <button className="logout-button" onClick={() => this.handleLogout()}>LOGOUT</button>
                     </div>
                 </aside>
                 <main>

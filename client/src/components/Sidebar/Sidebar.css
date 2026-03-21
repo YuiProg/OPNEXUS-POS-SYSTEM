@@ -1,6 +1,10 @@
+body {
+  margin: 0;
+}
+
 .sidebar-container {
   width: 240px;
-  height: auto;
+  height: 100vh;
   background: #1C1C1E;
   display: flex;
   color: #FFFFFF;
@@ -38,15 +42,18 @@
   width: 212px;
   height: 212px;
   position: relative;
+  padding: 14px;
 }
 
 .user-panel {
   width: 208px;
   height: 158px;
-  top: 100%;
-  margin-left: 25px;
+  position: absolute;
+  margin-left: 15px;
   color: #fff;
-  align-items: bottom;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 
 .userName {
