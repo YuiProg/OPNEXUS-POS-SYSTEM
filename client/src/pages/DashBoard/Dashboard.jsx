@@ -4,6 +4,7 @@ import "./Dashboard.css";
 import TodaysSales from "../../components/DashboardComponents/TodaysSales/TodaysSales";
 import LowStockItems from "../../components/LowStockItems/LowStockItems";
 import StocksDB from "../../components/DashboardComponents/StocksIcon/StocksDB";
+import Sidebar from "../../components/Sidebar/Sidebar";
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -25,7 +26,7 @@ class Dashboard extends React.Component {
     const { toast } = this.state;
 
     return (
-      <div>
+      <div className="dashboard-container">
         <h1>dashboard</h1>
         <button
           onClick={() =>
@@ -45,7 +46,7 @@ class Dashboard extends React.Component {
           />
         )}
         
-        <StocksDB/>
+        {/* <StocksDB/> */}
         {/* <LowStockItems lowStockItems={['test1', 'test2', 'test3', 'test3', 'test4', 'test5', 'test6', 'test7']}/> */}
       </div>
     );

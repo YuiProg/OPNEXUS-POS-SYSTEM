@@ -53,23 +53,22 @@ class Sidebar extends React.Component {
 
         //tanggalin muna error sa es-lint since dipa ginagamit tong variable nato pero eto yung items sa sidebar
         const sidebarItems = [
-            "Dasboard",
+            "Dashboard",
             "Inventory",
             "Staff Management",
             "Logs",
-            "Settings",
-            "Sign Out"
+            "Settings"
         ]
 
         return (
-            <div>
+            <div className="sidebar-container">
                 <aside>
-                    <h3>Sidebar</h3>
-                    <ul>
+                    <img src="https://i.imgur.com/4hfuK5S.png" alt="logo" className="logo"/>
+                    <ul className="sidebar-list">
                         {sidebarItems.map((l,i) => {
                             return (
                                 <div key={i}>
-                                    <li><Link to={l.toLowerCase()}>{l}</Link></li>
+                                    <li className="row"><Link to={l.toLowerCase()}>{l}</Link></li>
                                 </div>
                             );
                         })}
@@ -78,9 +77,14 @@ class Sidebar extends React.Component {
                         <li><Link to="/products">Products</Link></li>
                         <li><Link to="/users">Users</Link></li> */}
                     </ul>
-                    <div>
-                        {this.state.user ? <p>{this.state.user.username}</p> : <p>LOADING ...</p>}
-                        <button onClick={() => this.handleLogout()}>LOGOUT</button>
+                    <div className="user-panel">
+                        {this.state.user ? (
+                            <>
+                            <p className="userName">{this.state.user.username}</p>
+                            <p className="userRole">{this.state.user.role}</p>
+                            </>
+                        ) : <p>LOADING ...</p>}
+                        <button className="logout-button" onClick={() => this.handleLogout()}>LOG OUT</button>
                     </div>
                 </aside>
                 <main>
