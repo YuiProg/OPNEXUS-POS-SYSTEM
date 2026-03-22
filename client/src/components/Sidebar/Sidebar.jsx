@@ -108,7 +108,7 @@ class Sidebar extends React.Component {
                         <button className="logout-button" onClick={() => this.handleLogout()}>LOG OUT</button>
                     </div>
                 </aside>
-                <main>
+                <main className="children">
                     {this.props.children}
                 </main>
             </div>

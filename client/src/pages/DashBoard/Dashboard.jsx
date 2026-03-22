@@ -8,7 +8,7 @@ import TodaysRevenue from "../../components/DashboardComponents/TodaysRevenue/To
 import DropDown from "../../components/DropDown/Dropdown";
 import Recentactivity from "../../components/RecentActivity/Recentactivity";
 import InputField from "../../components/InputField/InputFIeld";
-
+import {TableWrapper} from "../../components/TRTable/TrTable";
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -33,6 +33,8 @@ class Dashboard extends React.Component {
   render() {
     const { toast } = this.state;
 
+    //const headers = ['productid', 'name', 'quantity'];
+
     return (
       <div className="dashboard-container">
         <h1>dashboard</h1>
@@ -52,7 +54,23 @@ class Dashboard extends React.Component {
             onClose={this.hideToast}
           />
         )}
-        <InputField placeholder='Enter name' required text onChange={value => this.testonchange(value)}/>
+
+        <TableWrapper data={
+            [
+              {productid: 32, name: 'test', quantity: 23},
+              {productid: 213, name: 'test2', quantity: 23},
+              {productid: 213, name: 'test2', quantity: 23},
+              {productid: 213, name: 'test2', quantity: 23},
+              {productid: 213, name: 'test2', quantity: 23}
+            ]
+          } 
+          hasSelect
+          onEdit={(rows) => console.log('edit' + rows)}
+          onDelete={(rows) => console.log('del ' + rows)}
+          hasAction
+        />
+        
+        {/* <InputField placeholder='Enter name' required text onChange={value => this.testonchange(value)}/> */}
         {/* <DropDown options={['test1', 'test2']} onChange={(test) => this.testonchange(test)}/> */}
       </div>
     );
