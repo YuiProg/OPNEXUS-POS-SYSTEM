@@ -15,13 +15,12 @@ function App() {
     checkAuth();
   }, [checkAuth]);
 
-  if (AuthLoading && !AuthUser) {
-    return <div>Loading...</div>;
-  }
+  // if (AuthLoading && !AuthUser) {
+  //   return <div>Loading...</div>;
+  // }
 
   return (
     <>
-      <Toaster position='bottom-right'/>
       <Routes>
         <Route path='/' element={!AuthUser ? <Login/> : <Navigate to='/dashboard'/>}/>
         <Route path='/login' element={!AuthUser ? <Login/> : <Navigate to='/dashboard'/>}/>

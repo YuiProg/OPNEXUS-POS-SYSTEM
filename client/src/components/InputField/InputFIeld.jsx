@@ -1,5 +1,6 @@
 import React from "react";
 import "./InputField.css";
+import { Search } from "lucide-react";
 
 class InputField extends React.Component {
   constructor(props) {
@@ -7,6 +8,7 @@ class InputField extends React.Component {
     this.state = {
       value: "",
       error: null,
+      searchValue: "",
     };
   }
 
@@ -33,7 +35,20 @@ class InputField extends React.Component {
         this.setState({ value: "", error: "Number only!" });
       }
     }
-};
+  };
+
+  handleSearch = (e) => {
+    const value = e.target.value;
+    this.setState({searchValue: value});
+    return value;
+  }
+
+  handleEnterDown = (e, CB) => {
+    const key = e.key;
+    if (key === 'Enter') {
+      return CB(e.target.value);
+    }
+  }
 
   render() {
     const {
@@ -42,7 +57,9 @@ class InputField extends React.Component {
       disabled,
       placeholder,
       password,
-      text
+      text,
+      isSearch,
+      onEnterDown
     } = this.props;
 
     return (
@@ -53,17 +70,36 @@ class InputField extends React.Component {
         <div
           className={`input-wrapper ${this.state.error ? "input-error" : ""}`}
         >
-          <>
-            <input
-              type={text ? 'text' : password ? 'password' : 'text'}
-              required={required}
-              onChange={(e) => onChange(this.checkNumber(e))}
-              disabled={disabled}
-              value={this.state.value}
-              placeholder=" "
-            />
-            <label className="floating-label">{placeholder}</label>
-          </>
+          {!isSearch ? (
+            <>
+              <input
+                type={text ? "text" : password ? "password" : "text"}
+                required={required}
+                onChange={(e) => onChange(this.checkNumber(e))}
+                disabled={disabled}
+                value={this.state.value}
+                placeholder=" "
+                onKeyDown={(e) => this.handleEnterDown(e, onEnterDown)}
+              />
+              <label className="floating-label">{placeholder}</label>
+            </>
+          ) : (
+            <>
+              <input
+                type="text"
+                required={required}
+                onChange={(e) => this.handleSearch(e)}
+                disabled={disabled}
+                value={this.state.searchValue}
+                placeholder=" "
+                onKeyDown={(e) => this.handleEnterDown(e, onEnterDown)}
+              />
+              <label className="floating-label">
+                <Search/>
+                {placeholder}
+              </label>
+            </>
+          )}
         </div>
       </div>
     );

@@ -8,7 +8,8 @@ import TodaysRevenue from "../../components/DashboardComponents/TodaysRevenue/To
 import DropDown from "../../components/DropDown/Dropdown";
 import Recentactivity from "../../components/RecentActivity/Recentactivity";
 import InputField from "../../components/InputField/InputFIeld";
-
+import {TableWrapper} from "../../components/TRTable/TrTable";
+import DonutChart from "../../components/DashboardComponents/Charts/DonutChart";
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -26,12 +27,21 @@ class Dashboard extends React.Component {
     this.setState({ toast: null });
   };
 
-  testonchange = (test) => {
-    console.log(test);
-  }
+  // testonchange = (test) => {
+  //   console.log(test);
+  // }
 
   render() {
     const { toast } = this.state;
+
+    //const headers = ['productid', 'name', 'quantity'];
+    const tableData = {
+      header: 'Products', 
+      hasButton: true, 
+      CB: (data) => console.log(data), 
+      buttonInfo: 'New', 
+      search: <InputField placeholder="Search item" isSearch onEnterDown={(e) => console.log(e)}/>
+    };
 
     return (
       <div className="dashboard-container">
@@ -52,7 +62,25 @@ class Dashboard extends React.Component {
             onClose={this.hideToast}
           />
         )}
-        <InputField placeholder='Enter name' required text onChange={value => this.testonchange(value)}/>
+
+        <TableWrapper data={
+            [
+              {productid: 32, name: 'test', quantity: 23},
+              {productid: 213, name: 'test2', quantity: 23},
+              {productid: 213, name: 'test2', quantity: 23},
+              {productid: 213, name: 'test2', quantity: 23},
+              {productid: 213, name: 'test2', quantity: 23}
+            ]
+          } 
+          hasSelect
+          onEdit={() => {}}
+          onDelete={() => {}}
+          hasAction
+          isDetailed={tableData}
+        />
+        <InputField placeholder='Enter name' required text onChange={() => {}} onEnterDown={(e) => console.log(e)}/>
+        <DonutChart />
+        {/* <InputField placeholder='Enter name' required text onChange={value => this.testonchange(value)}/> */}
         {/* <DropDown options={['test1', 'test2']} onChange={(test) => this.testonchange(test)}/> */}
       </div>
     );

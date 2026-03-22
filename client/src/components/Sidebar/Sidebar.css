@@ -3,7 +3,7 @@ body {
 }
 
 .sidebar-container {
-  width: 240px;
+  /* width: 240px; */
   height: 100vh;
   background: #1C1C1E;
   display: flex;
@@ -16,26 +16,55 @@ body {
   width: 100%;
 }
 
-.sidebar-list .row {
+.children {
+  width: 100%;
+}
+
+.row {
   width: 100%;
   height: 93px; 
-  margin: 0%;
   list-style-type: none;
+  margin: 0%;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  text-decoration: none;
-  color: #fff;
 }
 
-.sidebar-list .row a {
+.row a {
   text-decoration: none;
   color: #fff;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  margin-left: 30px;
+}
+
+.sb-icon {
+  display: flex;
+  align-items: center;
+}
+
+.sb-title {
+  font-size: 16px;
 }
 
 .sidebar-list .row:hover {
+  cursor: pointer;
   background: rgba(255, 255, 255, 0.1);
+}
+
+#active {
+  background: rgba(255, 255, 255, 0.1);
+  .sb-icon, .sb-title {
+    transform: translateX(18px);
+  }
+  .sb-icon {
+    border-left: #ff0000 solid 4px;
+    padding-left: 10px;
+  }
 }
 
 .logo {
@@ -50,7 +79,7 @@ body {
   height: 158px;
   position: absolute;
   bottom: 20px;
-  margin-left: 15px;
+  margin-left: 25px;
   color: #fff;
   display: flex;
   flex-direction: column;
@@ -66,8 +95,12 @@ body {
 .userRole {
   font-size: 14px;
   font-weight: 100;
-  margin: 0 0 10px 0;
+  margin: 0 0 8px 0;
   padding-top: 0;
+}
+
+.userName, .userRole {
+  margin-left: 1px;
 }
 
 .logout-button {
@@ -79,11 +112,8 @@ body {
   font-size: 10px;
   width: 66px;
   height: 30px;
-  background: rgba(197, 34, 34, 0.7);
-  border-radius: 10px;
+  background: rgb(164, 0, 0);
   flex: none;
-  order: 0;
-  flex-grow: 0;
 }
 
 .logout-button:hover {
