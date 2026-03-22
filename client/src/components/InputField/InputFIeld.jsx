@@ -43,6 +43,13 @@ class InputField extends React.Component {
     return value;
   }
 
+  handleEnterDown = (e, CB) => {
+    const key = e.key;
+    if (key === 'Enter') {
+      return CB(e.target.value);
+    }
+  }
+
   render() {
     const {
       required,
@@ -52,6 +59,7 @@ class InputField extends React.Component {
       password,
       text,
       isSearch,
+      onEnterDown
     } = this.props;
 
     return (
@@ -71,6 +79,7 @@ class InputField extends React.Component {
                 disabled={disabled}
                 value={this.state.value}
                 placeholder=" "
+                onKeyDown={(e) => this.handleEnterDown(e, onEnterDown)}
               />
               <label className="floating-label">{placeholder}</label>
             </>
@@ -83,6 +92,7 @@ class InputField extends React.Component {
                 disabled={disabled}
                 value={this.state.searchValue}
                 placeholder=" "
+                onKeyDown={(e) => this.handleEnterDown(e, onEnterDown)}
               />
               <label className="floating-label">
                 <Search/>
