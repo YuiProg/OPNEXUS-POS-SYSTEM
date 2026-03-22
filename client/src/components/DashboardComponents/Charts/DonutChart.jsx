@@ -29,7 +29,22 @@ class DonutChart extends React.Component {
         </div>
         <div className="donut-chart">
           <PieChart
-            series={[{ innerRadius: 50, outerRadius: 100, data: donutData, arcLabel: 'value' }]}
+            series={[
+              { 
+                innerRadius: 50, 
+                outerRadius: 100, 
+                data: donutData, 
+                arcLabel: 'value' 
+              }]}
+              slotProps={{
+                legend: {
+                  direction: 'vertical',
+                  position: { 
+                    vertical: 'middle',
+                    horizontal: 'center'
+                  }
+                }
+              }}
             {...donutSettings}
           />
           <h3 className="dc-label">PHP</h3>
@@ -37,11 +52,27 @@ class DonutChart extends React.Component {
           <h4 className="dc-value">4,180</h4>
         </div>
         <div className="dc-legend">
-          {donutData.map((item, index) => (
-            <div key={index} className="dc-legend-item">
-              <li className="dc-legend-label">{item.label}</li>
+          <div className="legend-item">
+            <div className="legend-circle" style={{backgroundColor: donutData[0].color}}></div>
+            <div>
+              <h4 className="dc-legend-fund">{donutData[0].label}</h4>
+              <p className="dc-legend-label">Sales</p>
             </div>
-          ))}
+          </div>
+          <div className="legend-item">
+            <div className="legend-circle" style={{backgroundColor: donutData[1].color}}></div>
+            <div>
+              <h4 className="dc-legend-fund">{donutData[1].label}</h4>
+              <p className="dc-legend-label">Utilities</p>
+            </div>
+          </div>
+          <div className="legend-item">
+            <div className="legend-circle" style={{backgroundColor: donutData[2].color}}></div>
+            <div>
+              <h4 className="dc-legend-fund">{donutData[2].label}</h4>
+              <p className="dc-legend-label">Labor</p>
+            </div>
+          </div>
         </div>
       </div>
     );
