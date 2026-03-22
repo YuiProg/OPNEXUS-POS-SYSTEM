@@ -1,0 +1,56 @@
+.login-container{
+	height: 100%;
+	background-color: #000;
+	display: flex;
+	flex-direction: row;
+}
+/* Left Side Images */
+.login-container__image {
+	width: 80%;
+}
+
+/* Images */
+.login-container__credentials img {
+	width: 212px;
+	height: 212px;
+	align-self: center;
+}
+.login-container__image-one{
+	width: 66px;
+	height: 66px;
+	position: absolute;
+}
+.login-container__image-two{
+	width: 580px;
+    height: 717px;
+    position: relative;
+    top: 6%;
+    left: 20%;	
+}
+
+/* Login Form Container */
+.login-container__credentials {
+	width: 20%;
+	padding: 24px 30px 0 30px;
+	background-color: #111111;
+	display: flex;
+    flex-direction: column;
+	gap: 141px;
+}
+
+.login-container__credentials form {
+	display: flex;
+	flex-direction: column;
+	gap: 17px;
+}
+.login-container__credentials .input-container .input-wrapper,
+.login-container__credentials .input-container input{
+	width: 100% !important;
+}
+.login-container__credentials-footer {
+	align-self: center;
+	text-transform: uppercase;
+	font-weight: 400;
+	font-size: 12px;
+	color: #fff;
+}
