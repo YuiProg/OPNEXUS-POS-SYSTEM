@@ -1,6 +1,6 @@
 import React from "react";
 import AuthStore from "../../store/Authstore";
-import Strings from "../../../../backend/strings/strings-codes";
+import Strings from "../../strings/strings-codes";
 import { Navigate, Link } from "react-router-dom";
 import './Sidebar.css';
 import { LayoutDashboard, ShelvingUnit, IdCardLanyard, Logs, Settings } from 'lucide-react';

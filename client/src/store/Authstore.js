@@ -1,9 +1,9 @@
 //import { isAxiosError } from 'axios';
 import {create} from 'zustand';
 import axiosInstance from '../helpers/axiosInstance';
-import ApiConfig from '../../../backend/Api/ApiConfig';
+import ApiConfig from '../Api/ApiConfig';
 //import toast from 'react-hot-toast';
-import Strings from '../../../backend/strings/strings-codes';
+import Strings from '../strings/strings-codes';
 import axiosError from '../helpers/axiosError';
 import Toast from '../toast/Toast';
 

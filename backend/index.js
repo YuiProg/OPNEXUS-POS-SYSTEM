@@ -13,7 +13,7 @@ dns.setServers(["1.1.1.1", "8.8.8.8"]);
 dotenv.config();
 const app = express();
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: ['http://localhost:5173', 'http://localhost'],
     credentials: true
 }));
 

@@ -1,10 +1,11 @@
 import React from "react";
 import "./TrTable.css";
-import { Edit, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { SquarePen } from "lucide-react";
 
 //table wrapper headers and data
 export class TableWrapper extends React.Component {
+  
   constructor(props) {
     super(props);
     this.state = {
@@ -41,8 +42,7 @@ export class TableWrapper extends React.Component {
   };
 
   render() {
-    const { data, hasSelect, hasAction, onDelete, onEdit, isDetailed } =
-      this.props;
+    const { data, hasSelect, hasAction, onDelete, onEdit, isDetailed } = this.props;
     const { selectAll, selected } = this.state;
     const headers = Object.keys(data[0]);
     const { header, hasButton, buttonInfo, CB } = isDetailed;
