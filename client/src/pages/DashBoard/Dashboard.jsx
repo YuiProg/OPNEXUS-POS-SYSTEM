@@ -26,14 +26,21 @@ class Dashboard extends React.Component {
     this.setState({ toast: null });
   };
 
-  testonchange = (test) => {
-    console.log(test);
-  }
+  // testonchange = (test) => {
+  //   console.log(test);
+  // }
 
   render() {
     const { toast } = this.state;
 
     //const headers = ['productid', 'name', 'quantity'];
+    const tableData = {
+      header: 'Products', 
+      hasButton: true, 
+      CB: (data) => console.log(data), 
+      buttonInfo: 'New', 
+      search: <InputField placeholder="Search item" isSearch onEnterDown={(e) => console.log(e)}/>
+    };
 
     return (
       <div className="dashboard-container">
@@ -68,9 +75,9 @@ class Dashboard extends React.Component {
           onEdit={() => {}}
           onDelete={() => {}}
           hasAction
-          isDetailed={{header: 'Products', hasButton: true, CB: (data) => console.log(data), buttonInfo: 'New'}}
+          isDetailed={tableData}
         />
-        {/* <InputField placeholder='Enter name' required text onChange={value => this.testonchange(value)}/> */}
+        <InputField placeholder='Enter name' required text onChange={() => {}} onEnterDown={(e) => console.log(e)}/>
         {/* <DropDown options={['test1', 'test2']} onChange={(test) => this.testonchange(test)}/> */}
       </div>
     );
