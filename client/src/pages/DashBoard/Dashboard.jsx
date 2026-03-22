@@ -9,6 +9,7 @@ import DropDown from "../../components/DropDown/Dropdown";
 import Recentactivity from "../../components/RecentActivity/Recentactivity";
 import InputField from "../../components/InputField/InputFIeld";
 import {TableWrapper} from "../../components/TRTable/TrTable";
+import DonutChart from "../../components/DashboardComponents/Charts/DonutChart";
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -78,6 +79,8 @@ class Dashboard extends React.Component {
           isDetailed={tableData}
         />
         <InputField placeholder='Enter name' required text onChange={() => {}} onEnterDown={(e) => console.log(e)}/>
+        <DonutChart />
+        {/* <InputField placeholder='Enter name' required text onChange={value => this.testonchange(value)}/> */}
         {/* <DropDown options={['test1', 'test2']} onChange={(test) => this.testonchange(test)}/> */}
       </div>
     );
