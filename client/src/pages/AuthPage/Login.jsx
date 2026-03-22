@@ -3,6 +3,9 @@ import './Login.css';
 import AuthStore from "../../store/Authstore";
 import Strings from "../../../../backend/strings/strings-codes.js";
 import InputField from "../../components/InputField/InputFIeld.jsx";
+import bg_image from "../../assets/images/ProductsLoginImage.png"
+import bg_logo from "../../assets/images/loginImageLogo.png"
+import Toast from "../../toast/Toast.jsx";
 
 const {
     UNAUTHORIZED_MESS,
@@ -19,7 +22,7 @@ class Login extends React.Component {
             username: '',
             password: '',
             error: null,
-            loading: false
+            loading: false,
         };
     }
     
@@ -45,6 +48,7 @@ class Login extends React.Component {
     //WHY IS THIS IMPORTANT:
     //IMPROVES PERFORMANCE
     //DISABLES MEMORY LEAK
+    // ulol
     componentWillUnmount() {
         if (this.unsubscribe) this.unsubscribe();
     }
@@ -62,17 +66,39 @@ class Login extends React.Component {
     };
 
     render() {
-        const { loading } = this.state;
-        
+        const { loading, error} = this.state;
         return (
-            <div>
-                <h1>Login</h1>
-                <form onSubmit={this.handleLogin}>
-                    <InputField required text onChange={(e) => this.setState({username: e})} placeholder={us + nm}/>
-                    <InputField required password onChange={(e) => this.setState({password: e})} placeholder={pw}/>
-                    <button type="submit" disabled={loading}>{loading ? 'Logging in…' : 'Login'}</button>
-                </form>
-            </div>
+            <>
+                {error && (
+                    <Toast
+                        error
+                        message={error.status || 'Failed to login'}
+                        hasButton={false}
+                        CB={() => {}}
+                        onClose={() => AuthStore.setState({ error: null })}
+                    />
+                )}
+                <div className="login-container">
+                    <div className="login-container__image">
+                        <img src={bg_logo} className="login-container__image-one"> 
+                        </img>
+                        <img src={bg_image} className="login-container__image-two">
+                        </img>
+                    </div>
+                    <div className="login-container__credentials">
+                        <img src={bg_logo}>
+                        </img>    
+                        <form onSubmit={(e) => this.handleLogin(e)}>
+                            <InputField required text onChange={(e) => this.setState({username: e})} placeholder={us + nm}/>
+                            <InputField required password onChange={(e) => this.setState({password: e})} placeholder={pw}/>
+                            <button type="submit" disabled={loading}>{loading ? 'Logging in…' : 'Login'}</button>
+                        </form>
+                        <p className="login-container__credentials-footer">
+                            All Rights Reserved.
+                        </p>
+                    </div>
+                </div>
+            </>
         );
     }
 }
