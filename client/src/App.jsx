@@ -15,9 +15,9 @@ function App() {
     checkAuth();
   }, [checkAuth]);
 
-  if (AuthLoading && !AuthUser) {
-    return <div>Loading...</div>;
-  }
+  // if (AuthLoading && !AuthUser) {
+  //   return <div>Loading...</div>;
+  // }
 
   return (
     <>

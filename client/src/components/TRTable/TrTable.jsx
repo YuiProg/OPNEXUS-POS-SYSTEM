@@ -9,7 +9,8 @@ export class TableWrapper extends React.Component {
         super(props);
         this.state = {
             selectAll: false,
-            selected: new Array(props.data.length).fill(false)
+            selected: new Array(props.data.length).fill(false),
+            productSelect: null
         };
     }
 
@@ -30,9 +31,7 @@ export class TableWrapper extends React.Component {
        
         this.setState(prev => {
             const selected = [...prev.selected];
-            console.log(prev);
             selected[index] = !selected[index];
-
             const selectedRows = this.props.data.filter((_, i) => selected[i]);
             this.props.onDelete(selectedRows);
 
@@ -49,36 +48,53 @@ export class TableWrapper extends React.Component {
             hasSelect,
             hasAction,
             onDelete,
-            onEdit
+            onEdit,
+            isDetailed
         } = this.props;
         const { selectAll, selected } = this.state;
         const headers = Object.keys(data[0]);
+        const {
+            header,
+            hasButton,
+            buttonInfo,
+            CB
+        } = isDetailed;
 
         return (
-            <table style={{width: '100%'}}>
-                <thead>
-                    <tr>
-                        {hasSelect && (
-                            <th>
-                                <input type="checkbox" checked={selectAll} onChange={this.selectAll} />
-                            </th>
-                        )}
-                        {headers.map((h, i) => <th key={i}>{h}</th>)}
-                        {hasAction && <th>Actions</th>}
-                    </tr>
-                </thead>
-                <tbody>
-                    <Table
-                        data={data}
-                        hasSelect={hasSelect}
-                        selected={selected}
-                        toggleRow={this.toggleRow}
-                        hasAction={hasAction}
-                        CBD={(e) => onDelete(e)}
-                        CBE={(e) => onEdit(e)}
-                    />
-                </tbody>
-            </table>
+            <div>
+                {isDetailed && (
+                    <>
+                    <h1>{header}</h1>
+                    </>
+                )}
+                {hasButton && (
+                    <button onClick={(e) => CB(e)}>{buttonInfo}</button>
+                )}
+                <table style={{width: '100%'}}>
+                    <thead>
+                        <tr>
+                            {hasSelect && (
+                                <th>
+                                    <input type="checkbox" checked={selectAll} onChange={this.selectAll} />
+                                </th>
+                            )}
+                            {headers.map((h, i) => <th key={i}>{h}</th>)}
+                            {hasAction && <th>Actions</th>}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <Table
+                            data={data}
+                            hasSelect={hasSelect}
+                            selected={selected}
+                            toggleRow={this.toggleRow}
+                            hasAction={hasAction}
+                            CBD={(e) => onDelete(e)}
+                            CBE={(e) => onEdit(e)}
+                        />
+                    </tbody>
+                </table>
+            </div>
         );
     }
 }
@@ -86,12 +102,16 @@ export class TableWrapper extends React.Component {
 //table rows render
 export class Table extends React.Component {
 
+    constructor (props) {
+        super(props);
+    }
+
     render() {
         const { 
             data, 
             hasSelect, 
             selected, 
-            toggleRow ,
+            toggleRow,
             hasAction,
             CBD,
             CBE

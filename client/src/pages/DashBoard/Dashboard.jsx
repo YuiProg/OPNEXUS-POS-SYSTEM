@@ -65,11 +65,11 @@ class Dashboard extends React.Component {
             ]
           } 
           hasSelect
-          onEdit={(rows) => console.log('edit' + rows)}
-          onDelete={(rows) => console.log('del ' + rows)}
+          onEdit={() => {}}
+          onDelete={() => {}}
           hasAction
+          isDetailed={{header: 'Products', hasButton: true, CB: (data) => console.log(data), buttonInfo: 'New'}}
         />
-        
         {/* <InputField placeholder='Enter name' required text onChange={value => this.testonchange(value)}/> */}
         {/* <DropDown options={['test1', 'test2']} onChange={(test) => this.testonchange(test)}/> */}
       </div>
