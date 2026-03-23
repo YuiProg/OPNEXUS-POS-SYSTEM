@@ -2,7 +2,7 @@ import React from "react";
 import './Login.css';
 import AuthStore from "../../store/Authstore";
 import Strings from "../../strings/strings-codes.js";
-import InputField from "../../components/InputField/InputFIeld.jsx";
+import InputField from "../../components/TRInputField/InputFIeld.jsx";
 import bg_image from "../../assets/images/ProductsLoginImage.png"
 import bg_logo from "../../assets/images/loginImageLogo.png"
 import Toast from "../../toast/Toast.jsx";

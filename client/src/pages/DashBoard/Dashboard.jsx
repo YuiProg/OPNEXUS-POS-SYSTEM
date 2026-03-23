@@ -5,9 +5,9 @@ import TodaysSales from "../../components/DashboardComponents/TodaysSales/Todays
 import LowStockItems from "../../components/LowStockItems/LowStockItems";
 import StocksDB from "../../components/DashboardComponents/StocksIcon/StocksDB";
 import TodaysRevenue from "../../components/DashboardComponents/TodaysRevenue/TodaysRevenue";
-import DropDown from "../../components/DropDown/Dropdown";
+import DropDown from "../../components/TRDropDown/Dropdown";
 import Recentactivity from "../../components/RecentActivity/Recentactivity";
-import InputField from "../../components/InputField/InputFIeld";
+import InputField from "../../components/TRInputField/InputFIeld";
 import {TableWrapper} from "../../components/TRTable/TrTable";
 import DonutChart from "../../components/DashboardComponents/Charts/DonutChart";
 
