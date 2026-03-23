@@ -93,11 +93,10 @@ class InputField extends React.Component {
                 value={this.state.searchValue}
                 placeholder=" "
                 onKeyDown={(e) => this.handleEnterDown(e, onEnterDown)}
+                className="search-input"
               />
-              <label className="floating-label">
-                <Search/>
-                {placeholder}
-              </label>
+              <label className="floating-label">{placeholder}</label>
+              <Search className="search-icon" size={15} />
             </>
           )}
         </div>

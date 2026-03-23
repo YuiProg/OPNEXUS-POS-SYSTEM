@@ -3,9 +3,7 @@ import "./TrTable.css";
 import { Trash2 } from "lucide-react";
 import { SquarePen } from "lucide-react";
 
-//table wrapper headers and data
 export class Table extends React.Component {
-  
   constructor(props) {
     super(props);
     this.state = {
@@ -19,10 +17,8 @@ export class Table extends React.Component {
     this.setState((prev) => {
       const selectAll = !prev.selectAll;
       const selected = new Array(this.props.data.length).fill(selectAll);
-
       const selectedRows = selectAll ? this.props.data : [];
       this.props.onDelete(selectedRows);
-
       return { selectAll, selected };
     });
   };
@@ -33,7 +29,6 @@ export class Table extends React.Component {
       selected[index] = !selected[index];
       const selectedRows = this.props.data.filter((_, i) => selected[i]);
       this.props.onDelete(selectedRows);
-
       return {
         selected,
         selectAll: selected.every(Boolean),
@@ -45,23 +40,31 @@ export class Table extends React.Component {
     const { data, hasSelect, hasAction, onDelete, onEdit, isDetailed } = this.props;
     const { selectAll, selected } = this.state;
     const headers = Object.keys(data[0]);
-    const { header, hasButton, buttonInfo, CB } = isDetailed;
+    
+    //const { header, hasButton, buttonInfo, CB } = isDetailed;
 
     return (
-      <div>
-        {isDetailed && (
-          <>
-            <h1>{header}</h1>
-            {isDetailed.search}
-          </>
-        )}
-        {hasButton && <button onClick={(e) => CB(e)}>{buttonInfo}</button>}
-        <table style={{ width: "100%" }}>
-          <thead>
-            <tr>
+      <div className="table-wrapper">
+        {isDetailed ? (
+          <div className="table-header">
+            <h1 className="table-title">{isDetailed.header}</h1>
+            <div className="table-header-right">
+              <div className="table-search">{isDetailed.search}</div>
+              {isDetailed.hasButton && (
+                <button className="table-new-btn" onClick={(e) => isDetailed.CB(e)}>
+                  {isDetailed.buttonInfo}
+                </button>
+              )}
+            </div>
+          </div>
+        ) : null}
+        <table className="table">
+          <thead className="table-thead">
+            <tr className="table-thead-row">
               {hasSelect && (
-                <th>
+                <th className="table-th table-th--check">
                   <input
+                    className="table-checkbox"
                     type="checkbox"
                     checked={selectAll}
                     onChange={this.selectAll}
@@ -69,12 +72,12 @@ export class Table extends React.Component {
                 </th>
               )}
               {headers.map((h, i) => (
-                <th key={i}>{h}</th>
+                <th className="table-th" key={i}>{h}</th>
               ))}
-              {hasAction && <th>Actions</th>}
+              {hasAction && <th className="table-th table-th--action">Actions</th>}
             </tr>
           </thead>
-          <tbody>
+          <tbody className="table-tbody">
             <TableData
               data={data}
               hasSelect={hasSelect}
@@ -91,23 +94,25 @@ export class Table extends React.Component {
   }
 }
 
-//table rows render
 export class TableData extends React.Component {
   constructor(props) {
     super(props);
   }
 
   render() {
-    const { data, hasSelect, selected, toggleRow, hasAction, CBD, CBE } =
-      this.props;
+    const { data, hasSelect, selected, toggleRow, hasAction, CBD, CBE } = this.props;
 
     return (
       <>
         {data.map((row, rowIndex) => (
-          <tr key={rowIndex}>
+          <tr
+            className={`table-row ${selected[rowIndex] ? "table-row--selected" : ""}`}
+            key={rowIndex}
+          >
             {hasSelect && (
-              <td>
+              <td className="table-td table-td--check">
                 <input
+                  className="table-checkbox"
                   type="checkbox"
                   checked={selected[rowIndex]}
                   onChange={() => toggleRow(rowIndex)}
@@ -115,15 +120,21 @@ export class TableData extends React.Component {
               </td>
             )}
             {Object.values(row).map((value, colIndex) => (
-              <td key={colIndex}>{value}</td>
+              <td className="table-td" key={colIndex}>{value}</td>
             ))}
             {hasAction && (
-              <td>
-                <button onClick={() => CBD(row)}>
-                  <Trash2 />
+              <td className="table-td table-td--action">
+                <button
+                  className="table-action-btn table-action-btn--delete"
+                  onClick={() => CBD(row)}
+                >
+                  <Trash2 size={15} />
                 </button>
-                <button onClick={() => CBE(row)}>
-                  <SquarePen />
+                <button
+                  className="table-action-btn table-action-btn--edit"
+                  onClick={() => CBE(row)}
+                >
+                  <SquarePen size={15} />
                 </button>
               </td>
             )}

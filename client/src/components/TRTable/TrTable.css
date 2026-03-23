@@ -1,0 +1,164 @@
+/* ── Wrapper ── */
+.table-wrapper {
+  background-color: transparent;
+  padding: 24px;
+  border-radius: 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ── Header row (title + search + button) ── */
+.table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  gap: 12px;
+}
+
+.table-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.table-header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ── Search ── */
+.table-search {
+  display: flex;
+  align-items: center;
+}
+
+/* ── New Stock button ── */
+.table-new-btn {
+  background-color: #c0392b;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.18s ease;
+  white-space: nowrap;
+}
+
+.table-new-btn:hover {
+  background-color: #a93226;
+}
+
+/* ── Table ── */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  color: #e0e0e0;
+}
+
+/* ── Head ── */
+.table-thead-row {
+  border-bottom: 1px solid #2e2e2e;
+}
+
+.table-th {
+  padding: 12px 16px;
+  text-align: center;
+  color: #888;
+  font-weight: 500;
+  font-size: 0.8rem;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+.table-th--check {
+  width: 40px;
+  text-align: center;
+}
+
+.table-th--action {
+  width: 80px;
+  text-align: center;
+}
+
+/* ── Body rows ── */
+.table-row {
+  border-bottom: 1px solid #242424;
+  transition: background 0.15s ease;
+}
+
+.table-row:last-child {
+  border-bottom: none;
+}
+
+.table-row:hover {
+  background-color: #222222;
+}
+
+.table-row--selected {
+  background-color: #2a1f1f;
+}
+
+.table-td {
+  padding: 14px 16px;
+  text-align: center;
+  color: #d0d0d0;
+  white-space: nowrap;
+}
+
+.table-td--check {
+  text-align: center;
+}
+
+.table-td--action {
+  text-align: center;
+}
+
+/* ── Checkboxes ── */
+.table-checkbox {
+  width: 16px;
+  height: 16px;
+  accent-color: #c0392b;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+/* ── Action buttons ── */
+.table-action-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.table-action-btn--delete {
+  color: #888;
+}
+
+.table-action-btn--delete:hover {
+  background-color: #3a1a1a;
+  color: #e74c3c;
+}
+
+.table-action-btn--edit {
+  color: #888;
+}
+
+.table-action-btn--edit:hover {
+  background-color: #1a2a3a;
+  color: #5dade2;
+}
