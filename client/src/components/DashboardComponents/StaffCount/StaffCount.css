@@ -1,0 +1,19 @@
+.active-clerks-container {
+    width: 280px;
+    height: 80px;
+    background-color: #1C1C1E;
+    padding: 5px;
+    border-radius: 12px;
+    box-shadow: 0px 10px 15px rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    justify-items: center;
+}
+
+.active-clerks-label {
+    padding-left: 10px;
+}
+
+.active-clerks-num {
+
+}

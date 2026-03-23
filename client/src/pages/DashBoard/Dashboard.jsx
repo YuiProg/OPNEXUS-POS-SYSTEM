@@ -6,11 +6,13 @@ import LowStockItems from "../../components/LowStockItems/LowStockItems";
 import StocksDB from "../../components/DashboardComponents/StocksIcon/StocksDB";
 import TodaysRevenue from "../../components/DashboardComponents/TodaysRevenue/TodaysRevenue";
 import DropDown from "../../components/TRDropDown/Dropdown";
-import Recentactivity from "../../components/RecentActivity/Recentactivity";
 import InputField from "../../components/TRInputField/InputFIeld";
 import { Table, TableData } from "../../components/TRTable/TrTable";
 import DonutChart from "../../components/DashboardComponents/Charts/DonutChart";
 import ActiveClerks from "../../components/DashboardComponents/ActiveClerks/ActiveClerks";
+import Notes from "../../components/Notes/Notes";
+import StaffCount from "../../components/DashboardComponents/StaffCount/StaffCount";
+import RecentActivity from "../../components/DashboardComponents/RecentActivity/RecentActivity";
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -43,13 +45,18 @@ class Dashboard extends React.Component {
         </div>
         {/* GREEN CONTAINER */}
         <div>
-          <ActiveClerks />
+          <StaffCount/>
           <TodaysRevenue />
-          <Recentactivity />
+          <RecentActivity/>
         </div>
         {/* BLUE CONTAINER */}
         <div>
+          {/* DITO MACKY DAPAT YUNG STATISTICS PERO WALA */}
+          <div>
+            {/* SAMPLE CONTAINER */}
+          </div>
           <DonutChart />
+          <Notes/>
         </div>
         {/* VIOLET CONTAINER */}
         <div>
