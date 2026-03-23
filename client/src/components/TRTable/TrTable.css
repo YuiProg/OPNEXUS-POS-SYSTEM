@@ -127,7 +127,6 @@
 }
 
 /* ── Checkboxes ── */
-/* ── Checkboxes ── */
 .table-checkbox {
   appearance: none;
   -webkit-appearance: none;
@@ -163,6 +162,7 @@
   border-left: none;
   transform: rotate(45deg);
 }
+
 /* ── Action buttons ── */
 .table-action-btn {
   background: transparent;
@@ -192,4 +192,80 @@
 .table-action-btn--edit:hover {
   background-color: #1a2a3a;
   color: #5dade2;
+}
+
+/* ── Pagination ── */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid #242424;
+}
+
+.pagination-info {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.pagination-btn {
+  background: transparent;
+  border: 1px solid #2e2e2e;
+  color: #888;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  border-color: #c0392b;
+  color: #fff;
+}
+
+.pagination-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.pagination-page {
+  background: transparent;
+  border: 1px solid #2e2e2e;
+  color: #888;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+
+.pagination-page:hover {
+  border-color: #555;
+  color: #fff;
+}
+
+.pagination-page--active {
+  background-color: #c0392b;
+  border-color: #c0392b;
+  color: #fff;
+  font-weight: 600;
+}
+
+.pagination-dots {
+  color: #555;
+  font-size: 0.75rem;
+  padding: 0 2px;
+  user-select: none;
 }
