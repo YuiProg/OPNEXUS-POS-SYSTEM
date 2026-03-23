@@ -8,8 +8,9 @@ import TodaysRevenue from "../../components/DashboardComponents/TodaysRevenue/To
 import DropDown from "../../components/TRDropDown/Dropdown";
 import Recentactivity from "../../components/RecentActivity/Recentactivity";
 import InputField from "../../components/TRInputField/InputFIeld";
-import {TableWrapper} from "../../components/TRTable/TrTable";
+import {Table} from "../../components/TRTable/TrTable";
 import DonutChart from "../../components/DashboardComponents/Charts/DonutChart";
+import ActiveClerks from "../../components/DashboardComponents/ActiveClerks/ActiveClerks";
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -32,57 +33,28 @@ class Dashboard extends React.Component {
   // }
 
   render() {
-    const { toast } = this.state;
-
-    //const headers = ['productid', 'name', 'quantity'];
-    const tableData = {
-      header: 'Products', 
-      hasButton: true, 
-      CB: (data) => console.log(data), 
-      buttonInfo: 'New', 
-      search: <InputField placeholder="Search item" isSearch onEnterDown={(e) => console.log(e)}/>
-    };
-
     return (
       <div className="dashboard-container">
-        <h1>dashboard</h1>
-        <button
-          onClick={() =>
-            this.showToast("Action completed.", true, () => this.hideToast())
-          }
-        >
-          TEST
-        </button>
-        {toast && (
-          <Toast
-            success
-            message={toast.message}
-            hasButton={toast.hasButton}
-            CB={toast.CB}
-            onClose={this.hideToast}
-          />
-        )}
-
-        <TableWrapper data={
-            [
-              {productid: 32, name: 'test', quantity: 23},
-              {productid: 213, name: 'test2', quantity: 23},
-              {productid: 213, name: 'test2', quantity: 23},
-              {productid: 213, name: 'test2', quantity: 23},
-              {productid: 213, name: 'test2', quantity: 23}
-            ]
-          } 
-          hasSelect
-          onEdit={() => {}}
-          onDelete={() => {}}
-          hasAction
-          isDetailed={tableData}
-          width={100}
-        />
-        <InputField placeholder='Enter name' required text onChange={() => {}} onEnterDown={(e) => console.log(e)}/>
-        <DonutChart />
-        {/* <InputField placeholder='Enter name' required text onChange={value => this.testonchange(value)}/> */}
-        {/* <DropDown options={['test1', 'test2']} onChange={(test) => this.testonchange(test)}/> */}
+        {/* HELLO WHAT DO YOU WANT TO DO KEME KEME SECTION */}
+        <div>
+          <h1>Hello, What do you want to today?</h1>
+          <p>Branch</p>
+          <DropDown options={['longos', 'bulacan', 'hagonoy']}/>
+        </div>
+        {/* GREEN CONTAINER */}
+        <div>
+          <ActiveClerks/>
+          <TodaysRevenue/>
+          <Recentactivity/>
+        </div>
+        {/* BLUE CONTAINER */}
+        <div>
+          <DonutChart/>
+        </div>
+        {/* VIOLET CONTAINER */}
+        <div>
+          <TodaysSales/>
+        </div>
       </div>
     );
   }

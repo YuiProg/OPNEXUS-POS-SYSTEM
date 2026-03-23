@@ -3,8 +3,8 @@ import "./TrTable.css";
 import { Trash2 } from "lucide-react";
 import { SquarePen } from "lucide-react";
 
-//table wrapper headers and data
-export class TableWrapper extends React.Component {
+//table headers and data
+export class Table extends React.Component {
   
   constructor(props) {
     super(props);
@@ -75,7 +75,7 @@ export class TableWrapper extends React.Component {
             </tr>
           </thead>
           <tbody>
-            <Table
+            <TableData
               data={data}
               hasSelect={hasSelect}
               selected={selected}
@@ -92,7 +92,7 @@ export class TableWrapper extends React.Component {
 }
 
 //table rows render
-export class Table extends React.Component {
+export class TableData extends React.Component {
   constructor(props) {
     super(props);
   }

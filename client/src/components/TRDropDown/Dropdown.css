@@ -4,10 +4,12 @@
 }
 
 .tr-dropdown {
+    background-color: transparent;
+    color: white;
     width: 320px;
     height: 44px;
     border-radius: 8px;
-    border: 2px solid #D6D6D6;
+    border: 2px solid #404040;
 }
 
 .tr-dropdown-icon {
@@ -22,4 +24,9 @@
 
 .tr-dropdown {
     padding-left: 28px;
+}
+
+.tr-options {
+    background-color: #111111;
+    border: #404040;
 }

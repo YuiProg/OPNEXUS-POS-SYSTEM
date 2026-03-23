@@ -8,6 +8,7 @@ body {
   background: #1C1C1E;
   display: flex;
   color: #FFFFFF;
+  position: fixed;
 }
 
 .sidebar-list {
