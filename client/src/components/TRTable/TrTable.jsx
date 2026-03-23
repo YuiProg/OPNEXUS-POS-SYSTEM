@@ -2,12 +2,17 @@ import React from "react";
 import "./TrTable.css";
 import { Trash2, SquarePen, ChevronLeft, ChevronRight } from "lucide-react";
 
+
+//NOTE: SOME CODE HAVE BEEN MODIFIED BY AI (CLAUDE)
+//NAG KANDA LETCHE LETCHE NA SIMULA NUNG NAGLAGAY AKO PAGINATION HAHAHA
+//PERO THE REST HERE IS STILL HUMAN MADE
+//FUCK IT WE BALL
 export class Table extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       selectAll: false,
-      selected: new Array(props.data.length).fill(false),
+      selected: this.props.data ? new Array(props.data.length).fill(false) : null,
       productSelect: null,
       currentPage: 1,
     };
@@ -56,16 +61,18 @@ export class Table extends React.Component {
     const { data, hasSelect, hasAction, onDelete, onEdit, isDetailed, search } = this.props;
     const { selectAll, selected, currentPage } = this.state;
 
+    //for testing wag i remove. wag rin tanggalin yung comment sasabog to
     //console.log(this.filterByValue(data, search));
 
-    const totalPages = Math.ceil(data.length / this.rowsPerPage);
+    //some pagination shit na generated na ng ai
+    const totalPages = this.props.data ? Math.ceil(data.length / this.rowsPerPage) : null;
     const startIndex = (currentPage - 1) * this.rowsPerPage;
-    const paginatedData = data.slice(startIndex, startIndex + this.rowsPerPage);
-    const paginatedSelected = selected.slice(startIndex, startIndex + this.rowsPerPage);
+    const paginatedData = this.props.data ?  data.slice(startIndex, startIndex + this.rowsPerPage) : null;
+    const paginatedSelected = paginatedData ? selected.slice(startIndex, startIndex + this.rowsPerPage) : null;
 
-    const headers = Object.keys(data[0]);
+    const headers = this.props.data ?  Object.keys(data[0]) : null;
 
-    // TODO: fix this later
+    // TODO: fix this later ps. what the fuck is this shit
     var pageNumbers = []
     for (var i = 1; i <= totalPages; i++) {
       pageNumbers.push(i)
@@ -73,7 +80,7 @@ export class Table extends React.Component {
 
     return (
       <div className="table-wrapper">
-        {isDetailed ? (
+        {isDetailed && data ? (
           <div className="table-header">
             <h1 className="table-title">{isDetailed.header}</h1>
             <div className="table-header-right">
@@ -89,7 +96,7 @@ export class Table extends React.Component {
         <table className="table">
           <thead className="table-thead">
             <tr className="table-thead-row">
-              {hasSelect == true ? (
+              {hasSelect && data == true ? (
                 <th className="table-th table-th--check">
                   <input
                     className="table-checkbox"
@@ -99,10 +106,12 @@ export class Table extends React.Component {
                   />
                 </th>
               ) : null}
-              {headers.map((h, i) => (
+              {this.props.data && (
+                headers.map((h, i) => (
                 <th className="table-th" key={i}>{h.toUpperCase()}</th>
-              ))}
-              {hasAction == true ? <th className="table-th table-th--action">Actions</th> : null}
+              ))
+              )}
+              {hasAction && data == true ? <th className="table-th table-th--action">Actions</th> : null}
             </tr>
           </thead>
           <tbody className="table-tbody">
@@ -120,7 +129,7 @@ export class Table extends React.Component {
 
         <div className="pagination">
           <span className="pagination-info">
-            showing {startIndex + 1} to {Math.min(startIndex + this.rowsPerPage, data.length)} of {data.length} results
+            {this.props.data ? `showing ${startIndex + 1} to ${Math.min(startIndex + this.rowsPerPage, data.length)} of ${data.length} results` : null }
           </span>
           <div className="pagination-controls">
             <button
@@ -206,47 +215,73 @@ export class TableData extends React.Component {
   render() {
     const { data, hasSelect, selected, toggleRow, hasAction, CBD, CBE } = this.props;
 
+    // if (!data) {
+    //   return <div>nothing</div>
+    // }
+
     return (
       <>
-        {data.map((row, rowIndex) => {
-          return (
-            <tr
-              className={selected[rowIndex] == true ? "table-row table-row--selected" : "table-row"}
-              key={rowIndex}
-            >
-              {hasSelect == true ? (
-                <td className="table-td table-td--check">
-                  <input
-                    className="table-checkbox"
-                    type="checkbox"
-                    checked={selected[rowIndex]}
-                    onChange={() => toggleRow(rowIndex)}
-                  />
-                </td>
-              ) : null}
-              {Object.values(row).map((value, colIndex) => (
-                <td className="table-td" key={colIndex}>{value}</td>
-              ))}
-              {hasAction == true ? (
-                <td className="table-td table-td--action">
-                  <button
-                    className="table-action-btn table-action-btn--delete"
-                    onClick={() => CBD(row)}
-                  >
-                    <Trash2 size={15} />
-                  </button>
-                  <button
-                    className="table-action-btn table-action-btn--edit"
-                    onClick={() => CBE(row)}
-                  >
-                    <SquarePen size={15} />
-                  </button>
-                </td>
-              ) : null}
-            </tr>
-          )
-        })}
+        {this.props.data ? (
+          data.map((row, rowIndex) => {
+            return (
+              <tr
+                className={selected[rowIndex] == true ? "table-row table-row--selected" : "table-row"}
+                key={rowIndex}
+              >
+                {hasSelect == true ? (
+                  <td className="table-td table-td--check">
+                    <input
+                      className="table-checkbox"
+                      type="checkbox"
+                      checked={selected[rowIndex]}
+                      onChange={() => toggleRow(rowIndex)}
+                    />
+                  </td>
+                ) : null}
+                {Object.values(row).map((value, colIndex) => (
+                  <td className="table-td" key={colIndex}>{value}</td>
+                ))}
+                {hasAction == true ? (
+                  <td className="table-td table-td--action">
+                    <button
+                      className="table-action-btn table-action-btn--delete"
+                      onClick={() => CBD(row)}
+                    >
+                      <Trash2 size={15} />
+                    </button>
+                    <button
+                      className="table-action-btn table-action-btn--edit"
+                      onClick={() => CBE(row)}
+                    >
+                      <SquarePen size={15} />
+                    </button>
+                  </td>
+                ) : null}
+              </tr>
+            )
+          })
+        ) : (
+          //PAG WALANG DATA NA NAIPASA SA PARENT
+          <div>
+            <TableNoData/>
+          </div>
+        )}
       </>
+    );
+  }
+}
+
+//NO DATA CONTAINER
+export class TableNoData extends React.Component {
+  constructor (props) {
+    super(props);
+  }
+  //TODO TOMORROW
+  render () {
+    return (
+      <div>
+        <p>no data found</p>
+      </div>
     );
   }
 }
