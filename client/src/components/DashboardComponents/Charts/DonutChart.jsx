@@ -31,20 +31,10 @@ class DonutChart extends React.Component {
           <PieChart
             series={[
               { 
-                innerRadius: 60, 
-                outerRadius: 40, 
+                innerRadius: 30, 
+                outerRadius: 50, 
                 data: donutData, 
-                arcLabel: 'value' 
               }]}
-              slotProps={{
-                legend: {
-                  direction: 'vertical',
-                  position: { 
-                    vertical: 'middle',
-                    horizontal: 'center'
-                  }
-                }
-              }}
             {...donutSettings}
           />
           <h3 className="dc-label">PHP</h3>

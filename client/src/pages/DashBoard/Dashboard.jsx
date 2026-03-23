@@ -13,6 +13,7 @@ import ActiveClerks from "../../components/DashboardComponents/ActiveClerks/Acti
 import Notes from "../../components/Notes/Notes";
 import StaffCount from "../../components/DashboardComponents/StaffCount/StaffCount";
 import RecentActivity from "../../components/DashboardComponents/RecentActivity/RecentActivity";
+import LinesChart from "../../components/DashboardComponents/Charts/BarsChart";
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -61,6 +62,9 @@ class Dashboard extends React.Component {
         {/* VIOLET CONTAINER */}
         <div>
           <TodaysSales />
+        </div>
+        <div>
+          <LinesChart />
         </div>
       </div>
     );

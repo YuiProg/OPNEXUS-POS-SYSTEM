@@ -15,7 +15,7 @@
 }
 
 .dc-title {
-  font-size: 18px;
+  font-size: 12px;
   font-weight: 500;
   margin: 0;
   padding: 20px;
@@ -23,7 +23,7 @@
 }
 
 .dc-branch {
-  font-size: 14px;
+  font-size: 10px;
   font-weight: 100;
   flex: 70%;
 }
@@ -42,7 +42,7 @@
   position: absolute;
   left: 42.5%;
   bottom: 42%;
-  font-size: 24px;
+  font-size: 18px;
   font-weight: 400;
 }
 
@@ -50,7 +50,7 @@
   position: absolute;
   left: 45%;
   bottom: 40%;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 200;
 }
 
@@ -66,13 +66,13 @@
 }
 
 .dc-legend-fund {
-  font-size: 12px;
+  font-size: 8px;
   font-weight: 300;
   margin: 0 0 -2px 0;  /* Negative bottom margin pulls label closer */
 }
 
 .dc-legend-label {
-  font-size: 12px;
+  font-size: 8px;
   font-weight: 100;
   margin: -0;
 }
