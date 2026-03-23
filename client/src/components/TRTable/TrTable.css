@@ -9,6 +9,9 @@
 
 /* ── Header row (title + search + button) ── */
 .table-header {
+  border: 3px solid #222222;
+  border-radius: 10px;
+  padding: 10px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -124,14 +127,42 @@
 }
 
 /* ── Checkboxes ── */
+/* ── Checkboxes ── */
 .table-checkbox {
-  width: 16px;
-  height: 16px;
-  accent-color: #c0392b;
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #555555;
+  border-radius: 5px;
+  background-color: transparent;
   cursor: pointer;
-  border-radius: 4px;
+  position: relative;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+  flex-shrink: 0;
 }
 
+.table-checkbox:hover {
+  border-color: #c0392b;
+}
+
+.table-checkbox:checked {
+  background-color: #c0392b;
+  border-color: #c0392b;
+}
+
+.table-checkbox:checked::after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 1px;
+  width: 5px;
+  height: 10px;
+  border: 2px solid #ffffff;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
+}
 /* ── Action buttons ── */
 .table-action-btn {
   background: transparent;
