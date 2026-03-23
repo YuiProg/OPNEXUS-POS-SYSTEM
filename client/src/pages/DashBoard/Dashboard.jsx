@@ -8,7 +8,7 @@ import TodaysRevenue from "../../components/DashboardComponents/TodaysRevenue/To
 import DropDown from "../../components/TRDropDown/Dropdown";
 import Recentactivity from "../../components/RecentActivity/Recentactivity";
 import InputField from "../../components/TRInputField/InputFIeld";
-import {Table} from "../../components/TRTable/TrTable";
+import { Table, TableData } from "../../components/TRTable/TrTable";
 import DonutChart from "../../components/DashboardComponents/Charts/DonutChart";
 import ActiveClerks from "../../components/DashboardComponents/ActiveClerks/ActiveClerks";
 
@@ -39,21 +39,21 @@ class Dashboard extends React.Component {
         <div>
           <h1>Hello, What do you want to today?</h1>
           <p>Branch</p>
-          <DropDown options={['longos', 'bulacan', 'hagonoy']}/>
+          <DropDown options={["longos", "bulacan", "hagonoy"]} />
         </div>
         {/* GREEN CONTAINER */}
         <div>
-          <ActiveClerks/>
-          <TodaysRevenue/>
-          <Recentactivity/>
+          <ActiveClerks />
+          <TodaysRevenue />
+          <Recentactivity />
         </div>
         {/* BLUE CONTAINER */}
         <div>
-          <DonutChart/>
+          <DonutChart />
         </div>
         {/* VIOLET CONTAINER */}
         <div>
-          <TodaysSales/>
+          <TodaysSales />
         </div>
       </div>
     );
