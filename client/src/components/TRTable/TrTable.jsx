@@ -72,7 +72,7 @@ export class Table extends React.Component {
                 </th>
               )}
               {headers.map((h, i) => (
-                <th className="table-th" key={i}>{h}</th>
+                <th className="table-th" key={i}>{h.toUpperCase()}</th>
               ))}
               {hasAction && <th className="table-th table-th--action">Actions</th>}
             </tr>
