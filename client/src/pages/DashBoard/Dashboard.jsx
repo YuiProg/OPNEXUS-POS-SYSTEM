@@ -11,6 +11,7 @@ import InputField from "../../components/TRInputField/InputFIeld";
 import {Table} from "../../components/TRTable/TrTable";
 import DonutChart from "../../components/DashboardComponents/Charts/DonutChart";
 import ActiveClerks from "../../components/DashboardComponents/ActiveClerks/ActiveClerks";
+import LinesChart from "../../components/DashboardComponents/Charts/BarsChart";
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -54,6 +55,9 @@ class Dashboard extends React.Component {
         {/* VIOLET CONTAINER */}
         <div>
           <TodaysSales/>
+        </div>
+        <div>
+          <LinesChart />
         </div>
       </div>
     );

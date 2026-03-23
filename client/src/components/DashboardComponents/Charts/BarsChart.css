@@ -1,0 +1,8 @@
+.bc-container {
+  width: 634px;
+  height: 302px;
+  color: #fff;
+  border: 5px solid #404040;
+  border-radius: 10px;
+  position: relative;
+}
