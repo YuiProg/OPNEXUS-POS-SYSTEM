@@ -8,7 +8,6 @@ import TodaysRevenue from "../../components/DashboardComponents/TodaysRevenue/To
 import DropDown from "../../components/TRDropDown/Dropdown";
 import Recentactivity from "../../components/RecentActivity/Recentactivity";
 import InputField from "../../components/TRInputField/InputFIeld";
-import { Table, TableData } from "../../components/TRTable/TrTable";
 import DonutChart from "../../components/DashboardComponents/Charts/DonutChart";
 import ActiveClerks from "../../components/DashboardComponents/ActiveClerks/ActiveClerks";
 import LinesChart from "../../components/DashboardComponents/Charts/BarsChart";

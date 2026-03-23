@@ -3,8 +3,8 @@ body {
 }
 
 .sidebar-container {
-  /* width: 240px; */
-  height: 100vh;
+  width: auto;
+  height: 100%;
   background: #1C1C1E;
   display: flex;
   color: #FFFFFF;
@@ -20,18 +20,19 @@ body {
   width: 100%;
 }
 
-.row {
+.sidebar-list .row {
   width: 100%;
-  height: 93px; 
+  height: auto; 
   list-style-type: none;
   margin: 0%;
+  padding: 30px 0;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
 }
 
-.row a {
+.sidebar-list .row a {
   text-decoration: none;
   color: #fff;
   display: flex;
@@ -42,12 +43,12 @@ body {
   margin-left: 30px;
 }
 
-.sb-icon {
+.sidebar-list .row .sb-icon {
   display: flex;
   align-items: center;
 }
 
-.sb-title {
+.sidebar-list .row .sb-title {
   font-size: 16px;
 }
 
@@ -75,35 +76,35 @@ body {
 }
 
 .user-panel {
-  width: 208px;
-  height: 158px;
+  width: auto;
+  height: auto;
   position: absolute;
-  bottom: 20px;
-  margin-left: 25px;
+  bottom: 0;
+  padding: 25px;
   color: #fff;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
 }
 
-.userName {
+.user-panel .userName {
   font-size: 18px;
   font-weight: 300;
   margin-bottom: 0;
 }
 
-.userRole {
+.user-panel .userRole {
   font-size: 14px;
   font-weight: 100;
   margin: 0 0 8px 0;
   padding-top: 0;
 }
 
-.userName, .userRole {
+.user-panel .userName, .user-panel .userRole {
   margin-left: 1px;
 }
 
-.logout-button {
+.user-panel .logout-button {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -116,7 +117,7 @@ body {
   flex: none;
 }
 
-.logout-button:hover {
+.user-panel .logout-button:hover {
   cursor: pointer;
   background: rgba(197, 34, 34, 1);
 }
