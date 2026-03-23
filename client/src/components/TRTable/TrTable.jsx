@@ -42,7 +42,7 @@ export class TableWrapper extends React.Component {
   };
 
   render() {
-    const { data, hasSelect, hasAction, onDelete, onEdit, isDetailed } = this.props;
+    const { data, hasSelect, hasAction, onDelete, onEdit, isDetailed, width } = this.props;
     const { selectAll, selected } = this.state;
     const headers = Object.keys(data[0]);
     const { header, hasButton, buttonInfo, CB } = isDetailed;
@@ -56,7 +56,7 @@ export class TableWrapper extends React.Component {
           </>
         )}
         {hasButton && <button onClick={(e) => CB(e)}>{buttonInfo}</button>}
-        <table style={{ width: "100%" }}>
+        <table style={{ width: `${width}%`}}>
           <thead>
             <tr>
               {hasSelect && (
@@ -98,8 +98,8 @@ export class Table extends React.Component {
   }
 
   render() {
-    const { data, hasSelect, selected, toggleRow, hasAction, CBD, CBE } =
-      this.props;
+
+    const { data, hasSelect, selected, toggleRow, hasAction, CBD, CBE } = this.props;
 
     return (
       <>

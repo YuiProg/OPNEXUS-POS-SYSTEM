@@ -77,6 +77,7 @@ class Dashboard extends React.Component {
           onDelete={() => {}}
           hasAction
           isDetailed={tableData}
+          width={100}
         />
         <InputField placeholder='Enter name' required text onChange={() => {}} onEnterDown={(e) => console.log(e)}/>
         <DonutChart />
