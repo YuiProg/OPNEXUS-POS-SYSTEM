@@ -22,7 +22,7 @@ class Inventory extends React.Component {
   render() {
 
     const tableData = {
-      header: "Products",
+      header: "In stock",
       hasButton: true,
       CB: (data) => console.log(data),
       buttonInfo: "New",
@@ -37,9 +37,12 @@ class Inventory extends React.Component {
 
     return (
       <div className="inventory-container">
-        <div>
-            <h1>Hello, What do you want to do today?</h1>
-            <DropDown/>
+        <div className="top-contents">
+            <h1 className="bigtitle">Hello, What do you want to do today?</h1>
+            <div className="branch-dropdown">
+              <p className="branch-text">Branch</p>
+              <DropDown className="branch-dd"/>
+            </div>
         </div>
         <div>
             <Table

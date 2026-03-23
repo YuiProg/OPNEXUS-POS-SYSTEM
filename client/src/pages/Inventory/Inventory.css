@@ -11,3 +11,23 @@ h1 {
   height: 100%;
   background: #111111;
 }
+
+.top-contents .bigtitle {
+  font-weight: 600;
+  color: #fff;
+  padding: 30px;
+}
+
+.top-contents {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 30px;
+}
+
+.branch-text {
+  font-size: 15px;
+  font-weight: 300;
+  margin: 4px;
+}

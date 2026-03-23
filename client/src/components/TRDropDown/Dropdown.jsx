@@ -18,9 +18,9 @@ class DropDown extends React.Component {
     return (
         <div className="tr-dropdown-wrapper">
             <Layers className="tr-dropdown-icon" />
-            <select className="tr-dropdown" onChange={(e) => onChange(e.target.value)} defaultValue={defaultValue || 'Select item'}>
+            <select className="tr-dropdown" onChange={(e) => onChange(e.target.value)} defaultValue={defaultValue || 'Select Branch...'}>
                 <option className="tr-options" disabled>
-                    Select item
+                    Select Branch...
                 </option>
                 {options?.map((l, i) => {
                     return(
