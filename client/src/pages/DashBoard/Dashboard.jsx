@@ -46,25 +46,21 @@ class Dashboard extends React.Component {
         </div>
         {/* GREEN CONTAINER */}
         <div>
-          <StaffCount/>
+          <StaffCount />
           <TodaysRevenue />
-          <RecentActivity/>
+          <RecentActivity />
         </div>
         {/* BLUE CONTAINER */}
         <div>
           {/* DITO MACKY DAPAT YUNG STATISTICS PERO WALA */}
-          <div>
-            {/* SAMPLE CONTAINER */}
-          </div>
+          <div>{/* SAMPLE CONTAINER */}</div>
           <DonutChart />
-          <Notes/>
+          <Notes />
         </div>
         {/* VIOLET CONTAINER */}
         <div>
           <TodaysSales />
-        </div>
-        <div>
-          <LinesChart />
+          {/* TOP PRODUCTS DAPAT DITO PERO WALA PA */}
         </div>
       </div>
     );
