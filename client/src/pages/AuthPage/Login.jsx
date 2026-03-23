@@ -80,17 +80,15 @@ class Login extends React.Component {
                 )}
                 <div className="login-container">
                     <div className="login-container__image">
-                        <img src={bg_logo} className="login-container__image-one"> 
-                        </img>
-                        <img src={bg_image} className="login-container__image-two">
-                        </img>
+                        <img src={bg_logo} className="login-container__image-one"/> 
+                        <img src={bg_image} className="login-container__image-two"/>
                     </div>
                     <div className="login-container__credentials">
                         <img src={bg_logo}>
                         </img>    
                         <form onSubmit={(e) => this.handleLogin(e)}>
-                            <InputField required text onChange={(e) => this.setState({username: e})} placeholder={us + nm}/>
-                            <InputField required password onChange={(e) => this.setState({password: e})} placeholder={pw}/>
+                            <InputField required text onChange={(e) => this.setState({username: e})} placeholder={us + nm} onEnterDown={() => {}}/>
+                            <InputField required password onChange={(e) => this.setState({password: e})} placeholder={pw} onEnterDown={() => {}}/>
                             <button type="submit" disabled={loading}>{loading ? 'Logging in…' : 'Login'}</button>
                         </form>
                         <p className="login-container__credentials-footer">

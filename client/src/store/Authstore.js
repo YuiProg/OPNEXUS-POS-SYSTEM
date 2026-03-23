@@ -6,6 +6,7 @@ import ApiConfig from '../Api/ApiConfig';
 import Strings from '../strings/strings-codes';
 import axiosError from '../helpers/axiosError';
 import Toast from '../toast/Toast';
+import { Navigate } from 'react-router-dom';
 
 const { 
     loginUsers,
@@ -30,6 +31,7 @@ const AuthStore = create((set) => ({
         } catch (error) {
             set({error: axiosError(error)});
             set({AuthUser: null});
+            set({AuthLoading: false});
         } finally {
             set({AuthLoading: false});
         }
@@ -60,8 +62,12 @@ const AuthStore = create((set) => ({
             if (logout.data.status === SUCCESS_MESS) {
                 set({AuthUser: null});
             }
+
+            return true;
+            
         } catch (error) {
             set({error: axiosError(error)});
+            return false;
         } finally {
             set({AuthLoading: false});
         }

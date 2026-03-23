@@ -3,7 +3,7 @@ import AuthStore from "../../store/Authstore";
 import Strings from "../../strings/strings-codes";
 import { Navigate, Link } from "react-router-dom";
 import './Sidebar.css';
-import { LayoutDashboard, ShelvingUnit, IdCardLanyard, Logs, Settings } from 'lucide-react';
+import { LayoutDashboard, ShelvingUnit, IdCardLanyard, Logs, Settings, Store } from 'lucide-react';
 
 const { SUCCESS_MESS } = Strings;
 
@@ -51,9 +51,9 @@ class Sidebar extends React.Component {
         if (this.state.redirect) {
             return <Navigate to="/login" />;
         }
-
+        const { user } = this.props;
         //tanggalin muna error sa es-lint since dipa ginagamit tong variable nato pero eto yung items sa sidebar
-        const sidebarItems = [
+        const sidebarItemsAdmin = [
             {
                 title: "Dashboard",
                 icon: <LayoutDashboard />,
@@ -81,21 +81,56 @@ class Sidebar extends React.Component {
             }
         ]
 
+        const sidebarItemsClerk = [
+            {
+                title: "Dashboard",
+                icon: <LayoutDashboard />,
+                link: "/dashboard",
+            },
+            {
+                title: "Inventory",
+                icon: <ShelvingUnit />,
+                link: "/inventory",
+            },
+            {
+                title: "POS",
+                icon: <Store/>,
+                link: "/pos"
+            }
+        ];
+
+        if (!user) {
+            return;
+        }
+
         return (
             <div className="sidebar-container">
                 <aside>
                     <img src="https://i.imgur.com/4hfuK5S.png" alt="logo" className="logo"/>
                     <ul className="sidebar-list">
-                        {sidebarItems.map((l,i) => {
-                            return (
-                                <li key={i} className="row" id={window.location.pathname == l.link ? "active" : ""}>
-                                    <Link to={l.link}>
-                                        <div className="sb-icon">{l.icon}</div>
-                                        <div className="sb-title">{l.title}</div>
-                                    </Link>
-                                </li>
-                            );
-                        })}
+                        {user.role === 'admin' ? (
+                            sidebarItemsAdmin.map((l,i) => {
+                                return (
+                                    <li key={i} className="row" id={window.location.pathname == l.link ? "active" : ""}>
+                                        <Link to={l.link}>
+                                            <div className="sb-icon">{l.icon}</div>
+                                            <div className="sb-title">{l.title}</div>
+                                        </Link>
+                                    </li>
+                                );
+                            })
+                        ) : user.role === 'clerk' ? (
+                            sidebarItemsClerk.map((l,i) => {
+                                return (
+                                    <li key={i} className="row" id={window.location.pathname == l.link ? "active" : ""}>
+                                        <Link to={l.link}>
+                                            <div className="sb-icon">{l.icon}</div>
+                                            <div className="sb-title">{l.title}</div>
+                                        </Link>
+                                    </li>
+                                );
+                            })
+                        ) : null}
                     </ul>
                     
                     <div className="user-panel">
