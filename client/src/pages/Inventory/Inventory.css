@@ -12,10 +12,10 @@ h1 {
   background: #111111;
 }
 
-.top-contents .bigtitle {
+.top-contents .bigtitle, .branch-dropdown{
   font-weight: 600;
   color: #fff;
-  padding: 30px;
+  padding-top: 20px;
 }
 
 .top-contents {
