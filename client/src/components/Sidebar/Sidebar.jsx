@@ -67,7 +67,7 @@ class Sidebar extends React.Component {
             {
                 title: "Staff Management",
                 icon: <IdCardLanyard />,
-                link: "/staff-management",
+                link: "/staff",
             },
             {
                 title: "Logs",

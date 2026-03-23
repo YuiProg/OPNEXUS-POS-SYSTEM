@@ -4,9 +4,12 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import Login from './pages/AuthPage/Login'
 import { Toaster } from 'react-hot-toast'
 import AuthStore from './store/Authstore'
-import Dashboard from './pages/DashBoard/Dashboard'
 import Sidebar from './components/Sidebar/Sidebar'
-import Inventory from './pages/Inventory/Inventory'
+import { lazy } from 'react'
+
+const Inventory = lazy(() => import('./pages/Inventory/Inventory.jsx'));
+const Dashboard = lazy(() => import('./pages/DashBoard/Dashboard.jsx'));
+const StaffManagement = lazy(() => import('./pages/StaffManagement/StaffManagement.jsx'));
 
 function App() {
   const { checkAuth, AuthUser, AuthLoading } = AuthStore();
@@ -46,6 +49,12 @@ function App() {
         <Route path='/inventory' element={
           <Sidebar user = {AuthUser && AuthUser}>
             <Inventory user={AuthUser}/>
+          </Sidebar>}
+        />
+
+        <Route path='/staff' element={
+          <Sidebar user = {AuthUser && AuthUser}>
+            <StaffManagement/>
           </Sidebar>}
         />
       </Routes>
