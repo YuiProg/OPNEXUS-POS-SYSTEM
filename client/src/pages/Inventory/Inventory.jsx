@@ -36,7 +36,7 @@ class Inventory extends React.Component {
     };
 
     return (
-      <div>
+      <div className="inventory-container">
         <div>
             <h1>Hello, What do you want to do today?</h1>
             <DropDown/>
