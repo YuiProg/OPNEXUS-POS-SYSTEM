@@ -6,6 +6,8 @@ import { Toaster } from 'react-hot-toast'
 import AuthStore from './store/Authstore'
 import Sidebar from './components/Sidebar/Sidebar'
 import { lazy } from 'react'
+import POS from './pages/POS/POS.jsx'
+import TimeInOut from './pages/TimeInOut/TimeInOut.jsx'
 
 const Inventory = lazy(() => import('./pages/Inventory/Inventory.jsx'));
 const Dashboard = lazy(() => import('./pages/DashBoard/Dashboard.jsx'));
@@ -55,6 +57,18 @@ function App() {
         <Route path='/staff' element={
           <Sidebar user = {AuthUser && AuthUser}>
             <StaffManagement/>
+          </Sidebar>}
+        />
+
+        <Route path='/pos' element={
+          <Sidebar user = {AuthUser && AuthUser}>
+            <POS/>
+          </Sidebar>}
+        />
+
+        <Route path='/timeinout' element={
+          <Sidebar user = {AuthUser && AuthUser}>
+            <TimeInOut/>
           </Sidebar>}
         />
       </Routes>

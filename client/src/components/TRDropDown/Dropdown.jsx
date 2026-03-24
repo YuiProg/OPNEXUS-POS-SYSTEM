@@ -1,6 +1,7 @@
 import React from "react";
 import './Dropdown.css'
 import { Layers } from 'lucide-react';
+import PropTypes from "prop-types";
 
 class DropDown extends React.Component {
   constructor(props) {
@@ -33,6 +34,14 @@ class DropDown extends React.Component {
         </div>
     );
   }
+}
+
+DropDown.propTypes = {
+    options: PropTypes.array,
+    defaultValue: PropTypes.string,
+    onChange: PropTypes.func,
+    maxWidth: PropTypes.number,
+    customWidth: PropTypes.number
 }
 
 export default DropDown;

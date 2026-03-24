@@ -4,6 +4,7 @@ import Strings from "../../strings/strings-codes";
 import { Navigate, Link } from "react-router-dom";
 import './Sidebar.css';
 import { LayoutDashboard, ShelvingUnit, IdCardLanyard, Logs, Settings, Store, Clock } from 'lucide-react';
+import Button from "../TRButton/Button";
 
 const { SUCCESS_MESS } = Strings;
 
@@ -85,7 +86,7 @@ class Sidebar extends React.Component {
             {
                 title: "Time In / Out",
                 icon: <Clock />,
-                link: "/timein",
+                link: "/timeinout",
             },
             {
                 title: "Inventory",
@@ -99,6 +100,7 @@ class Sidebar extends React.Component {
             }
         ];
 
+        //pag walang naka authenticate na user hindi mag rerender tong sidebar
         if (!user) {
             return;
         }
@@ -140,7 +142,7 @@ class Sidebar extends React.Component {
                             <p className="userRole">{this.state.user.role}</p>
                             </>
                         ) : <p>LOADING ...</p>}
-                        <button className="logout-button" onClick={() => this.handleLogout()}>LOG OUT</button>
+                        <Button error text="SIGN OUT" onClick={() => this.handleLogout()}/>
                     </div>
                 </aside>
                 <main className="children">
