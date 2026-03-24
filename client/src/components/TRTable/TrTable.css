@@ -230,12 +230,15 @@
 
 /* ── Pagination ── */
 .pagination {
+  width: 83%;
+  height: auto;
   display: flex;
+  flex-direction: row;
   align-items: center;
+  position: absolute;
   justify-content: space-between;
-  margin-top: 16px;
-  padding-top: 14px;
-  border-top: 1px solid #242424;
+  bottom: 0;
+  padding: 14px;
 }
 
 .pagination-info {
@@ -256,7 +259,7 @@
   width: 26px;
   height: 26px;
   border-radius: 6px;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
