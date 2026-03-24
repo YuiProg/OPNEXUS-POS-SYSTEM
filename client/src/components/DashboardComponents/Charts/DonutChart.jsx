@@ -5,7 +5,7 @@ import { PieChart } from '@mui/x-charts/PieChart';
 const donutData = [
   { label: 'PHP 18,000', value: 400, color: '#34C759' },
   { label: 'PHP 12,320', value: 300, color: '#FF383C' },
-  { label: 'PHP 1,500', value: 300, color: '#0088FF' },
+  { label: 'PHP 1,500', value: 1000, color: '#0088FF' },
 ];
 
 const donutSettings = {
@@ -31,20 +31,10 @@ class DonutChart extends React.Component {
           <PieChart
             series={[
               { 
-                innerRadius: 50, 
-                outerRadius: 100, 
+                innerRadius: 30, 
+                outerRadius: 50, 
                 data: donutData, 
-                arcLabel: 'value' 
               }]}
-              slotProps={{
-                legend: {
-                  direction: 'vertical',
-                  position: { 
-                    vertical: 'middle',
-                    horizontal: 'center'
-                  }
-                }
-              }}
             {...donutSettings}
           />
           <h3 className="dc-label">PHP</h3>

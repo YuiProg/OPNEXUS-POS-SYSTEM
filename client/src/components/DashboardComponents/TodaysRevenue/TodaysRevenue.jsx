@@ -9,9 +9,11 @@ class TodaysRevenue extends React.Component {
     render () {
         return (
             <div className="tr-container">
-                <p className="tr-label">Today's revenue</p>
-                <h1 className="tr-head">{`PHP ${321}`}</h1>
-                <p className="tr-label">0% from yesterday</p>
+                <div className="tr-content">
+                    <p className="tr-label">Today's revenue</p>
+                    <h1 className="tr-head">{`PHP ${321}`}</h1>
+                    <p className="tr-label">0% from yesterday</p>
+                </div>
             </div>
         );
     }

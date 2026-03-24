@@ -10,7 +10,7 @@ class Notes extends React.Component {
         return (
             <div className="notes-container">
                 <h1 className="notes-label">Notes: </h1>
-                <textarea className="notes-text" id="">
+                <textarea className="notes-text">
                     {/* TEXT HERE */}
                 </textarea>
             </div>

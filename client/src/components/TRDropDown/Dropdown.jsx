@@ -1,6 +1,7 @@
 import React from "react";
 import './Dropdown.css'
 import { Layers } from 'lucide-react';
+import PropTypes from "prop-types";
 
 class DropDown extends React.Component {
   constructor(props) {
@@ -12,17 +13,19 @@ class DropDown extends React.Component {
     const { 
         options, 
         defaultValue, 
-        onChange
+        onChange,
+        maxWidth,
+        customWidth
     } = this.props;
 
     return (
         <div className="tr-dropdown-wrapper">
             <Layers className="tr-dropdown-icon" />
-            <select className="tr-dropdown" onChange={(e) => onChange(e)} defaultValue={defaultValue || 'Select item'}>
-                <option disabled>
-                    Select item
+            <select className="tr-dropdown" style={{width: maxWidth ? "100%" : customWidth ? customWidth : "320px"}} onChange={(e) => onChange(e.target.value)} defaultValue={defaultValue || 'Select Branch...'}>
+                <option className="tr-options" disabled>
+                    Select Branch...
                 </option>
-                {options.map((l, i) => {
+                {options?.map((l, i) => {
                     return(
                         <option className="tr-options" key={i} value={l}>{l}</option>
                     );
@@ -31,6 +34,14 @@ class DropDown extends React.Component {
         </div>
     );
   }
+}
+
+DropDown.propTypes = {
+    options: PropTypes.array,
+    defaultValue: PropTypes.string,
+    onChange: PropTypes.func,
+    maxWidth: PropTypes.number,
+    customWidth: PropTypes.number
 }
 
 export default DropDown;

@@ -59,7 +59,8 @@ class InputField extends React.Component {
       password,
       text,
       isSearch,
-      onEnterDown
+      onEnterDown,
+      color
     } = this.props;
 
     return (
@@ -73,6 +74,7 @@ class InputField extends React.Component {
           {!isSearch ? (
             <>
               <input
+                style={{backgroundColor: color}}
                 type={text ? "text" : password ? "password" : "text"}
                 required={required}
                 onChange={(e) => onChange(this.checkNumber(e))}
@@ -86,6 +88,7 @@ class InputField extends React.Component {
           ) : (
             <>
               <input
+                style={{backgroundColor: color}}
                 type="text"
                 required={required}
                 onChange={(e) => this.handleSearch(e)}
@@ -93,11 +96,10 @@ class InputField extends React.Component {
                 value={this.state.searchValue}
                 placeholder=" "
                 onKeyDown={(e) => this.handleEnterDown(e, onEnterDown)}
+                className="search-input"
               />
-              <label className="floating-label">
-                <Search/>
-                {placeholder}
-              </label>
+              <label className="floating-label">{placeholder}</label>
+              <Search className="search-icon" size={15} />
             </>
           )}
         </div>

@@ -1,18 +1,18 @@
 import React from "react";
-import './Recentactivity.css';
+import './POS.css';
 
-class Recentactivity extends React.Component {
-    constructor(props) {
+class POS extends React.Component {
+    constructor (props) {
         super(props);
     }
 
     render () {
         return (
             <div>
-
+                
             </div>
         );
     }
 }
 
-export default Recentactivity;
+export default POS;

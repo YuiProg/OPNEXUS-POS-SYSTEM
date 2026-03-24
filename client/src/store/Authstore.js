@@ -6,6 +6,7 @@ import ApiConfig from '../Api/ApiConfig';
 import Strings from '../strings/strings-codes';
 import axiosError from '../helpers/axiosError';
 import Toast from '../toast/Toast';
+import { Navigate } from 'react-router-dom';
 
 const { 
     loginUsers,
@@ -17,14 +18,13 @@ const {
     SUCCESS_MESS
 } = Strings;
 
-const AuthStore = create((set) => ({
+const AuthStore = create((set, get) => ({
     AuthUser: null,
-    AuthLoading: false,
+    AuthLoading: true,
     error: null,
 
     checkAuth: async () => {
         try {
-            set({AuthLoading: true});
             const user = await axiosInstance.get(getUser);
             set({AuthUser: user.data.data});
         } catch (error) {
@@ -44,6 +44,7 @@ const AuthStore = create((set) => ({
             }); 
             //toast.success('User logged in!');
             set({AuthUser: authUser.data});
+            get().checkAuth();
         } catch (error) {
             set({error: axiosError(error)});
         } finally {
@@ -60,8 +61,12 @@ const AuthStore = create((set) => ({
             if (logout.data.status === SUCCESS_MESS) {
                 set({AuthUser: null});
             }
+
+            return true;
+            
         } catch (error) {
             set({error: axiosError(error)});
+            return false;
         } finally {
             set({AuthLoading: false});
         }

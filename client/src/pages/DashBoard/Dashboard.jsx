@@ -6,10 +6,14 @@ import LowStockItems from "../../components/LowStockItems/LowStockItems";
 import StocksDB from "../../components/DashboardComponents/StocksIcon/StocksDB";
 import TodaysRevenue from "../../components/DashboardComponents/TodaysRevenue/TodaysRevenue";
 import DropDown from "../../components/TRDropDown/Dropdown";
-import Recentactivity from "../../components/RecentActivity/Recentactivity";
 import InputField from "../../components/TRInputField/InputFIeld";
-import {TableWrapper} from "../../components/TRTable/TrTable";
 import DonutChart from "../../components/DashboardComponents/Charts/DonutChart";
+import ActiveClerks from "../../components/DashboardComponents/ActiveClerks/ActiveClerks";
+import Notes from "../../components/Notes/Notes";
+import StaffCount from "../../components/DashboardComponents/StaffCount/StaffCount";
+import RecentActivity from "../../components/DashboardComponents/RecentActivity/RecentActivity";
+import LinesChart from "../../components/DashboardComponents/Charts/BarsChart";
+import AuthStore from "../../store/Authstore";
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -32,57 +36,37 @@ class Dashboard extends React.Component {
   // }
 
   render() {
-    const { toast } = this.state;
-
-    //const headers = ['productid', 'name', 'quantity'];
-    const tableData = {
-      header: 'Products', 
-      hasButton: true, 
-      CB: (data) => console.log(data), 
-      buttonInfo: 'New', 
-      search: <InputField placeholder="Search item" isSearch onEnterDown={(e) => console.log(e)}/>
-    };
-
     return (
       <div className="dashboard-container">
-        <h1>dashboard</h1>
-        <button
-          onClick={() =>
-            this.showToast("Action completed.", true, () => this.hideToast())
-          }
-        >
-          TEST
-        </button>
-        {toast && (
-          <Toast
-            success
-            message={toast.message}
-            hasButton={toast.hasButton}
-            CB={toast.CB}
-            onClose={this.hideToast}
-          />
-        )}
-
-        <TableWrapper data={
-            [
-              {productid: 32, name: 'test', quantity: 23},
-              {productid: 213, name: 'test2', quantity: 23},
-              {productid: 213, name: 'test2', quantity: 23},
-              {productid: 213, name: 'test2', quantity: 23},
-              {productid: 213, name: 'test2', quantity: 23}
-            ]
-          } 
-          hasSelect
-          onEdit={() => {}}
-          onDelete={() => {}}
-          hasAction
-          isDetailed={tableData}
-          width={100}
-        />
-        <InputField placeholder='Enter name' required text onChange={() => {}} onEnterDown={(e) => console.log(e)}/>
-        <DonutChart />
-        {/* <InputField placeholder='Enter name' required text onChange={value => this.testonchange(value)}/> */}
-        {/* <DropDown options={['test1', 'test2']} onChange={(test) => this.testonchange(test)}/> */}
+        {/* HELLO WHAT DO YOU WANT TO DO KEME KEME SECTION */}
+        <div className="db-top-contents">
+          <h1 className="db-bigtitle">Hello, What do you want to today?</h1>
+          <div className="db-branch-dropdown">
+            <p className="db-branch-text">Branch</p>
+            <DropDown 
+              className="db-branch-dd"
+              options={["longos", "bulacan", "hagonoy"]} 
+            />
+          </div>
+        </div>
+        {/* GREEN CONTAINER */}
+        <div className="top-three-contents">
+          <StaffCount />
+          <TodaysRevenue />
+          <RecentActivity />
+        </div>
+        {/* BLUE CONTAINER */}
+        <div>
+          {/* DITO MACKY DAPAT YUNG STATISTICS PERO WALA */}
+          <div>{/* SAMPLE CONTAINER */}</div>
+          <DonutChart />
+          <Notes />
+        </div>
+        {/* VIOLET CONTAINER */}
+        <div>
+          <TodaysSales />
+          {/* TOP PRODUCTS DAPAT DITO PERO WALA PA */}
+        </div>
       </div>
     );
   }

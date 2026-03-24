@@ -1,0 +1,308 @@
+/* ── Wrapper ── */
+.table-wrapper {
+  background-color: transparent;
+  padding: 24px;
+  border-radius: 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ── Header row (title + search + button) ── */
+.table-header {
+  border: 3px solid #222222;
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  gap: 12px;
+}
+
+.table-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.table-header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ── Search ── */
+.table-search {
+  display: flex;
+  align-items: center;
+}
+
+/* ── New Stock button ── */
+.table-new-btn {
+  background-color: #c0392b;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.18s ease;
+  white-space: nowrap;
+}
+
+.table-new-btn:hover {
+  background-color: #a93226;
+}
+
+/* ── Table container — border + radius live here, not on <table> ── */
+.table-container {
+  border: 1px solid #2e2e2e;
+  border-radius: 10px;
+  overflow: hidden;         /* clips thead corners and last row's bottom border */
+}
+
+/* ── Table ── */
+.table {
+  width: 100%;
+  border-collapse: collapse; /* collapse is fine — radius is on .table-container */
+  border-spacing: 0;
+  font-size: 0.875rem;
+  color: #e0e0e0;
+}
+
+/* ── Head ── */
+.table-thead-row {
+  border-bottom: 1px solid #2e2e2e;
+}
+
+.table-th {
+  padding: 12px 16px;
+  text-align: center;
+  color: #888;
+  background-color: #242426;
+  font-weight: 500;
+  font-size: 0.8rem;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+.table-th--check {
+  width: 40px;
+  text-align: center;
+}
+
+.table-th--action {
+  width: 80px;
+  text-align: center;
+}
+
+/* ── No Data ── */
+.table-td--nodata {
+  padding: 0;
+}
+
+.no-data-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 24px;
+  gap: 10px;
+}
+
+.no-data-icon {
+  color: #444;
+}
+
+.no-data-title {
+  color: #888;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+/* ── Body rows ── */
+.table-row {
+  border-bottom: 1px solid #242424;
+  transition: background 0.15s ease;
+}
+
+.table-row:last-child {
+  border-bottom: none; /* overflow:hidden on container clips this cleanly */
+}
+
+.table-row:hover {
+  background-color: #222222;
+}
+
+.table-row--selected {
+  background-color: #222222;
+}
+
+.table-td {
+  padding: 14px 16px;
+  text-align: center;
+  color: #d0d0d0;
+  white-space: nowrap;
+}
+
+.table-td--check {
+  text-align: center;
+}
+
+.table-td--action {
+  text-align: center;
+}
+
+/* ── Checkboxes ── */
+.table-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #555555;
+  border-radius: 5px;
+  background-color: transparent;
+  cursor: pointer;
+  position: relative;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.table-checkbox:hover {
+  border-color: #c0392b;
+}
+
+.table-checkbox:checked {
+  background-color: #c0392b;
+  border-color: #c0392b;
+}
+
+.table-checkbox:checked::after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 1px;
+  width: 5px;
+  height: 10px;
+  border: 2px solid #ffffff;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
+}
+
+/* ── Action buttons ── */
+.table-action-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.table-action-btn--delete {
+  color: #888;
+}
+
+.table-action-btn--delete:hover {
+  background-color: #3a1a1a;
+  color: #e74c3c;
+}
+
+.table-action-btn--edit {
+  color: #888;
+}
+
+.table-action-btn--edit:hover {
+  background-color: #1a2a3a;
+  color: #5dade2;
+}
+
+/* ── Pagination ── */
+.pagination {
+  width: 83%;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: absolute;
+  justify-content: space-between;
+  bottom: 0;
+  padding: 14px;
+}
+
+.pagination-info {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.pagination-btn {
+  background: transparent;
+  border: 1px solid #2e2e2e;
+  color: #888;
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  border-color: #c0392b;
+  color: #fff;
+}
+
+.pagination-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.pagination-page {
+  background: transparent;
+  border: 1px solid #2e2e2e;
+  color: #888;
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+
+.pagination-page:hover {
+  border-color: #555;
+  color: #fff;
+}
+
+.pagination-page--active {
+  background-color: #c0392b;
+  border-color: #c0392b;
+  color: #fff;
+  font-weight: 600;
+}
+
+.pagination-dots {
+  color: #555;
+  font-size: 30px;
+  padding: 0 2px;
+  user-select: none;
+}

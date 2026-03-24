@@ -1,6 +1,7 @@
 import React from "react";
+import './TimeInOut.css';
 
-class Modal extends React.Component {
+class TimeInOut extends React.Component {
     constructor (props) {
         super(props);
     }
@@ -8,8 +9,10 @@ class Modal extends React.Component {
     render () {
         return (
             <div>
-                
+
             </div>
         );
     }
 }
+
+export default TimeInOut;

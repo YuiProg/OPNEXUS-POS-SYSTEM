@@ -10,6 +10,39 @@ h1 {
   background: #111111;
   color: #fff;
   padding: 0;
-  width: 100%;
+  width: auto;
   height: 100%;
+  /* 
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto 1fr auto; 
+  */
+}
+
+.db-top-contents .db-bigtitle, .db-branch-dropdown{
+  font-weight: 600;
+  color: #fff;
+  padding-top: 20px;
+}
+
+.db-top-contents {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 30px;
+}
+
+.db-branch-text {
+  font-size: 15px;
+  font-weight: 300;
+  margin: 4px;
+}
+
+.top-three-contents {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+  margin: 20px;
 }
