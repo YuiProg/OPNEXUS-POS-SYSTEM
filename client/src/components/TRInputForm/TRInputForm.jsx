@@ -1,5 +1,6 @@
 import React from "react";
 import './TRInputForm.css';
+import PropTypes from "prop-types";
 
 
 //dito lalagay mga inputfields parang panel tong una
@@ -8,8 +9,8 @@ export class TRInputFormPanel extends React.Component {
         super(props);
     }
 
-    render() {
-        const { header, subHeader, onSubmit } = this.props;
+    passPropsToChildren = () => {
+        const { header, subHeader, onSubmit, required } = this.props;
 
         //pang pasa ng props dito sa parent sa child (parent props -> children)
         const enhancedChildren = React.Children.map(this.props.children, (child) => {
@@ -17,9 +18,16 @@ export class TRInputFormPanel extends React.Component {
             return React.cloneElement(child, {
                 onSubmit,          
                 header,
-                subHeader
+                subHeader,
+                required
             });
         });
+
+        return enhancedChildren;
+    }
+
+    render() {
+        const { header, subHeader } = this.props;
 
         return (
             <div className="tr-inputform-panel-container">
@@ -28,7 +36,7 @@ export class TRInputFormPanel extends React.Component {
                     <p className="tr-subheader">{subHeader}</p>
                 </div>
                 <div>
-                    {enhancedChildren}
+                    {this.passPropsToChildren()}
                 </div>
             </div>
         );
@@ -41,11 +49,25 @@ export class InputForm extends React.Component {
         super(props);
     }
 
+    passPropsToChildren = () => {
+        const { onSubmit, required } = this.props;
+
+        const enhancedChildren = React.Children.map(this.props.children, (child) => {
+            if (!child) return null;
+            return React.cloneElement(child, {
+                onSubmit,          
+                required
+            });
+        });
+
+        return enhancedChildren;
+    }
+
     render () {
         const {onSubmit} = this.props;
         return (
             <form className="tr-inputform" onSubmit={(e) => onSubmit(e)}>
-                {this.props.children}
+                {this.passPropsToChildren()}
                 <button className="tr-inputform-submit" type="submit">SUBMIT</button>
             </form>
         );
@@ -57,9 +79,23 @@ export class InputRow extends React.Component {
         super(props);
     }  
 
+    passPropsToChildren = () => {
+        const { required, gap } = this.props;
+        
+        const enhancedChildren = React.Children.map(this.props.children, (child) => {
+            if (!child) return null;
+            return React.cloneElement(child, {
+                gap,
+                required
+            });
+        });
+
+        return enhancedChildren;
+    }
+
     render () {
         const { gap, titles } = this.props;
-        const children = React.Children.toArray(this.props.children);
+        const children = React.Children.toArray(this.passPropsToChildren());
 
         return (
             <div className="tr-inputrow" style={{ gap: `${gap}px` }}>
@@ -75,4 +111,19 @@ export class InputRow extends React.Component {
             </div>
         );
     }
+}
+
+TRInputFormPanel.propTypes = {
+    header: PropTypes.string,
+    subHeader: PropTypes.string,
+    onSubmit: PropTypes.func
+}
+
+InputForm.propTypes = {
+    onSubmit: PropTypes.func
+}
+
+InputRow.propTypes = {
+    gap: PropTypes.number,
+    titles: PropTypes.array
 }

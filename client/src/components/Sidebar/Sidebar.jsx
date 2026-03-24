@@ -4,6 +4,7 @@ import Strings from "../../strings/strings-codes";
 import { Navigate, Link } from "react-router-dom";
 import './Sidebar.css';
 import { LayoutDashboard, ShelvingUnit, IdCardLanyard, Logs, Settings, Store, Clock } from 'lucide-react';
+import Button from "../TRButton/Button";
 
 const { SUCCESS_MESS } = Strings;
 
@@ -19,38 +20,42 @@ class Sidebar extends React.Component {
     //pang protect ng routes
     //pag walang user na naka login
     //mag reredirect siya sa login page
-    componentDidMount() {
-        const { checkAuth } = AuthStore.getState();
-        checkAuth();
+    // componentDidMount() {
+    //     const { checkAuth, AuthUser } = AuthStore.getState();
+    //     checkAuth();
 
-        const { AuthUser } = AuthStore.getState();
-        if (AuthUser) {
-            this.setState({ user: AuthUser });
-        }
+    //     if (AuthUser) {
+    //         this.setState({ user: AuthUser });
+    //     }
+        
+    //     this.unsubscribe = AuthStore.subscribe((state) => {
+    //         const { AuthUser } = state;
+    //         if (!AuthUser) {
+    //             this.setState({ redirect: true, user: null });
+    //         } else {
+    //             this.setState({ user: AuthUser }); 
+    //         }
+    //     });
+    // }
 
-        this.unsubscribe = AuthStore.subscribe((state) => {
-            const { AuthUser } = state;
-            if (!AuthUser) {
-                this.setState({ redirect: true, user: null });
-            } else {
-                this.setState({ user: AuthUser }); 
-            }
-        });
-    }
+    // componentWillUnmount() {
+    //     if (this.unsubscribe) this.unsubscribe();
+    // }
 
-    componentWillUnmount() {
-        if (this.unsubscribe) this.unsubscribe();
+    componentDidMount () {
+        console.log(this.props.user);
     }
 
     handleLogout = () => {
         const { logoutUser } = AuthStore.getState();
         logoutUser();
+        window.location.href = "/login";
     }
 
     render() {
-        if (this.state.redirect) {
-            return <Navigate to="/login" />;
-        }
+        // if (this.state.redirect) {
+        //     return <Navigate to="/inventory" />;
+        // }
         const { user } = this.props;
         //tanggalin muna error sa es-lint since dipa ginagamit tong variable nato pero eto yung items sa sidebar
         const sidebarItemsAdmin = [
@@ -85,7 +90,7 @@ class Sidebar extends React.Component {
             {
                 title: "Time In / Out",
                 icon: <Clock />,
-                link: "/timein",
+                link: "/timeinout",
             },
             {
                 title: "Inventory",
@@ -99,6 +104,7 @@ class Sidebar extends React.Component {
             }
         ];
 
+        //pag walang naka authenticate na user hindi mag rerender tong sidebar
         if (!user) {
             return;
         }
@@ -134,13 +140,13 @@ class Sidebar extends React.Component {
                     </ul>
                     
                     <div className="user-panel">
-                        {this.state.user ? (
+                        {this.props.user ? (
                             <>
-                            <p className="userName">{this.state.user.username}</p>
-                            <p className="userRole">{this.state.user.role}</p>
+                            <p className="userName">{user.username}</p>
+                            <p className="userRole">{user.role}</p>
                             </>
                         ) : <p>LOADING ...</p>}
-                        <button className="logout-button" onClick={() => this.handleLogout()}>LOG OUT</button>
+                        <Button error text="SIGN OUT" onClick={() => this.handleLogout()}/>
                     </div>
                 </aside>
                 <main className="children">

@@ -3,19 +3,22 @@ import "./Inventory.css";
 import { Table } from "../../components/TRTable/TrTable";
 import InputField from "../../components/TRInputField/InputFIeld";
 import DropDown from "../../components/TRDropDown/Dropdown";
+import AuthStore from "../../store/Authstore";
 
 class Inventory extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-        searchValue: ''
+        searchValue: '',
+        isAdmin: false
     }
   }
 
   checkRole = () => {
-    const { user } = this.props;
-
-    console.log(user);
+    const {AuthUser} = AuthStore.getState();
+    if (AuthUser.role === "admin") {
+      this.setState({isAdmin: true});
+    }
   }
 
   componentDidMount() {
@@ -108,7 +111,7 @@ class Inventory extends React.Component {
 
     const tableData = {
       header: "ITEMS TEST",
-      hasButton: true,
+      hasButton: this.state.isAdmin,
       CB: () => {},
       buttonInfo: "NEW ITEM",
       search: (
@@ -133,8 +136,8 @@ class Inventory extends React.Component {
             <Table
                 data={dummyData}
                 isDetailed={tableData}
-                hasAction
-                hasSelect
+                hasAction={this.state.isAdmin}
+                hasSelect={this.state.isAdmin}
                 onDelete={() => {}}
                 onEdit={() => {}}
                 search={this.state.searchValue}

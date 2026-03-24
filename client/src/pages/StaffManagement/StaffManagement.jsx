@@ -11,26 +11,31 @@ class StaffManagement extends React.Component {
 
     render () {
         return (
-            // <TRInputFormPanel header="ADD NEW EMPLOYEE" subHeader="test subheader" onSubmit={(e) => {
-            //     e.preventDefault();
-            //     console.log('test');
-            // }}>
-            //     <InputForm>
-            //         <InputRow gap={16} titles={['title1', 'title2']}>
-            //             <InputField text required placeholder="test"/>
-            //             <InputField text required/>
-            //         </InputRow>
-            //         <InputRow gap={16} titles={['title3', 'title4']}>
-            //             <InputField text required/>
-            //             <InputField text required/>
-            //         </InputRow>
-            //         <InputRow gap={16} titles={['title6', 'title7']}>
-            //             <InputField text required/>
-            //             <DropDown maxWidth/>
-            //         </InputRow>
-            //     </InputForm>
-            // </TRInputFormPanel>
-            <Button success text="+ Add Stock" onClick={() => console.log('test')}/>
+            <TRInputFormPanel 
+                required 
+                header="ADD NEW EMPLOYEE" 
+                subHeader="test subheader" 
+                onSubmit={(e) => {
+                    e.preventDefault();
+                    console.log('test');
+                }}
+            >
+                <InputForm>
+                    <InputRow gap={16} titles={['title1', 'title2']}>
+                        <InputField text placeholder="test"/>
+                        <InputField text/>
+                    </InputRow>
+                    <InputRow gap={16} titles={['title3', 'title4']}>
+                        <InputField text/>
+                        <InputField text/>
+                    </InputRow>
+                    <InputRow gap={16} titles={['title6', 'title7']}>
+                        <InputField text/>
+                        <DropDown maxWidth/>
+                    </InputRow>
+                </InputForm>
+            </TRInputFormPanel>
+            //<Button success text="+ Add Stock" onClick={() => console.log('test')}/>
         );
     }
 }

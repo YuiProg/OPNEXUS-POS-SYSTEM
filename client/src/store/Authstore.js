@@ -18,20 +18,18 @@ const {
     SUCCESS_MESS
 } = Strings;
 
-const AuthStore = create((set) => ({
+const AuthStore = create((set, get) => ({
     AuthUser: null,
-    AuthLoading: false,
+    AuthLoading: true,
     error: null,
 
     checkAuth: async () => {
         try {
-            set({AuthLoading: true});
             const user = await axiosInstance.get(getUser);
             set({AuthUser: user.data.data});
         } catch (error) {
             set({error: axiosError(error)});
             set({AuthUser: null});
-            set({AuthLoading: false});
         } finally {
             set({AuthLoading: false});
         }
@@ -46,6 +44,7 @@ const AuthStore = create((set) => ({
             }); 
             //toast.success('User logged in!');
             set({AuthUser: authUser.data});
+            get().checkAuth();
         } catch (error) {
             set({error: axiosError(error)});
         } finally {
