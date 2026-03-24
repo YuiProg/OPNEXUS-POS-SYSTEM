@@ -10,7 +10,7 @@ h1 {
   background: #111111;
   color: #fff;
   padding: 0;
-  width: 100%;
+  width: auto;
   height: 100%;
   /* 
   display: grid;
