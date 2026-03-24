@@ -4,13 +4,16 @@ import { Table } from "../../components/TRTable/TrTable";
 import InputField from "../../components/TRInputField/InputFIeld";
 import DropDown from "../../components/TRDropDown/Dropdown";
 import AuthStore from "../../store/Authstore";
+import { Modal } from "../../TRModal/Modal";
+import { InputRow } from "../../components/TRInputForm/TRInputForm";
 
 class Inventory extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
         searchValue: '',
-        isAdmin: false
+        isAdmin: false,
+        showModal: false
     }
   }
 
@@ -28,6 +31,7 @@ class Inventory extends React.Component {
   handleTableSearch = (value) =>{
     this.setState({searchValue: value});
   }
+
 
   render() {
 
@@ -112,7 +116,7 @@ class Inventory extends React.Component {
     const tableData = {
       header: "ITEMS TEST",
       hasButton: this.state.isAdmin,
-      CB: () => {},
+      CB: () => this.setState({showModal: true}),
       buttonInfo: "NEW ITEM",
       search: (
         <InputField
@@ -124,27 +128,41 @@ class Inventory extends React.Component {
     };
 
     return (
-      <div className="inventory-container">
-        <div className="top-contents">
-            <h1 className="bigtitle">Hello, What do you want to do today?</h1>
-            <div className="branch-dropdown">
-              <p className="branch-text">Branch</p>
-              <DropDown className="branch-dd"/>
-            </div>
+      <>
+      {this.state.showModal && (
+        <Modal 
+          onClose={() => this.setState({showModal: false})}
+          header="test header main"
+          subHeader="subheader"
+        >
+          <InputRow gap={10}>
+            <InputField/>
+            <InputField/>
+          </InputRow>
+        </Modal>
+      )}
+        <div className="inventory-container">
+          <div className="top-contents">
+              <h1 className="bigtitle">Hello, What do you want to do today?</h1>
+              <div className="branch-dropdown">
+                <p className="branch-text">Branch</p>
+                <DropDown className="branch-dd"/>
+              </div>
+          </div>
+          <div>
+              <Table
+                  data={dummyData}
+                  isDetailed={tableData}
+                  hasAction={this.state.isAdmin}
+                  hasSelect={this.state.isAdmin}
+                  onDelete={() => {}}
+                  onEdit={() => {}}
+                  search={this.state.searchValue}
+              />
+          </div>
+          
         </div>
-        <div>
-            <Table
-                data={dummyData}
-                isDetailed={tableData}
-                hasAction={this.state.isAdmin}
-                hasSelect={this.state.isAdmin}
-                onDelete={() => {}}
-                onEdit={() => {}}
-                search={this.state.searchValue}
-            />
-        </div>
-        
-      </div>
+      </>
     );
   }
 }
