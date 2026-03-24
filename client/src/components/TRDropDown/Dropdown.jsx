@@ -12,13 +12,15 @@ class DropDown extends React.Component {
     const { 
         options, 
         defaultValue, 
-        onChange
+        onChange,
+        maxWidth,
+        customWidth
     } = this.props;
 
     return (
         <div className="tr-dropdown-wrapper">
             <Layers className="tr-dropdown-icon" />
-            <select className="tr-dropdown" onChange={(e) => onChange(e.target.value)} defaultValue={defaultValue || 'Select Branch...'}>
+            <select className="tr-dropdown" style={{width: maxWidth ? "100%" : customWidth ? customWidth : "320px"}} onChange={(e) => onChange(e.target.value)} defaultValue={defaultValue || 'Select Branch...'}>
                 <option className="tr-options" disabled>
                     Select Branch...
                 </option>

@@ -6,6 +6,7 @@ import InputField from "../../components/TRInputField/InputFIeld.jsx";
 import bg_image from "../../assets/images/ProductsLoginImage.png"
 import bg_logo from "../../assets/images/loginImageLogo.png"
 import Toast from "../../toast/Toast.jsx";
+import Button from "../../components/TRButton/Button.jsx";
 
 const {
     UNAUTHORIZED_MESS,
@@ -89,7 +90,7 @@ class Login extends React.Component {
                         <form onSubmit={(e) => this.handleLogin(e)}>
                             <InputField required text onChange={(e) => this.setState({username: e})} placeholder={us + nm} onEnterDown={() => {}}/>
                             <InputField required password onChange={(e) => this.setState({password: e})} placeholder={pw} onEnterDown={() => {}}/>
-                            <button type="submit" disabled={loading}>{loading ? 'Logging in…' : 'Login'}</button>
+                            <Button error text={loading ? 'Logging in…' : 'Login'} submit disabled={loading}/>
                         </form>
                         <p className="login-container__credentials-footer">
                             All Rights Reserved.

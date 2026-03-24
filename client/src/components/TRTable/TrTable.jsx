@@ -1,7 +1,14 @@
 import React from "react";
 import "./TrTable.css";
-import { Trash2, SquarePen, ChevronLeft, ChevronRight } from "lucide-react";
-
+import {
+  Trash2,
+  SquarePen,
+  ChevronLeft,
+  ChevronRight,
+  Archive,
+} from "lucide-react";
+import PropTypes from "prop-types";
+import Button from "../TRButton/Button";
 
 //NOTE: SOME CODE HAVE BEEN MODIFIED BY AI (CLAUDE)
 //NAG KANDA LETCHE LETCHE NA SIMULA NUNG NAGLAGAY AKO PAGINATION HAHAHA
@@ -12,13 +19,21 @@ export class Table extends React.Component {
     super(props);
     this.state = {
       selectAll: false,
-      selected: this.props.data ? new Array(props.data.length).fill(false) : null,
+      selected: this.props.data
+        ? new Array(props.data.length).fill(false)
+        : null,
       productSelect: null,
       currentPage: 1,
     };
   }
 
   rowsPerPage = 10;
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.search !== this.props.search) {
+      this.setState({ currentPage: 1 });
+    }
+  }
 
   selectAll = () => {
     this.setState((prev) => {
@@ -50,32 +65,42 @@ export class Table extends React.Component {
   };
 
   filterByValue(array, string) {
-    return array.filter(o =>
-      Object.keys(o).some(k =>
-        String(o[k]).toLowerCase().includes(string.toLowerCase())
-      )
+    return array.filter((o) =>
+      Object.keys(o).some((k) =>
+        String(o[k]).toLowerCase().includes(string.toLowerCase()),
+      ),
     );
   }
 
   render() {
-    const { data, hasSelect, hasAction, onDelete, onEdit, isDetailed, search } = this.props;
+    const { data, hasSelect, hasAction, onDelete, onEdit, isDetailed, search } =
+      this.props;
     const { selectAll, selected, currentPage } = this.state;
 
     //for testing wag i remove. wag rin tanggalin yung comment sasabog to
     //console.log(this.filterByValue(data, search));
 
-    //some pagination shit na generated na ng ai
-    const totalPages = this.props.data ? Math.ceil(data.length / this.rowsPerPage) : null;
-    const startIndex = (currentPage - 1) * this.rowsPerPage;
-    const paginatedData = this.props.data ?  data.slice(startIndex, startIndex + this.rowsPerPage) : null;
-    const paginatedSelected = paginatedData ? selected.slice(startIndex, startIndex + this.rowsPerPage) : null;
+    const filteredData = search ? this.filterByValue(data, search) : data;
 
-    const headers = this.props.data ?  Object.keys(data[0]) : null;
+    const totalPages = filteredData
+      ? Math.ceil(filteredData.length / this.rowsPerPage)
+      : null;
+    const startIndex = (currentPage - 1) * this.rowsPerPage;
+    const paginatedData = filteredData
+      ? filteredData.slice(startIndex, startIndex + this.rowsPerPage)
+      : null;
+    const paginatedSelected = paginatedData
+      ? selected.slice(startIndex, startIndex + this.rowsPerPage)
+      : null;
+
+    const headers = this.props.data ? Object.keys(data[0]) : null;
+
+    const hasData = paginatedData && paginatedData.length > 0;
 
     // TODO: fix this later ps. what the fuck is this shit
-    var pageNumbers = []
+    var pageNumbers = [];
     for (var i = 1; i <= totalPages; i++) {
-      pageNumbers.push(i)
+      pageNumbers.push(i);
     }
 
     return (
@@ -86,50 +111,72 @@ export class Table extends React.Component {
             <div className="table-header-right">
               <div className="table-search">{isDetailed.search}</div>
               {isDetailed.hasButton == true ? (
-                <button className="table-new-btn" onClick={(e) => isDetailed.CB(e)}>
-                  {isDetailed.buttonInfo}
-                </button>
+                // <button
+                //   className="table-new-btn"
+                //   onClick={(e) => isDetailed.CB(e)}
+                // >
+                //   {isDetailed.buttonInfo}
+                // </button>
+                <Button error text={isDetailed.buttonInfo} onClick={(e) => isDetailed.CB(e)}/>
               ) : null}
             </div>
           </div>
         ) : null}
-        <table className="table">
-          <thead className="table-thead">
-            <tr className="table-thead-row">
-              {hasSelect && data == true ? (
-                <th className="table-th table-th--check">
-                  <input
-                    className="table-checkbox"
-                    type="checkbox"
-                    checked={selectAll}
-                    onChange={this.selectAll}
-                  />
-                </th>
-              ) : null}
-              {this.props.data && (
-                headers.map((h, i) => (
-                <th className="table-th" key={i}>{h.toUpperCase()}</th>
-              ))
+
+        <div className="table-container">
+          <table className="table">
+            <thead className="table-thead">
+              <tr className="table-thead-row">
+                {hasSelect && data ? (
+                  <th className="table-th table-th--check">
+                    <input
+                      className="table-checkbox"
+                      type="checkbox"
+                      checked={selectAll}
+                      onChange={this.selectAll}
+                    />
+                  </th>
+                ) : null}
+                {this.props.data &&
+                  headers.map((h, i) => (
+                    <th className="table-th" key={i}>
+                      {h.toUpperCase()}
+                    </th>
+                  ))}
+                {hasAction && data ? (
+                  <th className="table-th table-th--action">ACTIONS</th>
+                ) : null}
+              </tr>
+            </thead>
+            <tbody className="table-tbody">
+              {hasData ? (
+                <TableData
+                  data={paginatedData}
+                  hasSelect={hasSelect}
+                  selected={paginatedSelected}
+                  toggleRow={(i) => this.toggleRow(startIndex + i)}
+                  hasAction={hasAction}
+                  CBD={(e) => onDelete(e)}
+                  CBE={(e) => onEdit(e)}
+                />
+              ) : (
+                <TableNoData
+                  colSpan={
+                    (headers ? headers.length : 0) +
+                    (hasSelect ? 1 : 0) +
+                    (hasAction ? 1 : 0)
+                  }
+                />
               )}
-              {hasAction && data == true ? <th className="table-th table-th--action">Actions</th> : null}
-            </tr>
-          </thead>
-          <tbody className="table-tbody">
-            <TableData
-              data={search ? this.filterByValue(data, search) :paginatedData}
-              hasSelect={hasSelect}
-              selected={paginatedSelected}
-              toggleRow={(i) => this.toggleRow(startIndex + i)}
-              hasAction={hasAction}
-              CBD={(e) => onDelete(e)}
-              CBE={(e) => onEdit(e)}
-            />
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+        </div>
 
         <div className="pagination">
           <span className="pagination-info">
-            {this.props.data ? `showing ${startIndex + 1} to ${Math.min(startIndex + this.rowsPerPage, data.length)} of ${data.length} results` : null }
+            {filteredData
+              ? `showing ${Math.min(startIndex + 1, filteredData.length)} to ${Math.min(startIndex + this.rowsPerPage, filteredData.length)} of ${filteredData.length} results`
+              : null}
           </span>
           <div className="pagination-controls">
             <button
@@ -147,49 +194,62 @@ export class Table extends React.Component {
                 page === currentPage - 1 ||
                 page === currentPage + 1;
 
-              const showLeftDots  = page === currentPage - 1 && currentPage - 1 > 2;
-              const showRightDots = page === currentPage + 1 && currentPage + 1 < totalPages - 1;
+              const showLeftDots =
+                page === currentPage - 1 && currentPage - 1 > 2;
+              const showRightDots =
+                page === currentPage + 1 && currentPage + 1 < totalPages - 1;
 
               if (showLeftDots) {
                 return (
                   <React.Fragment key={page}>
                     <span className="pagination-dots">...</span>
                     <button
-                      className={currentPage === page ? "pagination-page pagination-page--active" : "pagination-page"}
+                      className={
+                        currentPage === page
+                          ? "pagination-page pagination-page--active"
+                          : "pagination-page"
+                      }
                       onClick={() => this.goToPage(page)}
                     >
                       {page}
                     </button>
                   </React.Fragment>
-                )
+                );
               }
 
               if (showRightDots) {
                 return (
                   <React.Fragment key={page}>
                     <button
-                      className={currentPage === page ? "pagination-page pagination-page--active" : "pagination-page"}
+                      className={
+                        currentPage === page
+                          ? "pagination-page pagination-page--active"
+                          : "pagination-page"
+                      }
                       onClick={() => this.goToPage(page)}
                     >
                       {page}
                     </button>
                     <span className="pagination-dots">...</span>
                   </React.Fragment>
-                )
+                );
               }
 
               if (showPage) {
                 return (
                   <button
                     key={page}
-                    className={currentPage === page ? "pagination-page pagination-page--active" : "pagination-page"}
+                    className={
+                      currentPage === page
+                        ? "pagination-page pagination-page--active"
+                        : "pagination-page"
+                    }
                     onClick={() => this.goToPage(page)}
                   >
                     {page}
                   </button>
-                )
+                );
               }
-
               return null;
             })}
 
@@ -213,75 +273,103 @@ export class TableData extends React.Component {
   }
 
   render() {
-    const { data, hasSelect, selected, toggleRow, hasAction, CBD, CBE } = this.props;
-
-    // if (!data) {
-    //   return <div>nothing</div>
-    // }
+    const { data, hasSelect, selected, toggleRow, hasAction, CBD, CBE } =
+      this.props;
 
     return (
       <>
-        {this.props.data ? (
-          data.map((row, rowIndex) => {
-            return (
-              <tr
-                className={selected[rowIndex] == true ? "table-row table-row--selected" : "table-row"}
-                key={rowIndex}
-              >
-                {hasSelect == true ? (
-                  <td className="table-td table-td--check">
-                    <input
-                      className="table-checkbox"
-                      type="checkbox"
-                      checked={selected[rowIndex]}
-                      onChange={() => toggleRow(rowIndex)}
-                    />
-                  </td>
-                ) : null}
-                {Object.values(row).map((value, colIndex) => (
-                  <td className="table-td" key={colIndex}>{value}</td>
-                ))}
-                {hasAction == true ? (
-                  <td className="table-td table-td--action">
-                    <button
-                      className="table-action-btn table-action-btn--delete"
-                      onClick={() => CBD(row)}
-                    >
-                      <Trash2 size={15} />
-                    </button>
-                    <button
-                      className="table-action-btn table-action-btn--edit"
-                      onClick={() => CBE(row)}
-                    >
-                      <SquarePen size={15} />
-                    </button>
-                  </td>
-                ) : null}
-              </tr>
-            )
-          })
-        ) : (
-          //PAG WALANG DATA NA NAIPASA SA PARENT
-          <div>
-            <TableNoData/>
-          </div>
-        )}
+        {data.map((row, rowIndex) => (
+          <tr
+            className={
+              selected[rowIndex] === true
+                ? "table-row table-row--selected"
+                : "table-row"
+            }
+            key={rowIndex}
+          >
+            {hasSelect ? (
+              <td className="table-td table-td--check">
+                <input
+                  className="table-checkbox"
+                  type="checkbox"
+                  checked={selected[rowIndex]}
+                  onChange={() => toggleRow(rowIndex)}
+                />
+              </td>
+            ) : null}
+            {Object.values(row).map((value, colIndex) => (
+              <td className="table-td" key={colIndex}>
+                {value}
+              </td>
+            ))}
+            {hasAction === true ? (
+              <td className="table-td table-td--action">
+                <button
+                  className="table-action-btn table-action-btn--delete"
+                  onClick={() => CBD(row)}
+                >
+                  <Trash2 size={15} />
+                </button>
+                <button
+                  className="table-action-btn table-action-btn--edit"
+                  onClick={() => CBE(row)}
+                >
+                  <SquarePen size={15} />
+                </button>
+              </td>
+            ) : null}
+          </tr>
+        ))}
       </>
     );
   }
 }
 
-//NO DATA CONTAINER
 export class TableNoData extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
   }
-  //TODO TOMORROW
-  render () {
+
+  render() {
     return (
-      <div>
-        <p>no data found</p>
-      </div>
+      <tr>
+        <td colSpan={this.props.colSpan} className="table-td--nodata">
+          <div className="no-data-wrapper">
+            <Archive size={32} strokeWidth={1.5} className="no-data-icon" />
+            <p className="no-data-title">No data found :(</p>
+          </div>
+        </td>
+      </tr>
     );
   }
 }
+
+Table.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  hasSelect: PropTypes.bool,
+  hasAction: PropTypes.bool,
+  onDelete: PropTypes.func,
+  onEdit: PropTypes.func,
+  search: PropTypes.string,
+  isDetailed: PropTypes.shape({
+    header: PropTypes.string,
+    search: PropTypes.node,
+    hasButton: PropTypes.bool,
+    buttonInfo: PropTypes.string,
+    CB: PropTypes.func,
+  }),
+};
+
+TableData.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  hasSelect: PropTypes.bool,
+  hasAction: PropTypes.bool,
+  selected: PropTypes.arrayOf(PropTypes.bool),
+  toggleRow: PropTypes.func,
+  CBD: PropTypes.func,
+  CBE: PropTypes.func,
+};
+
+TableNoData.propTypes = {
+  colSpan: PropTypes.number,
+};

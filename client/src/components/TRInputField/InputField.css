@@ -1,12 +1,12 @@
 .input-wrapper {
   position: relative;
-  width: 290px;
+  width: 100%; 
   height: 50px;
 }
 
 .input-wrapper input[type="text"],
 .input-wrapper input[type="password"] {
-  width: 290px;
+  width: 100%; 
   height: 50px;
   background-color: #2b2b2b;
   border: none;
@@ -52,7 +52,7 @@
 .input-wrapper input[type="password"]:not(:placeholder-shown) + .floating-label {
   top: 10px;
   font-size: 10px;
-  color: #888888;
+  /* color: #888888; */
 }
 
 /* ── Search variant ── */
@@ -69,7 +69,7 @@
   top: 10px;
   left: 16px;
   font-size: 10px;
-  color: #888888;
+  /* color: #888888; */
 }
 
 .search-icon {

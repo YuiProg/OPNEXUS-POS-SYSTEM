@@ -26,14 +26,14 @@
 
 /* SUCCESS = GREEN */
 .toast.success {
-    background-color: #1e7e4e;
-    border-left: 4px solid #34d077;
+    background-color: #22C55E;
+    border-left: 4px solid #2a8e55;
 }
 
 /* ERROR = RED */
 .toast.error {
-    background-color: #7e1e1e;
-    border-left: 4px solid #f05252;
+    background-color: #EF4444;
+    border-left: 4px solid #E31E24;
 }
 
 .toast p {
