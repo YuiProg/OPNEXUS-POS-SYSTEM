@@ -256,8 +256,8 @@
   background: transparent;
   border: 1px solid #2e2e2e;
   color: #888;
-  width: 26px;
-  height: 26px;
+  width: 40px;
+  height: 40px;
   border-radius: 6px;
   display: flex;
   align-items: center;
@@ -280,10 +280,10 @@
   background: transparent;
   border: 1px solid #2e2e2e;
   color: #888;
-  width: 26px;
-  height: 26px;
+  width: 40px;
+  height: 40px;
   border-radius: 6px;
-  font-size: 0.75rem;
+  font-size: 15px;
   cursor: pointer;
   transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
 }
@@ -302,7 +302,7 @@
 
 .pagination-dots {
   color: #555;
-  font-size: 0.75rem;
+  font-size: 30px;
   padding: 0 2px;
   user-select: none;
 }
