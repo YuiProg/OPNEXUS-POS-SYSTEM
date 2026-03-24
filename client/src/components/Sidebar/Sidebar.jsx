@@ -52,6 +52,12 @@ class Sidebar extends React.Component {
         window.location.href = "/login";
     }
 
+    //check kung naka login paba kada click ng tabs sa sidebar
+    //pag hindi naka login i redirect natin si user sa login page
+    checkAuthentication = () => {
+
+    }
+
     render() {
         // if (this.state.redirect) {
         //     return <Navigate to="/inventory" />;
@@ -104,10 +110,10 @@ class Sidebar extends React.Component {
             }
         ];
 
-        //pag walang naka authenticate na user hindi mag rerender tong sidebar
-        if (!user) {
-            return;
-        }
+        //for debugging
+        // if (!user) {
+        //     return;
+        // }
 
         return (
             <div className="sidebar-container">
