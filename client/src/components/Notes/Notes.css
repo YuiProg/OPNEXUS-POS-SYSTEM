@@ -1,6 +1,6 @@
 .notes-container {
-    width: 217px;
-    height: 303px;
+    width: -webkit-fill-available;
+    height: auto;
     padding: 20px;
     background-color: #f9e7b0;
     display: flex;
