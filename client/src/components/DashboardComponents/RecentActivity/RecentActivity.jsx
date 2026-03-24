@@ -14,8 +14,12 @@ class RecentActivity extends React.Component {
 
         return (
             <div className="ra-container">
-                <h1>Recent Activity</h1>
-                <p>{recentActivity || 'activity'}</p>
+                <div className="ra-content">
+                    <h2 className="ra-title">Recent Activity</h2>
+                    <ul className="ra-list">
+                        <li className="recent-activity">{recentActivity || 'activity'}</li>
+                    </ul>
+                </div>
             </div>
         );
     }
