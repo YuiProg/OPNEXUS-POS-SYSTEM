@@ -1,24 +1,30 @@
 .notes-container {
     width: 217px;
     height: 303px;
-    padding: 10px;
-    padding-left: 30px;
+    padding: 20px;
     background-color: #f9e7b0;
+    display: flex;
+    flex-direction: column;
 }
 
-.notes-label {
+.notes-container .notes-label {
     font-family: 'Segoe UI', system-ui, sans-serif;
     font-size: 16px;
     font-weight: 600;
     color: #333;
 }
 
-.notes-text {
+.notes-container .notes-text {
     resize: none;
-    width: 180px;
-    height: 220px;
+    width: auto;
+    height: 100%;
     font-family: 'Segoe UI', system-ui, sans-serif;
     font-size: 14px;
     background: none;
+    border: none;
+}
+
+.notes-container textarea:focus {
+    outline: none;
     border: none;
 }

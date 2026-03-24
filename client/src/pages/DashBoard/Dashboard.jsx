@@ -38,13 +38,18 @@ class Dashboard extends React.Component {
     return (
       <div className="dashboard-container">
         {/* HELLO WHAT DO YOU WANT TO DO KEME KEME SECTION */}
-        <div>
-          <h1>Hello, What do you want to today?</h1>
-          <p>Branch</p>
-          <DropDown options={["longos", "bulacan", "hagonoy"]} />
+        <div className="db-top-contents">
+          <h1 className="db-bigtitle">Hello, What do you want to today?</h1>
+          <div className="db-branch-dropdown">
+            <p className="db-branch-text">Branch</p>
+            <DropDown 
+              className="db-branch-dd"
+              options={["longos", "bulacan", "hagonoy"]} 
+            />
+          </div>
         </div>
         {/* GREEN CONTAINER */}
-        <div>
+        <div className="top-three-contents">
           <StaffCount />
           <TodaysRevenue />
           <RecentActivity />
