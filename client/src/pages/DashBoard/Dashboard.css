@@ -44,12 +44,22 @@ h1 {
   flex-direction: row;
   align-items: center;
   gap: 12px;
-  margin-bottom: 32px;
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
 
 .dashboard-container__graph-container {
   display: grid;
   grid-template-columns: 1fr 0.4fr 0.4fr;
+  gap: 20px;
+  height: 335px;
+  width: 100%;
+  margin-bottom: 32px;
+}
+
+.todays-sales__top-products {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 20px;
   height: 335px;
   width: 100%;

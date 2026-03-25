@@ -14,6 +14,8 @@ import StaffCount from "../../components/DashboardComponents/StaffCount/StaffCou
 import RecentActivity from "../../components/DashboardComponents/RecentActivity/RecentActivity";
 import LinesChart from "../../components/DashboardComponents/Charts/BarsChart";
 import AuthStore from "../../store/Authstore";
+import BarsChart from "../../components/DashboardComponents/Charts/BarsChart";
+import TopProducts from "../../components/DashboardComponents/TopProducts/TopProducts";
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -58,14 +60,14 @@ class Dashboard extends React.Component {
         {/* BLUE CONTAINER */}
         <div className="dashboard-container__graph-container">
           {/* DITO MACKY DAPAT YUNG STATISTICS PERO WALA */}
-          <div>{/* SAMPLE CONTAINER dito yung graph diba?*/}</div>
+          <div>{<BarsChart />}</div>
           <DonutChart />
           <Notes />
         </div>
         {/* VIOLET CONTAINER */}
-        <div>
+        <div className="todays-sales__top-products">
           <TodaysSales />
-          {/* TOP PRODUCTS DAPAT DITO PERO WALA PA */}
+          <TopProducts />
         </div>
       </div>
     );
