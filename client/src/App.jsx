@@ -14,6 +14,7 @@ import ModalStore from './store/ModalStore.js'
 import DropDown from './components/TRDropDown/Dropdown.jsx'
 import TRAddfile from './components/TRAddFile/TRAddFile.jsx'
 import ProductStore from './store/ProductStore.js'
+import Loading from './components/Loading/Loading.jsx'
 
 const Inventory = lazy(() => import('./pages/Inventory/Inventory.jsx'));
 const Dashboard = lazy(() => import('./pages/DashBoard/Dashboard.jsx'));
@@ -32,7 +33,7 @@ function App() {
   }, [checkAuth]);
 
   //TODO: add loading page
-  if (AuthLoading) return <div>Loading...</div>;
+  if (!AuthLoading) return <div><Loading /></div>;
 
   const defaultRoute = AuthUser?.role === 'clerk' ? '/inventory' : '/dashboard';
 
@@ -74,7 +75,7 @@ function App() {
     <>
     {isOpen && showModalAddProduct()}
       {/* <Toaster /> */}
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Loading />}>
         <Routes>
           <Route path='/' element={!AuthUser ? <Navigate to='/login' replace /> : <Navigate to={defaultRoute} replace />} />
           <Route path='/login' element={!AuthUser ? <Login /> : <Navigate to={defaultRoute} replace />} />
