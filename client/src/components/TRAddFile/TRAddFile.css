@@ -1,0 +1,19 @@
+.tr-addfile-container {
+    width: auto;
+    height: 150px;
+    border: dashed;
+    cursor: pointer;
+}
+
+.tr-addfile-details {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.tr-addfile-header {
+    font-weight: 100;
+}

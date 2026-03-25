@@ -12,6 +12,7 @@ import { InputForm, InputRow } from './components/TRInputForm/TRInputForm.jsx'
 import InputField from './components/TRInputField/InputFIeld.jsx'
 import ModalStore from './store/ModalStore.js'
 import DropDown from './components/TRDropDown/Dropdown.jsx'
+import TRAddfile from './components/TRAddFile/TRAddFile.jsx'
 
 const Inventory = lazy(() => import('./pages/Inventory/Inventory.jsx'));
 const Dashboard = lazy(() => import('./pages/DashBoard/Dashboard.jsx'));
@@ -56,6 +57,9 @@ function App() {
                 <DropDown maxWidth/>
                 <DropDown maxWidth/>
               </InputRow>
+              <InputRow titles={['Add file']}>
+                <TRAddfile isRequired onChange={async (e) => console.log(await e)}/>
+              </InputRow>
             </InputForm>
         </Modal>
       </>
@@ -65,7 +69,7 @@ function App() {
   return (
     <>
     {isOpen && showModalAddProduct()}
-      <Toaster />
+      {/* <Toaster /> */}
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
           <Route path='/' element={!AuthUser ? <Navigate to='/login' replace /> : <Navigate to={defaultRoute} replace />} />
