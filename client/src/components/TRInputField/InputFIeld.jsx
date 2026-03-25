@@ -62,7 +62,7 @@ class InputField extends React.Component {
       onEnterDown,
       color
     } = this.props;
-
+    
     return (
       <div className="input-container">
         {this.state.error && (
@@ -74,7 +74,7 @@ class InputField extends React.Component {
           {!isSearch ? (
             <>
               <input
-                style={{backgroundColor: color}}
+                style={disabled ? {backgroundColor: color, cursor: 'not-allowed'} : {backgroundColor: color}}
                 type={text ? "text" : password ? "password" : "text"}
                 required={required}
                 onChange={(e) => onChange(this.checkNumber(e))}
@@ -88,7 +88,7 @@ class InputField extends React.Component {
           ) : (
             <>
               <input
-                style={{backgroundColor: color}}
+                style={disabled ? {backgroundColor: color, cursor: 'not-allowed'} : {backgroundColor: color}}
                 type="text"
                 required={required}
                 onChange={(e) => this.handleSearch(e)}

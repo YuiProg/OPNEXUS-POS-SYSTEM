@@ -19,6 +19,7 @@ class StaffManagement extends React.Component {
                     e.preventDefault();
                     console.log('test');
                 }}
+                btnTXT="TEST"
             >
                 <InputForm>
                     <InputRow gap={16} titles={['title1', 'title2']}>

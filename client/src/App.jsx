@@ -7,6 +7,11 @@ import AuthStore from './store/Authstore'
 import Sidebar from './components/Sidebar/Sidebar'
 import POS from './pages/POS/POS.jsx'
 import TimeInOut from './pages/TimeInOut/TimeInOut.jsx'
+import { Modal } from './TRModal/Modal.jsx'
+import { InputForm, InputRow } from './components/TRInputForm/TRInputForm.jsx'
+import InputField from './components/TRInputField/InputFIeld.jsx'
+import ModalStore from './store/ModalStore.js'
+import DropDown from './components/TRDropDown/Dropdown.jsx'
 
 const Inventory = lazy(() => import('./pages/Inventory/Inventory.jsx'));
 const Dashboard = lazy(() => import('./pages/DashBoard/Dashboard.jsx'));
@@ -16,6 +21,8 @@ function App() {
   const checkAuth = AuthStore(state => state.checkAuth);
   const AuthUser = AuthStore(state => state.AuthUser);
   const AuthLoading = AuthStore(state => state.AuthLoading);
+  const setModal = ModalStore(state => state.setModal);
+  const isOpen = ModalStore(state => state.isOpen);
 
   useEffect(() => {
     checkAuth();
@@ -26,8 +33,38 @@ function App() {
 
   const defaultRoute = AuthUser?.role === 'clerk' ? '/inventory' : '/dashboard';
 
+  const showModalAddProduct = () => {
+    return (
+      <>
+        <Modal 
+          onClose={() => setModal(false)}
+          header="Add new stock"
+          subHeader="Fill in the details for the new stock item"
+        >
+          <InputForm isRequired onSubmit={(e) => {
+            e.preventDefault();
+            console.log('test')
+          }}>
+              <InputRow gap={15} titles={['ProductID']}>
+                <InputField placeholder="PRODUCT ID (auto generated)" disabled/>
+              </InputRow>
+              <InputRow gap={15} titles={['Product Name', 'Quantity']}>
+                <InputField text placeholder="Product Name" onChange={(e) => console.log(e)} required/>
+                <InputField number placeholder="200" onChange={(e) => console.log(e)}/>
+              </InputRow>
+              <InputRow titles={['Category', 'Branch']} gap={15}>
+                <DropDown maxWidth/>
+                <DropDown maxWidth/>
+              </InputRow>
+            </InputForm>
+        </Modal>
+      </>
+    );
+  }
+
   return (
     <>
+    {isOpen && showModalAddProduct()}
       <Toaster />
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
