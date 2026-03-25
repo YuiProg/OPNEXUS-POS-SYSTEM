@@ -16,7 +16,10 @@ class TRAddfile extends React.Component {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.readAsDataURL(image);
-            reader.onload = () => resolve(reader.result);
+            reader.onload = () => {
+                resolve(reader.result);
+                this.setState({image: reader.result});
+            };
             reader.onerror = (error) => reject(error);
         });
     };
@@ -30,7 +33,14 @@ class TRAddfile extends React.Component {
         return (
             <label className="tr-addfile-container">
                 {this.state.image 
-                ? (null) 
+                ? (
+                    <>
+                    <input type="file" hidden accept="image/*" onChange={async (e) => onChange(await this.formatFile(e))} required={isRequired}/>
+                    <div className="tr-addfile-details">
+                        <img src={this.state.image} alt="image" className="tr-image"/>
+                    </div>
+                    </>
+                ) 
                 : (
                     <>
                     <input type="file" hidden accept="image/*" onChange={async (e) => onChange(await this.formatFile(e))} required={isRequired}/>

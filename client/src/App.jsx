@@ -53,11 +53,11 @@ function App() {
               <InputRow gap={15} titles={['ProductID']}>
                 <InputField placeholder="PRODUCT ID (auto generated)" disabled/>
               </InputRow>
-              <InputRow gap={15} titles={['Product Name', 'Quantity']}>
-                <InputField text placeholder="Product Name" onChange={(e) => setProductData("productName", e)} required/>
-                <InputField number placeholder="200" onChange={(e) => console.log(e)}/>
+              <InputRow gap={15} titles={['Product Name (required)', 'Quantity (required)']}>
+                <InputField text placeholder="Product Name" onChange={(value) => setProductData("productName", value)}/>
+                <InputField number placeholder="200" onChange={(value) => setProductData('quantity', value)}/>
               </InputRow>
-              <InputRow titles={['Category', 'Branch']} gap={15}>
+              <InputRow titles={['Category (required)', 'Branch (required)']} gap={15}>
                 <DropDown maxWidth/>
                 <DropDown maxWidth/>
               </InputRow>

@@ -45,6 +45,7 @@
   border-radius: 10px;
   padding: 24px;
   box-sizing: border-box;
+  overflow: auto;
 }
 
 .tr-inputform-actions {
