@@ -36,7 +36,7 @@ class Login extends React.Component {
     componentDidMount() {
         this.unsubscribe = AuthStore.subscribe((state) => {
             this.setState({
-                error: state.error,
+                error: state.errorUser,
                 loading: state.AuthLoading
             });
         });
