@@ -20,11 +20,12 @@
 
 .tp-table th, .tp-table td {
   padding: 18px 0;
+  font-weight: 400;
   border-bottom: 1px solid #ffffff81;
   text-align: left;
 }
 
 .tp-table th {
-  font-weight: 200;
-  border-bottom: 1px solid #ffffff;
+  font-size: 15px;
+  font-weight: 100;
 }
