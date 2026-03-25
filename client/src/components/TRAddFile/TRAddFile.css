@@ -1,7 +1,7 @@
 .tr-addfile-container {
     width: auto;
     height: 150px;
-    border: dashed;
+    border: 1px dashed;
     cursor: pointer;
 }
 
