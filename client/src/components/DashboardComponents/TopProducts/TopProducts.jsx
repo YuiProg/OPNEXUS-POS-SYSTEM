@@ -27,8 +27,8 @@ class TopProducts extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {testData.map((item, idx) => (
-              <tr key={idx}>
+            {testData.map((item, i) => (
+              <tr key={i}>
                 <td>{item.id}</td>
                 <td>{item.name}</td>
                 <td><ProgressBar bgcolor={item.bgcolor} completed={item.completed} /></td>
