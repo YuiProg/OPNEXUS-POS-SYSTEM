@@ -58,8 +58,7 @@ function App() {
     checkAuth();
   }, [checkAuth]);
 
-  //TODO: add loading page
-  if (!AuthLoading) return <div><Loading /></div>;
+  if (AuthLoading) return <div><Loading /></div>;
 
   const defaultRoute = AuthUser?.role === 'clerk' ? '/inventory' : '/dashboard';
 
