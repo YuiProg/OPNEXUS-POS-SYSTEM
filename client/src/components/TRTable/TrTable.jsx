@@ -33,6 +33,15 @@ export class Table extends React.Component {
     if (prevProps.search !== this.props.search) {
       this.setState({ currentPage: 1 });
     }
+
+    // FIX: re-sync selected array when data length changes so indices
+    // never go out of bounds and checkboxes stay controlled
+    if (prevProps.data?.length !== this.props.data?.length) {
+      this.setState({
+        selected: new Array(this.props.data.length).fill(false),
+        selectAll: false,
+      });
+    }
   }
 
   selectAll = () => {
@@ -292,7 +301,9 @@ export class TableData extends React.Component {
                 <input
                   className="table-checkbox"
                   type="checkbox"
-                  checked={selected[rowIndex]}
+                  // FIX: fallback to false so the checkbox is always
+                  // controlled and never receives undefined
+                  checked={selected[rowIndex] ?? false}
                   onChange={() => toggleRow(rowIndex)}
                 />
               </td>

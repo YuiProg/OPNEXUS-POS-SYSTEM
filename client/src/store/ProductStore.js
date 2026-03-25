@@ -49,7 +49,8 @@ const ProductStore = create((set, get) => ({
 
   //TODO: IMAGE VALIDATION
   addNewProduct: async () => {
-    const {productName, quantity, category, image, price, productBranch} = get();
+    // eslint-disable-next-line no-unused-vars
+    const {productName, quantity, category, image, price, productBranch, products} = get();
     const { AuthUser } = AuthStore.getState();
     
     const payload = {
@@ -64,6 +65,9 @@ const ProductStore = create((set, get) => ({
     try {
       const newProduct = await axiosInstance.post(addProduct, payload);
       console.log(newProduct.data);  
+      //const products = newProduct.data;
+      set({products: {...get().products, products}});
+      //set((state)=> ({products: [...state.products, newProduct.data]}));
     } catch (error) {
       set({errorProduct: axiosError(error)});
     } finally {
