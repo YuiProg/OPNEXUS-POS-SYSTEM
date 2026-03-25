@@ -13,6 +13,7 @@ import InputField from './components/TRInputField/InputFIeld.jsx'
 import ModalStore from './store/ModalStore.js'
 import DropDown from './components/TRDropDown/Dropdown.jsx'
 import TRAddfile from './components/TRAddFile/TRAddFile.jsx'
+import ProductStore from './store/ProductStore.js'
 
 const Inventory = lazy(() => import('./pages/Inventory/Inventory.jsx'));
 const Dashboard = lazy(() => import('./pages/DashBoard/Dashboard.jsx'));
@@ -24,6 +25,7 @@ function App() {
   const AuthLoading = AuthStore(state => state.AuthLoading);
   const setModal = ModalStore(state => state.setModal);
   const isOpen = ModalStore(state => state.isOpen);
+  const setProductData = ProductStore().setProductData;
 
   useEffect(() => {
     checkAuth();
@@ -52,7 +54,7 @@ function App() {
                 <InputField placeholder="PRODUCT ID (auto generated)" disabled/>
               </InputRow>
               <InputRow gap={15} titles={['Product Name', 'Quantity']}>
-                <InputField text placeholder="Product Name" onChange={(e) => console.log(e)} required/>
+                <InputField text placeholder="Product Name" onChange={(e) => setProductData("productName", e)} required/>
                 <InputField number placeholder="200" onChange={(e) => console.log(e)}/>
               </InputRow>
               <InputRow titles={['Category', 'Branch']} gap={15}>
