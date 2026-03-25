@@ -41,6 +41,8 @@ function App() {
           onClose={() => setModal(false)}
           header="Add new stock"
           subHeader="Fill in the details for the new stock item"
+          hasCancel
+          onCancel={() => setModal(false)}
         >
           <InputForm isRequired onSubmit={(e) => {
             e.preventDefault();
@@ -58,7 +60,7 @@ function App() {
                 <DropDown maxWidth/>
               </InputRow>
               <InputRow titles={['Add file']}>
-                <TRAddfile isRequired onChange={async (e) => console.log(await e)}/>
+                <TRAddfile isRequired onChange={(e) => console.log(e)}/>
               </InputRow>
             </InputForm>
         </Modal>

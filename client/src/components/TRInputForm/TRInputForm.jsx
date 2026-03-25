@@ -1,6 +1,7 @@
 import React from "react";
 import './TRInputForm.css';
 import PropTypes from "prop-types";
+import Button from "../TRButton/Button";
 
 
 //dito lalagay mga inputfields parang panel tong una
@@ -52,7 +53,7 @@ export class InputForm extends React.Component {
 
     passPropsToChildren = () => {
         const { onSubmit, isRequired } = this.props;
-
+        console.log(this.props);
         const enhancedChildren = React.Children.map(this.props.children, (child) => {
             if (!child) return null;
             return React.cloneElement(child, {
@@ -65,11 +66,18 @@ export class InputForm extends React.Component {
     }
 
     render () {
-        const { onSubmit, btnTXT } = this.props;
+        const { onSubmit, btnTXT, hasCancel, onCancel, cancelTXT } = this.props;
         return (
             <form className="tr-inputform" onSubmit={(e) => onSubmit(e)}>
                 {this.passPropsToChildren()}
-                <button className="tr-inputform-submit" type="submit">{btnTXT || 'SUBMIT'}</button>
+                <div className="tr-inputform-actions">
+                    {hasCancel && (
+                        <button className="tr-inputform-cancel" type="button" onClick={() => onCancel()}>
+                            {cancelTXT || 'CANCEL'}
+                        </button>
+                    )}
+                    <button className="tr-inputform-submit" type="submit">{btnTXT || 'SUBMIT'}</button>
+                </div>
             </form>
         );
     }
