@@ -6,14 +6,27 @@ const {
     ERROR,
     SERVER_ERROR,
     CREATED,
-    NEW_PRODUCT
+    NEW_PRODUCT,
+    SUCCESS
 } = Strings;
 
 export const newProduct = async (req, res) => {
     const data = req.body;
+    const user = req.user;
     try {
-        const newProduct = await Product.addProduct(data);
-        ApiResponseModel(res, NEW_PRODUCT, CREATED, newProduct);
+        const newProduct = await Product.addProduct(data, user);
+        ApiResponseModel(res, CREATED, NEW_PRODUCT, newProduct);
+    } catch (error) {
+        ApiResponseModel(res, ERROR, error.message);
+    }
+}
+
+export const fetchProducts = async (req, res) => {
+    const {selectedBranch} = req.query;
+    try {
+        console.log(selectedBranch);
+        const products = await Product.fetchProducts(selectedBranch);
+        ApiResponseModel(res, SUCCESS, NEW_PRODUCT, products);
     } catch (error) {
         ApiResponseModel(res, ERROR, error.message);
     }

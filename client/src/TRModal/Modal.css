@@ -14,6 +14,18 @@
     nauuna yung sidebar may kinalaman ata zindex
 */
 
+.tr-addfile-container:has(input[type="file"]:valid) ~ .modal-child,
+.modal-child:has(.tr-addfile-container input:valid) {
+    height: 80% !important;
+    overflow-y: auto;
+}
+
+
+.tr-addfile-container:has(img) .tr-addfile-details {
+    padding: 0 !important;
+}
+
+
 .modal-child {
     width: 650px;
     height: auto;

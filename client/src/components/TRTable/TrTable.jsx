@@ -21,7 +21,7 @@ export class Table extends React.Component {
       selectAll: false,
       selected: this.props.data
         ? new Array(props.data.length).fill(false)
-        : null,
+        : [],
       productSelect: null,
       currentPage: 1,
     };
@@ -93,7 +93,8 @@ export class Table extends React.Component {
       ? selected.slice(startIndex, startIndex + this.rowsPerPage)
       : null;
 
-    const headers = this.props.data ? Object.keys(data[0]) : null;
+    // FIX: changed > 1 to > 0 so empty arrays don't set headers to null
+    const headers = this.props.data && this.props.data.length > 0 ? Object.keys(data[0]) : [];
 
     const hasData = paginatedData && paginatedData.length > 0;
 
@@ -127,7 +128,7 @@ export class Table extends React.Component {
           <table className="table">
             <thead className="table-thead">
               <tr className="table-thead-row">
-                {hasSelect && data ? (
+                {hasSelect && data && data.length > 1 ? (
                   <th className="table-th table-th--check">
                     <input
                       className="table-checkbox"
@@ -137,13 +138,12 @@ export class Table extends React.Component {
                     />
                   </th>
                 ) : null}
-                {this.props.data &&
-                  headers.map((h, i) => (
-                    <th className="table-th" key={i}>
-                      {h.toUpperCase()}
-                    </th>
-                  ))}
-                {hasAction && data ? (
+                {headers.map((h, i) => (
+                  <th className="table-th" key={i}>
+                    {h.toUpperCase()}
+                  </th>
+                ))}
+                {hasAction && data && data.length > 1 ? (
                   <th className="table-th table-th--action">ACTIONS</th>
                 ) : null}
               </tr>
@@ -302,7 +302,7 @@ export class TableData extends React.Component {
                 {value}
               </td>
             ))}
-            {hasAction === true ? (
+            {hasAction ? (
               <td className="table-td table-td--action">
                 <button
                   className="table-action-btn table-action-btn--delete"

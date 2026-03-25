@@ -18,6 +18,7 @@ const Strings = Object.freeze({
     INVALID_PRODUCT_CODE: 'Invalid product code.',
     PRODUCT_QUANTITY: 'Please provide a quantity for product.',
     SUCCESS_ADD: 'Product added successfully.',
+    PROD_FAIL: 'Error in product',
     
     SUCCESS_MESS: 'Success',
     ERROR_MESS: 'Error',
