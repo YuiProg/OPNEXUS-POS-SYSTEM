@@ -11,7 +11,7 @@ import PropTypes from "prop-types";
 import Button from "../TRButton/Button";
 
 //NOTE: SOME CODE HAVE BEEN MODIFIED BY AI (CLAUDE)
-//NAG KANDA LETCHE LETCHE NA SIMULA NUNG NAGLAGAY AKO PAGINATION HAHAHA
+//NAG KANDA LETCHE LETCHE NA SIMULA NUNG NAGLAGAY PAGINATION HAHAHA
 //PERO THE REST HERE IS STILL HUMAN MADE
 //FUCK IT WE BALL
 export class Table extends React.Component {
@@ -21,7 +21,7 @@ export class Table extends React.Component {
       selectAll: false,
       selected: this.props.data
         ? new Array(props.data.length).fill(false)
-        : null,
+        : [],
       productSelect: null,
       currentPage: 1,
     };
@@ -32,6 +32,15 @@ export class Table extends React.Component {
   componentDidUpdate(prevProps) {
     if (prevProps.search !== this.props.search) {
       this.setState({ currentPage: 1 });
+    }
+
+    // FIX: re-sync selected array when data length changes so indices
+    // never go out of bounds and checkboxes stay controlled
+    if (prevProps.data?.length !== this.props.data?.length) {
+      this.setState({
+        selected: new Array(this.props.data.length).fill(false),
+        selectAll: false,
+      });
     }
   }
 
@@ -93,7 +102,8 @@ export class Table extends React.Component {
       ? selected.slice(startIndex, startIndex + this.rowsPerPage)
       : null;
 
-    const headers = this.props.data ? Object.keys(data[0]) : null;
+    // FIX: changed > 1 to > 0 so empty arrays don't set headers to null
+    const headers = this.props.data && this.props.data.length > 0 ? Object.keys(data[0]) : [];
 
     const hasData = paginatedData && paginatedData.length > 0;
 
@@ -127,7 +137,7 @@ export class Table extends React.Component {
           <table className="table">
             <thead className="table-thead">
               <tr className="table-thead-row">
-                {hasSelect && data ? (
+                {hasSelect && data && data.length > 1 ? (
                   <th className="table-th table-th--check">
                     <input
                       className="table-checkbox"
@@ -137,13 +147,12 @@ export class Table extends React.Component {
                     />
                   </th>
                 ) : null}
-                {this.props.data &&
-                  headers.map((h, i) => (
-                    <th className="table-th" key={i}>
-                      {h.toUpperCase()}
-                    </th>
-                  ))}
-                {hasAction && data ? (
+                {headers.map((h, i) => (
+                  <th className="table-th" key={i}>
+                    {h.toUpperCase()}
+                  </th>
+                ))}
+                {hasAction && data && data.length > 1 ? (
                   <th className="table-th table-th--action">ACTIONS</th>
                 ) : null}
               </tr>
@@ -292,7 +301,9 @@ export class TableData extends React.Component {
                 <input
                   className="table-checkbox"
                   type="checkbox"
-                  checked={selected[rowIndex]}
+                  // FIX: fallback to false so the checkbox is always
+                  // controlled and never receives undefined
+                  checked={selected[rowIndex] ?? false}
                   onChange={() => toggleRow(rowIndex)}
                 />
               </td>
@@ -302,7 +313,7 @@ export class TableData extends React.Component {
                 {value}
               </td>
             ))}
-            {hasAction === true ? (
+            {hasAction ? (
               <td className="table-td table-td--action">
                 <button
                   className="table-action-btn table-action-btn--delete"

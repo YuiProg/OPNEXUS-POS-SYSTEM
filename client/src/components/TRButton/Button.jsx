@@ -18,7 +18,8 @@ class Button extends React.Component {
             submit,
             text,
             onClick,
-            disabled
+            disabled,
+            cancel
         } = this.props;
 
         return (
@@ -29,7 +30,7 @@ class Button extends React.Component {
                         success ? "#22C55E" 
                         : warning ? "#F59E0B" 
                         : error ? "#EF4444" 
-                        : "transparent"}`,
+                        : cancel && "transparent"}`,
                     width: `${
                         maxWidth ? "100%" 
                         : customWidth ? customWidth 
@@ -55,7 +56,8 @@ Button.propTypes = {
     submit: PropTypes.bool,
     text: PropTypes.string,
     onClick: PropTypes.bool,
-    disabled: PropTypes.bool
+    disabled: PropTypes.bool,
+    cancel: PropTypes.bool
 }
 
 export default Button;

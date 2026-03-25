@@ -7,13 +7,15 @@ export class Modal extends React.Component {
     }
 
     passPropsToChild = () => {
-        const {confirm, required} = this.props;
+        const {confirm, required, hasCancel, onCancel} = this.props;
 
         const passchildren = React.Children.map(this.props.children, (child) => {
             if (!child) return null;
             return React.cloneElement(child, {
                 confirm,
-                required
+                required,
+                hasCancel,
+                onCancel
             });
         });
 

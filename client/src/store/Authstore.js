@@ -21,14 +21,15 @@ const {
 const AuthStore = create((set, get) => ({
     AuthUser: null,
     AuthLoading: true,
-    error: null,
+    errorUser: null,
+    selectedBranch: null,
 
     checkAuth: async () => {
         try {
             const user = await axiosInstance.get(getUser);
             set({AuthUser: user.data.data});
         } catch (error) {
-            set({error: axiosError(error)});
+            set({errorUser: axiosError(error)});
             set({AuthUser: null});
         } finally {
             set({AuthLoading: false});
@@ -46,7 +47,7 @@ const AuthStore = create((set, get) => ({
             set({AuthUser: authUser.data});
             get().checkAuth();
         } catch (error) {
-            set({error: axiosError(error)});
+            set({errorUser: axiosError(error)});
         } finally {
             set({AuthLoading: false});
         }
@@ -65,7 +66,7 @@ const AuthStore = create((set, get) => ({
             return true;
             
         } catch (error) {
-            set({error: axiosError(error)});
+            set({errorUser: axiosError(error)});
             return false;
         } finally {
             set({AuthLoading: false});

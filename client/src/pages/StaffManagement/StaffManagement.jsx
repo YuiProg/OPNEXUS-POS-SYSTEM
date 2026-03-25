@@ -11,26 +11,27 @@ class StaffManagement extends React.Component {
 
     render () {
         return (
-            <TRInputFormPanel 
-                required 
+            <TRInputFormPanel  
                 header="ADD NEW EMPLOYEE" 
                 subHeader="test subheader" 
                 onSubmit={(e) => {
                     e.preventDefault();
                     console.log('test');
                 }}
+                btnTXT="TEST"
+                isRequired
             >
                 <InputForm>
                     <InputRow gap={16} titles={['title1', 'title2']}>
-                        <InputField text placeholder="test"/>
-                        <InputField text/>
+                        <InputField text placeholder="test" onChange={value => console.log(value)}/>
+                        <InputField text onChange={value => console.log(value)}/>
                     </InputRow>
                     <InputRow gap={16} titles={['title3', 'title4']}>
-                        <InputField text/>
-                        <InputField text/>
+                        <InputField text onChange={value => console.log(value)}/>
+                        <InputField text onChange={value => console.log(value)}/>
                     </InputRow>
                     <InputRow gap={16} titles={['title6', 'title7']}>
-                        <InputField text/>
+                        <InputField text onChange={value => console.log(value)}/>
                         <DropDown maxWidth/>
                     </InputRow>
                 </InputForm>

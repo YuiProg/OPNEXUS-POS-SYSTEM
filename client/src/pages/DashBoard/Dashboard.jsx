@@ -56,9 +56,9 @@ class Dashboard extends React.Component {
           <RecentActivity />
         </div>
         {/* BLUE CONTAINER */}
-        <div>
+        <div className="dashboard-container__graph-container">
           {/* DITO MACKY DAPAT YUNG STATISTICS PERO WALA */}
-          <div>{/* SAMPLE CONTAINER */}</div>
+          <div>{/* SAMPLE CONTAINER dito yung graph diba?*/}</div>
           <DonutChart />
           <Notes />
         </div>

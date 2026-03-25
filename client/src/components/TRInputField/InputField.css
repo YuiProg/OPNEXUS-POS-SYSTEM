@@ -25,7 +25,7 @@
 }
 
 .input-error-message {
-  color: red;
+  color: #EF4444;
   margin: 0px;
 }
 
@@ -91,5 +91,5 @@
 /* ── Error state ── */
 .input-error input[type="text"],
 .input-error input[type="password"] {
-  outline: 1px solid red;
+  outline: 1px solid #EF4444;
 }

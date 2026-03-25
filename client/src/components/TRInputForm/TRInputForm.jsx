@@ -1,6 +1,7 @@
 import React from "react";
 import './TRInputForm.css';
 import PropTypes from "prop-types";
+import Button from "../TRButton/Button";
 
 
 //dito lalagay mga inputfields parang panel tong una
@@ -10,7 +11,7 @@ export class TRInputFormPanel extends React.Component {
     }
 
     passPropsToChildren = () => {
-        const { header, subHeader, onSubmit, required } = this.props;
+        const { header, subHeader, onSubmit, isRequired, btnTXT } = this.props;
 
         //pang pasa ng props dito sa parent sa child (parent props -> children)
         const enhancedChildren = React.Children.map(this.props.children, (child) => {
@@ -19,7 +20,8 @@ export class TRInputFormPanel extends React.Component {
                 onSubmit,          
                 header,
                 subHeader,
-                required
+                isRequired,
+                btnTXT
             });
         });
 
@@ -50,13 +52,13 @@ export class InputForm extends React.Component {
     }
 
     passPropsToChildren = () => {
-        const { onSubmit, required } = this.props;
-
+        const { onSubmit, isRequired } = this.props;
+        console.log(this.props);
         const enhancedChildren = React.Children.map(this.props.children, (child) => {
             if (!child) return null;
             return React.cloneElement(child, {
                 onSubmit,          
-                required
+                isRequired
             });
         });
 
@@ -64,11 +66,18 @@ export class InputForm extends React.Component {
     }
 
     render () {
-        const {onSubmit} = this.props;
+        const { onSubmit, btnTXT, hasCancel, onCancel, cancelTXT } = this.props;
         return (
             <form className="tr-inputform" onSubmit={(e) => onSubmit(e)}>
                 {this.passPropsToChildren()}
-                <button className="tr-inputform-submit" type="submit">SUBMIT</button>
+                <div className="tr-inputform-actions">
+                    {hasCancel && (
+                        <button className="tr-inputform-cancel" type="button" onClick={() => onCancel()}>
+                            {cancelTXT || 'CANCEL'}
+                        </button>
+                    )}
+                    <button className="tr-inputform-submit" type="submit">{btnTXT || 'SUBMIT'}</button>
+                </div>
             </form>
         );
     }
@@ -80,26 +89,22 @@ export class InputRow extends React.Component {
     }  
 
     passPropsToChildren = () => {
-        const { required, gap } = this.props;
-        
-        const enhancedChildren = React.Children.map(this.props.children, (child) => {
-            if (!child) return null;
-            return React.cloneElement(child, {
-                gap,
-                required
-            });
-        });
+        const { isRequired } = this.props;
 
-        return enhancedChildren;
+        return React.Children.map(this.props.children, (child) => {
+            if (!child) return null;
+            return React.cloneElement(child, { isRequired });
+        });
     }
 
     render () {
         const { gap, titles } = this.props;
-        const children = React.Children.toArray(this.passPropsToChildren());
+
+        const children = this.passPropsToChildren();
 
         return (
             <div className="tr-inputrow" style={{ gap: `${gap}px` }}>
-                {children.map((child, i) => (
+                {React.Children.map(children, (child, i) => (
                     <div className="tr-inputrow-field" key={i}>
                         {titles
                             ? <p className="tr-inputrow-title">{titles[i]}</p>
@@ -114,16 +119,20 @@ export class InputRow extends React.Component {
 }
 
 TRInputFormPanel.propTypes = {
-    header: PropTypes.string,
+    header:    PropTypes.string,
     subHeader: PropTypes.string,
-    onSubmit: PropTypes.func
+    onSubmit:  PropTypes.func,
+    isRequired:  PropTypes.bool,
+    btnTXT:    PropTypes.string,
 }
 
 InputForm.propTypes = {
-    onSubmit: PropTypes.func
+    onSubmit: PropTypes.func,
+    isRequired: PropTypes.bool,
+    btnTXT:   PropTypes.string,
 }
 
 InputRow.propTypes = {
-    gap: PropTypes.number,
-    titles: PropTypes.array
+    gap:    PropTypes.number,
+    titles: PropTypes.arrayOf(PropTypes.string),
 }

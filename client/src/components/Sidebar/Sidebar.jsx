@@ -152,7 +152,7 @@ class Sidebar extends React.Component {
                             <p className="userRole">{user.role}</p>
                             </>
                         ) : <p>LOADING ...</p>}
-                        <Button error text="SIGN OUT" onClick={() => this.handleLogout()}/>
+                        <Button error text="LOG OUT" onClick={() => this.handleLogout()}/>
                     </div>
                 </aside>
                 <main className="children">
