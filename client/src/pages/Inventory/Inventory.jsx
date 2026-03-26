@@ -28,18 +28,22 @@ class Inventory extends React.Component {
     }
   }
 
+  componentDidUpdate() {
+    
+  }
+
   componentDidMount() {
     const { fetchProducts } = ProductStore.getState();
     this.checkRole();
     fetchProducts();
     
     this.unsubscribe = ProductStore.subscribe((state) => {
-      const {data} = state.products;
-      // eslint-disable-next-line no-unused-vars
-      const cleanedData = data.map(({ createdAt, updatedAt, createdById, _id, __v, ...rest }) => rest);
-      this.setState({ products: cleanedData });
+      const products = state.products;
+      this.setState({products: products});
+      // const cleanedData = data.map(({ createdAt, updatedAt, createdById, _id, __v, ...rest }) => rest);
+      // this.setState({ products: cleanedData });
+      //console.log(this.state.products);
     });
-
     //console.log(products);
     //this.setState({products: products});
     // this.unsubscribeModal = ModalStore.subscribe((state) => {

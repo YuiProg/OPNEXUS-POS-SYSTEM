@@ -11,7 +11,7 @@ export class TRInputFormPanel extends React.Component {
     }
 
     passPropsToChildren = () => {
-        const { header, subHeader, onSubmit, isRequired, btnTXT } = this.props;
+        const { header, subHeader, onSubmit, isRequired, btnTXT, btnDisabled } = this.props;
 
         //pang pasa ng props dito sa parent sa child (parent props -> children)
         const enhancedChildren = React.Children.map(this.props.children, (child) => {
@@ -21,7 +21,8 @@ export class TRInputFormPanel extends React.Component {
                 header,
                 subHeader,
                 isRequired,
-                btnTXT
+                btnTXT,
+                btnDisabled
             });
         });
 
@@ -53,7 +54,7 @@ export class InputForm extends React.Component {
 
     passPropsToChildren = () => {
         const { onSubmit, isRequired } = this.props;
-        console.log(this.props);
+        //console.log(this.props);
         const enhancedChildren = React.Children.map(this.props.children, (child) => {
             if (!child) return null;
             return React.cloneElement(child, {
@@ -66,7 +67,8 @@ export class InputForm extends React.Component {
     }
 
     render () {
-        const { onSubmit, btnTXT, hasCancel, onCancel, cancelTXT } = this.props;
+        const { onSubmit, btnTXT, hasCancel, onCancel, cancelTXT, btnDisabled } = this.props;
+
         return (
             <form className="tr-inputform" onSubmit={(e) => onSubmit(e)}>
                 {this.passPropsToChildren()}
@@ -76,7 +78,7 @@ export class InputForm extends React.Component {
                             {cancelTXT || 'CANCEL'}
                         </button>
                     )}
-                    <button className="tr-inputform-submit" type="submit">{btnTXT || 'SUBMIT'}</button>
+                    <button disabled={btnDisabled} className="tr-inputform-submit" type="submit">{btnTXT || 'SUBMIT'}</button>
                 </div>
             </form>
         );

@@ -34,9 +34,9 @@ export class Table extends React.Component {
       this.setState({ currentPage: 1 });
     }
 
-    // FIX: re-sync selected array when data length changes so indices
-    // never go out of bounds and checkboxes stay controlled
-    if (prevProps.data?.length !== this.props.data?.length) {
+    // FIX: use reference check instead of length check so new array
+    // spreads ([...products]) trigger a re-sync even at the same length
+    if (prevProps.data !== this.props.data) {
       this.setState({
         selected: new Array(this.props.data.length).fill(false),
         selectAll: false,
@@ -103,7 +103,11 @@ export class Table extends React.Component {
       : null;
 
     // FIX: changed > 1 to > 0 so empty arrays don't set headers to null
-    const headers = this.props.data && this.props.data.length > 0 ? Object.keys(data[0]) : [];
+    // FIX: use this.props.data[0] consistently instead of data[0]
+    const headers =
+      this.props.data && this.props.data.length > 0
+        ? Object.keys(this.props.data[0])
+        : [];
 
     const hasData = paginatedData && paginatedData.length > 0;
 
@@ -121,13 +125,11 @@ export class Table extends React.Component {
             <div className="table-header-right">
               <div className="table-search">{isDetailed.search}</div>
               {isDetailed.hasButton == true ? (
-                // <button
-                //   className="table-new-btn"
-                //   onClick={(e) => isDetailed.CB(e)}
-                // >
-                //   {isDetailed.buttonInfo}
-                // </button>
-                <Button error text={isDetailed.buttonInfo} onClick={(e) => isDetailed.CB(e)}/>
+                <Button
+                  error
+                  text={isDetailed.buttonInfo}
+                  onClick={(e) => isDetailed.CB(e)}
+                />
               ) : null}
             </div>
           </div>
@@ -137,7 +139,8 @@ export class Table extends React.Component {
           <table className="table">
             <thead className="table-thead">
               <tr className="table-thead-row">
-                {hasSelect && data && data.length > 1 ? (
+                {/* FIX: changed > 1 to > 0 */}
+                {hasSelect && data && data.length > 0 ? (
                   <th className="table-th table-th--check">
                     <input
                       className="table-checkbox"
@@ -152,7 +155,8 @@ export class Table extends React.Component {
                     {h.toUpperCase()}
                   </th>
                 ))}
-                {hasAction && data && data.length > 1 ? (
+                {/* FIX: changed > 1 to > 0 */}
+                {hasAction && data && data.length > 0 ? (
                   <th className="table-th table-th--action">ACTIONS</th>
                 ) : null}
               </tr>

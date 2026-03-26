@@ -24,7 +24,6 @@ export const newProduct = async (req, res) => {
 export const fetchProducts = async (req, res) => {
     const {selectedBranch} = req.query;
     try {
-        console.log(selectedBranch);
         const products = await Product.fetchProducts(selectedBranch);
         ApiResponseModel(res, SUCCESS, NEW_PRODUCT, products);
     } catch (error) {

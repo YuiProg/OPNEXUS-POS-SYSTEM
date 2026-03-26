@@ -46,7 +46,8 @@ function App() {
     addNewProduct, 
     branches,
     errorProduct,
-    categories
+    categories,
+    addLoading
   } = ProductStore();
 
   const {
@@ -77,7 +78,7 @@ function App() {
           hasCancel
           onCancel={() => setModal(false)}
         >
-          <InputForm isRequired onSubmit={(e) => postProduct(e)}>
+          <InputForm isRequired onSubmit={(e) => postProduct(e)} btnDisabled={addLoading}>
               <InputRow gap={15} titles={['ProductID']}>
                 <InputField placeholder="PRODUCT ID (auto generated)" disabled/>
               </InputRow>

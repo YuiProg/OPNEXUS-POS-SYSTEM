@@ -3,6 +3,7 @@ import AuthStore from "./Authstore";
 import axiosInstance from "../helpers/axiosInstance";
 import ApiConfig from "../Api/ApiConfig";
 import axiosError from "../helpers/axiosError";
+import ModalStore from "./ModalStore";
 
 const {
  addProduct,
@@ -40,7 +41,7 @@ const ProductStore = create((set, get) => ({
     'Cotton',
     'Drip Tip'
   ],
-  addLoading: true,
+  addLoading: false,
   errorProduct: null,
 
   setProductData: (name, value) => {
@@ -49,10 +50,9 @@ const ProductStore = create((set, get) => ({
 
   //TODO: IMAGE VALIDATION
   addNewProduct: async () => {
-    // eslint-disable-next-line no-unused-vars
-    const {productName, quantity, category, image, price, productBranch, products} = get();
+    const {productName, quantity, category, price, productBranch} = get();
     const { AuthUser } = AuthStore.getState();
-    
+    const { setModal } = ModalStore.getState();
     const payload = {
       productName,
       quantity,
@@ -62,16 +62,19 @@ const ProductStore = create((set, get) => ({
       productBranch
     }
 
+    set({addLoading: true});
+
     try {
       const newProduct = await axiosInstance.post(addProduct, payload);
-      console.log(newProduct.data);  
-      //const products = newProduct.data;
-      set({products: {...get().products, products}});
-      //set((state)=> ({products: [...state.products, newProduct.data]}));
+      // eslint-disable-next-line no-unused-vars
+      const { createdAt, createdById, _id, updatedAt, __v, ...rest } = newProduct.data.data;
+      set((state) => ({ products: [...state.products, rest] }));
     } catch (error) {
       set({errorProduct: axiosError(error)});
     } finally {
       set({addLoading: false});
+      setModal(false);
+      window.location.reload();
     }
   },
 
@@ -83,7 +86,11 @@ const ProductStore = create((set, get) => ({
           selectedBranch: productBranch
         }
       });
-      set({products: products.data});
+      //console.log(products.data.data);
+      const data = products.data.data;
+      // eslint-disable-next-line no-unused-vars
+      const cleanedData = data.map(({createdAt, createdById, _id, updatedAt, __v, ...rest}) => rest);
+      set({products: cleanedData});
     } catch (error) {
       console.log(error);
       set({errorProduct: axiosError(error)});

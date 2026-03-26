@@ -7,6 +7,7 @@ import Strings from '../strings/strings-codes';
 import axiosError from '../helpers/axiosError';
 import Toast from '../toast/Toast';
 import { Navigate } from 'react-router-dom';
+import {io} from 'socket.io-client';
 
 const { 
     loginUsers,
@@ -23,6 +24,7 @@ const AuthStore = create((set, get) => ({
     AuthLoading: true,
     errorUser: null,
     selectedBranch: null,
+    socket: null,
 
     checkAuth: async () => {
         try {
@@ -33,23 +35,26 @@ const AuthStore = create((set, get) => ({
             set({AuthUser: null});
         } finally {
             set({AuthLoading: false});
+            get().connectSocket();
         }
     },
 
     loginUser: async (username, password) => {
         try {
-            set({AuthLoading: true, error: null});
+            set({ AuthLoading: true, errorUser: null });
+            
             const authUser = await axiosInstance.post(loginUsers, {
                 username,
                 password
-            }); 
-            //toast.success('User logged in!');
-            set({AuthUser: authUser.data});
-            get().checkAuth();
+            });
+            
+            set({ AuthUser: authUser.data });
+            await get().checkAuth();
+            
         } catch (error) {
-            set({errorUser: axiosError(error)});
+            set({ errorUser: axiosError(error) });
         } finally {
-            set({AuthLoading: false});
+            set({ AuthLoading: false });
         }
     },
     
@@ -70,8 +75,36 @@ const AuthStore = create((set, get) => ({
             return false;
         } finally {
             set({AuthLoading: false});
+            get().disconnectSocket();
         }
+    },
+
+    connectSocket: () => {
+        const { AuthUser, socket } = get();
+        
+        
+        if (!AuthUser?._id || socket?.connected) return;
+
+        const newSocket = io(import.meta.env.VITE_API_URL, {
+            query: {
+                userId: AuthUser._id
+            },
+            autoConnect: false 
+        });
+
+        newSocket.connect();
+        set({ socket: newSocket });
+
+        newSocket.on('onlineUsers', (data) => {
+            console.log(data);
+            set({ onlineUsers: data });
+        });
+    },
+    
+    disconnectSocket: () => {
+        if (get().socket?.connected) get().socket.disconnect(); 
     }
+
 }));
 
 export default AuthStore;

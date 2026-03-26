@@ -7,11 +7,11 @@ import connectDB from './lib/DB.js';
 import authRoutes from './routes/auth.routes.js';
 import productRoutes from './routes/product.routes.js';
 import dns from 'dns';
+import { app, server } from './lib/socket.js';
 
 dns.setServers(["1.1.1.1", "8.8.8.8"]);
 
 dotenv.config();
-const app = express();
 app.use(cors({
     origin: ['http://localhost:5173', 'http://localhost'],
     credentials: true
@@ -22,7 +22,6 @@ app.use(express.json({
 }));
 
 app.use(cookieParser());
-const server = http.createServer(app);
 
 //test route
 app.get('/test', (req, res) => {

@@ -38,7 +38,6 @@ export const updateUser = async (req, res) => {
     try {
         const data = req.body;
         const {id} = req.query;
-        console.log(id);
         const updated_user = await User.updateUser(id, data);
         ApiResponseModel(res, SUCCESS, SUCCESS_MESS, updated_user);
     } catch (error) {
@@ -55,7 +54,6 @@ export const logoutUser = async (req, res) => {
 export const getAuthUser = async (req, res) => {
     try {
         const {userId} = req.user;
-        console.log(req.user.userId);
         const user = await User.getUser(userId);
 
         //const {password: _, ...userWithoutPassword} = user.toObject();

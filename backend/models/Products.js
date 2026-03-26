@@ -65,7 +65,7 @@ productSchema.statics.fetchProducts = async function (selectedBranch) {
         const productByBranch = await this.find({productBranch: selectedBranch});
         return productByBranch;
     }
-    const products = await this.find({});
+    const products = await this.find({}).sort({createdAt: -1});
     return products;
 }
 
