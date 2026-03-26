@@ -20,7 +20,20 @@ h1 {
   */
 }
 
-.db-top-contents .db-bigtitle, .db-branch-dropdown{
+.db-header {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.db-header .db-sentence {
+  padding-top: 2%;
+  bottom: 0;
+  font-size: 12px;
+  font-weight: 200;
+}
+
+.db-top-contents .db-bigtitle, .db-branch-dropdown {
   font-weight: 600;
   color: #fff;
 }
@@ -30,6 +43,7 @@ h1 {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  padding-inline: 1%;
 }
 
 .db-branch-text {
@@ -44,8 +58,8 @@ h1 {
   flex-direction: row;
   align-items: center;
   gap: 12px;
-  margin-top: 15px;
-  margin-bottom: 15px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .dashboard-container__graph-container {

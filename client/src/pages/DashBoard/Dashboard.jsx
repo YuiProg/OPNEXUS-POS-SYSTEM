@@ -42,7 +42,10 @@ class Dashboard extends React.Component {
       <div className="dashboard-container">
         {/* HELLO WHAT DO YOU WANT TO DO KEME KEME SECTION */}
         <div className="db-top-contents">
-          <h1 className="db-bigtitle">Hello, What do you want to today?</h1>
+          <div className="db-header">
+            <h1 className="db-bigtitle">Dashboard</h1>
+            <p className="db-sentence">Overview of system activity and performance.</p>
+          </div>
           <div className="db-branch-dropdown">
             <p className="db-branch-text">Branch</p>
             <DropDown 

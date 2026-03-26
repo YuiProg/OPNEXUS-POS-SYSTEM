@@ -1,4 +1,5 @@
 import React from "react";
+import './StaffManagement.css'
 import { InputForm, InputRow, TRInputFormPanel } from "../../components/TRInputForm/TRInputForm";
 import InputField from "../../components/TRInputField/InputFIeld";
 import DropDown from "../../components/TRDropDown/Dropdown";
@@ -57,10 +58,16 @@ class StaffManagement extends React.Component {
             // </TRInputFormPanel>
             //<Button success text="+ Add Stock" onClick={() => console.log('test')}/>
             <>
-            <div className="staffmanagement-container">
-                <div className="branch-top-content">
-                    <h1 className="db-bigtitle">Hello, What do you want to today?</h1>
-                    <DropDown/>
+            <div className="sm-container">
+                <div className="sm-top-contents">
+                    <div className="sm-header">
+                        <h1 className="sm-bigtitle">Staff Management</h1>
+                        <p className="sm-sentence">Manage clerks.</p>
+                    </div>
+                    <div className="sm-branch-dropdown">
+                        <p className="sm-branch-text">Branch</p>
+                        <DropDown className="sm-branch-dd"/>
+                    </div>
                 </div>
                 <Table data={[]} isDetailed={tableData}/>
             </div>

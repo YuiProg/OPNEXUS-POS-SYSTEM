@@ -1,9 +1,32 @@
-.branches-container {
-    width: 100%;
+.bm-container {
+    width: auto;
     height: 100%;
     background: #111111
 }
 
-h1 {
-    margin: 0;
+.bm-header {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.bm-header .bm-sentence {
+  padding-top: 1%;
+  bottom: 0;
+  font-size: 12px;
+  font-weight: 200;
+}
+
+.bm-top-contents .bm-bigtitle {
+  font-weight: 600;
+  color: #fff;
+}
+
+.bm-top-contents {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding-inline: 2%;
+  padding-block-start: 1%;
 }

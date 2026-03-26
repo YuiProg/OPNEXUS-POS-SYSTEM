@@ -18,9 +18,12 @@ class Branches extends React.Component {
         ];
 
         return (
-            <div className="branches-container">
-                <div className="branch-top-content">
-                    <h1 className="db-bigtitle">Hello, What do you want to today?</h1>
+            <div className="bm-container">
+                <div className="bm-top-contents">
+                    <div className="bm-header">
+                        <h1 className="bm-bigtitle">Branch Monitoring</h1>
+                        <p className="bm-sentence">See which branches are active and inactive.</p>
+                    </div>
                 </div>
                 {/* BRANCHES CARDS */}
                 <div className="branches-cards-container">

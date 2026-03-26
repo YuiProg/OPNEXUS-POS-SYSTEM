@@ -1,0 +1,48 @@
+body {
+  background: #111111;
+}
+
+h1 {
+  margin: 0;
+}
+
+.sm-container {
+  background: #111111;
+  color: #fff;
+  padding: 0;
+  width: auto;
+  height: -webkit-fill-available;
+}
+
+.sm-header {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.sm-header .sm-sentence {
+  padding-top: 2%;
+  bottom: 0;
+  font-size: 12px;
+  font-weight: 200;
+}
+
+.sm-top-contents .sm-bigtitle, .sm-branch-dropdown {
+  font-weight: 600;
+  color: #fff;
+}
+
+.sm-top-contents {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding-inline: 2%;
+  padding-block-start: 1%;
+}
+
+.sm-branch-text {
+  font-size: 15px;
+  font-weight: 300;
+  margin: 4px;
+}

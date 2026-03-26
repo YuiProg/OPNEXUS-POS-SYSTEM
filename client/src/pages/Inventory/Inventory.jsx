@@ -80,11 +80,14 @@ class Inventory extends React.Component {
     return (
       <>
         <div className="inventory-container">
-          <div className="top-contents">
-            <h1 className="bigtitle">Hello, What do you want to do today?</h1>
-            <div className="branch-dropdown">
-              <p className="branch-text">Branch</p>
-              <DropDown className="branch-dd" />
+          <div className="iv-top-contents">
+            <div className="iv-header">
+              <h1 className="iv-bigtitle">Stock Overview</h1>
+              <p className="iv-sentence">Manage stock, items, and quantities.</p>
+            </div>
+            <div className="iv-branch-dropdown">
+              <p className="iv-branch-text">Branch</p>
+              <DropDown className="iv-branch-dd" />
             </div>
           </div>
           <div>
