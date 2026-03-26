@@ -12,6 +12,7 @@ const Strings = Object.freeze({
     INVALID_ID: 'Id is not valid.', 
     USER_NOT_EXIST: 'User does not exist.',
     USER_LOGOUT: 'User logged out.',
+    SHIFT_ERR: 'Shift is required!',
 
     //products fail
     FAILED_ADD: 'Failed to add product.',
@@ -24,6 +25,9 @@ const Strings = Object.freeze({
     ERROR_MESS: 'Error',
     UNAUTHORIZED_MESS: 'Unauthorized',
     FORBIDDEN_MESS: 'Forbidden',
+    NEW_PRODUCT: 'New product created,',
+    NEW_BRANCH: 'New branch created.',
+    GET_BRANCH: 'Branches found',
 
     //cred
     usnm: 'username',

@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 import connectDB from './lib/DB.js';
 import authRoutes from './routes/auth.routes.js';
 import productRoutes from './routes/product.routes.js';
+import branchRoutes from './routes/branch.routes.js';
 import dns from 'dns';
 import { app, server } from './lib/socket.js';
 
@@ -28,9 +29,12 @@ app.get('/test', (req, res) => {
     res.send('Hello World!');
 });
 
+//auth routes
 app.use('/api', authRoutes);
+//product routes
 app.use('/api', productRoutes);
-
+//branch routes
+app.use('/api', branchRoutes);
 
 server.listen(process.env.PORT, () => {
     connectDB();

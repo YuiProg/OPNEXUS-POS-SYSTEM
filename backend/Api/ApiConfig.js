@@ -11,7 +11,13 @@ const ApiConfig = Object.freeze({
 
     //=========add product==========
     addProduct: apiEndpoint + 'addProduct',
-    fetchProduct: apiEndpoint + 'fetchProducts'
+    fetchProduct: apiEndpoint + 'fetchProducts',
+    //==============================
+
+    //branch cards
+    setBranchActive: apiEndpoint + 'setBranchActive',
+    getBranches: apiEndpoint + 'getBranch',
+    addBranch: apiEndpoint + 'addBranch'
 })
 
 export default ApiConfig;

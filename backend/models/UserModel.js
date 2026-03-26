@@ -11,6 +11,7 @@ const {
     CRED_ERROR,
     USER_NOT_EXIST,
     INVALID_ID,
+    SHIFT_ERR,
     pw,
     us
 } = Strings;
@@ -29,20 +30,44 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, BRANCH_REQ],
     },
+    shift: {
+        type: Number,
+        required: [true, SHIFT_ERR],
+        default: 24,
+        minLength: 1,
+        maxLength: 24
+    },
+    salary: {
+        type: Number,
+        required: true,
+    },
     role: {
         type: String,
         required: [true, ROLE_REQ],
         default: 'Clerk',
     },
-    profilePicURL: {
+    firstName: {
         type: String,
-        //required: [true, 'Profile picture is required'],
+        required: true
     },
-    profilePicId: {
+    middleName: {
         type: String,
-        //required: true
-    }
-});
+        required: false
+    },
+    lastName: {
+        type: String,
+        required: true
+    },
+    phoneNumber: {
+        type: Number,
+        required: true,
+        maxLength: 10
+    },
+    address: {
+        type: String,
+        required: true
+    },
+}, {timestamps: true});
 
 userSchema.pre('save', async function () {
     if (!this.isModified(pw)) return;
