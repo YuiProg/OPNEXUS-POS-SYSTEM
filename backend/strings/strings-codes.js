@@ -14,6 +14,14 @@ const Strings = Object.freeze({
     USER_LOGOUT: 'User logged out.',
     SHIFT_ERR: 'Shift is required!',
 
+    //auth errors
+    SALARY_ERR: 'PALDOOOOOOOO',
+    FNAME_ERR: 'First name is required.',
+    LNAME_ERR: 'Last name is required.',
+    PNUM_ERR: 'Phone number is required.',
+    ADDR_ERR: 'Address is required.',
+    GEND_ERR: 'Gender is required.',
+
     //products fail
     FAILED_ADD: 'Failed to add product.',
     INVALID_PRODUCT_CODE: 'Invalid product code.',
@@ -29,7 +37,7 @@ const Strings = Object.freeze({
     NEW_BRANCH: 'New branch created.',
     GET_BRANCH: 'Branches found',
 
-    //cred
+    //credy
     usnm: 'username',
     pw: 'password',
     nm: 'name',

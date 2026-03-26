@@ -12,6 +12,12 @@ const {
     USER_NOT_EXIST,
     INVALID_ID,
     SHIFT_ERR,
+    SALARY_ERR,
+    FNAME_ERR,
+    LNAME_ERR,
+    GEND_ERR,
+    PNUM_ERR,
+    ADDR_ERR,
     pw,
     us
 } = Strings;
@@ -43,7 +49,7 @@ const userSchema = new mongoose.Schema({
     },
     salary: {
         type: Number,
-        required: true,
+        required: [true, SALARY_ERR] 
     },
     role: {
         type: String,
@@ -52,7 +58,7 @@ const userSchema = new mongoose.Schema({
     },
     firstName: {
         type: String,
-        required: true
+        required: [true, FNAME_ERR]
     },
     middleName: {
         type: String,
@@ -60,16 +66,20 @@ const userSchema = new mongoose.Schema({
     },
     lastName: {
         type: String,
-        required: true
+        required: [true, LNAME_ERR]
+    },
+    gender: {
+        type: String,
+        required: [true, GEND_ERR],
     },
     phoneNumber: {
         type: Number,
-        required: true,
+        required: [true, PNUM_ERR],
         maxLength: 10
     },
     address: {
         type: String,
-        required: true
+        required: [true, ADDR_ERR]
     },
 }, {timestamps: true});
 
