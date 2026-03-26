@@ -3,16 +3,20 @@ import "./BarsChart.css";
 import Box from '@mui/material/Box';
 import { BarChart } from '@mui/x-charts/BarChart';
 
-const uData = [4000, 3000, 2000, 2780, 1890, 2390, 3490];
-const pData = [2400, 1398, 9800, 3908, 4800, 3800, 4300];
+const pData = [2400, 1398, 4800, 3908, 4800, 3800, 4300, 2000, 4000, 4800, 2600, 3860];
 const xLabels = [
-  'Page A',
-  'Page B',
-  'Page C',
-  'Page D',
-  'Page E',
-  'Page F',
-  'Page G',
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December'
 ];
 
 class BarsChart extends React.Component {
@@ -23,16 +27,39 @@ class BarsChart extends React.Component {
   render() {
     return (
       <div className="bc-container">
+        <h3 className="bc-title">Statistics</h3>
         <Box sx={{ width: '100%', height: 300 }}>
           <BarChart
-            style={{background: "white"}}
             series={[
-              { data: pData, label: 'pv', id: 'pvId' },
-              { data: uData, label: 'uv', id: 'uvId' },
+              { data: pData, label: 'Sales', id: 'pvId', color: '#E31E24' },
             ]}
-            xAxis={[{ data: xLabels, height: 28 }]}
-            yAxis={[{ width: 50 }]}
-            
+            xAxis={[{ 
+              data: xLabels, 
+              height: 28,
+              tickLabelStyle: {
+                fill: 'white',
+                fontWeight: 10,
+              },
+             }]}
+              yAxis={[{ 
+                width: 50,
+                tickLabelStyle: {
+                  fill: 'white',
+                  fontWeight: 10,
+                },
+              }]}
+              slotProps={{
+                legend: {
+                  direction: 'horizontal',
+                  position: { vertical: 'top', horizontal: 'center' },
+                  padding: 0,
+                  itemMarkWidth: 10,
+                  itemMarkHeight: 10,
+                  sx: {
+                    color: 'white', // Set the legend text color
+                  },
+                },
+              }}
           />
         </Box>
       </div>

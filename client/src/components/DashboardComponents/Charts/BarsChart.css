@@ -6,3 +6,10 @@
   border-radius: 10px;
   position: relative;
 }
+
+.bc-title {
+  font-size: 14px;
+  font-weight: 300;
+  color: #fff;
+  padding-left: 2%;
+}

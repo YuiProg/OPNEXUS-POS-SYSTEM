@@ -323,13 +323,13 @@ export class TableData extends React.Component {
                   className="table-action-btn table-action-btn--delete"
                   onClick={() => CBD(row)}
                 >
-                  <Trash2 size={15} />
+                  <Trash2 size={20} />
                 </button>
                 <button
                   className="table-action-btn table-action-btn--edit"
                   onClick={() => CBE(row)}
                 >
-                  <SquarePen size={15} />
+                  <SquarePen size={20} />
                 </button>
               </td>
             ) : null}
