@@ -26,7 +26,7 @@ class TRAddfile extends React.Component {
 
     render () {
         const {
-            onChange
+            onChange,
         } = this.props;
 
         return (

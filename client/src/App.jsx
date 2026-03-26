@@ -72,12 +72,32 @@ function App() {
       <Modal
         onClose={() => setShowModal(false)}
         header="Add clerk"
+        subHeader="Fill in the details for the clerk"
         hasCancel
         onCancel={() => setShowModal(false)}
       >
-        <InputForm>
-          <InputRow>
-          
+        <InputForm isRequired>
+          <InputRow gap={15} titles={['Username', 'Password']}>
+            <InputField text placeholder="Enter Username"/>
+            <InputField password placeholder="Enter Password"/>
+          </InputRow>
+          <InputRow gap={15} titles={['First Name', 'Middle Name', 'Last Name']}>
+            <InputField text placeholder="Enter First Name"/>
+            <InputField text placeholder="Enter Middle Name"/>
+            <InputField text placeholder="Enter Last Name"/>
+          </InputRow>
+          <InputRow gap={15} titles={['Phone Number', 'Address', 'Salary']}>
+            <InputField number placeholder="(+63)"/>
+            <InputField placeholder="Enter Address"/>
+            <InputField number placeholder="Enter Salary"/>
+          </InputRow>
+          <InputRow gap={15} titles={["Shift", "Role"]}>
+            <DropDown maxWidth options={['Day', 'Night']} defaultValue="Role"/>
+            <DropDown maxWidth options={['Admin', 'Clerk']} defaultValue="Shift"/>
+          </InputRow>
+          <InputRow gap={15} titles={['Gender', 'Branch']}>
+            <DropDown maxWidth options={['Male', 'Female']} defaultValue="Gender"/>
+            <DropDown maxWidth options={branches}/>
           </InputRow>
         </InputForm>
       </Modal>

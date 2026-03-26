@@ -37,6 +37,10 @@ const userSchema = new mongoose.Schema({
         minLength: 1,
         maxLength: 24
     },
+    gender: {
+        type: String,
+        required: [true]
+    },
     salary: {
         type: Number,
         required: true,

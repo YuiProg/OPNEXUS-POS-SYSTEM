@@ -23,7 +23,7 @@ class DropDown extends React.Component {
             <Layers className="tr-dropdown-icon" />
             <select className="tr-dropdown" style={{width: maxWidth ? "100%" : customWidth ? customWidth : "320px"}} onChange={(e) => onChange(e.target.value)} defaultValue={defaultValue || 'Select Branch...'}>
                 <option className="tr-options" disabled>
-                    Select Branch...
+                    {defaultValue ? `Select ${defaultValue}` : 'Select Branch...'}
                 </option>
                 {options?.map((l, i) => {
                     return(

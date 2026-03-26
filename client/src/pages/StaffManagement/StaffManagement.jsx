@@ -14,7 +14,7 @@ class StaffManagement extends React.Component {
 
 
     render () {
-        const {showModalBranch, setShowModal} = BranchStore.getState();
+        const {setShowModal} = BranchStore.getState();
 
         const tableData = {
             header: "CLERKS",

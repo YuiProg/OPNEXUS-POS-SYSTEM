@@ -19,6 +19,10 @@
   font-family: sans-serif;
 }
 
+.input-wrapper input[type="password"] {
+  padding-right: 40px;
+}
+
 .input-container {
   display: flex;
   flex-direction: column;
@@ -52,7 +56,6 @@
 .input-wrapper input[type="password"]:not(:placeholder-shown) + .floating-label {
   top: 10px;
   font-size: 10px;
-  /* color: #888888; */
 }
 
 /* ── Search variant ── */
@@ -69,7 +72,6 @@
   top: 10px;
   left: 16px;
   font-size: 10px;
-  /* color: #888888; */
 }
 
 .search-icon {
@@ -86,6 +88,18 @@
 
 .input-wrapper input.search-input:focus ~ .search-icon {
   color: #888888;
+}
+
+/* ── Eye icon ── */
+.input-wrapper .eye-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6e6e6e;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
 }
 
 /* ── Error state ── */

@@ -1,6 +1,6 @@
 import React from "react";
 import "./InputField.css";
-import { Search } from "lucide-react";
+import { Search, EyeClosed, Eye } from "lucide-react";
 
 class InputField extends React.Component {
   constructor(props) {
@@ -9,6 +9,7 @@ class InputField extends React.Component {
       value: "",
       error: null,
       searchValue: "",
+      showPassword: false
     };
   }
 
@@ -57,7 +58,6 @@ class InputField extends React.Component {
       disabled,
       placeholder,
       password,
-      text,
       isSearch,
       onEnterDown,
       color,
@@ -75,16 +75,21 @@ class InputField extends React.Component {
           {!isSearch ? (
             <>
               <input
-                style={disabled ? {backgroundColor: color, cursor: 'not-allowed'} : {backgroundColor: color}}
-                type={text ? "text" : password ? "password" : "text"}
-                required={required || isRequired}
-                onChange={(e) => onChange(this.checkNumber(e))}
-                disabled={disabled}
-                value={this.state.value}
-                placeholder=" "
-                onKeyDown={(e) => this.handleEnterDown(e, onEnterDown)}
-              />
-              <label className="floating-label">{placeholder}</label>
+                  style={disabled ? {backgroundColor: color, cursor: 'not-allowed'} : {backgroundColor: color}}
+                  type={password ? (this.state.showPassword ? "text" : "password") : "text"}
+                  required={required || isRequired}
+                  onChange={(e) => onChange(this.checkNumber(e))}
+                  disabled={disabled}
+                  value={this.state.value}
+                  placeholder=" "
+                  onKeyDown={(e) => this.handleEnterDown(e, onEnterDown)}
+                />
+                <label className="floating-label">{placeholder}</label>
+                {password && (
+                  this.state.showPassword
+                    ? <Eye className="eye-icon" onClick={() => this.setState({ showPassword: false })} />
+                    : <EyeClosed className="eye-icon" onClick={() => this.setState({ showPassword: true })} />
+                )}
             </>
           ) : (
             <>
