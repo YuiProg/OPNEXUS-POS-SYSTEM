@@ -15,6 +15,7 @@ const {
     SALARY_ERR,
     FNAME_ERR,
     LNAME_ERR,
+    GEND_ERR,
     PNUM_ERR,
     ADDR_ERR,
     pw,
@@ -62,6 +63,10 @@ const userSchema = new mongoose.Schema({
     lastName: {
         type: String,
         required: [true, LNAME_ERR]
+    },
+    gender: {
+        type: String,
+        required: [true, GEND_ERR],
     },
     phoneNumber: {
         type: Number,

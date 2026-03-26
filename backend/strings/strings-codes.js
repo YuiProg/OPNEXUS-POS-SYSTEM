@@ -20,6 +20,7 @@ const Strings = Object.freeze({
     LNAME_ERR: 'Last name is required.',
     PNUM_ERR: 'Phone number is required.',
     ADDR_ERR: 'Address is required.',
+    GEND_ERR: 'Gender is required.',
 
     //products fail
     FAILED_ADD: 'Failed to add product.',
