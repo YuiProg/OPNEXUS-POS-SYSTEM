@@ -25,6 +25,7 @@ class BarsChart extends React.Component {
       <div className="bc-container">
         <Box sx={{ width: '100%', height: 300 }}>
           <BarChart
+            style={{background: "white"}}
             series={[
               { data: pData, label: 'pv', id: 'pvId' },
               { data: uData, label: 'uv', id: 'uvId' },

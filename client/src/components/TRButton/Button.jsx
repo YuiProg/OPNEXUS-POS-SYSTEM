@@ -35,7 +35,8 @@ class Button extends React.Component {
                         maxWidth ? "100%" 
                         : customWidth ? customWidth 
                         : "auto"
-                    }`
+                    }`,
+                    border: `${cancel ? "1px solid white" : null}`
                 }}
                 className={`TR-button ${disabled && 'tr-btn-disabled'}`}
                 onClick={() => onClick()}

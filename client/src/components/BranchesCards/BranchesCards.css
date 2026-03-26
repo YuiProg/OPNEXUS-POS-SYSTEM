@@ -1,0 +1,29 @@
+.branch-card-container {
+    padding: 10px;
+    width: 220px;
+    height: 181px;
+    background-color: #242426;
+    border-radius: 16px;
+}
+
+.branch-card-header{
+    font-weight: 200;
+}
+
+.branch-card-button-items {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.branch-card-clerk {
+    margin: 0px;
+    font-size: small;
+    font-weight: 100;
+}
+
+.branch-card-clerk-header {
+    font-weight: 200;
+    margin: 0px;
+}

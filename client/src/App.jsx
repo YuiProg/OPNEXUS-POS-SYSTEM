@@ -16,6 +16,7 @@ import ProductStore from './store/ProductStore.js'
 import Loading from './components/Loading/Loading.jsx'
 import Toast from './toast/Toast.jsx'
 import Strings from './strings/strings-codes.js'
+import Branches from './pages/Branches/Branches.jsx'
 
 const Inventory = lazy(() => import('./pages/Inventory/Inventory.jsx'));
 const Dashboard = lazy(() => import('./pages/DashBoard/Dashboard.jsx'));
@@ -157,6 +158,18 @@ function App() {
               <TimeInOut/>
             </Sidebar>
           } />
+
+          <Route path='/monitor' element={
+            <Sidebar user={AuthUser}>
+              {null}
+            </Sidebar>
+          }/>
+
+          <Route path='/branch' element={
+            <Sidebar user={AuthUser}>
+              <Branches/>
+            </Sidebar>
+          }/>
 
           <Route path='*' element={<Navigate to='/' replace />} />
 
