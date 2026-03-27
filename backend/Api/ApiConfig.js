@@ -8,6 +8,8 @@ const ApiConfig = Object.freeze({
     registerUsers : apiEndpoint + 'register',
     updateUsers: apiEndpoint + 'updateUser',
     addUser: apiEndpoint + 'addUser',
+    fetchUsers: apiEndpoint + 'getUsers',
+    deleteMultipleUsers: apiEndpoint + 'userDeleteMultiple',
     //==============================
 
     //=========add product==========

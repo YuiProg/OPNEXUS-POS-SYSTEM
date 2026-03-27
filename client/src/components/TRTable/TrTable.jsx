@@ -102,8 +102,9 @@ export class Table extends React.Component {
       ? selected.slice(startIndex, startIndex + this.rowsPerPage)
       : null;
 
-    // FIX: changed > 1 to > 0 so empty arrays don't set headers to null
-    // FIX: use this.props.data[0] consistently instead of data[0]
+    
+    const selectedRows = this.props.data.filter((_, i) => selected[i]);
+
     const headers =
       this.props.data && this.props.data.length > 0
         ? Object.keys(this.props.data[0])
@@ -116,6 +117,7 @@ export class Table extends React.Component {
     for (var i = 1; i <= totalPages; i++) {
       pageNumbers.push(i);
     }
+    
 
     return (
       <div className="table-wrapper">
@@ -124,13 +126,27 @@ export class Table extends React.Component {
             <h1 className="table-title">{isDetailed.header}</h1>
             <div className="table-header-right">
               <div className="table-search">{isDetailed.search}</div>
-              {isDetailed.hasButton == true ? (
+              {isDetailed.hasButton && isDetailed.hasDelete ? (
+                <>
                 <Button
                   error
                   text={isDetailed.buttonInfo}
                   onClick={(e) => isDetailed.CB(e)}
                 />
-              ) : null}
+                <Button
+                  cancel
+                  text={isDetailed.deleteBtnInfo}
+                  onClick={() => isDetailed.CBD(selectedRows)}
+                />
+                </>
+                
+              ) : isDetailed.hasButton && (
+                <Button
+                  error
+                  text={isDetailed.buttonInfo}
+                  onClick={(e) => isDetailed.CB(e)}
+                />
+              )}
             </div>
           </div>
         ) : null}
@@ -139,7 +155,6 @@ export class Table extends React.Component {
           <table className="table">
             <thead className="table-thead">
               <tr className="table-thead-row">
-                {/* FIX: changed > 1 to > 0 */}
                 {hasSelect && data && data.length > 0 ? (
                   <th className="table-th table-th--check">
                     <input
@@ -155,7 +170,6 @@ export class Table extends React.Component {
                     {h.toUpperCase()}
                   </th>
                 ))}
-                {/* FIX: changed > 1 to > 0 */}
                 {hasAction && data && data.length > 0 ? (
                   <th className="table-th table-th--action">ACTIONS</th>
                 ) : null}

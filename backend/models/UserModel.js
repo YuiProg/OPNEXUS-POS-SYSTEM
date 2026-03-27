@@ -1,7 +1,7 @@
 import mongoose, { Types } from "mongoose";
 import bcrypt from 'bcrypt';
 import Strings from "../strings/strings-codes.js";
-import { updateUser } from "../controller/auth.Controller.js";
+import { nanoid } from 'nanoid'
 
 const {
     BRANCH_REQ,
@@ -23,6 +23,10 @@ const {
 } = Strings;
 
 const userSchema = new mongoose.Schema({
+    _id: {
+        type: String,
+        default: () => `US-${nanoid(8)}`
+    },
     username: {
         type: String,
         required: true,
@@ -115,14 +119,26 @@ userSchema.statics.getUser = async function (_id) {
     //check if valid ba yung id sa protected route
     //new types.objectid(id)
     //since string yung nirereturn na id i coconvert natin siya to mongoose id
-    if (!mongoose.Types.ObjectId.isValid(new Types.ObjectId(_id))) {
-        throw new Error(INVALID_ID);
-    }
+
+    //REMOVED NATO SINCE CUSTOM ID NA ANG GAMIT NATIN
+    // if (!mongoose.Types.ObjectId.isValid(new Types.ObjectId(_id))) {
+    //     throw new Error(INVALID_ID);
+    // }
     //pag walang na return na user hindi naman to gagana kasi may checker na sa taas HAHAHA
     if (!user) {
         throw new Error(USER_NOT_EXIST);
     }
     return user;
+}
+
+userSchema.statics.getUsers = async function () {
+    const users = await this.find({}).sort({createdAt: -1}).select("-password");
+    return users;
+}
+
+userSchema.statics.deleteMultiple = async function (data) {
+    const result = await this.deleteMany({_id: {$in: data}});
+    return result;
 }
 
 const User = mongoose.model(us, userSchema);

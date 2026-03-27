@@ -23,7 +23,7 @@ class Inventory extends React.Component {
 
   checkRole = () => {
     const { AuthUser } = AuthStore.getState();
-    if (AuthUser.role === "admin") {
+    if (AuthUser.role.toLowerCase() === "admin") {
       this.setState({ isAdmin: true });
     }
   }

@@ -13,7 +13,9 @@ const {
     loginUsers,
     logoutUsers,
     getUser,
-    addUser 
+    addUser,
+    fetchUsers,
+    deleteMultipleUsers
 } = ApiConfig;
 
 const {
@@ -40,6 +42,7 @@ const AuthStore = create((set, get) => ({
         branch: '',
         salary: null
     },
+    users: [],
 
     setInput: (name, value) => {
         const inputs = get().input;
@@ -121,6 +124,36 @@ const AuthStore = create((set, get) => ({
             //console.log(payload);
             const newUser = await axiosInstance.post(addUser, payload);
             if (newUser.data.status === "Success") {
+                window.location.reload();
+            }
+        } catch (error) {
+            set({errorUser: axiosError(error)});
+        }
+    },
+
+    fetchUsers: async () => {
+        try {
+            const users = await axiosInstance.get(fetchUsers);
+            const data = users.data.data;
+            const userId = get().AuthUser._id;
+
+            const cleanedData = data
+            .filter((user) => user._id !== userId)
+            // eslint-disable-next-line no-unused-vars
+            .map(({ username, createdAt, createdById, updatedAt, __v, firstName, _id, middleName, gender, lastName, ...rest }) => rest);
+
+            set({users: cleanedData});
+        } catch (error) {
+            set({errorUser: axiosError(error)});
+        }
+    },
+
+    deleteMultipleUsers: async (data) => {
+        // eslint-disable-next-line no-unused-vars
+        const ids = data.map((i, _) => i.Id);
+        try {
+            const res = await axiosInstance.post(deleteMultipleUsers, ids);
+            if (res.data.status === "Success") {
                 window.location.reload();
             }
         } catch (error) {

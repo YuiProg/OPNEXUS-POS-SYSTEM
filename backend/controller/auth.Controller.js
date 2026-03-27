@@ -64,3 +64,27 @@ export const getAuthUser = async (req, res) => {
         ApiResponseModel(res, ERROR, error.message);
     }
 }
+
+export const getUsers = async (req, res) => {
+    try {
+        const users = await User.getUsers();
+        const usersWithFullName = users.map((user) => ({
+            Id: user._id,
+            Employee: [user.firstName, user.middleName, user.lastName].filter(Boolean).join(" "),
+            ...user._doc
+        }));
+        ApiResponseModel(res, SUCCESS, SUCCESS_MESS, usersWithFullName);
+    } catch (error) {
+        ApiResponseModel(res, ERROR, error.message);
+    }
+}
+
+export const deleteMultiple = async (req, res) => {
+    try {
+        const list = req.body;
+        const result = await User.deleteMultiple(list);
+        ApiResponseModel(res, SUCCESS, SUCCESS_MESS, result);
+    } catch (error) {
+        ApiResponseModel(res, ERROR, error.message);
+    }
+}

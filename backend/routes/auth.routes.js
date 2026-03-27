@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAuthUser, loginUser, register, logoutUser, updateUser } from '../controller/auth.Controller.js';
+import { getAuthUser, loginUser, register, logoutUser, updateUser, getUsers, deleteMultiple } from '../controller/auth.Controller.js';
 import ApiConfig from '../Api/ApiConfig.js';
 import protectRoutes from '../middleware/protectRoutes.js';
 
@@ -10,7 +10,9 @@ const {
     registerUsers,
     logoutUsers,
     updateUsers,
-    addUser
+    addUser,
+    fetchUsers,
+    deleteMultipleUsers
 } = ApiConfig;
 
 router.post(registerUsers, register);
@@ -21,5 +23,8 @@ router.post(addUser, register);
 router.put(updateUsers, updateUser);
 
 router.get(getUser, protectRoutes, getAuthUser);
+router.get(fetchUsers, protectRoutes, getUsers);
+
+router.post(deleteMultipleUsers, protectRoutes, deleteMultiple);
 
 export default router;

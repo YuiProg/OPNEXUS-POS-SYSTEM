@@ -124,12 +124,12 @@ class Sidebar extends React.Component {
         return (
             <div className="sidebar-container">
                 <aside>
-                    <img src="https://i.imgur.com/4hfuK5S.png" alt="logo" className="logo"/>
+                    <img loading="lazy" fetchPriority="high" src="https://i.imgur.com/4hfuK5S.png" alt="logo" className="logo"/>
                     <ul className="sidebar-list">
                         {user.role.toLowerCase() === 'admin' ? (
                             sidebarItemsAdmin.map((l,i) => {
                                 return (
-                                    <li key={i} className="row" id={window.location.pathname == l.link ? "active" : ""}>
+                                    <li key={i} className="row" id={window.location.pathname === l.link ? "active" : ""}>
                                         <Link to={l.link}>
                                             <div className="sb-icon">{l.icon}</div>
                                             <div className="sb-title">{l.title}</div>

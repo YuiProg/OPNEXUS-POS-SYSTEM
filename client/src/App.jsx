@@ -18,6 +18,8 @@ import Toast from "./toast/Toast.jsx";
 import Strings from "./strings/strings-codes.js";
 import Branches from "./pages/Branches/Branches.jsx";
 import BranchStore from "./store/BranchStore.js";
+import { Table } from "./components/TRTable/TrTable.jsx";
+import Button from "./components/TRButton/Button.jsx";
 
 const Inventory = lazy(() => import("./pages/Inventory/Inventory.jsx"));
 const Dashboard = lazy(() => import("./pages/DashBoard/Dashboard.jsx"));
@@ -41,11 +43,15 @@ function App() {
     AuthLoading, 
     errorUser,
     setInput,
-    addUser 
+    addUser,
+    deleteMultipleUsers
   } = AuthStore();
   const { 
     isOpen, 
-    setModal 
+    setModal,
+    deleteModal,
+    setDeleteModal,
+    selectedItems
   } = ModalStore();
   const {
     setProductData,
@@ -76,6 +82,23 @@ function App() {
     e.preventDefault();
     addNewProduct();
   };
+
+  const showDeleteConfirmModal = () => {
+    const tableData = {
+      header: "Delete Data?",
+      hasButton: true,
+      CB: () => deleteMultipleUsers(selectedItems),
+      buttonInfo: 'DELETE'
+    }
+
+    return (
+      <Modal 
+        onClose={() => setDeleteModal(false)}
+        >
+        <Table data={selectedItems} isDetailed={tableData}/>
+      </Modal>
+    );
+  }
 
   const showBranchModal = () => {
     return (
@@ -192,12 +215,19 @@ function App() {
     }
   };
 
-  return (
-    <>
-      {/* ==========MODALS========= */}
+  const returnModals = () => {
+    return(
+      <>
       {isOpen && showModalAddProduct()}
       {showModalBranch && showBranchModal()}
-      {/* ========================= */}
+      {deleteModal && selectedItems.length > 0 ? showDeleteConfirmModal() : null}
+      </>
+    );
+  }
+
+  return (
+    <>
+      {returnModals()}
       {errorProduct
         ? showToastError("product")
         : errorUser

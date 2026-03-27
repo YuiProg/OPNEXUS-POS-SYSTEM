@@ -7,10 +7,31 @@ import Button from "../../components/TRButton/Button";
 import { Table } from "../../components/TRTable/TrTable";
 import BranchStore from "../../store/BranchStore";
 import { Modal } from "../../TRModal/Modal";
+import AuthStore from "../../store/Authstore";
+import ModalStore from "../../store/ModalStore";
+import ProductStore from "../../store/ProductStore";
 
 class StaffManagement extends React.Component {
     constructor (props) {
         super(props);
+        this.state = {
+            users: []
+        }
+    }
+
+    componentDidMount () {
+        const {fetchUsers} = AuthStore.getState();
+        fetchUsers();
+        this.unsubscribe = AuthStore.subscribe((state) => {
+            const users = state.users;
+            this.setState({users: users});
+        });
+    }
+
+    showConfirmDelModal = (e) => {
+        const { setDeleteModal, setSelectedItems } = ModalStore.getState();
+        setDeleteModal(true);
+        setSelectedItems(e);
     }
 
 
@@ -18,7 +39,7 @@ class StaffManagement extends React.Component {
         const {setShowModal} = BranchStore.getState();
 
         const tableData = {
-            header: "CLERKS",
+            header: "STAFFS",
             hasButton: true,
             CB: () => setShowModal(true),
             buttonInfo: "+NEW CLERK",
@@ -29,7 +50,11 @@ class StaffManagement extends React.Component {
                 onEnterDown={value => console.log(value)}
                 />
             ),
+            hasDelete: true,
+            deleteBtnInfo: 'Delete',
+            CBD: (e) => this.showConfirmDelModal(e)
         };
+        
         return (
             // <TRInputFormPanel  
             //     header="ADD NEW EMPLOYEE" 
@@ -69,7 +94,13 @@ class StaffManagement extends React.Component {
                         <DropDown className="sm-branch-dd"/>
                     </div>
                 </div>
-                <Table data={[]} isDetailed={tableData}/>
+                <Table 
+                    data={this.state.users} 
+                    isDetailed={tableData}
+                    hasSelect
+                    hasAction
+                    onDelete={() => {}}
+                    onEdit={() => {}}/>
             </div>
             </>
         );
