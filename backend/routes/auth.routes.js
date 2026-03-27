@@ -9,12 +9,14 @@ const {
     loginUsers,
     registerUsers,
     logoutUsers,
-    updateUsers
+    updateUsers,
+    addUser
 } = ApiConfig;
 
 router.post(registerUsers, register);
 router.post(loginUsers, loginUser);
 router.post(logoutUsers, logoutUser);
+router.post(addUser, register);
 
 router.put(updateUsers, updateUser);
 

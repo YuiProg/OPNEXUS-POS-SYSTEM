@@ -35,8 +35,18 @@ function App() {
   // const setProductData = ProductStore().setProductData;
   // const addProduct = ProductStore().addNewProduct;
   // const branches = ProductStore().branches;
-  const { checkAuth, AuthUser, AuthLoading, errorUser } = AuthStore();
-  const { isOpen, setModal } = ModalStore();
+  const { 
+    checkAuth, 
+    AuthUser, 
+    AuthLoading, 
+    errorUser,
+    setInput,
+    addUser 
+  } = AuthStore();
+  const { 
+    isOpen, 
+    setModal 
+  } = ModalStore();
   const {
     setProductData,
     addNewProduct,
@@ -60,7 +70,7 @@ function App() {
       </div>
     );
 
-  const defaultRoute = AuthUser?.role === "clerk" ? "/inventory" : "/dashboard";
+  const defaultRoute = AuthUser?.role.toLowerCase() === "clerk" ? "/inventory" : "/dashboard";
 
   const postProduct = (e) => {
     e.preventDefault();
@@ -76,28 +86,31 @@ function App() {
         hasCancel
         onCancel={() => setShowModal(false)}
       >
-        <InputForm isRequired>
+        <InputForm isRequired onSubmit={(e) => {
+          e.preventDefault();
+          addUser();
+        }}>
           <InputRow gap={15} titles={['Username', 'Password']}>
-            <InputField text placeholder="Enter Username"/>
-            <InputField password placeholder="Enter Password"/>
+            <InputField text placeholder="Enter Username" onChange={(value) => setInput('username', value)}/>
+            <InputField password placeholder="Enter Password" onChange={(value) => setInput('password', value)}/>
           </InputRow>
           <InputRow gap={15} titles={['First Name', 'Middle Name', 'Last Name']}>
-            <InputField text placeholder="Enter First Name"/>
-            <InputField text placeholder="Enter Middle Name"/>
-            <InputField text placeholder="Enter Last Name"/>
+            <InputField text placeholder="Enter First Name" onChange={(value) => setInput('firstName', value)}/>
+            <InputField text placeholder="Enter Middle Name" onChange={(value) => setInput('middleName', value)}/>
+            <InputField text placeholder="Enter Last Name" onChange={(value) => setInput('lastName', value)}/>
           </InputRow>
           <InputRow gap={15} titles={['Phone Number', 'Address', 'Salary']}>
-            <InputField number placeholder="(+63)"/>
-            <InputField placeholder="Enter Address"/>
-            <InputField number placeholder="Enter Salary"/>
+            <InputField number placeholder="(+63)" onChange={(value) => setInput('phoneNumber', value)}/>
+            <InputField text placeholder="Enter Address" onChange={(value) => setInput('address', value)}/>
+            <InputField number placeholder="Enter Salary" onChange={(value) => setInput('salary', value)}/>
           </InputRow>
           <InputRow gap={15} titles={["Shift", "Role"]}>
-            <DropDown maxWidth options={['Day', 'Night']} defaultValue="Role"/>
-            <DropDown maxWidth options={['Admin', 'Clerk']} defaultValue="Shift"/>
+            <DropDown maxWidth options={['Admin', 'Clerk']} defaultValue="Role" onChange={(value) => setInput('role', value)}/>
+            <DropDown maxWidth options={['Day', 'Night']} defaultValue="Shift" onChange={(value) => setInput('shift', value)}/>
           </InputRow>
           <InputRow gap={15} titles={['Gender', 'Branch']}>
-            <DropDown maxWidth options={['Male', 'Female']} defaultValue="Gender"/>
-            <DropDown maxWidth options={branches}/>
+            <DropDown maxWidth options={['Male', 'Female']} defaultValue="Gender" onChange={(value) => setInput('gender', value)}/>
+            <DropDown maxWidth options={branches} onChange={(value) => setInput('branch', value)}/>
           </InputRow>
         </InputForm>
       </Modal>
@@ -212,7 +225,7 @@ function App() {
           <Route
             path="/dashboard"
             element={
-              AuthUser?.role === "clerk" ? (
+              AuthUser?.role.toLowerCase() === "clerk" ? (
                 <Navigate to="/inventory" replace />
               ) : (
                 <Sidebar user={AuthUser}>
@@ -234,9 +247,13 @@ function App() {
           <Route
             path="/staff"
             element={
-              <Sidebar user={AuthUser}>
-                <StaffManagement />
-              </Sidebar>
+              AuthUser?.role.toLowerCase() === "clerk" ? (
+                <Navigate to="/inventory" replace />
+              ) : (
+                <Sidebar user={AuthUser}>
+                  <StaffManagement />
+                </Sidebar>
+              )
             }
           />
 
@@ -266,9 +283,13 @@ function App() {
           <Route
             path="/branch"
             element={
-              <Sidebar user={AuthUser}>
-                <Branches />
-              </Sidebar>
+              AuthUser?.role.toLowerCase() === "clerk" ? (
+                <Navigate to="/inventory" replace />
+              ) : (
+                <Sidebar user={AuthUser}>
+                  <Branches />
+                </Sidebar>
+              )
             }
           />
 

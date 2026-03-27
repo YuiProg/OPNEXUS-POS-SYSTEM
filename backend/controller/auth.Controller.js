@@ -14,9 +14,11 @@ const {
 
 export const register = async (req, res) => {
     try {
-        const createdUser = await User.registerUser(req.body);
+        const data = req.body;
+        
+        const createdUser = await User.registerUser(data);
         ApiResponseModel(res, CREATED, SUCCESS_MESS, createdUser);
-    } catch (err) {
+    } catch (error) {
         ApiResponseModel(res, error.message, ERROR);
     }
 }

@@ -12,7 +12,8 @@ import {io} from 'socket.io-client';
 const { 
     loginUsers,
     logoutUsers,
-    getUser 
+    getUser,
+    addUser 
 } = ApiConfig;
 
 const {
@@ -25,6 +26,26 @@ const AuthStore = create((set, get) => ({
     errorUser: null,
     selectedBranch: null,
     socket: null,
+    input: {
+        username: '',
+        password: '',
+        firstName: '',
+        middleName: '',
+        lastName: '',
+        gender: '',
+        phoneNumber: null,
+        shift: '',
+        role: '',
+        address: '',
+        branch: '',
+        salary: null
+    },
+
+    setInput: (name, value) => {
+        const inputs = get().input;
+        inputs[name] = value;
+        set({input: inputs});
+    },
 
     checkAuth: async () => {
         try {
@@ -76,6 +97,34 @@ const AuthStore = create((set, get) => ({
         } finally {
             set({AuthLoading: false});
             get().disconnectSocket();
+        }
+    },
+
+    addUser: async () => {
+        try {
+            const data = get().input;
+            const payload = {
+                username: data.username,
+                password: data.password,
+                branchLocation: data.branch,
+                shift: data.shift,
+                salary: Number(data.salary),
+                phoneNumber: Number(data.phoneNumber),
+                role: data.role,
+                firstName: data.firstName,
+                middleName: data.middleName,
+                lastName: data.lastName,
+                gender: data.gender,
+                address: data.address
+            };
+
+            //console.log(payload);
+            const newUser = await axiosInstance.post(addUser, payload);
+            if (newUser.data.status === "Success") {
+                window.location.reload();
+            }
+        } catch (error) {
+            set({errorUser: axiosError(error)});
         }
     },
 

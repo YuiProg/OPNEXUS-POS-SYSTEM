@@ -37,11 +37,8 @@ const userSchema = new mongoose.Schema({
         required: [true, BRANCH_REQ],
     },
     shift: {
-        type: Number,
+        type: String,
         required: [true, SHIFT_ERR],
-        default: 24,
-        minLength: 1,
-        maxLength: 24
     },
     salary: {
         type: Number,
@@ -50,7 +47,6 @@ const userSchema = new mongoose.Schema({
     role: {
         type: String,
         required: [true, ROLE_REQ],
-        default: 'Clerk',
     },
     firstName: {
         type: String,
@@ -71,6 +67,7 @@ const userSchema = new mongoose.Schema({
     phoneNumber: {
         type: Number,
         required: [true, PNUM_ERR],
+        minLength: 10,
         maxLength: 10
     },
     address: {

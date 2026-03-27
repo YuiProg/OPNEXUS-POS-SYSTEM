@@ -63,6 +63,7 @@ class Sidebar extends React.Component {
         //     return <Navigate to="/inventory" />;
         // }
         const { user } = this.props;
+        console.log(user);
         //tanggalin muna error sa es-lint since dipa ginagamit tong variable nato pero eto yung items sa sidebar
         const sidebarItemsAdmin = [
             {
@@ -125,7 +126,7 @@ class Sidebar extends React.Component {
                 <aside>
                     <img src="https://i.imgur.com/4hfuK5S.png" alt="logo" className="logo"/>
                     <ul className="sidebar-list">
-                        {user.role === 'admin' ? (
+                        {user.role.toLowerCase() === 'admin' ? (
                             sidebarItemsAdmin.map((l,i) => {
                                 return (
                                     <li key={i} className="row" id={window.location.pathname == l.link ? "active" : ""}>
@@ -136,7 +137,7 @@ class Sidebar extends React.Component {
                                     </li>
                                 );
                             })
-                        ) : user.role === 'clerk' ? (
+                        ) : user.role.toLowerCase() === 'clerk' ? (
                             sidebarItemsClerk.map((l,i) => {
                                 return (
                                     <li key={i} className="row" id={window.location.pathname == l.link ? "active" : ""}>
