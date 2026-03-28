@@ -19,6 +19,8 @@ import Strings from "./strings/strings-codes.js";
 import Branches from "./pages/Branches/Branches.jsx";
 import BranchStore from "./context/BranchStore.js";
 import { Table } from "./components/TRTable/TrTable.jsx";
+import { Toaster } from 'react-hot-toast';
+
 import Button from "./components/TRButton/Button.jsx";
 
 const Inventory = lazy(() => import("./pages/Inventory/Inventory.jsx"));
@@ -41,7 +43,7 @@ function App() {
     checkAuth,
     AuthUser,
     AuthLoading,
-    errorUser,
+    //errorUser,
     setInput,
     addUser,
     deleteMultipleUsers,
@@ -52,7 +54,7 @@ function App() {
     setProductData,
     addNewProduct,
     branches,
-    errorProduct,
+    //errorProduct,
     categories,
     addLoading,
     deleteMultipleProducts
@@ -261,6 +263,7 @@ function App() {
     );
   };
 
+  // eslint-disable-next-line no-unused-vars
   const showToastError = (type) => {
     switch (type) {
       case "product":
@@ -285,11 +288,12 @@ function App() {
   return (
     <>
       {returnModals()}
-      {errorProduct
+      {/* {errorProduct
         ? showToastError("product")
         : errorUser
           ? showToastError("user")
-          : null}
+          : null} */}
+      <Toaster position="top-center"/>
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
           <Route

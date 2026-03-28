@@ -4,6 +4,7 @@ import axiosInstance from "../helpers/axiosInstance";
 import ApiConfig from "../Api/ApiConfig";
 import axiosError from "../helpers/axiosError";
 import ModalStore from "./ModalStore";
+import toast from "react-hot-toast";
 
 const {
  addProduct,
@@ -67,15 +68,35 @@ const ProductStore = create((set, get) => ({
 
     try {
       const newProduct = await axiosInstance.post(addProduct, payload);
-      // eslint-disable-next-line no-unused-vars
-      const { createdAt, createdById, _id, updatedAt, __v, ...rest } = newProduct.data.data;
-      set((state) => ({ products: [...state.products, rest] }));
+      const data = newProduct.data.data;
+
+      // mirror the same cleaning logic as fetchProducts
+      // const { createdAt, productName: pn, creatorName, productBranch: pb, createdById, _id, updatedAt, __v, ...rest } = data;
+      // rest.Id = _id;
+      // rest.Creator = AuthUser.username,
+      // rest.Category
+      // const new = {
+      
+      // }
+
+      const newData = {
+        Id: data._id,
+        Name: data.productName.toUpperCase(),
+        Creator: data.creatorName,
+        Branch: data.productBranch,
+        quantity: data.quantity,
+        price: data.price,
+        category: data.category
+      };
+
+      set((state) => ({ products: [newData, ...state.products] }));
+      toast.success('Product added');
     } catch (error) {
+      toast.error(error.message);
       set({errorProduct: axiosError(error)});
     } finally {
       set({addLoading: false});
       setModal(false);
-      window.location.reload();
     }
   },
 
@@ -93,6 +114,7 @@ const ProductStore = create((set, get) => ({
       const cleanedData = data.map(({createdAt, productName, creatorName, productBranch, createdById, _id, updatedAt, __v, ...rest}) => rest);
       set({products: cleanedData});
     } catch (error) {
+      toast.error(error.message);
       console.log(error);
       set({errorProduct: axiosError(error)});
     }
@@ -106,6 +128,7 @@ const ProductStore = create((set, get) => ({
         window.location.reload();
       }
     } catch (error) {
+      toast.error(error.message);
       console.log(error);
       set({errorProduct: axiosError(error)});
     }

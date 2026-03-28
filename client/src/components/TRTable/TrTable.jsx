@@ -340,16 +340,16 @@ export class TableData extends React.Component {
             {hasAction ? (
               <td className="table-td table-td--action">
                 <button
-                  className="table-action-btn table-action-btn--delete"
-                  onClick={() => CBD(row)}
-                >
-                  <Trash2 size={20} />
-                </button>
-                <button
                   className="table-action-btn table-action-btn--edit"
                   onClick={() => CBE(row)}
                 >
                   <SquarePen size={20} />
+                </button>
+                <button
+                  className="table-action-btn table-action-btn--delete"
+                  onClick={() => CBD(row)}
+                >
+                  <Trash2 size={20} />
                 </button>
               </td>
             ) : null}

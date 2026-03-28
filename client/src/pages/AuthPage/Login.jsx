@@ -67,10 +67,10 @@ class Login extends React.Component {
     };
 
     render() {
-        const { loading, error} = this.state;
+        const { loading } = this.state;
         return (
             <>
-                {error && (
+                {/* {error && (
                     <Toast
                         error
                         message={error.status || 'Failed to login'}
@@ -78,7 +78,7 @@ class Login extends React.Component {
                         CB={() => {}}
                         onClose={() => AuthStore.setState({ error: null })}
                     />
-                )}
+                )} */}
                 <div className="login-container">
                     <div className="login-container__image">
                         <img src={bg_logo} className="login-container__image-one"/> 

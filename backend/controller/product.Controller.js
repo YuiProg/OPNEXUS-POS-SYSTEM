@@ -43,7 +43,7 @@ export const deleteMultipleProducts = async (req, res) => {
     try {
         const list = req.body;
         const result = await Product.deleteMultiple(list);
-         ApiResponseModel(res, SUCCESS, SUCCESS_MESS, result);
+        ApiResponseModel(res, SUCCESS, SUCCESS_MESS, result);
     } catch (error) {
         ApiResponseModel(res, ERROR, error.message);
     }

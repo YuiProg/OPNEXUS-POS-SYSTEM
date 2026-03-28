@@ -63,7 +63,7 @@ class Sidebar extends React.Component {
         //     return <Navigate to="/inventory" />;
         // }
         const { user } = this.props;
-        console.log(user);
+        //console.log(user);
         //tanggalin muna error sa es-lint since dipa ginagamit tong variable nato pero eto yung items sa sidebar
         const sidebarItemsAdmin = [
             {
