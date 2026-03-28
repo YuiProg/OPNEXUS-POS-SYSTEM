@@ -18,7 +18,7 @@ const ProductStore = create((set, get) => ({
   price: 0,
   category: '',
   image: null,
-  productBranch: 'any',
+  productBranch: '',
   products: [],
   branches: [
     'VAPORYA X VAPESTA',
@@ -81,7 +81,7 @@ const ProductStore = create((set, get) => ({
       const newData = {
         Id: data._id,
         Name: data.productName.toUpperCase(),
-        Creator: data.creatorName,
+        //Creator: data.creatorName,
         Branch: data.productBranch,
         quantity: data.quantity,
         price: data.price,
@@ -101,16 +101,18 @@ const ProductStore = create((set, get) => ({
 
   fetchProducts: async () => {
     try {
-      const {productBranch} = get();
+      const {selectedBranch} = AuthStore.getState();
+      console.log(selectedBranch);
       const products = await axiosInstance.get(fetchProduct, {
         params: {
-          selectedBranch: productBranch
+          selectedBranch: selectedBranch
         }
       });
       //console.log(products.data.data);
       const data = products.data.data;
+      console.log(data);
       // eslint-disable-next-line no-unused-vars
-      const cleanedData = data.map(({createdAt, productName, creatorName, productBranch, createdById, _id, updatedAt, __v, ...rest}) => rest);
+      const cleanedData = data.map(({createdAt, productName, creatorName, productBranch, createdById, _id, updatedAt, Creator, __v, ...rest}) => rest);
       set({products: cleanedData});
       console.log(cleanedData);
     } catch (error) {
