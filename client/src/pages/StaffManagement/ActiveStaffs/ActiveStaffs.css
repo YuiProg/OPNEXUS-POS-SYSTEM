@@ -21,6 +21,7 @@
 }
 
 .as-container .staff-list .staff {
+  width: 100%;
   list-style-type: none;
   padding: 5%;
   display: flex;
