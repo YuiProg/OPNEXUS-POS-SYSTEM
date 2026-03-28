@@ -84,8 +84,8 @@ const ProductStore = create((set, get) => ({
         //Creator: data.creatorName,
         Branch: data.productBranch,
         quantity: data.quantity,
-        price: data.price,
-        category: data.category
+        category: data.category,
+        price: data.price
       };
 
       set((state) => ({ products: [newData, ...state.products] }));
