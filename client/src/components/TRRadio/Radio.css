@@ -1,0 +1,3 @@
+input[type="radio"] {
+  accent-color: #00FF5E; /* Changes the checked dot to red */
+}

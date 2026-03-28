@@ -1,4 +1,5 @@
 import React from "react";
+import './Radio.css'
 
 class Radio extends React.Component {
     constructor (props) {
