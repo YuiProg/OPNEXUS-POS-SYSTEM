@@ -1,0 +1,37 @@
+.as-container {
+  width: auto;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  background: #242426;
+  box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 20px;
+  padding: 10%;
+}
+
+.as-header {
+  font-size: 24px;
+  font-weight: 300;
+}
+
+.as-container .staff-list {
+  padding: 0;
+}
+
+.as-container .staff-list .staff {
+  list-style-type: none;
+  padding: 5%;
+  display: flex;
+  gap: 5%;
+}
+
+.staff-icon {
+  display: flex;
+  align-items: center;
+}
+
+.staff-role {
+  font-weight: 100;
+}

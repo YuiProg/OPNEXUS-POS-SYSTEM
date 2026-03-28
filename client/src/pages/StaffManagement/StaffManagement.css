@@ -46,3 +46,13 @@ h1 {
   font-weight: 300;
   margin: 4px;
 }
+
+.sm-main-contents {
+  width: auto;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 12px;
+}
+

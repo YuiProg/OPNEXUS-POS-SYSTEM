@@ -10,6 +10,7 @@ import { Modal } from "../../TRModal/Modal";
 import AuthStore from "../../context/Authstore";
 import ModalStore from "../../context/ModalStore";
 import ProductStore from "../../context/ProductStore";
+import ActiveStaffs from "./ActiveStaffs/ActiveStaffs";
 
 class StaffManagement extends React.Component {
     constructor (props) {
@@ -95,13 +96,20 @@ class StaffManagement extends React.Component {
                         <DropDown className="sm-branch-dd"/>
                     </div>
                 </div>
-                <Table 
-                    data={this.state.users} 
-                    isDetailed={tableData}
-                    hasSelect
-                    hasAction
-                    onDelete={() => {}}
-                    onEdit={() => {}}/>
+                <div className="sm-main-contents">
+                    <div className="sm-table">
+                        <Table 
+                            data={this.state.users} 
+                            isDetailed={tableData}
+                            hasSelect
+                            hasAction
+                            onDelete={() => {}}
+                            onEdit={() => {}}/>
+                    </div>
+                    <div className="sm-active-staffs">
+                        <ActiveStaffs />
+                    </div>
+                </div>
             </div>
             </>
         );
