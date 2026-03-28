@@ -8,6 +8,7 @@ import axiosError from '../helpers/axiosError';
 import Toast from '../toast/Toast';
 import { Navigate } from 'react-router-dom';
 import {io} from 'socket.io-client';
+import toast from 'react-hot-toast';
 
 const { 
     loginUsers,
@@ -55,6 +56,7 @@ const AuthStore = create((set, get) => ({
             const user = await axiosInstance.get(getUser);
             set({AuthUser: user.data.data});
         } catch (error) {
+            //toast.error(error.message);
             set({errorUser: axiosError(error)});
             set({AuthUser: null});
         } finally {
@@ -73,9 +75,11 @@ const AuthStore = create((set, get) => ({
             });
             
             set({ AuthUser: authUser.data });
+            toast.success('Login successfull');
             await get().checkAuth();
             
         } catch (error) {
+            toast.error(error.message);
             set({ errorUser: axiosError(error) });
         } finally {
             set({ AuthLoading: false });
@@ -95,6 +99,7 @@ const AuthStore = create((set, get) => ({
             return true;
             
         } catch (error) {
+            toast.error(error.message);
             set({errorUser: axiosError(error)});
             return false;
         } finally {
@@ -123,10 +128,25 @@ const AuthStore = create((set, get) => ({
 
             //console.log(payload);
             const newUser = await axiosInstance.post(addUser, payload);
-            if (newUser.data.status === "Success") {
-                window.location.reload();
-            }
+            const {_id, firstName, middleName, lastName, shift, salary, role, phoneNumber, address, branchLocation} = newUser.data.data;
+            const newData = {
+                Id: _id,
+                Employee: `${firstName.toUpperCase()} ${middleName.toUpperCase()} ${lastName.toUpperCase()}`,
+                branchlocation: branchLocation,
+                shift: shift,
+                salary: salary,
+                role: role,
+                phoneNumber: phoneNumber,
+                address: address
+            };
+
+            set((state) => ({users: [newData, ...state.users]}));
+            toast.success('New user added');
+            // if (newUser.data.status === "Success") {
+            //     window.location.reload();
+            // }
         } catch (error) {
+            toast.error(error.message);
             set({errorUser: axiosError(error)});
         }
     },
@@ -141,9 +161,10 @@ const AuthStore = create((set, get) => ({
             .filter((user) => user._id !== userId)
             // eslint-disable-next-line no-unused-vars
             .map(({ username, createdAt, createdById, updatedAt, __v, firstName, _id, middleName, gender, lastName, ...rest }) => rest);
-            
+            console.log(cleanedData);
             set({users: cleanedData});
         } catch (error) {
+            toast.error(error.message);
             set({errorUser: axiosError(error)});
         }
     },
@@ -157,6 +178,7 @@ const AuthStore = create((set, get) => ({
                 window.location.reload();
             }
         } catch (error) {
+            toast.error(error.message);
             set({errorUser: axiosError(error)});
         }
     },
@@ -164,12 +186,13 @@ const AuthStore = create((set, get) => ({
     connectSocket: () => {
         const { AuthUser, socket } = get();
         
-        
         if (!AuthUser?._id || socket?.connected) return;
 
         const newSocket = io(import.meta.env.VITE_API_URL, {
-            query: {
-                userId: AuthUser._id
+            auth: {
+                userId: AuthUser._id,
+                username: AuthUser.username,
+                role: AuthUser.role
             },
             autoConnect: false 
         });
@@ -182,7 +205,7 @@ const AuthStore = create((set, get) => ({
             set({ onlineUsers: data });
         });
     },
-    
+
     disconnectSocket: () => {
         if (get().socket?.connected) get().socket.disconnect(); 
     }

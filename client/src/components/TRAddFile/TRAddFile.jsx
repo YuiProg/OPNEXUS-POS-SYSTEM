@@ -34,7 +34,7 @@ class TRAddfile extends React.Component {
                 {this.state.image 
                 ? (
                     <>
-                    <input type="file" hidden accept="image/*" onChange={async (e) => onChange(await this.formatFile(e))}/>
+                    <input type="file" hidden accept="image/png" onChange={async (e) => onChange(await this.formatFile(e))}/>
                     <div className="tr-addfile-details">
                         <img src={this.state.image} alt="image" className="tr-image"/>
                     </div>
@@ -42,7 +42,7 @@ class TRAddfile extends React.Component {
                 ) 
                 : (
                     <>
-                    <input type="file" hidden accept="image/*" onChange={async (e) => onChange(await this.formatFile(e))}/>
+                    <input type="file" hidden accept="image/png" onChange={async (e) => onChange(await this.formatFile(e))}/>
                     <div className="tr-addfile-details">
                         <Image size={40}/>
                         <p className="tr-addfile-header">Select Image</p>

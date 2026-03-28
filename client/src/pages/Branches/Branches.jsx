@@ -26,11 +26,13 @@ class Branches extends React.Component {
                     </div>
                 </div>
                 {/* BRANCHES CARDS */}
-                <div className="branches-cards-container">
+                <div className="branches-cards-activity">
                     <div className="branches-radio-container">
                         <Radio options={options} defaultChecked="Active" onChange={value => console.log(value)}/>
                         <Button cancel text="+ New Branch"/>
                     </div>
+                </div>
+                <div className="branches-cards-container">
                     <BranchesCards/>
                 </div>
             </div>

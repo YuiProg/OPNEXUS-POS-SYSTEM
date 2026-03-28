@@ -1,7 +1,29 @@
 .bm-container {
     width: auto;
     height: 100%;
-    background: #111111
+    background: #111111;
+    padding: 25px;
+    box-sizing: border-box;
+}
+
+.branches-radio-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 23px;
+  margin-top: 20px;
+  padding: 20px 0;
+  border-bottom: 5px solid #222222;
+}
+
+.tr-radio-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.tr-radio-container label {
+  padding-right: 40px;
 }
 
 .bm-header {
@@ -27,6 +49,11 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding-inline: 2%;
-  padding-block-start: 1%;
+}
+
+.branches-cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    column-gap: 5em;
+    row-gap: 15px;
 }
