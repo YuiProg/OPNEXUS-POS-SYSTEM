@@ -69,6 +69,7 @@ body {
   height: 212px;
   position: relative;
   padding: 14px;
+  object-fit: cover;
 }
 
 .user-panel {

@@ -12,6 +12,9 @@ h1 {
   background: #111111;
   padding: 20px;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .iv-header {

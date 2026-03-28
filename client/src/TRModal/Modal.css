@@ -70,8 +70,6 @@
     overflow-y: auto;
 } */
 
-
-
 .tr-addfile-container:has(img) .tr-addfile-details {
     padding: 0 !important;
 }

@@ -11,9 +11,12 @@ h1 {
   color: #fff;
   padding: 0;
   width: auto;
-  height: -webkit-fill-available;
+  height: 100vh;
   padding: 20px;
-    box-sizing: border-box;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .sm-header {
@@ -52,12 +55,10 @@ h1 {
   height: auto;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   gap: 12px;
 }
 
 .sm-table {
-  width: 100%;
-  margin-top: 10px;
+  width: 80%;
 }
 
