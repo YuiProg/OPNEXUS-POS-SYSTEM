@@ -7,7 +7,8 @@ const {
     SERVER_ERROR,
     CREATED,
     NEW_PRODUCT,
-    SUCCESS
+    SUCCESS,
+    SUCCESS_MESS
 } = Strings;
 
 export const newProduct = async (req, res) => {
@@ -25,7 +26,24 @@ export const fetchProducts = async (req, res) => {
     const {selectedBranch} = req.query;
     try {
         const products = await Product.fetchProducts(selectedBranch);
-        ApiResponseModel(res, SUCCESS, NEW_PRODUCT, products);
+        const cleanedData = products.map((data) => ({
+            Id: data._id,
+            Name: data.productName.toUpperCase(),
+            Creator: data.creatorName,
+            Branch: data.productBranch,
+            ...data._doc
+        }));
+        ApiResponseModel(res, SUCCESS, NEW_PRODUCT, cleanedData);
+    } catch (error) {
+        ApiResponseModel(res, ERROR, error.message);
+    }
+}
+
+export const deleteMultipleProducts = async (req, res) => {
+    try {
+        const list = req.body;
+        const result = await Product.deleteMultiple(list);
+         ApiResponseModel(res, SUCCESS, SUCCESS_MESS, result);
     } catch (error) {
         ApiResponseModel(res, ERROR, error.message);
     }

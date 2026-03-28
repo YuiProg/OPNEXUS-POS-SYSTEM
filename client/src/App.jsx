@@ -46,7 +46,7 @@ function App() {
     addUser,
     deleteMultipleUsers,
   } = AuthStore();
-  const { isOpen, setModal, deleteModal, setDeleteModal, selectedItems } =
+  const { isOpen, setModal, deleteModal, setDeleteModal, selectedItems, url } =
     ModalStore();
   const {
     setProductData,
@@ -55,6 +55,7 @@ function App() {
     errorProduct,
     categories,
     addLoading,
+    deleteMultipleProducts
   } = ProductStore();
   const { showModalBranch, setShowModal } = BranchStore();
 
@@ -71,8 +72,7 @@ function App() {
       </div>
     );
 
-  const defaultRoute =
-    AuthUser?.role.toLowerCase() === "clerk" ? "/inventory" : "/dashboard";
+  const defaultRoute = AuthUser?.role.toLowerCase() === "clerk" ? "/inventory" : "/dashboard";
 
   const postProduct = (e) => {
     e.preventDefault();
@@ -83,7 +83,11 @@ function App() {
     const tableData = {
       header: "Delete Data?",
       hasButton: true,
-      CB: () => deleteMultipleUsers(selectedItems),
+      CB: () => url === "staff" 
+        ? deleteMultipleUsers(selectedItems) 
+        : url === "inventory" 
+        ? deleteMultipleProducts(selectedItems)
+        : null,
       buttonInfo: "DELETE",
     };
 

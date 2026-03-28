@@ -29,9 +29,10 @@ class StaffManagement extends React.Component {
     }
 
     showConfirmDelModal = (e) => {
-        const { setDeleteModal, setSelectedItems } = ModalStore.getState();
+        const { setDeleteModal, setSelectedItems, setUrl } = ModalStore.getState();
         setDeleteModal(true);
         setSelectedItems(e);
+        setUrl("staff");
     }
 
 

@@ -109,9 +109,9 @@ userSchema.statics.loginUser = async function (username, password) {
 userSchema.statics.updateUser = async function (id, data) {
     const updatedUser = await this.findByIdAndUpdate(id, data, {new: true}).select("-password");
     
-    if (!mongoose.Types.ObjectId.isValid(new Types.ObjectId(id))) {
-        throw new Error(INVALID_ID);
-    }
+    // if (!mongoose.Types.ObjectId.isValid(new Types.ObjectId(id))) {
+    //     throw new Error(INVALID_ID);
+    // }
 
     return updatedUser;
 }
