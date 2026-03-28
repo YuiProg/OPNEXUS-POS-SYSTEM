@@ -4,35 +4,50 @@ import { BadgeCheck, Check } from "lucide-react";
 import Button from "../components/TRButton/Button";
 
 export class Modal extends React.Component {
-    constructor (props) {
+    constructor(props) {
         super(props);
+        this.state = {
+            isClosing: false
+        };
     }
 
-    passPropsToChild = () => {
-        const {confirm, required, hasCancel, onCancel} = this.props;
+    handleClose = () => {
+        const { onClose } = this.props;
 
-        const passchildren = React.Children.map(this.props.children, (child) => {
+        this.setState({ isClosing: true });
+
+        setTimeout(() => {
+            onClose();
+        }, 150);
+    };
+
+    passPropsToChild = () => {
+        const { confirm, required, hasCancel } = this.props;
+
+        return React.Children.map(this.props.children, (child) => {
             if (!child) return null;
             return React.cloneElement(child, {
                 confirm,
                 required,
                 hasCancel,
-                onCancel
+                onCancel: this.handleClose
             });
         });
+    };
 
-        return passchildren;
-    }
+    render() {
+        const { header, subHeader } = this.props;
+        const { isClosing } = this.state;
 
-    render () {
-        const {
-            header,
-            subHeader,
-            onClose
-        } = this.props;
         return (
-            <div className="modal-container" onClick={() => onClose()}>
-                <div className="modal-child" onClick={(e) => e.stopPropagation()}>
+            <div
+                className={`modal-container ${isClosing ? 'closing' : ''}`}
+                onClick={this.handleClose}
+            >
+                <div
+                    className={`modal-child ${isClosing ? 'closing' : ''}`}
+                    onClick={(e) => e.stopPropagation()}
+                >
                     {header && (
                         <div className="modal-p-header">
                             <h1 className="modal-p-h">{header}</h1>
