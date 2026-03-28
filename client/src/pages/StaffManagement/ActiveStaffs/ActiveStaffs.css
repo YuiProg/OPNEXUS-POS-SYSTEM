@@ -9,6 +9,7 @@
   box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 20px;
   padding: 10%;
+  margin-top: 10px;
 }
 
 .as-header {
@@ -17,7 +18,9 @@
 }
 
 .as-container .staff-list {
+  height: auto;
   padding: 0;
+  width: 100%;
 }
 
 .as-container .staff-list .staff {

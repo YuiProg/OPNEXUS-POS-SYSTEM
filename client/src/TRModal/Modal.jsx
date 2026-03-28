@@ -49,18 +49,30 @@ export class Modal extends React.Component {
 export class ModalConfim extends React.Component {
     constructor (props) {
         super(props);
+        this.state = {
+            isClosing: false
+        };
     }
-    
+
+    handleClose = () => {
+        this.setState({ isClosing: true });
+        setTimeout(() => {
+            this.props.onClose();
+        }, 300);
+    }
+
     render () {
         const {
             message,
             onClose
         } = this.props;
+        const { isClosing } = this.state;
+
         return (
-            <div className="modal-container-confirm">
+            <div className={`modal-container-confirm ${isClosing ? 'closing' : ''}`}>
                 <div className="" onClick={(e) => e.stopPropagation()}>
                     {/* CHECK MARK */}
-                    <div className="modal-check-confirm">
+                    <div className={`modal-container-confirm ${isClosing ? 'closing' : ''}`}>
                         <div className="modal-confirm-green-circle">
                             <Check size={80}/>
                         </div>

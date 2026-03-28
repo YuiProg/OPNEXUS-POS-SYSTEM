@@ -12,6 +12,8 @@ h1 {
   padding: 0;
   width: auto;
   height: -webkit-fill-available;
+  padding: 20px;
+    box-sizing: border-box;
 }
 
 .sm-header {
@@ -37,8 +39,6 @@ h1 {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding-inline: 2%;
-  padding-block-start: 1%;
 }
 
 .sm-branch-text {
@@ -54,5 +54,10 @@ h1 {
   flex-direction: row;
   justify-content: space-between;
   gap: 12px;
+}
+
+.sm-table {
+  width: 100%;
+  margin-top: 10px;
 }
 
