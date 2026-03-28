@@ -184,20 +184,3 @@
     padding: 12px;
   }
 }
-
-@keyframes fadeOut {
-    from {
-        opacity: 1;
-    }
-    to {
-        opacity: 0;
-    }
-}
-
-.tr-inputform-panel-container.closing {
-    animation: fadeOut 0.3s ease-in-out forwards;
-}
-
-.tr-inputform.closing {
-    animation: fadeOut 0.3s ease-in-out forwards;
-}
