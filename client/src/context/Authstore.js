@@ -136,12 +136,12 @@ const AuthStore = create((set, get) => ({
             const users = await axiosInstance.get(fetchUsers);
             const data = users.data.data;
             const userId = get().AuthUser._id;
-
+            
             const cleanedData = data
             .filter((user) => user._id !== userId)
             // eslint-disable-next-line no-unused-vars
             .map(({ username, createdAt, createdById, updatedAt, __v, firstName, _id, middleName, gender, lastName, ...rest }) => rest);
-
+            
             set({users: cleanedData});
         } catch (error) {
             set({errorUser: axiosError(error)});

@@ -2,22 +2,22 @@ import { useEffect, lazy, Suspense } from "react";
 import "./App.css";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Login from "./pages/AuthPage/Login";
-import AuthStore from "./store/Authstore";
+import AuthStore from "./context/Authstore.js";
 import Sidebar from "./components/Sidebar/Sidebar";
 import POS from "./pages/POS/POS.jsx";
 import TimeInOut from "./pages/TimeInOut/TimeInOut.jsx";
 import { Modal } from "./TRModal/Modal.jsx";
 import { InputForm, InputRow } from "./components/TRInputForm/TRInputForm.jsx";
 import InputField from "./components/TRInputField/InputFIeld.jsx";
-import ModalStore from "./store/ModalStore.js";
+import ModalStore from "./context/ModalStore.js";
 import DropDown from "./components/TRDropDown/Dropdown.jsx";
 import TRAddfile from "./components/TRAddFile/TRAddFile.jsx";
-import ProductStore from "./store/ProductStore.js";
+import ProductStore from "./context/ProductStore.js";
 import Loading from "./components/Loading/Loading.jsx";
 import Toast from "./toast/Toast.jsx";
 import Strings from "./strings/strings-codes.js";
 import Branches from "./pages/Branches/Branches.jsx";
-import BranchStore from "./store/BranchStore.js";
+import BranchStore from "./context/BranchStore.js";
 import { Table } from "./components/TRTable/TrTable.jsx";
 import Button from "./components/TRButton/Button.jsx";
 
@@ -37,22 +37,17 @@ function App() {
   // const setProductData = ProductStore().setProductData;
   // const addProduct = ProductStore().addNewProduct;
   // const branches = ProductStore().branches;
-  const { 
-    checkAuth, 
-    AuthUser, 
-    AuthLoading, 
+  const {
+    checkAuth,
+    AuthUser,
+    AuthLoading,
     errorUser,
     setInput,
     addUser,
-    deleteMultipleUsers
+    deleteMultipleUsers,
   } = AuthStore();
-  const { 
-    isOpen, 
-    setModal,
-    deleteModal,
-    setDeleteModal,
-    selectedItems
-  } = ModalStore();
+  const { isOpen, setModal, deleteModal, setDeleteModal, selectedItems } =
+    ModalStore();
   const {
     setProductData,
     addNewProduct,
@@ -61,7 +56,7 @@ function App() {
     categories,
     addLoading,
   } = ProductStore();
-  const {showModalBranch, setShowModal} = BranchStore();
+  const { showModalBranch, setShowModal } = BranchStore();
 
   const { SERVER_ERROR, PROD_FAIL } = Strings;
 
@@ -76,7 +71,8 @@ function App() {
       </div>
     );
 
-  const defaultRoute = AuthUser?.role.toLowerCase() === "clerk" ? "/inventory" : "/dashboard";
+  const defaultRoute =
+    AuthUser?.role.toLowerCase() === "clerk" ? "/inventory" : "/dashboard";
 
   const postProduct = (e) => {
     e.preventDefault();
@@ -88,17 +84,15 @@ function App() {
       header: "Delete Data?",
       hasButton: true,
       CB: () => deleteMultipleUsers(selectedItems),
-      buttonInfo: 'DELETE'
-    }
+      buttonInfo: "DELETE",
+    };
 
     return (
-      <Modal 
-        onClose={() => setDeleteModal(false)}
-        >
-        <Table data={selectedItems} isDetailed={tableData}/>
+      <Modal onClose={() => setDeleteModal(false)}>
+        <Table data={selectedItems} isDetailed={tableData} />
       </Modal>
     );
-  }
+  };
 
   const showBranchModal = () => {
     return (
@@ -109,31 +103,88 @@ function App() {
         hasCancel
         onCancel={() => setShowModal(false)}
       >
-        <InputForm isRequired onSubmit={(e) => {
-          e.preventDefault();
-          addUser();
-        }}>
-          <InputRow gap={15} titles={['Username', 'Password']}>
-            <InputField text placeholder="Enter Username" onChange={(value) => setInput('username', value)}/>
-            <InputField password placeholder="Enter Password" onChange={(value) => setInput('password', value)}/>
+        <InputForm
+          isRequired
+          onSubmit={(e) => {
+            e.preventDefault();
+            addUser();
+          }}
+        >
+          <InputRow gap={15} titles={["Username", "Password"]}>
+            <InputField
+              text
+              placeholder="Enter Username"
+              onChange={(value) => setInput("username", value)}
+            />
+            <InputField
+              password
+              placeholder="Enter Password"
+              onChange={(value) => setInput("password", value)}
+            />
           </InputRow>
-          <InputRow gap={15} titles={['First Name', 'Middle Name', 'Last Name']}>
-            <InputField text placeholder="Enter First Name" onChange={(value) => setInput('firstName', value)}/>
-            <InputField text placeholder="Enter Middle Name" onChange={(value) => setInput('middleName', value)}/>
-            <InputField text placeholder="Enter Last Name" onChange={(value) => setInput('lastName', value)}/>
+          <InputRow
+            gap={15}
+            titles={["First Name", "Middle Name", "Last Name"]}
+          >
+            <InputField
+              text
+              placeholder="Enter First Name"
+              onChange={(value) => setInput("firstName", value)}
+            />
+            <InputField
+              text
+              placeholder="Enter Middle Name"
+              onChange={(value) => setInput("middleName", value)}
+            />
+            <InputField
+              text
+              placeholder="Enter Last Name"
+              onChange={(value) => setInput("lastName", value)}
+            />
           </InputRow>
-          <InputRow gap={15} titles={['Phone Number', 'Address', 'Salary']}>
-            <InputField number placeholder="(+63)" onChange={(value) => setInput('phoneNumber', value)}/>
-            <InputField text placeholder="Enter Address" onChange={(value) => setInput('address', value)}/>
-            <InputField number placeholder="Enter Salary" onChange={(value) => setInput('salary', value)}/>
+          <InputRow gap={15} titles={["Phone Number", "Address", "Salary"]}>
+            <InputField
+              number
+              placeholder="(+63)"
+              onChange={(value) => setInput("phoneNumber", value)}
+            />
+            <InputField
+              text
+              placeholder="Enter Address"
+              onChange={(value) => setInput("address", value)}
+            />
+            <InputField
+              number
+              placeholder="Enter Salary"
+              onChange={(value) => setInput("salary", value)}
+            />
           </InputRow>
           <InputRow gap={15} titles={["Shift", "Role"]}>
-            <DropDown maxWidth options={['Admin', 'Clerk']} defaultValue="Role" onChange={(value) => setInput('role', value)}/>
-            <DropDown maxWidth options={['Day', 'Night']} defaultValue="Shift" onChange={(value) => setInput('shift', value)}/>
+            <DropDown
+              maxWidth
+              options={["Admin", "Clerk"]}
+              defaultValue="Role"
+              onChange={(value) => setInput("role", value)}
+            />
+            <DropDown
+              maxWidth
+              options={["Day", "Night"]}
+              defaultValue="Shift"
+              onChange={(value) => setInput("shift", value)}
+            />
           </InputRow>
-          <InputRow gap={15} titles={['Gender', 'Branch']}>
-            <DropDown maxWidth options={['Male', 'Female']} defaultValue="Gender" onChange={(value) => setInput('gender', value)}/>
-            <DropDown maxWidth options={branches} onChange={(value) => setInput('branch', value)}/>
+          <InputRow gap={15} titles={["Gender", "Branch"]}>
+            <DropDown
+              maxWidth
+              options={["Male", "Female"]}
+              defaultValue="Gender"
+              onChange={(value) => setInput("gender", value)}
+            />
+            <DropDown
+              maxWidth
+              options={branches}
+              onChange={(value) => setInput("branch", value)}
+            />
           </InputRow>
         </InputForm>
       </Modal>
@@ -216,14 +267,16 @@ function App() {
   };
 
   const returnModals = () => {
-    return(
+    return (
       <>
-      {isOpen && showModalAddProduct()}
-      {showModalBranch && showBranchModal()}
-      {deleteModal && selectedItems.length > 0 ? showDeleteConfirmModal() : null}
+        {isOpen && showModalAddProduct()}
+        {showModalBranch && showBranchModal()}
+        {deleteModal && selectedItems.length > 0
+          ? showDeleteConfirmModal()
+          : null}
       </>
     );
-  }
+  };
 
   return (
     <>

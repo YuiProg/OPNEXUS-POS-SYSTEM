@@ -1,7 +1,7 @@
 import mongoose, { Types } from "mongoose";
 import bcrypt from 'bcrypt';
 import Strings from "../strings/strings-codes.js";
-import { nanoid } from 'nanoid'
+import { customAlphabet } from 'nanoid'
 
 const {
     BRANCH_REQ,
@@ -18,14 +18,17 @@ const {
     GEND_ERR,
     PNUM_ERR,
     ADDR_ERR,
+    ID_SECRET,
     pw,
     us
 } = Strings;
 
+const nanoid = customAlphabet(ID_SECRET, 5);
+
 const userSchema = new mongoose.Schema({
     _id: {
         type: String,
-        default: () => `US-${nanoid(8)}`
+        default: () => `US-${nanoid()}`
     },
     username: {
         type: String,

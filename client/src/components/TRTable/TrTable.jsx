@@ -47,8 +47,15 @@ export class Table extends React.Component {
   selectAll = () => {
     this.setState((prev) => {
       const selectAll = !prev.selectAll;
-      const selected = new Array(this.props.data.length).fill(selectAll);
-      const selectedRows = selectAll ? this.props.data : [];
+      const selected = [...prev.selected];
+
+      const startIndex = (prev.currentPage - 1) * this.rowsPerPage;
+      const endIndex = startIndex + this.rowsPerPage;
+      for (let i = startIndex; i < endIndex && i < this.props.data.length; i++) {
+        selected[i] = selectAll;
+      }
+
+      const selectedRows = this.props.data.filter((_, i) => selected[i]);
       this.props.onDelete(selectedRows);
       return { selectAll, selected };
     });
@@ -82,7 +89,7 @@ export class Table extends React.Component {
   }
 
   render() {
-    const { data, hasSelect, hasAction, onDelete, onEdit, isDetailed, search } =
+    const { data, hasSelect, hasAction, onDelete, onEdit, isDetailed, search, onView } =
       this.props;
     const { selectAll, selected, currentPage } = this.state;
 
@@ -185,6 +192,7 @@ export class Table extends React.Component {
                   hasAction={hasAction}
                   CBD={(e) => onDelete(e)}
                   CBE={(e) => onEdit(e)}
+                  onView={(e) => onView(e)}
                 />
               ) : (
                 <TableNoData
@@ -300,7 +308,7 @@ export class TableData extends React.Component {
   }
 
   render() {
-    const { data, hasSelect, selected, toggleRow, hasAction, CBD, CBE } =
+    const { data, hasSelect, selected, toggleRow, hasAction, CBD, CBE, onView } =
       this.props;
 
     return (
@@ -319,8 +327,6 @@ export class TableData extends React.Component {
                 <input
                   className="table-checkbox"
                   type="checkbox"
-                  // FIX: fallback to false so the checkbox is always
-                  // controlled and never receives undefined
                   checked={selected[rowIndex] ?? false}
                   onChange={() => toggleRow(rowIndex)}
                 />
@@ -328,7 +334,7 @@ export class TableData extends React.Component {
             ) : null}
             {Object.values(row).map((value, colIndex) => (
               <td className="table-td" key={colIndex}>
-                {value}
+                {colIndex === 0 ? <strong style={{cursor: 'pointer'}} onClick={() => onView(row)}>{value}</strong> : value}
               </td>
             ))}
             {hasAction ? (

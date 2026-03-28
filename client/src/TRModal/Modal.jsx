@@ -30,10 +30,12 @@ export class Modal extends React.Component {
         return (
             <div className="modal-container" onClick={() => this.props.onClose()}>
                 <div className="modal-child" onClick={(e) => e.stopPropagation()}>
-                    <div className="modal-p-header">
-                        <h1 className="modal-p-h">{header}</h1>
-                        <p className="modal-p-sh">{subHeader}</p>
-                    </div>
+                    {header && (
+                        <div className="modal-p-header">
+                            <h1 className="modal-p-h">{header}</h1>
+                            <p className="modal-p-sh">{subHeader}</p>
+                        </div>
+                    )}
                     {this.passPropsToChild()}
                 </div>
             </div>

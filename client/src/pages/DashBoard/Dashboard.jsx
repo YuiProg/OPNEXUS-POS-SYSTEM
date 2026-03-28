@@ -13,7 +13,7 @@ import Notes from "../../components/Notes/Notes";
 import StaffCount from "../../components/DashboardComponents/StaffCount/StaffCount";
 import RecentActivity from "../../components/DashboardComponents/RecentActivity/RecentActivity";
 import LinesChart from "../../components/DashboardComponents/Charts/BarsChart";
-import AuthStore from "../../store/Authstore";
+import AuthStore from "../../context/Authstore";
 import BarsChart from "../../components/DashboardComponents/Charts/BarsChart";
 import TopProducts from "../../components/DashboardComponents/TopProducts/TopProducts";
 

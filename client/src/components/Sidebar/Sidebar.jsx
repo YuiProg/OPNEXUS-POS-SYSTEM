@@ -1,5 +1,5 @@
 import React from "react";
-import AuthStore from "../../store/Authstore";
+import AuthStore from "../../context/Authstore";
 import Strings from "../../strings/strings-codes";
 import { Navigate, Link } from "react-router-dom";
 import './Sidebar.css';

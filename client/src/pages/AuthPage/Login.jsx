@@ -1,6 +1,6 @@
 import React from "react";
 import './Login.css';
-import AuthStore from "../../store/Authstore";
+import AuthStore from "../../context/Authstore.js";
 import Strings from "../../strings/strings-codes.js";
 import InputField from "../../components/TRInputField/InputFIeld.jsx";
 import bg_image from "../../assets/images/ProductsLoginImage.png"

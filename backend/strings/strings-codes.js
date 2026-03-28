@@ -1,4 +1,5 @@
 const Strings = Object.freeze({
+    ID_SECRET: '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ',
     //server error remember to put the error message when development
     SERVER_ERROR: 'Server error.', 
     CRED_ERROR: 'Invalid username or password.',

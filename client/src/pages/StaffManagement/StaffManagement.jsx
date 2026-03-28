@@ -5,11 +5,11 @@ import InputField from "../../components/TRInputField/InputFIeld";
 import DropDown from "../../components/TRDropDown/Dropdown";
 import Button from "../../components/TRButton/Button";
 import { Table } from "../../components/TRTable/TrTable";
-import BranchStore from "../../store/BranchStore";
+import BranchStore from "../../context/BranchStore";
 import { Modal } from "../../TRModal/Modal";
-import AuthStore from "../../store/Authstore";
-import ModalStore from "../../store/ModalStore";
-import ProductStore from "../../store/ProductStore";
+import AuthStore from "../../context/Authstore";
+import ModalStore from "../../context/ModalStore";
+import ProductStore from "../../context/ProductStore";
 
 class StaffManagement extends React.Component {
     constructor (props) {

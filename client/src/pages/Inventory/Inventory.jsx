@@ -3,11 +3,11 @@ import "./Inventory.css";
 import { Table } from "../../components/TRTable/TrTable";
 import InputField from "../../components/TRInputField/InputFIeld";
 import DropDown from "../../components/TRDropDown/Dropdown";
-import AuthStore from "../../store/Authstore";
+import AuthStore from "../../context/Authstore";
 import { Modal } from "../../TRModal/Modal";
 import { InputRow, TRInputFormPanel, InputForm } from "../../components/TRInputForm/TRInputForm";
-import ModalStore from "../../store/ModalStore";
-import ProductStore from "../../store/ProductStore";
+import ModalStore from "../../context/ModalStore";
+import ProductStore from "../../context/ProductStore";
 
 class Inventory extends React.Component {
   constructor(props) {
@@ -75,6 +75,9 @@ class Inventory extends React.Component {
           onEnterDown={value => this.handleTableSearch(value)}
         />
       ),
+      hasDelete: true,
+      deleteBtnInfo: "Delete",
+      CBD: (e) => console.log(e)
     };
 
     return (

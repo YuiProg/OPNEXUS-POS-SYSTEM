@@ -70,7 +70,7 @@ export const getUsers = async (req, res) => {
         const users = await User.getUsers();
         const usersWithFullName = users.map((user) => ({
             Id: user._id,
-            Employee: [user.firstName, user.middleName, user.lastName].filter(Boolean).join(" "),
+            Employee: [user.firstName, user.middleName, user.lastName].filter(Boolean).join(" ").toUpperCase(),
             ...user._doc
         }));
         ApiResponseModel(res, SUCCESS, SUCCESS_MESS, usersWithFullName);
