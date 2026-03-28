@@ -6,7 +6,7 @@ import AuthStore from "./context/Authstore.js";
 import Sidebar from "./components/Sidebar/Sidebar";
 import POS from "./pages/POS/POS.jsx";
 import TimeInOut from "./pages/TimeInOut/TimeInOut.jsx";
-import { Modal } from "./TRModal/Modal.jsx";
+import { Modal, ModalConfim } from "./TRModal/Modal.jsx";
 import { InputForm, InputRow } from "./components/TRInputForm/TRInputForm.jsx";
 import InputField from "./components/TRInputField/InputFIeld.jsx";
 import ModalStore from "./context/ModalStore.js";
@@ -48,8 +48,16 @@ function App() {
     addUser,
     deleteMultipleUsers,
   } = AuthStore();
-  const { isOpen, setModal, deleteModal, setDeleteModal, selectedItems, url } =
-    ModalStore();
+  const { 
+    isOpen, 
+    setModal, 
+    deleteModal, 
+    setDeleteModal, 
+    selectedItems, 
+    url, 
+    confirmModal,
+    setConfirmModal 
+  } = ModalStore();
   const {
     setProductData,
     addNewProduct,
@@ -197,6 +205,13 @@ function App() {
     );
   };
 
+  const showConfirmModal = () => {
+    return <ModalConfim 
+              message={`Deleted ${selectedItems.length} item/s`} 
+              onClose={() => setConfirmModal(false)}
+            />
+  }
+
   const showModalAddProduct = () => {
     return (
       <>
@@ -281,6 +296,7 @@ function App() {
         {deleteModal && selectedItems.length > 0
           ? showDeleteConfirmModal()
           : null}
+        {confirmModal && showConfirmModal()}
       </>
     );
   };

@@ -9,6 +9,7 @@ import Toast from '../toast/Toast';
 import { Navigate } from 'react-router-dom';
 import {io} from 'socket.io-client';
 import toast from 'react-hot-toast';
+import ModalStore from './ModalStore';
 
 const { 
     loginUsers,
@@ -175,7 +176,11 @@ const AuthStore = create((set, get) => ({
         try {
             const res = await axiosInstance.post(deleteMultipleUsers, ids);
             if (res.data.status === "Success") {
-                window.location.reload();
+                const { setDeleteModal } = ModalStore.getState();
+                const users = get().users;
+                const newData = users.filter((d) => !ids.includes(d.Id));
+                set({users: newData});
+                setDeleteModal(false);
             }
         } catch (error) {
             toast.error(error.message);

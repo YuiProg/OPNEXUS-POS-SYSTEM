@@ -1,5 +1,7 @@
 import React from "react";
 import './Modal.css';
+import { BadgeCheck, Check } from "lucide-react";
+import Button from "../components/TRButton/Button";
 
 export class Modal extends React.Component {
     constructor (props) {
@@ -25,10 +27,11 @@ export class Modal extends React.Component {
     render () {
         const {
             header,
-            subHeader
+            subHeader,
+            onClose
         } = this.props;
         return (
-            <div className="modal-container" onClick={() => this.props.onClose()}>
+            <div className="modal-container" onClick={() => onClose()}>
                 <div className="modal-child" onClick={(e) => e.stopPropagation()}>
                     {header && (
                         <div className="modal-p-header">
@@ -49,9 +52,22 @@ export class ModalConfim extends React.Component {
     }
     
     render () {
+        const {
+            message,
+            onClose
+        } = this.props;
         return (
-            <div>
-                
+            <div className="modal-container-confirm">
+                <div className="" onClick={(e) => e.stopPropagation()}>
+                    {/* CHECK MARK */}
+                    <div className="modal-check-confirm">
+                        <div className="modal-confirm-green-circle">
+                            <Check size={80}/>
+                        </div>
+                        <h1 className="modal-confirm-header">{message}</h1>
+                        <Button success maxWidth text="OKAY" onClick={() => onClose()}/>
+                    </div>
+                </div>
             </div>
         );
     }

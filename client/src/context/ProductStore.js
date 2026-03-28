@@ -70,7 +70,6 @@ const ProductStore = create((set, get) => ({
       const newProduct = await axiosInstance.post(addProduct, payload);
       const data = newProduct.data.data;
 
-      // mirror the same cleaning logic as fetchProducts
       // const { createdAt, productName: pn, creatorName, productBranch: pb, createdById, _id, updatedAt, __v, ...rest } = data;
       // rest.Id = _id;
       // rest.Creator = AuthUser.username,
@@ -113,6 +112,7 @@ const ProductStore = create((set, get) => ({
       // eslint-disable-next-line no-unused-vars
       const cleanedData = data.map(({createdAt, productName, creatorName, productBranch, createdById, _id, updatedAt, __v, ...rest}) => rest);
       set({products: cleanedData});
+      console.log(cleanedData);
     } catch (error) {
       toast.error(error.message);
       console.log(error);
@@ -124,13 +124,20 @@ const ProductStore = create((set, get) => ({
     try {
       const list = data.map((d) => d.Id);
       const result = await axiosInstance.post(deleteMultipleProduct, list);
+      
       if (result.data.status === "Success") {
-        window.location.reload();
+        const products = get().products;
+        const deleted = products.filter((p) => !list.includes(p.Id));
+
+        const { setDeleteModal, setConfirmModal } = ModalStore.getState();
+        setDeleteModal(false);
+        setConfirmModal(true);
+        set({ products: deleted });
       }
     } catch (error) {
       toast.error(error.message);
       console.log(error);
-      set({errorProduct: axiosError(error)});
+      set({ errorProduct: axiosError(error) });
     }
   }
 

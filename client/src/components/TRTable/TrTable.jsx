@@ -34,8 +34,6 @@ export class Table extends React.Component {
       this.setState({ currentPage: 1 });
     }
 
-    // FIX: use reference check instead of length check so new array
-    // spreads ([...products]) trigger a re-sync even at the same length
     if (prevProps.data !== this.props.data) {
       this.setState({
         selected: new Array(this.props.data.length).fill(false),
