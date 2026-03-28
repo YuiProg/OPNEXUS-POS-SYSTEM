@@ -1,15 +1,23 @@
 import mongoose from 'mongoose';
 import Strings from '../strings/strings-codes.js';
+import { customAlphabet } from 'nanoid';
 
 const {
     FAILED_ADD,
     BRANCH_LOC_FAIL,
     SERVER_ERROR,
     PRICE_ERR,
-    CATEG_ERR
+    CATEG_ERR,
+    ID_SECRET
 } = Strings;
 
+const nanoid = customAlphabet(ID_SECRET, 5);
+
 const productSchema = new mongoose.Schema({
+    _id: {
+        type: String,
+        default: () => `PROD-${nanoid()}`
+    },
     productName: {
         type: String,
         required: [true, FAILED_ADD]
@@ -27,7 +35,7 @@ const productSchema = new mongoose.Schema({
         required: [true, PRICE_ERR]
     },
     createdById: {
-        type: mongoose.Types.ObjectId,
+        type: String,
         required: true
     },
     creatorImage: {
@@ -69,6 +77,10 @@ productSchema.statics.fetchProducts = async function (selectedBranch) {
     return products;
 }
 
+productSchema.statics.deleteMultiple = async function (list) {
+    const result = await this.deleteMany({_id: {$in: list}});
+    return result;
+}
 
 const Product = mongoose.model('product', productSchema);
 

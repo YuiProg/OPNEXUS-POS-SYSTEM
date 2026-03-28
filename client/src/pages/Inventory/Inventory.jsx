@@ -60,8 +60,14 @@ class Inventory extends React.Component {
     this.setState({ searchValue: value });
   }
 
-  render() {
+  showConfirmDelModal = (e) => {
+      const { setDeleteModal, setSelectedItems, setUrl } = ModalStore.getState();
+      setDeleteModal(true);
+      setSelectedItems(e);
+      setUrl("inventory");
+  }
 
+  render() {
 
     const tableData = {
       header: "ITEMS TEST",
@@ -77,7 +83,7 @@ class Inventory extends React.Component {
       ),
       hasDelete: true,
       deleteBtnInfo: "Delete",
-      CBD: (e) => console.log(e)
+      CBD: (e) => this.showConfirmDelModal(e)
     };
 
     return (

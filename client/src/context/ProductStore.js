@@ -7,7 +7,8 @@ import ModalStore from "./ModalStore";
 
 const {
  addProduct,
- fetchProduct
+ fetchProduct,
+ deleteMultipleProduct
 } = ApiConfig;
 
 const ProductStore = create((set, get) => ({
@@ -89,13 +90,27 @@ const ProductStore = create((set, get) => ({
       //console.log(products.data.data);
       const data = products.data.data;
       // eslint-disable-next-line no-unused-vars
-      const cleanedData = data.map(({createdAt, createdById, _id, updatedAt, __v, ...rest}) => rest);
+      const cleanedData = data.map(({createdAt, productName, creatorName, productBranch, createdById, _id, updatedAt, __v, ...rest}) => rest);
       set({products: cleanedData});
     } catch (error) {
       console.log(error);
       set({errorProduct: axiosError(error)});
     }
+  },
+
+  deleteMultipleProducts: async (data) => {
+    try {
+      const list = data.map((d) => d.Id);
+      const result = await axiosInstance.post(deleteMultipleProduct, list);
+      if (result.data.status === "Success") {
+        window.location.reload();
+      }
+    } catch (error) {
+      console.log(error);
+      set({errorProduct: axiosError(error)});
+    }
   }
+
 }));
 
 export default ProductStore;
