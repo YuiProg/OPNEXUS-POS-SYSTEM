@@ -15,7 +15,7 @@
 */
 .tr-addfile-container:has(input[type="file"]:valid) ~ .modal-child,
 .modal-child:has(.tr-addfile-container input:valid) {
-    height: 80% !important;
+    height: 61% !important;
     overflow-y: auto;
 }
 
