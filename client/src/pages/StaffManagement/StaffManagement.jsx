@@ -38,12 +38,13 @@ class StaffManagement extends React.Component {
 
 
     render () {
-        const {setShowModal} = BranchStore.getState();
+        //const {setShowModal} = BranchStore.getState();
+        const { setShowAddModal } = ModalStore.getState();
 
         const tableData = {
             header: "STAFFS",
             hasButton: true,
-            CB: () => setShowModal(true),
+            CB: () => setShowAddModal(true),
             buttonInfo: "+NEW CLERK",
             search: (
                 <InputField

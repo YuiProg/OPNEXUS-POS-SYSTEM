@@ -28,7 +28,7 @@ const AuthStore = create((set, get) => ({
     AuthUser: null,
     AuthLoading: true,
     errorUser: null,
-    selectedBranch: null,
+    selectedBranch: 'any',
     socket: null,
     input: {
         username: '',
@@ -110,6 +110,7 @@ const AuthStore = create((set, get) => ({
     },
 
     addUser: async () => {
+        const { setShowAddModal } = ModalStore.getState();
         try {
             const data = get().input;
             const payload = {
@@ -129,7 +130,7 @@ const AuthStore = create((set, get) => ({
 
             //console.log(payload);
             const newUser = await axiosInstance.post(addUser, payload);
-            const {_id, firstName, middleName, lastName, shift, salary, role, phoneNumber, address, branchLocation} = newUser.data.data;
+            const {_id, firstName, middleName, lastName, shift, salary, role, phoneNumber, branchLocation} = newUser.data.data;
             const newData = {
                 Id: _id,
                 Employee: `${firstName.toUpperCase()} ${middleName.toUpperCase()} ${lastName.toUpperCase()}`,
@@ -138,7 +139,7 @@ const AuthStore = create((set, get) => ({
                 salary: salary,
                 role: role,
                 phoneNumber: phoneNumber,
-                address: address
+                //address: address
             };
 
             set((state) => ({users: [newData, ...state.users]}));
@@ -149,6 +150,8 @@ const AuthStore = create((set, get) => ({
         } catch (error) {
             toast.error(error.message);
             set({errorUser: axiosError(error)});
+        } finally {
+            setShowAddModal(false);
         }
     },
 
@@ -161,7 +164,7 @@ const AuthStore = create((set, get) => ({
             const cleanedData = data
             .filter((user) => user._id !== userId)
             // eslint-disable-next-line no-unused-vars
-            .map(({ username, createdAt, createdById, updatedAt, __v, firstName, _id, middleName, gender, lastName, ...rest }) => rest);
+            .map(({ username, createdAt, createdById, updatedAt, __v, firstName, _id, middleName, gender, lastName, address, ...rest }) => rest);
             console.log(cleanedData);
             set({users: cleanedData});
         } catch (error) {
@@ -176,11 +179,12 @@ const AuthStore = create((set, get) => ({
         try {
             const res = await axiosInstance.post(deleteMultipleUsers, ids);
             if (res.data.status === "Success") {
-                const { setDeleteModal } = ModalStore.getState();
+                const { setDeleteModal, setConfirmModal } = ModalStore.getState();
                 const users = get().users;
                 const newData = users.filter((d) => !ids.includes(d.Id));
                 set({users: newData});
                 setDeleteModal(false);
+                setConfirmModal(true);
             }
         } catch (error) {
             toast.error(error.message);

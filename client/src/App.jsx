@@ -25,9 +25,7 @@ import Button from "./components/TRButton/Button.jsx";
 
 const Inventory = lazy(() => import("./pages/Inventory/Inventory.jsx"));
 const Dashboard = lazy(() => import("./pages/DashBoard/Dashboard.jsx"));
-const StaffManagement = lazy(
-  () => import("./pages/StaffManagement/StaffManagement.jsx"),
-);
+const StaffManagement = lazy(() => import("./pages/StaffManagement/StaffManagement.jsx"));
 
 function App() {
   //store instantiate
@@ -56,7 +54,9 @@ function App() {
     selectedItems, 
     url, 
     confirmModal,
-    setConfirmModal 
+    setConfirmModal,
+    showAddModal,
+    setShowAddModal 
   } = ModalStore();
   const {
     setProductData,
@@ -67,7 +67,7 @@ function App() {
     addLoading,
     deleteMultipleProducts
   } = ProductStore();
-  const { showModalBranch, setShowModal } = BranchStore();
+  //const { showModalBranch, setShowModal } = BranchStore();
 
   const { SERVER_ERROR, PROD_FAIL } = Strings;
 
@@ -111,11 +111,11 @@ function App() {
   const showBranchModal = () => {
     return (
       <Modal
-        onClose={() => setShowModal(false)}
+        onClose={() => setShowAddModal(false)}
         header="Add clerk"
         subHeader="Fill in the details for the clerk"
         hasCancel
-        onCancel={() => setShowModal(false)}
+        onCancel={() => setShowAddModal(false)}
       >
         <InputForm
           isRequired
@@ -292,7 +292,7 @@ function App() {
     return (
       <>
         {isOpen && showModalAddProduct()}
-        {showModalBranch && showBranchModal()}
+        {showAddModal && showBranchModal()}
         {deleteModal && selectedItems.length > 0
           ? showDeleteConfirmModal()
           : null}
