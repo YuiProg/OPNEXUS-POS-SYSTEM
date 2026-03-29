@@ -6,7 +6,7 @@ import AuthStore from "./context/Authstore.js";
 import Sidebar from "./components/Sidebar/Sidebar";
 import POS from "./pages/POS/POS.jsx";
 import TimeInOut from "./pages/TimeInOut/TimeInOut.jsx";
-import { Modal, ModalConfim } from "./TRModal/Modal.jsx";
+import { Modal, ModalConfim, ModalYesNo } from "./TRModal/Modal.jsx";
 import { InputForm, InputRow } from "./components/TRInputForm/TRInputForm.jsx";
 import InputField from "./components/TRInputField/InputFIeld.jsx";
 import ModalStore from "./context/ModalStore.js";
@@ -28,7 +28,7 @@ const Dashboard = lazy(() => import("./pages/DashBoard/Dashboard.jsx"));
 const StaffManagement = lazy(() => import("./pages/StaffManagement/StaffManagement.jsx"));
 
 function App() {
-  //store instantiate
+  //store instantiate wag burahin baka gamitin sa susunod
   // const checkAuth = AuthStore(state => state.checkAuth);
   // const AuthUser = AuthStore(state => state.AuthUser);
   // const AuthLoading = AuthStore(state => state.AuthLoading);
@@ -56,7 +56,10 @@ function App() {
     confirmModal,
     setConfirmModal,
     showAddModal,
-    setShowAddModal 
+    setShowAddModal,
+    selectedItem,
+    setYesNoModal,
+    yesNoModal 
   } = ModalStore();
   const {
     setProductData,
@@ -65,7 +68,8 @@ function App() {
     //errorProduct,
     categories,
     addLoading,
-    deleteMultipleProducts
+    deleteMultipleProducts,
+    deleteProduct
   } = ProductStore();
   //const { showModalBranch, setShowModal } = BranchStore();
 
@@ -74,6 +78,8 @@ function App() {
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
+
+  //BUG PAG NAG LOG OUT HINDI NAG REREDIRECT TO /LOGIN
 
   if (AuthLoading)
     return (
@@ -126,11 +132,16 @@ function App() {
             addUser();
           }}
         >
-          <InputRow gap={15} titles={["Username", "Password"]}>
+          <InputRow gap={15} titles={["Username", "Email", "Password"]}>
             <InputField
               text
               placeholder="Enter Username"
               onChange={(value) => setInput("username", value)}
+            />
+            <InputField
+              email
+              placeholder="Enter Email"
+              onChange={(value) => setInput("email", value)}
             />
             <InputField
               password
@@ -175,7 +186,7 @@ function App() {
               onChange={(value) => setInput("salary", value)}
             />
           </InputRow>
-          <InputRow gap={15} titles={["Shift", "Role"]}>
+          <InputRow gap={15} titles={["Role", "Shift"]}>
             <DropDown
               maxWidth
               options={["Admin", "Clerk"]}
@@ -213,6 +224,19 @@ function App() {
               onClose={() => setConfirmModal(false)}
             />
   }
+
+  const showYesNoModal = () => {
+    return (
+      <>
+        <ModalYesNo
+          message={`Are you sure you want to delete ${selectedItem.Employee}?`}
+          onClose={() => setYesNoModal(false)}
+          onYes={() => deleteProduct(selectedItem.Id)}
+        />
+      </>
+    );
+  }
+
 
   const showModalAddProduct = () => {
     return (
@@ -279,7 +303,6 @@ function App() {
       </>
     );
   };
-
   // eslint-disable-next-line no-unused-vars
   const showToastError = (type) => {
     switch (type) {
@@ -293,12 +316,11 @@ function App() {
   const returnModals = () => {
     return (
       <>
+        {deleteModal && selectedItems.length > 0 ? showDeleteConfirmModal() : null}
         {isOpen && showModalAddProduct()}
         {showAddModal && showUserModal()}
-        {deleteModal && selectedItems.length > 0
-          ? showDeleteConfirmModal()
-          : null}
         {confirmModal && showConfirmModal()}
+        {yesNoModal && showYesNoModal()}
       </>
     );
   };

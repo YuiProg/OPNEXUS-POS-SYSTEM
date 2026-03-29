@@ -9,7 +9,8 @@ import toast from "react-hot-toast";
 const {
  addProduct,
  fetchProduct,
- deleteMultipleProduct
+ deleteMultipleProduct,
+ deleteSingleProduct
 } = ApiConfig;
 
 const ProductStore = create((set, get) => ({
@@ -52,7 +53,7 @@ const ProductStore = create((set, get) => ({
 
   //TODO: IMAGE VALIDATION
   addNewProduct: async () => {
-    const {productName, quantity, category, price, productBranch} = get();
+    const {productName, quantity, category, price, productBranch, image} = get();
     const { AuthUser } = AuthStore.getState();
     const { setModal } = ModalStore.getState();
     const payload = {
@@ -60,6 +61,7 @@ const ProductStore = create((set, get) => ({
       quantity,
       category,
       price,
+      image,
       creatorName: AuthUser.username,
       productBranch
     }
@@ -95,6 +97,7 @@ const ProductStore = create((set, get) => ({
       set({errorProduct: axiosError(error)});
     } finally {
       set({addLoading: false});
+      set({image: null});
       setModal(false);
     }
   },
@@ -112,7 +115,7 @@ const ProductStore = create((set, get) => ({
       const data = products.data.data;
       console.log(data);
       // eslint-disable-next-line no-unused-vars
-      const cleanedData = data.map(({createdAt, productName, creatorName, productBranch, createdById, _id, updatedAt, Creator, __v, ...rest}) => rest);
+      const cleanedData = data.map(({createdAt, productName, creatorName, productBranch, createdById, _id, productImage, productImageId, updatedAt, Creator, __v, ...rest}) => rest);
       set({products: cleanedData});
       console.log(cleanedData);
     } catch (error) {
@@ -136,6 +139,22 @@ const ProductStore = create((set, get) => ({
         setConfirmModal(true);
         set({ products: deleted });
       }
+    } catch (error) {
+      toast.error(error.message);
+      console.log(error);
+      set({ errorProduct: axiosError(error) });
+    }
+  },
+
+  deleteProduct: async (id) => {
+    try {
+        const result = await axiosInstance.post(deleteSingleProduct, {
+          params: {
+            id: id
+          }
+        });
+        
+        console.log(result);
     } catch (error) {
       toast.error(error.message);
       console.log(error);

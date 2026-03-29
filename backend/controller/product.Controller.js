@@ -14,6 +14,7 @@ const {
 export const newProduct = async (req, res) => {
     const data = req.body;
     const user = req.user;
+    console.log(data);
     try {
         const newProduct = await Product.addProduct(data, user);
         ApiResponseModel(res, CREATED, NEW_PRODUCT, newProduct);
@@ -34,6 +35,17 @@ export const fetchProducts = async (req, res) => {
             ...data._doc
         }));
         ApiResponseModel(res, SUCCESS, NEW_PRODUCT, cleanedData);
+    } catch (error) {
+        ApiResponseModel(res, ERROR, error.message);
+    }
+}
+
+export const deleteProductSingle = async (req, res) => {
+    const { id } = req.query;
+    
+    try {
+        const result = await Product.deleteSingle(id);
+        ApiResponseModel(res, SUCCESS, SUCCESS_MESS, result);
     } catch (error) {
         ApiResponseModel(res, ERROR, error.message);
     }

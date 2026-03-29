@@ -16,6 +16,7 @@ const ApiConfig = Object.freeze({
     addProduct: apiEndpoint + 'addProduct',
     fetchProduct: apiEndpoint + 'fetchProducts',
     deleteMultipleProduct: apiEndpoint + 'deleteMultipleProducts',
+    deleteSingleProduct: apiEndpoint + 'deleteSingleProduct',
     //==============================
 
     //branch cards

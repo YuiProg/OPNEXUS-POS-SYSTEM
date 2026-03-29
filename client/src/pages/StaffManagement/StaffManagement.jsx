@@ -16,7 +16,8 @@ class StaffManagement extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
-            users: []
+            users: [],
+            search: ''
         }
     }
 
@@ -36,6 +37,16 @@ class StaffManagement extends React.Component {
         setUrl("staff");
     }
 
+    handleTableSearch = (value) => {
+        this.setState({ search: value });
+    }
+
+    showDeleteModal = (item) => {
+        const {setSelectedItem, setYesNoModal} = ModalStore.getState();
+        setSelectedItem(item);
+        setYesNoModal(true);
+        console.log(item);
+    }
 
     render () {
         //const {setShowModal} = BranchStore.getState();
@@ -49,9 +60,9 @@ class StaffManagement extends React.Component {
             buttonInfo: "+NEW CLERK",
             search: (
                 <InputField
-                placeholder="Search clerk"
+                placeholder="Search staff"
                 isSearch
-                onEnterDown={value => console.log(value)}
+                onEnterDown={value => this.handleTableSearch(value)}
                 />
             ),
             hasDelete: true,
@@ -105,8 +116,10 @@ class StaffManagement extends React.Component {
                             isDetailed={tableData}
                             hasSelect
                             hasAction
-                            onDelete={() => {}}
-                            onEdit={() => {}}/>
+                            onDelete={(e) => this.showDeleteModal(e)}
+                            onEdit={() => {}}
+                            search={this.state.search}
+                            />
                     </div>
                     <div className="sm-active-staffs">
                         <ActiveStaffs staffData={onlineUsers}/>

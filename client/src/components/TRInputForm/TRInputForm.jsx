@@ -79,7 +79,7 @@ export class InputForm extends React.Component {
                             {cancelTXT || 'CANCEL'}
                         </button>
                     ) : null}
-                    {!noBtn && (<button disabled={btnDisabled} className="tr-inputform-submit" type="submit">{btnTXT || 'SUBMIT'}</button>)}
+                    {!noBtn && (<button disabled={btnDisabled} style={btnDisabled ? { cursor: 'not-allowed' } : {}} className="tr-inputform-submit" type="submit">{btnTXT || 'SUBMIT'}</button>)}
                 </div>
             </form>
         );

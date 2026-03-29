@@ -32,6 +32,7 @@ const AuthStore = create((set, get) => ({
     socket: null,
     input: {
         username: '',
+        email: '',
         password: '',
         firstName: '',
         middleName: '',
@@ -116,6 +117,7 @@ const AuthStore = create((set, get) => ({
             const data = get().input;
             const payload = {
                 username: data.username,
+                email: data.email,
                 password: data.password,
                 branchLocation: data.branch,
                 shift: data.shift,
@@ -135,6 +137,7 @@ const AuthStore = create((set, get) => ({
             const newData = {
                 Id: _id,
                 Employee: `${firstName.toUpperCase()} ${middleName.toUpperCase()} ${lastName.toUpperCase()}`,
+                Email: data.email,
                 branchlocation: branchLocation,
                 shift: shift,
                 salary: salary,
