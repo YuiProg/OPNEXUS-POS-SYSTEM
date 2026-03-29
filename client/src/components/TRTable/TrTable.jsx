@@ -120,7 +120,7 @@
       const shouldPaginate = filteredData && filteredData.length > this.rowsPerPage;
 
       // TODO: fix this later ps. what the fuck is this shit
-      var pageNumbers = [];
+      let pageNumbers = [];
       for (var i = 1; i <= totalPages; i++) {
         pageNumbers.push(i);
       }

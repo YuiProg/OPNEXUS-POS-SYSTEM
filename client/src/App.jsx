@@ -1,9 +1,9 @@
 import { useEffect, lazy, Suspense } from "react";
 import "./App.css";
 import { Navigate, Route, Routes } from "react-router-dom";
-import Login from "./pages/AuthPage/Login";
+import Login from "./pages/AuthPage/Login.jsx";
 import AuthStore from "./context/Authstore.js";
-import Sidebar from "./components/Sidebar/Sidebar";
+import Sidebar from "./components/Sidebar/Sidebar.jsx";
 import POS from "./pages/POS/POS.jsx";
 import TimeInOut from "./pages/TimeInOut/TimeInOut.jsx";
 import { Modal, ModalConfim, ModalYesNo } from "./TRModal/Modal.jsx";
@@ -227,15 +227,11 @@ function App() {
   }
 
   const showYesNoModal = () => {
-    return (
-      <>
-        <ModalYesNo
-          message={`Are you sure you want to delete ${selectedItem.Employee}?`}
-          onClose={() => setYesNoModal(false)}
-          onYes={() => url === "staff" ? deleteUser(selectedItem.Id) : deleteProduct(selectedItem.Id)}
-        />
-      </>
-    );
+    return <ModalYesNo
+              message={`Are you sure you want to delete ${selectedItem.Employee}?`}
+              onClose={() => setYesNoModal(false)}
+              onYes={() => url === "staff" ? deleteUser(selectedItem.Id) : deleteProduct(selectedItem.Id)}
+            />
   }
 
 
