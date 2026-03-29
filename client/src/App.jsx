@@ -27,7 +27,7 @@ const Inventory = lazy(() => import("./pages/Inventory/Inventory.jsx"));
 const Dashboard = lazy(() => import("./pages/DashBoard/Dashboard.jsx"));
 const StaffManagement = lazy(() => import("./pages/StaffManagement/StaffManagement.jsx"));
 
-function MainAppFunc() {
+function App() {
   //store instantiate wag burahin baka gamitin sa susunod
   // const checkAuth = AuthStore(state => state.checkAuth);
   // const AuthUser = AuthStore(state => state.AuthUser);
@@ -423,4 +423,4 @@ function MainAppFunc() {
   );
 }
 
-export default MainAppFunc;
+export default App;
