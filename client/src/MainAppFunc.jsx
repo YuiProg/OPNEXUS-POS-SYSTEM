@@ -1,9 +1,9 @@
 import { useEffect, lazy, Suspense } from "react";
 import "./App.css";
 import { Navigate, Route, Routes } from "react-router-dom";
-import Login from "./pages/AuthPage/Login";
+import Login from "./pages/AuthPage/Login.jsx";
 import AuthStore from "./context/Authstore.js";
-import Sidebar from "./components/Sidebar/Sidebar";
+import Sidebar from "./components/Sidebar/Sidebar.jsx";
 import POS from "./pages/POS/POS.jsx";
 import TimeInOut from "./pages/TimeInOut/TimeInOut.jsx";
 import { Modal, ModalConfim, ModalYesNo } from "./TRModal/Modal.jsx";
@@ -27,7 +27,7 @@ const Inventory = lazy(() => import("./pages/Inventory/Inventory.jsx"));
 const Dashboard = lazy(() => import("./pages/DashBoard/Dashboard.jsx"));
 const StaffManagement = lazy(() => import("./pages/StaffManagement/StaffManagement.jsx"));
 
-function App() {
+function MainAppFunc() {
   //store instantiate wag burahin baka gamitin sa susunod
   // const checkAuth = AuthStore(state => state.checkAuth);
   // const AuthUser = AuthStore(state => state.AuthUser);
@@ -423,4 +423,4 @@ function App() {
   );
 }
 
-export default App;
+export default MainAppFunc;

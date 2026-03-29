@@ -14,7 +14,7 @@ class DropDown extends React.Component {
   render() {
     const { options, defaultValue, onChange, maxWidth, customWidth, isRequired } =
       this.props;
-    console.log(this.props);
+    
     return (
       <div className="tr-dropdown-wrapper">
         <Layers className="tr-dropdown-icon" />
