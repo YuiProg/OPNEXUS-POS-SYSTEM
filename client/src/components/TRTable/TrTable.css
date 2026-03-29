@@ -311,5 +311,7 @@
 
 /*pagination for admin*/
 .sm-container .pagination {
-  padding: 0 355px 25px 0 !important;
+  padding: 0 !important;
+  position: relative !important;
+  margin-top: 25px;
 }
