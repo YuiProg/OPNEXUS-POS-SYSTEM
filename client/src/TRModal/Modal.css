@@ -1,4 +1,8 @@
-.modal-container {
+/* GLOBAL MODAL STYLES */
+.modal-container,
+.modal-container-confirm,
+.modal-container-error,
+.modal-container-generic{
     width: 100%;
     height: 100%;
     display: flex;
@@ -6,107 +10,109 @@
     align-items: center;
     justify-content: center;
     position: fixed;
+    top: 0;
+    left: 0;
     z-index: 100;
     color: white;
 }
 
-/* Fade-in animation */
 @keyframes fadeIn {
     from {
         opacity: 0;
+        transform: scale(0.95);
     }
     to {
         opacity: 1;
+        transform: scale(1);
     }
 }
 
-/* Fade-out animation */
 @keyframes fadeOut {
     from {
         opacity: 1;
+        transform: scale(1);
     }
     to {
         opacity: 0;
+        transform: scale(0.95);
     }
 }
 
-.modal-container {
-    animation: fadeIn 0.1s ease-in-out;
+[class*="modal"] {
+    animation: fadeIn 0.15s ease-in-out;
 }
 
-.modal-container.closing {
-    animation: fadeOut 0.1s ease-in-out forwards;
+[class*="modal"].closing {
+    animation: fadeOut 0.15s ease-in-out forwards;
 }
 
-.modal-child {
-    animation: fadeIn 0.1s ease-in-out;
+.modal-container,
+.modal-container-confirm,
+.modal-container-error,
+.modal-container-generic {
+    animation: fadeIn 0.15s ease-in-out;
 }
 
-.modal-child.closing {
-    animation: fadeOut 0.1s ease-in-out forwards;
+.modal-container.closing,
+.modal-container-confirm.closing,
+.modal-container-error.closing,
+.modal-container-generic.closing {
+    animation: fadeOut 0.15s ease-in-out forwards;
 }
 
-.modal-container-confirm {
-    animation: fadeIn 0.1s ease-in-out;
+.modal-child,
+.modal-check-confirm,
+.modal-check-error {
+    animation: fadeIn 0.15s ease-in-out;
 }
 
-.modal-container-confirm.closing {
-    animation: fadeOut 0.1s ease-in-out forwards;
+.modal-child.closing,
+.modal-check-confirm.closing,
+.modal-check-error.closing {
+    animation: fadeOut 0.15s ease-in-out forwards;
 }
 
-.modal-check-confirm {
-    animation: fadeIn 0.1s ease-in-out;
+.modal-container-error {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    z-index: 100;
+    color: white;
 }
 
-.modal-check-confirm.closing {
-    animation: fadeOut 0.1s ease-in-out forwards;
-}
-/* yo palagyan nga opacity yung background tas pa center narin 
-    nauuna yung sidebar may kinalaman ata zindex
-*/
-/* .tr-addfile-container:has(input[type="file"]:valid) ~ .modal-child,
-.modal-child:has(.tr-addfile-container input:valid) {
-    height: 61% !important;
-    overflow-y: auto;
-} */
-
-.tr-addfile-container:has(img) .tr-addfile-details {
-    padding: 0 !important;
-}
-
-.modal-child:has(.tr-addfile-container img) {
-    height: 60% !important;
-    overflow-y: auto;
-    width: 60% !important;
-}
-
-
-.modal-child {
-    width: auto;
+.modal-check-error {
+    width: 450px;
     height: auto;
     background-color: #1C1C1E;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex-direction: column;
+    gap: 20px;
+    padding: 50px;
 }
 
-.modal-p-h {
+.modal-error-red-circle {
+    background-color: #EF4444;
+    border-radius: 100%;
+    padding: 10px;
+}
+
+.modal-error-header {
     font-weight: 200;
+    text-align: center;
 }
 
-.modal-p-sh {
+.modal-error-details {
     font-weight: 200;
     color: #686869;
-    margin-top: 0;
+    text-align: center;
+    margin: 0;
 }
-
-.modal-p-header {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-/* MODAL CONFIRM */
 
 .modal-container-confirm {
     width: 100%;
@@ -140,4 +146,40 @@
 
 .modal-confirm-header {
     font-weight: 200;
+    text-align: center;
+}
+
+.modal-child {
+    width: auto;
+    height: auto;
+    background-color: #1C1C1E;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.modal-p-h {
+    font-weight: 200;
+}
+
+.modal-p-sh {
+    font-weight: 200;
+    color: #686869;
+    margin-top: 0;
+}
+
+.modal-p-header {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.tr-addfile-container:has(img) .tr-addfile-details {
+    padding: 0 !important;
+}
+
+.modal-child:has(.tr-addfile-container img) {
+    height: 60% !important;
+    overflow-y: auto;
+    width: 60% !important;
 }
