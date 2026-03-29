@@ -45,6 +45,7 @@ function App() {
     setInput,
     addUser,
     deleteMultipleUsers,
+    deleteUser
   } = AuthStore();
   const { 
     isOpen, 
@@ -231,7 +232,7 @@ function App() {
         <ModalYesNo
           message={`Are you sure you want to delete ${selectedItem.Employee}?`}
           onClose={() => setYesNoModal(false)}
-          onYes={() => deleteProduct(selectedItem.Id)}
+          onYes={() => url === "staff" ? deleteUser(selectedItem.Id) : deleteProduct(selectedItem.Id)}
         />
       </>
     );

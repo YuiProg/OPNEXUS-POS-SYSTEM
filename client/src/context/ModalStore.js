@@ -9,7 +9,7 @@ const ModalStore = create((set) => ({
     selectedItems: [],
     selectedItem: null,
     url: "",
-
+    
     setYesNoModal: (val) => set({yesNoModal: val}),
     setSelectedItem: (item) => set({selectedItem: item}),
     setShowAddModal: (val) => set({showAddModal: val}),

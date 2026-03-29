@@ -5,6 +5,7 @@ import ApiConfig from "../Api/ApiConfig";
 import axiosError from "../helpers/axiosError";
 import ModalStore from "./ModalStore";
 import toast from "react-hot-toast";
+import Modal from "@mui/material/Modal";
 
 const {
  addProduct,
@@ -146,12 +147,13 @@ const ProductStore = create((set, get) => ({
     }
   },
 
-  deleteProduct: async (id) => {
+  //UNDEFINED YUNG ID DAW PUTANGINA
+  deleteProduct: async () => {
+    const { selectedItem } = ModalStore.getState();
+
     try {
         const result = await axiosInstance.post(deleteSingleProduct, {
-          params: {
-            id: id
-          }
+          id: selectedItem.Id
         });
         
         console.log(result);

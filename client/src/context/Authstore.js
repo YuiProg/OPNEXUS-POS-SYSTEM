@@ -196,6 +196,24 @@ const AuthStore = create((set, get) => ({
         }
     },
 
+    deleteUser : async (id) => {
+        const {setYesNoModal} = ModalStore.getState();
+        try {
+            const result = await axiosInstance.post(ApiConfig.deleteSingleUser, { id });
+            if (result.data.status === "Success") {
+                const users = get().users;
+                const newData = users.filter((d) => d.Id !== id);
+                set({users: newData});
+                toast.success('User deleted');
+            }
+        } catch (error) {
+            toast.error(error.message);
+            set({errorUser: axiosError(error)});
+        } finally {
+            setYesNoModal(false);
+        }
+    },
+
     connectSocket: () => {
         const { AuthUser, socket } = get();
         

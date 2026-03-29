@@ -42,10 +42,10 @@ class StaffManagement extends React.Component {
     }
 
     showDeleteModal = (item) => {
-        const {setSelectedItem, setYesNoModal} = ModalStore.getState();
+        const {setSelectedItem, setYesNoModal, setUrl} = ModalStore.getState();
         setSelectedItem(item);
         setYesNoModal(true);
-        console.log(item);
+        setUrl("staff");
     }
 
     render () {

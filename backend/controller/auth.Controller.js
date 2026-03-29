@@ -88,3 +88,13 @@ export const deleteMultiple = async (req, res) => {
         ApiResponseModel(res, ERROR, error.message);
     }
 }
+
+export const deleteSingle = async (req, res) => {
+    try {
+        const { id } = req.body;
+        const result = await User.deleteSingleUser(id);
+        ApiResponseModel(res, SUCCESS, SUCCESS_MESS, result);
+    } catch (error) {
+        ApiResponseModel(res, ERROR, error.message);
+    }
+}

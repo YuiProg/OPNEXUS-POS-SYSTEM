@@ -41,8 +41,7 @@ export const fetchProducts = async (req, res) => {
 }
 
 export const deleteProductSingle = async (req, res) => {
-    const { id } = req.query;
-    
+    const { id } = req.body;
     try {
         const result = await Product.deleteSingle(id);
         ApiResponseModel(res, SUCCESS, SUCCESS_MESS, result);

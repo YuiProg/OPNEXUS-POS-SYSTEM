@@ -149,6 +149,11 @@ userSchema.statics.deleteMultiple = async function (data) {
     return result;
 }
 
+userSchema.statics.deleteSingleUser = async function (id) {
+    const result = await this.deleteOne({_id: id});
+    return result;
+}
+
 const User = mongoose.model(us, userSchema);
 
 export default User;
