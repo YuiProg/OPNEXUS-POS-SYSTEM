@@ -108,7 +108,9 @@ function App() {
     );
   };
 
-  const showBranchModal = () => {
+
+  //add user modal to hindi branch
+  const showUserModal = () => {
     return (
       <Modal
         onClose={() => setShowAddModal(false)}
@@ -292,7 +294,7 @@ function App() {
     return (
       <>
         {isOpen && showModalAddProduct()}
-        {showAddModal && showBranchModal()}
+        {showAddModal && showUserModal()}
         {deleteModal && selectedItems.length > 0
           ? showDeleteConfirmModal()
           : null}
@@ -304,11 +306,6 @@ function App() {
   return (
     <>
       {returnModals()}
-      {/* {errorProduct
-        ? showToastError("product")
-        : errorUser
-          ? showToastError("user")
-          : null} */}
       <Toaster position="top-center"/>
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>

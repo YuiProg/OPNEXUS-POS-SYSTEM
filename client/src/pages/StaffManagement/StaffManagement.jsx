@@ -40,6 +40,7 @@ class StaffManagement extends React.Component {
     render () {
         //const {setShowModal} = BranchStore.getState();
         const { setShowAddModal } = ModalStore.getState();
+        const { onlineUsers } = AuthStore.getState();
 
         const tableData = {
             header: "STAFFS",
@@ -108,7 +109,7 @@ class StaffManagement extends React.Component {
                             onEdit={() => {}}/>
                     </div>
                     <div className="sm-active-staffs">
-                        <ActiveStaffs />
+                        <ActiveStaffs staffData={onlineUsers}/>
                     </div>
                 </div>
             </div>

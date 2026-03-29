@@ -45,6 +45,7 @@ const AuthStore = create((set, get) => ({
         salary: null
     },
     users: [],
+    onlineUsers: [],
 
     setInput: (name, value) => {
         const inputs = get().input;
@@ -205,7 +206,7 @@ const AuthStore = create((set, get) => ({
             },
             autoConnect: false 
         });
-
+        
         newSocket.connect();
         set({ socket: newSocket });
 

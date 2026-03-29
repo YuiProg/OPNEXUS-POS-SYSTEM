@@ -6,26 +6,34 @@ import PropTypes from "prop-types";
 class DropDown extends React.Component {
   constructor(props) {
     super(props);
+    this.state ={
+      value: ""
+    }
   }
 
   render() {
-    const { options, defaultValue, onChange, maxWidth, customWidth } =
+    const { options, defaultValue, onChange, maxWidth, customWidth, isRequired } =
       this.props;
-
+    console.log(this.props);
     return (
       <div className="tr-dropdown-wrapper">
         <Layers className="tr-dropdown-icon" />
         <select
+          value={this.state.value}
           className="tr-dropdown"
           style={{
             width: maxWidth ? "100%" : customWidth ? customWidth : "320px",
           }}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={(e) => {
+            this.setState({value: e.target.value});
+            onChange(e.target.value)
+          }}
           defaultValue={
             defaultValue ? `Select ${defaultValue}` : "Select Branch..."
           }
+          required={isRequired}
         >
-          <option className="tr-options" disabled>
+          <option value="" className="tr-options" disabled>
             {defaultValue ? `Select ${defaultValue}` : "Select Branch..."}
           </option>
           {options?.map((l, i) => {

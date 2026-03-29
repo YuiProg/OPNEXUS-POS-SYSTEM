@@ -38,6 +38,9 @@ class Dashboard extends React.Component {
   // }
 
   render() {
+    const { onlineUsers } = AuthStore.getState();
+
+    const active = onlineUsers.filter((d) => d.role === "Clerk");
     return (
       <div className="dashboard-container">
         {/* HELLO WHAT DO YOU WANT TO DO KEME KEME SECTION */}
@@ -56,7 +59,7 @@ class Dashboard extends React.Component {
         </div>
         {/* GREEN CONTAINER */}
         <div className="top-three-contents">
-          <StaffCount />
+          <StaffCount activeClerks={active.length}/>
           <TodaysRevenue />
           <RecentActivity />
         </div>
