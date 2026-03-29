@@ -107,7 +107,6 @@ export class Table extends React.Component {
       ? selected.slice(startIndex, startIndex + this.rowsPerPage)
       : null;
 
-    
     const selectedRows = this.props.data.filter((_, i) => selected[i]);
 
     const headers =
@@ -116,13 +115,13 @@ export class Table extends React.Component {
         : [];
 
     const hasData = paginatedData && paginatedData.length > 0;
+    const shouldPaginate = filteredData && filteredData.length > this.rowsPerPage;
 
     // TODO: fix this later ps. what the fuck is this shit
     var pageNumbers = [];
     for (var i = 1; i <= totalPages; i++) {
       pageNumbers.push(i);
     }
-    
 
     return (
       <div className="table-wrapper">
@@ -133,18 +132,17 @@ export class Table extends React.Component {
               <div className="table-search">{isDetailed.search}</div>
               {isDetailed.hasButton && isDetailed.hasDelete ? (
                 <>
-                <Button
-                  error
-                  text={isDetailed.buttonInfo}
-                  onClick={(e) => isDetailed.CB(e)}
-                />
-                <Button
-                  cancel
-                  text={isDetailed.deleteBtnInfo}
-                  onClick={() => isDetailed.CBD(selectedRows)}
-                />
+                  <Button
+                    error
+                    text={isDetailed.buttonInfo}
+                    onClick={(e) => isDetailed.CB(e)}
+                  />
+                  <Button
+                    cancel
+                    text={isDetailed.deleteBtnInfo}
+                    onClick={() => isDetailed.CBD(selectedRows)}
+                  />
                 </>
-                
               ) : isDetailed.hasButton && (
                 <Button
                   error
@@ -205,38 +203,74 @@ export class Table extends React.Component {
           </table>
         </div>
 
-        <div className="pagination">
-          <span className="pagination-info">
-            {filteredData
-              ? `showing ${Math.min(startIndex + 1, filteredData.length)} to ${Math.min(startIndex + this.rowsPerPage, filteredData.length)} of ${filteredData.length} results`
-              : null}
-          </span>
-          <div className="pagination-controls">
-            <button
-              className="pagination-btn"
-              onClick={() => this.goToPage(currentPage - 1)}
-              disabled={currentPage === 1}
-            >
-              <ChevronLeft size={15} />
-            </button>
-            {pageNumbers.map((page) => {
-              const showPage =
-                page === 1 ||
-                page === totalPages ||
-                page === currentPage ||
-                page === currentPage - 1 ||
-                page === currentPage + 1;
+        {shouldPaginate && (
+          <div className="pagination">
+            <span className="pagination-info">
+              {filteredData
+                ? `showing ${Math.min(startIndex + 1, filteredData.length)} to ${Math.min(startIndex + this.rowsPerPage, filteredData.length)} of ${filteredData.length} results`
+                : null}
+            </span>
+            <div className="pagination-controls">
+              <button
+                className="pagination-btn"
+                onClick={() => this.goToPage(currentPage - 1)}
+                disabled={currentPage === 1}
+              >
+                <ChevronLeft size={15} />
+              </button>
+              {pageNumbers.map((page) => {
+                const showPage =
+                  page === 1 ||
+                  page === totalPages ||
+                  page === currentPage ||
+                  page === currentPage - 1 ||
+                  page === currentPage + 1;
 
-              const showLeftDots =
-                page === currentPage - 1 && currentPage - 1 > 2;
-              const showRightDots =
-                page === currentPage + 1 && currentPage + 1 < totalPages - 1;
+                const showLeftDots =
+                  page === currentPage - 1 && currentPage - 1 > 2;
+                const showRightDots =
+                  page === currentPage + 1 && currentPage + 1 < totalPages - 1;
 
-              if (showLeftDots) {
-                return (
-                  <React.Fragment key={page}>
-                    <span className="pagination-dots">...</span>
+                if (showLeftDots) {
+                  return (
+                    <React.Fragment key={page}>
+                      <span className="pagination-dots">...</span>
+                      <button
+                        className={
+                          currentPage === page
+                            ? "pagination-page pagination-page--active"
+                            : "pagination-page"
+                        }
+                        onClick={() => this.goToPage(page)}
+                      >
+                        {page}
+                      </button>
+                    </React.Fragment>
+                  );
+                }
+
+                if (showRightDots) {
+                  return (
+                    <React.Fragment key={page}>
+                      <button
+                        className={
+                          currentPage === page
+                            ? "pagination-page pagination-page--active"
+                            : "pagination-page"
+                        }
+                        onClick={() => this.goToPage(page)}
+                      >
+                        {page}
+                      </button>
+                      <span className="pagination-dots">...</span>
+                    </React.Fragment>
+                  );
+                }
+
+                if (showPage) {
+                  return (
                     <button
+                      key={page}
                       className={
                         currentPage === page
                           ? "pagination-page pagination-page--active"
@@ -246,55 +280,21 @@ export class Table extends React.Component {
                     >
                       {page}
                     </button>
-                  </React.Fragment>
-                );
-              }
+                  );
+                }
+                return null;
+              })}
 
-              if (showRightDots) {
-                return (
-                  <React.Fragment key={page}>
-                    <button
-                      className={
-                        currentPage === page
-                          ? "pagination-page pagination-page--active"
-                          : "pagination-page"
-                      }
-                      onClick={() => this.goToPage(page)}
-                    >
-                      {page}
-                    </button>
-                    <span className="pagination-dots">...</span>
-                  </React.Fragment>
-                );
-              }
-
-              if (showPage) {
-                return (
-                  <button
-                    key={page}
-                    className={
-                      currentPage === page
-                        ? "pagination-page pagination-page--active"
-                        : "pagination-page"
-                    }
-                    onClick={() => this.goToPage(page)}
-                  >
-                    {page}
-                  </button>
-                );
-              }
-              return null;
-            })}
-
-            <button
-              className="pagination-btn"
-              onClick={() => this.goToPage(currentPage + 1)}
-              disabled={currentPage === totalPages}
-            >
-              <ChevronRight size={15} />
-            </button>
+              <button
+                className="pagination-btn"
+                onClick={() => this.goToPage(currentPage + 1)}
+                disabled={currentPage === totalPages}
+              >
+                <ChevronRight size={15} />
+              </button>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     );
   }
@@ -332,7 +332,13 @@ export class TableData extends React.Component {
             ) : null}
             {Object.values(row).map((value, colIndex) => (
               <td className="table-td" key={colIndex}>
-                {colIndex === 0 ? <strong style={{cursor: 'pointer'}} onClick={() => onView(row)}>{value}</strong> : value}
+                {colIndex === 0 ? (
+                  <strong style={{ cursor: "pointer" }} onClick={() => onView(row)}>
+                    {value}
+                  </strong>
+                ) : (
+                  value
+                )}
               </td>
             ))}
             {hasAction ? (
