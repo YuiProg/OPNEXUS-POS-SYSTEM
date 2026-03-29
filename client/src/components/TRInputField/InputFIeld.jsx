@@ -15,7 +15,7 @@ class InputField extends React.Component {
 
   checkNumber = (e) => {
     const value = e.target.value;
-    const { number, text, password } = this.props;
+    const { number, text, password, email } = this.props;
     const regex = /^\d+$/;
 
     if (value === "") {
@@ -23,7 +23,7 @@ class InputField extends React.Component {
       return value;
     }
 
-    if (text || password) {
+    if (text || password || email) { 
       this.setState({ error: null, value: value });
       return value;
     }
@@ -61,7 +61,8 @@ class InputField extends React.Component {
       isSearch,
       onEnterDown,
       color,
-      isRequired
+      isRequired,
+      email
     } = this.props;
 
     return (
@@ -76,7 +77,7 @@ class InputField extends React.Component {
             <>
               <input
                   style={disabled ? {backgroundColor: color, cursor: 'not-allowed'} : {backgroundColor: color}}
-                  type={password ? (this.state.showPassword ? "text" : "password") : "text"}
+                  type={password ? (this.state.showPassword ? "text" : "password") : email ? "email" : "text"}
                   required={required || isRequired}
                   onChange={(e) => onChange(this.checkNumber(e))}
                   disabled={disabled}

@@ -67,12 +67,12 @@ const AuthStore = create((set, get) => ({
         }
     },
 
-    loginUser: async (username, password) => {
+    loginUser: async (email, password) => {
         try {
             set({ AuthLoading: true, errorUser: null });
             
             const authUser = await axiosInstance.post(loginUsers, {
-                username,
+                email,
                 password
             });
             

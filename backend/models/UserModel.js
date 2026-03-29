@@ -19,6 +19,7 @@ const {
     PNUM_ERR,
     ADDR_ERR,
     ID_SECRET,
+    EMAIL_ERR,
     pw,
     us
 } = Strings;
@@ -29,6 +30,10 @@ const userSchema = new mongoose.Schema({
     _id: {
         type: String,
         default: () => `US-${nanoid()}`
+    },
+    email: {
+        type: String,
+        required: [true, EMAIL_ERR]
     },
     username: {
         type: String,
@@ -94,8 +99,8 @@ userSchema.statics.registerUser = async function (data) {
     return createdUser;
 }
 
-userSchema.statics.loginUser = async function (username, password) {
-    const user = await this.findOne({ username });
+userSchema.statics.loginUser = async function (email, password) {
+    const user = await this.findOne({ email });
     if (!user) {
         throw new Error(CRED_ERROR);
     }
