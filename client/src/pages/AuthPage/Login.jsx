@@ -1,18 +1,19 @@
 import React from "react";
 import './Login.css';
-import AuthStore from "../../store/Authstore";
+import AuthStore from "../../context/Authstore.js";
 import Strings from "../../strings/strings-codes.js";
 import InputField from "../../components/TRInputField/InputFIeld.jsx";
-import bg_image from "../../assets/images/ProductsLoginImage.png"
-import bg_logo from "../../assets/images/loginImageLogo.png"
+import bg_image1 from "../../assets/images/ProductsLoginImage1.svg";
+import bg_image2 from "../../assets/images/ProductsLoginImage2.svg";
+import bg_image3 from "../../assets/images/ProductsLoginImage3.svg";
+import bg_logo from "../../assets/images/loginImageLogo.png";
 import Toast from "../../toast/Toast.jsx";
 import Button from "../../components/TRButton/Button.jsx";
 
 const {
     UNAUTHORIZED_MESS,
     pw,
-    nm,
-    us
+    em
 } = Strings;
 
 class Login extends React.Component {
@@ -20,7 +21,7 @@ class Login extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: '',
+            email: '',
             password: '',
             error: null,
             loading: false,
@@ -61,16 +62,16 @@ class Login extends React.Component {
 
     handleLogin = (e) => {
         e.preventDefault();
-        const { username, password } = this.state;
+        const { email, password } = this.state;
         const loginUser = AuthStore.getState().loginUser;
-        loginUser(username, password);
+        loginUser(email, password);
     };
 
     render() {
-        const { loading, error} = this.state;
+        const { loading } = this.state;
         return (
             <>
-                {error && (
+                {/* {error && (
                     <Toast
                         error
                         message={error.status || 'Failed to login'}
@@ -78,17 +79,18 @@ class Login extends React.Component {
                         CB={() => {}}
                         onClose={() => AuthStore.setState({ error: null })}
                     />
-                )}
+                )} */}
                 <div className="login-container">
                     <div className="login-container__image">
-                        <img src={bg_logo} className="login-container__image-one"/> 
-                        <img src={bg_image} className="login-container__image-two"/>
+                        <img src={bg_image1} className="login-container__image-one"/>
+                        <img src={bg_image2} className="login-container__image-two"/>
+                        <img src={bg_image3} className="login-container__image-three"/>
                     </div>
                     <div className="login-container__credentials">
                         <img src={bg_logo}>
                         </img>    
                         <form onSubmit={(e) => this.handleLogin(e)}>
-                            <InputField required text onChange={(e) => this.setState({username: e})} placeholder={us + nm} onEnterDown={() => {}}/>
+                            <InputField email required onChange={(e) => this.setState({email: e})} placeholder={em} onEnterDown={() => {}}/>
                             <InputField required password onChange={(e) => this.setState({password: e})} placeholder={pw} onEnterDown={() => {}}/>
                             <Button error text={loading ? 'Logging in…' : 'Login'} submit disabled={loading}/>
                         </form>

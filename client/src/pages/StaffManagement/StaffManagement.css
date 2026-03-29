@@ -11,7 +11,13 @@ h1 {
   color: #fff;
   padding: 0;
   width: auto;
-  height: -webkit-fill-available;
+  height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  position: relative;
 }
 
 .sm-header {
@@ -37,8 +43,6 @@ h1 {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding-inline: 2%;
-  padding-block-start: 1%;
 }
 
 .sm-branch-text {
@@ -46,3 +50,17 @@ h1 {
   font-weight: 300;
   margin: 4px;
 }
+
+.sm-main-contents {
+  width: auto;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  overflow: hidden;
+}
+
+.sm-table {
+  width: 80%;
+}
+

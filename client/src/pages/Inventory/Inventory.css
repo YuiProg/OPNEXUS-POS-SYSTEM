@@ -10,6 +10,11 @@ h1 {
   width: auto;
   height: 100%;
   background: #111111;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .iv-header {
@@ -35,8 +40,6 @@ h1 {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding-inline: 2%;
-  padding-block-start: 1%;
 }
 
 .iv-branch-text {

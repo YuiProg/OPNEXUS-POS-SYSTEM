@@ -12,22 +12,23 @@ const io = new Server(server, {
     }
 });
 
-const activeUsers = {};
+const activeUsers = []; 
 
 io.on('connection', (socket) => {
+    const { userId, username, role } = socket.handshake.auth; 
 
+    if (!userId) return;
 
-    const id = socket.handshake.query.userId;
-    if (id) activeUsers[id] = socket.id;
+    const alreadyActive = activeUsers.some((i) => i.userId === userId);
+    if (!alreadyActive) {
+        activeUsers.push({ userId, username, role });
+        io.emit('onlineUsers', activeUsers);
+    }
 
-    if (!id) return; 
-    io.emit('onlineUsers', Object.keys(activeUsers));
-    console.log(activeUsers);
     socket.on('disconnect', () => {
-        const userId = Object.keys(activeUsers).find(
-            (key) => activeUsers[key] === socket.id
-        );
-        if (userId) delete activeUsers[userId];
+        const index = activeUsers.findIndex((i) => i.userId === userId);
+        if (index !== -1) activeUsers.splice(index, 1);
+        io.emit('onlineUsers', activeUsers);
     });
 });
 

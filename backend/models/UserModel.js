@@ -1,7 +1,7 @@
 import mongoose, { Types } from "mongoose";
 import bcrypt from 'bcrypt';
 import Strings from "../strings/strings-codes.js";
-import { nanoid } from 'nanoid'
+import { customAlphabet } from 'nanoid'
 
 const {
     BRANCH_REQ,
@@ -18,14 +18,22 @@ const {
     GEND_ERR,
     PNUM_ERR,
     ADDR_ERR,
+    ID_SECRET,
+    EMAIL_ERR,
     pw,
     us
 } = Strings;
 
+const nanoid = customAlphabet(ID_SECRET, 5);
+
 const userSchema = new mongoose.Schema({
     _id: {
         type: String,
-        default: () => `US-${nanoid(8)}`
+        default: () => `US-${nanoid()}`
+    },
+    email: {
+        type: String,
+        required: [true, EMAIL_ERR]
     },
     username: {
         type: String,
@@ -91,8 +99,8 @@ userSchema.statics.registerUser = async function (data) {
     return createdUser;
 }
 
-userSchema.statics.loginUser = async function (username, password) {
-    const user = await this.findOne({ username });
+userSchema.statics.loginUser = async function (email, password) {
+    const user = await this.findOne({ email });
     if (!user) {
         throw new Error(CRED_ERROR);
     }
@@ -106,9 +114,9 @@ userSchema.statics.loginUser = async function (username, password) {
 userSchema.statics.updateUser = async function (id, data) {
     const updatedUser = await this.findByIdAndUpdate(id, data, {new: true}).select("-password");
     
-    if (!mongoose.Types.ObjectId.isValid(new Types.ObjectId(id))) {
-        throw new Error(INVALID_ID);
-    }
+    // if (!mongoose.Types.ObjectId.isValid(new Types.ObjectId(id))) {
+    //     throw new Error(INVALID_ID);
+    // }
 
     return updatedUser;
 }
@@ -138,6 +146,11 @@ userSchema.statics.getUsers = async function () {
 
 userSchema.statics.deleteMultiple = async function (data) {
     const result = await this.deleteMany({_id: {$in: data}});
+    return result;
+}
+
+userSchema.statics.deleteSingleUser = async function (id) {
+    const result = await this.deleteOne({_id: id});
     return result;
 }
 

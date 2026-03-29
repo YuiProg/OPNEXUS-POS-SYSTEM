@@ -1,4 +1,5 @@
 const Strings = Object.freeze({
+    ID_SECRET: '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ',
     //server error remember to put the error message when development
     SERVER_ERROR: 'Server error.', 
     CRED_ERROR: 'Invalid username or password.',
@@ -21,6 +22,7 @@ const Strings = Object.freeze({
     PNUM_ERR: 'Phone number is required.',
     ADDR_ERR: 'Address is required.',
     GEND_ERR: 'Gender is required.',
+    EMAIL_ERR: 'Email is required.',
 
     //products fail
     FAILED_ADD: 'Failed to add product.',

@@ -18,6 +18,10 @@ h1 {
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: auto 1fr auto; 
   */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
 }
 
 .db-header {
@@ -27,7 +31,6 @@ h1 {
 }
 
 .db-header .db-sentence {
-  padding-top: 2%;
   bottom: 0;
   font-size: 12px;
   font-weight: 200;
@@ -43,7 +46,6 @@ h1 {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding-inline: 1%;
 }
 
 .db-branch-text {
@@ -54,28 +56,24 @@ h1 {
 
 .top-three-contents {
   display: grid;
-  grid-template-columns: 0.5fr 0.5fr 1fr;
+  grid-template-columns: 0.48fr 0.5fr 1fr;
   flex-direction: row;
   align-items: center;
-  gap: 12px;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  gap: 20px;
 }
 
 .dashboard-container__graph-container {
   display: grid;
-  grid-template-columns: 1fr 0.4fr 0.4fr;
+  grid-template-columns: 49.5% 24% 24%;
   gap: 20px;
-  height: 335px;
+  height: auto;
   width: 100%;
-  margin-bottom: 32px;
 }
 
 .todays-sales__top-products {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
-  height: 335px;
+  height: auto;
   width: 100%;
-  margin-bottom: 32px;
 }

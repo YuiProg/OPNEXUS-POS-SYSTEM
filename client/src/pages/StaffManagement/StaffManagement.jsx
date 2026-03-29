@@ -5,17 +5,19 @@ import InputField from "../../components/TRInputField/InputFIeld";
 import DropDown from "../../components/TRDropDown/Dropdown";
 import Button from "../../components/TRButton/Button";
 import { Table } from "../../components/TRTable/TrTable";
-import BranchStore from "../../store/BranchStore";
+import BranchStore from "../../context/BranchStore";
 import { Modal } from "../../TRModal/Modal";
-import AuthStore from "../../store/Authstore";
-import ModalStore from "../../store/ModalStore";
-import ProductStore from "../../store/ProductStore";
+import AuthStore from "../../context/Authstore";
+import ModalStore from "../../context/ModalStore";
+import ProductStore from "../../context/ProductStore";
+import ActiveStaffs from "./ActiveStaffs/ActiveStaffs";
 
 class StaffManagement extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
-            users: []
+            users: [],
+            search: ''
         }
     }
 
@@ -29,25 +31,38 @@ class StaffManagement extends React.Component {
     }
 
     showConfirmDelModal = (e) => {
-        const { setDeleteModal, setSelectedItems } = ModalStore.getState();
+        const { setDeleteModal, setSelectedItems, setUrl } = ModalStore.getState();
         setDeleteModal(true);
         setSelectedItems(e);
+        setUrl("staff");
     }
 
+    handleTableSearch = (value) => {
+        this.setState({ search: value });
+    }
+
+    showDeleteModal = (item) => {
+        const {setSelectedItem, setYesNoModal, setUrl} = ModalStore.getState();
+        setSelectedItem(item);
+        setYesNoModal(true);
+        setUrl("staff");
+    }
 
     render () {
-        const {setShowModal} = BranchStore.getState();
+        //const {setShowModal} = BranchStore.getState();
+        const { setShowAddModal } = ModalStore.getState();
+        const { onlineUsers } = AuthStore.getState();
 
         const tableData = {
             header: "STAFFS",
             hasButton: true,
-            CB: () => setShowModal(true),
+            CB: () => setShowAddModal(true),
             buttonInfo: "+NEW CLERK",
             search: (
                 <InputField
-                placeholder="Search clerk"
+                placeholder="Search staff"
                 isSearch
-                onEnterDown={value => console.log(value)}
+                onEnterDown={value => this.handleTableSearch(value)}
                 />
             ),
             hasDelete: true,
@@ -94,13 +109,22 @@ class StaffManagement extends React.Component {
                         <DropDown className="sm-branch-dd"/>
                     </div>
                 </div>
-                <Table 
-                    data={this.state.users} 
-                    isDetailed={tableData}
-                    hasSelect
-                    hasAction
-                    onDelete={() => {}}
-                    onEdit={() => {}}/>
+                <div className="sm-main-contents">
+                    <div className="sm-table">
+                        <Table 
+                            data={this.state.users} 
+                            isDetailed={tableData}
+                            hasSelect
+                            hasAction
+                            onDelete={(e) => this.showDeleteModal(e)}
+                            onEdit={() => {}}
+                            search={this.state.search}
+                            />
+                    </div>
+                    <div className="sm-active-staffs">
+                        <ActiveStaffs staffData={onlineUsers}/>
+                    </div>
+                </div>
             </div>
             </>
         );

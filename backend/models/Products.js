@@ -1,15 +1,24 @@
 import mongoose from 'mongoose';
 import Strings from '../strings/strings-codes.js';
+import { customAlphabet } from 'nanoid';
+import cloudinary from '../lib/cloudinary.js';
 
 const {
     FAILED_ADD,
     BRANCH_LOC_FAIL,
     SERVER_ERROR,
     PRICE_ERR,
-    CATEG_ERR
+    CATEG_ERR,
+    ID_SECRET
 } = Strings;
 
+const nanoid = customAlphabet(ID_SECRET, 5);
+
 const productSchema = new mongoose.Schema({
+    _id: {
+        type: String,
+        default: () => `PROD-${nanoid()}`
+    },
     productName: {
         type: String,
         required: [true, FAILED_ADD]
@@ -27,7 +36,7 @@ const productSchema = new mongoose.Schema({
         required: [true, PRICE_ERR]
     },
     createdById: {
-        type: mongoose.Types.ObjectId,
+        type: String,
         required: true
     },
     creatorImage: {
@@ -56,6 +65,18 @@ productSchema.statics.addProduct = async function (data, user) {
     if (!user) {
         return new Error(SERVER_ERROR);
     }
+
+    if (data.image !== null && data.image !== undefined) {
+        await cloudinary.uploader.upload(data.image, {folder: 'vaporya-products'})
+        .then((result) => {
+            data.productImage = result.secure_url;
+            data.productImageId = result.public_id;
+        })
+        .catch((error) => {
+            console.error('Error uploading image:', error);
+            throw new Error(SERVER_ERROR);
+        });
+    }
     const newProduct = await this.create({...data, createdById: user.userId});
     return newProduct;
 }
@@ -69,6 +90,15 @@ productSchema.statics.fetchProducts = async function (selectedBranch) {
     return products;
 }
 
+productSchema.statics.deleteSingle = async function (id) {
+    const result = await this.deleteOne({_id: id});
+    return result;
+}
+
+productSchema.statics.deleteMultiple = async function (list) {
+    const result = await this.deleteMany({_id: {$in: list}});
+    return result;
+}
 
 const Product = mongoose.model('product', productSchema);
 

@@ -1,5 +1,5 @@
 import React from "react";
-import AuthStore from "../../store/Authstore";
+import AuthStore from "../../context/Authstore";
 import Strings from "../../strings/strings-codes";
 import { Navigate, Link } from "react-router-dom";
 import './Sidebar.css';
@@ -63,7 +63,7 @@ class Sidebar extends React.Component {
         //     return <Navigate to="/inventory" />;
         // }
         const { user } = this.props;
-        console.log(user);
+        //console.log(user);
         //tanggalin muna error sa es-lint since dipa ginagamit tong variable nato pero eto yung items sa sidebar
         const sidebarItemsAdmin = [
             {
@@ -125,40 +125,41 @@ class Sidebar extends React.Component {
             <div className="sidebar-container">
                 <aside>
                     <img loading="lazy" fetchPriority="high" src="https://i.imgur.com/4hfuK5S.png" alt="logo" className="logo"/>
-                    <ul className="sidebar-list">
-                        {user.role.toLowerCase() === 'admin' ? (
-                            sidebarItemsAdmin.map((l,i) => {
-                                return (
-                                    <li key={i} className="row" id={window.location.pathname === l.link ? "active" : ""}>
-                                        <Link to={l.link}>
-                                            <div className="sb-icon">{l.icon}</div>
-                                            <div className="sb-title">{l.title}</div>
-                                        </Link>
-                                    </li>
-                                );
-                            })
-                        ) : user.role.toLowerCase() === 'clerk' ? (
-                            sidebarItemsClerk.map((l,i) => {
-                                return (
-                                    <li key={i} className="row" id={window.location.pathname == l.link ? "active" : ""}>
-                                        <Link to={l.link}>
-                                            <div className="sb-icon">{l.icon}</div>
-                                            <div className="sb-title">{l.title}</div>
-                                        </Link>
-                                    </li>
-                                );
-                            })
-                        ) : null}
-                    </ul>
-                    
-                    <div className="user-panel">
-                        {this.props.user ? (
-                            <>
-                            <p className="userName">{user.username}</p>
-                            <p className="userRole">{user.role}</p>
-                            </>
-                        ) : <p>LOADING ...</p>}
-                        <Button error text="LOG OUT" onClick={() => this.handleLogout()}/>
+                    <div className="sidebar-below-container">
+                        <ul className="sidebar-list">
+                            {user.role.toLowerCase() === 'admin' ? (
+                                sidebarItemsAdmin.map((l,i) => {
+                                    return (
+                                        <li key={i} className="row" id={window.location.pathname === l.link ? "active" : ""}>
+                                            <Link to={l.link}>
+                                                <div className="sb-icon">{l.icon}</div>
+                                                <div className="sb-title">{l.title}</div>
+                                            </Link>
+                                        </li>
+                                    );
+                                })
+                            ) : user.role.toLowerCase() === 'clerk' ? (
+                                sidebarItemsClerk.map((l,i) => {
+                                    return (
+                                        <li key={i} className="row" id={window.location.pathname == l.link ? "active" : ""}>
+                                            <Link to={l.link}>
+                                                <div className="sb-icon">{l.icon}</div>
+                                                <div className="sb-title">{l.title}</div>
+                                            </Link>
+                                        </li>
+                                    );
+                                })
+                            ) : null}
+                        </ul>
+                        <div className="user-panel">
+                            {this.props.user ? (
+                                <>
+                                <p className="userName">{user.username}</p>
+                                <p className="userRole">{user.role}</p>
+                                </>
+                            ) : <p>LOADING ...</p>}
+                            <Button error text="LOG OUT" onClick={() => this.handleLogout()}/>
+                        </div>
                     </div>
                 </aside>
                 <main className="children">

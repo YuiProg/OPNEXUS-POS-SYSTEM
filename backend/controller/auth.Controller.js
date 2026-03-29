@@ -25,14 +25,14 @@ export const register = async (req, res) => {
 
 export const loginUser = async (req, res) => {
     try {
-        const {username, password} = req.body;
-        const user = await User.loginUser(username, password);
+        const {email, password} = req.body;
+        const user = await User.loginUser(email, password);
         
         const {password: _, ...userWithoutPassword} = user.toObject();
         generateToken(user._id, res);
         ApiResponseModel(res, SUCCESS, SUCCESS_MESS, userWithoutPassword);
     } catch (error) {
-        ApiResponseModel(res, error.message, ERROR);
+        ApiResponseModel(res, ERROR, error.message);
     }
 }
 
@@ -70,7 +70,7 @@ export const getUsers = async (req, res) => {
         const users = await User.getUsers();
         const usersWithFullName = users.map((user) => ({
             Id: user._id,
-            Employee: [user.firstName, user.middleName, user.lastName].filter(Boolean).join(" "),
+            Employee: [user.firstName, user.middleName, user.lastName].filter(Boolean).join(" ").toUpperCase(),
             ...user._doc
         }));
         ApiResponseModel(res, SUCCESS, SUCCESS_MESS, usersWithFullName);
@@ -83,6 +83,16 @@ export const deleteMultiple = async (req, res) => {
     try {
         const list = req.body;
         const result = await User.deleteMultiple(list);
+        ApiResponseModel(res, SUCCESS, SUCCESS_MESS, result);
+    } catch (error) {
+        ApiResponseModel(res, ERROR, error.message);
+    }
+}
+
+export const deleteSingle = async (req, res) => {
+    try {
+        const { id } = req.body;
+        const result = await User.deleteSingleUser(id);
         ApiResponseModel(res, SUCCESS, SUCCESS_MESS, result);
     } catch (error) {
         ApiResponseModel(res, ERROR, error.message);

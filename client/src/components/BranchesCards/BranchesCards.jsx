@@ -11,6 +11,9 @@ class BranchesCards extends React.Component {
         const sampleData = [
             {location: 'Longos', clerk: 'Riki', shift: 'morning', session: '2h', active: true},
             {location: 'Gatbuca', clerk: 'Riki', shift: 'morning', session: 'n/a', active: false},
+            {location: 'Longos', clerk: 'Riki', shift: 'morning', session: '2h', active: true},
+            {location: 'Longos', clerk: 'Riki', shift: 'morning', session: '2h', active: true},
+            {location: 'Longos', clerk: 'Riki', shift: 'morning', session: '2h', active: true},
             {location: 'Longos', clerk: 'Riki', shift: 'morning', session: '2h', active: true}
         ];
 
@@ -24,7 +27,7 @@ class BranchesCards extends React.Component {
             <>
             {sampleData.map((data, i) => {
                 return(
-                    <div key={i} className="branch-card-container" style={data.active ? {border: '1px solid #22C55E'} : {border: '1px solid white'}}>
+                    <div key={i} className={data.active ? "branch-card-container active" : "branch-card-container offline"}>
                         <h1 className="branch-card-header">{data.location}</h1>
                         <div className="branch-card-button-items">
                             <div>

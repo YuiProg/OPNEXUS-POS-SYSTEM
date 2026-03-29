@@ -7,10 +7,9 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    justify-items: center;
 }
 
-.active-clerks-content {
+.ac-content {
     width: 100%;
     padding: 16px 20px;
     display: flex;
@@ -19,16 +18,12 @@
     gap: 11px;
 }
 
-.active-clerks-icon {
+.ac-icon {
     width: auto;
     height: auto;
-    margin-left: 40px;
+    padding: 0 20px;
 }
 
-.active-clerks-label {
+.ac-label {
     font-weight: 100;
-}
-
-.active-clerks-num {
-
 }

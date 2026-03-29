@@ -1,34 +1,34 @@
 import { useEffect, lazy, Suspense } from "react";
 import "./App.css";
 import { Navigate, Route, Routes } from "react-router-dom";
-import Login from "./pages/AuthPage/Login";
-import AuthStore from "./store/Authstore";
-import Sidebar from "./components/Sidebar/Sidebar";
+import Login from "./pages/AuthPage/Login.jsx";
+import AuthStore from "./context/Authstore.js";
+import Sidebar from "./components/Sidebar/Sidebar.jsx";
 import POS from "./pages/POS/POS.jsx";
 import TimeInOut from "./pages/TimeInOut/TimeInOut.jsx";
-import { Modal } from "./TRModal/Modal.jsx";
+import { Modal, ModalConfim, ModalYesNo } from "./TRModal/Modal.jsx";
 import { InputForm, InputRow } from "./components/TRInputForm/TRInputForm.jsx";
 import InputField from "./components/TRInputField/InputFIeld.jsx";
-import ModalStore from "./store/ModalStore.js";
+import ModalStore from "./context/ModalStore.js";
 import DropDown from "./components/TRDropDown/Dropdown.jsx";
 import TRAddfile from "./components/TRAddFile/TRAddFile.jsx";
-import ProductStore from "./store/ProductStore.js";
+import ProductStore from "./context/ProductStore.js";
 import Loading from "./components/Loading/Loading.jsx";
 import Toast from "./toast/Toast.jsx";
 import Strings from "./strings/strings-codes.js";
 import Branches from "./pages/Branches/Branches.jsx";
-import BranchStore from "./store/BranchStore.js";
+import BranchStore from "./context/BranchStore.js";
 import { Table } from "./components/TRTable/TrTable.jsx";
+import { Toaster } from 'react-hot-toast';
+
 import Button from "./components/TRButton/Button.jsx";
 
 const Inventory = lazy(() => import("./pages/Inventory/Inventory.jsx"));
 const Dashboard = lazy(() => import("./pages/DashBoard/Dashboard.jsx"));
-const StaffManagement = lazy(
-  () => import("./pages/StaffManagement/StaffManagement.jsx"),
-);
+const StaffManagement = lazy(() => import("./pages/StaffManagement/StaffManagement.jsx"));
 
 function App() {
-  //store instantiate
+  //store instantiate wag burahin baka gamitin sa susunod
   // const checkAuth = AuthStore(state => state.checkAuth);
   // const AuthUser = AuthStore(state => state.AuthUser);
   // const AuthLoading = AuthStore(state => state.AuthLoading);
@@ -37,37 +37,50 @@ function App() {
   // const setProductData = ProductStore().setProductData;
   // const addProduct = ProductStore().addNewProduct;
   // const branches = ProductStore().branches;
-  const { 
-    checkAuth, 
-    AuthUser, 
-    AuthLoading, 
-    errorUser,
+  const {
+    checkAuth,
+    AuthUser,
+    AuthLoading,
+    //errorUser,
     setInput,
     addUser,
-    deleteMultipleUsers
+    deleteMultipleUsers,
+    deleteUser
   } = AuthStore();
   const { 
     isOpen, 
-    setModal,
-    deleteModal,
-    setDeleteModal,
-    selectedItems
+    setModal, 
+    deleteModal, 
+    setDeleteModal, 
+    selectedItems, 
+    url, 
+    confirmModal,
+    setConfirmModal,
+    showAddModal,
+    setShowAddModal,
+    selectedItem,
+    setYesNoModal,
+    yesNoModal 
   } = ModalStore();
   const {
     setProductData,
     addNewProduct,
     branches,
-    errorProduct,
+    //errorProduct,
     categories,
     addLoading,
+    deleteMultipleProducts,
+    deleteProduct
   } = ProductStore();
-  const {showModalBranch, setShowModal} = BranchStore();
+  //const { showModalBranch, setShowModal } = BranchStore();
 
   const { SERVER_ERROR, PROD_FAIL } = Strings;
 
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
+
+  //BUG PAG NAG LOG OUT HINDI NAG REREDIRECT TO /LOGIN
 
   if (AuthLoading)
     return (
@@ -87,58 +100,140 @@ function App() {
     const tableData = {
       header: "Delete Data?",
       hasButton: true,
-      CB: () => deleteMultipleUsers(selectedItems),
-      buttonInfo: 'DELETE'
-    }
+      CB: () => url === "staff" 
+        ? deleteMultipleUsers(selectedItems) 
+        : url === "inventory" 
+        ? deleteMultipleProducts(selectedItems)
+        : null,
+      buttonInfo: "DELETE",
+    };
 
     return (
-      <Modal 
-        onClose={() => setDeleteModal(false)}
-        >
-        <Table data={selectedItems} isDetailed={tableData}/>
+      <Modal onClose={() => setDeleteModal(false)}>
+        <Table data={selectedItems} isDetailed={tableData} />
       </Modal>
     );
-  }
+  };
 
-  const showBranchModal = () => {
+
+  //add user modal to hindi branch
+  const showUserModal = () => {
     return (
       <Modal
-        onClose={() => setShowModal(false)}
+        onClose={() => setShowAddModal(false)}
         header="Add clerk"
         subHeader="Fill in the details for the clerk"
         hasCancel
-        onCancel={() => setShowModal(false)}
+        onCancel={() => setShowAddModal(false)}
       >
-        <InputForm isRequired onSubmit={(e) => {
-          e.preventDefault();
-          addUser();
-        }}>
-          <InputRow gap={15} titles={['Username', 'Password']}>
-            <InputField text placeholder="Enter Username" onChange={(value) => setInput('username', value)}/>
-            <InputField password placeholder="Enter Password" onChange={(value) => setInput('password', value)}/>
+        <InputForm
+          isRequired
+          onSubmit={(e) => {
+            e.preventDefault();
+            addUser();
+          }}
+        >
+          <InputRow gap={15} titles={["Username", "Email", "Password"]}>
+            <InputField
+              text
+              placeholder="Enter Username"
+              onChange={(value) => setInput("username", value)}
+            />
+            <InputField
+              email
+              placeholder="Enter Email"
+              onChange={(value) => setInput("email", value)}
+            />
+            <InputField
+              password
+              placeholder="Enter Password"
+              onChange={(value) => setInput("password", value)}
+            />
           </InputRow>
-          <InputRow gap={15} titles={['First Name', 'Middle Name', 'Last Name']}>
-            <InputField text placeholder="Enter First Name" onChange={(value) => setInput('firstName', value)}/>
-            <InputField text placeholder="Enter Middle Name" onChange={(value) => setInput('middleName', value)}/>
-            <InputField text placeholder="Enter Last Name" onChange={(value) => setInput('lastName', value)}/>
+          <InputRow
+            gap={15}
+            titles={["First Name", "Middle Name", "Last Name"]}
+          >
+            <InputField
+              text
+              placeholder="Enter First Name"
+              onChange={(value) => setInput("firstName", value)}
+            />
+            <InputField
+              text
+              placeholder="Enter Middle Name"
+              onChange={(value) => setInput("middleName", value)}
+            />
+            <InputField
+              text
+              placeholder="Enter Last Name"
+              onChange={(value) => setInput("lastName", value)}
+            />
           </InputRow>
-          <InputRow gap={15} titles={['Phone Number', 'Address', 'Salary']}>
-            <InputField number placeholder="(+63)" onChange={(value) => setInput('phoneNumber', value)}/>
-            <InputField text placeholder="Enter Address" onChange={(value) => setInput('address', value)}/>
-            <InputField number placeholder="Enter Salary" onChange={(value) => setInput('salary', value)}/>
+          <InputRow gap={15} titles={["Phone Number", "Address", "Salary"]}>
+            <InputField
+              number
+              placeholder="(+63)"
+              onChange={(value) => setInput("phoneNumber", value)}
+            />
+            <InputField
+              text
+              placeholder="Enter Address"
+              onChange={(value) => setInput("address", value)}
+            />
+            <InputField
+              number
+              placeholder="Enter Salary"
+              onChange={(value) => setInput("salary", value)}
+            />
           </InputRow>
-          <InputRow gap={15} titles={["Shift", "Role"]}>
-            <DropDown maxWidth options={['Admin', 'Clerk']} defaultValue="Role" onChange={(value) => setInput('role', value)}/>
-            <DropDown maxWidth options={['Day', 'Night']} defaultValue="Shift" onChange={(value) => setInput('shift', value)}/>
+          <InputRow gap={15} titles={["Role", "Shift"]}>
+            <DropDown
+              maxWidth
+              options={["Admin", "Clerk"]}
+              defaultValue="Role"
+              onChange={(value) => setInput("role", value)}
+            />
+            <DropDown
+              maxWidth
+              options={["Day", "Night"]}
+              defaultValue="Shift"
+              onChange={(value) => setInput("shift", value)}
+            />
           </InputRow>
-          <InputRow gap={15} titles={['Gender', 'Branch']}>
-            <DropDown maxWidth options={['Male', 'Female']} defaultValue="Gender" onChange={(value) => setInput('gender', value)}/>
-            <DropDown maxWidth options={branches} onChange={(value) => setInput('branch', value)}/>
+          <InputRow gap={15} titles={["Gender", "Branch"]}>
+            <DropDown
+              maxWidth
+              options={["Male", "Female"]}
+              defaultValue="Gender"
+              onChange={(value) => setInput("gender", value)}
+            />
+            <DropDown
+              maxWidth
+              options={branches}
+              onChange={(value) => setInput("branch", value)}
+            />
           </InputRow>
         </InputForm>
       </Modal>
     );
   };
+
+  const showConfirmModal = () => {
+    return <ModalConfim 
+              message={`Deleted ${selectedItems.length} item/s`} 
+              onClose={() => setConfirmModal(false)}
+            />
+  }
+
+  const showYesNoModal = () => {
+    return <ModalYesNo
+              message={`Are you sure you want to delete ${selectedItem.Employee}?`}
+              onClose={() => setYesNoModal(false)}
+              onYes={() => url === "staff" ? deleteUser(selectedItem.Id) : deleteProduct(selectedItem.Id)}
+            />
+  }
+
 
   const showModalAddProduct = () => {
     return (
@@ -205,7 +300,7 @@ function App() {
       </>
     );
   };
-
+  // eslint-disable-next-line no-unused-vars
   const showToastError = (type) => {
     switch (type) {
       case "product":
@@ -216,23 +311,21 @@ function App() {
   };
 
   const returnModals = () => {
-    return(
+    return (
       <>
-      {isOpen && showModalAddProduct()}
-      {showModalBranch && showBranchModal()}
-      {deleteModal && selectedItems.length > 0 ? showDeleteConfirmModal() : null}
+        {deleteModal && selectedItems.length > 0 ? showDeleteConfirmModal() : null}
+        {isOpen && showModalAddProduct()}
+        {showAddModal && showUserModal()}
+        {confirmModal && showConfirmModal()}
+        {yesNoModal && showYesNoModal()}
       </>
     );
-  }
+  };
 
   return (
     <>
       {returnModals()}
-      {errorProduct
-        ? showToastError("product")
-        : errorUser
-          ? showToastError("user")
-          : null}
+      <Toaster position="top-center"/>
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
           <Route

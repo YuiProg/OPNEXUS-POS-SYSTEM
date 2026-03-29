@@ -2,10 +2,26 @@
     font-family: "Outfit", sans-serif;
 }
 html,
-body,
-#root{
-    height: 100%;
-    margin: 0;
+body
+{
+  padding: 0;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+:root {
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+} 
+
+img, video, canvas {
+  max-width: 100%;
+  height: auto;
 }
 
 /* width */
