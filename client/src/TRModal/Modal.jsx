@@ -102,7 +102,7 @@ export class ModalYesNo extends React.Component {
 
         return (
             <div className="modal-container-confirm">
-                <div className="" onClick={(e) => e.stopPropagation()}>
+                <div className="modal-container__delete-clerk" onClick={(e) => e.stopPropagation()}>
                     {/* CHECK MARK */}
                     <h1 className="modal-confirm-header">{message}</h1>
                     <div className="modal-yesno-btns">
