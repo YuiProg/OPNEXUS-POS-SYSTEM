@@ -5,18 +5,18 @@ import { BarChart } from '@mui/x-charts/BarChart';
 
 const pData = [2400, 1398, 4800, 3908, 4800, 3800, 4300, 2000, 4000, 4800, 2600, 3860];
 const xLabels = [
-  'Jan',
-  'Feb',
-  'Mar',
-  'Apr',
-  'May',
-  'Jun',
-  'Jul',
-  'Aug',
-  'Sep',
-  'Oct',
-  'Nov',
-  'Dec',
+  'JAN',
+  'FEB',
+  'MAR',
+  'APR',
+  'MAY',
+  'JUN',
+  'JUL',
+  'AUG',
+  'SEP',
+  'OCT',
+  'NOV',
+  'DEC',
 ];
 
 class BarsChart extends React.Component {
