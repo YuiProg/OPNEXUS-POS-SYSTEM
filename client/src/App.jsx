@@ -227,15 +227,11 @@ function App() {
   }
 
   const showYesNoModal = () => {
-    return (
-      <>
-        <ModalYesNo
-          message={`Are you sure you want to delete ${selectedItem.Employee}?`}
-          onClose={() => setYesNoModal(false)}
-          onYes={() => url === "staff" ? deleteUser(selectedItem.Id) : deleteProduct(selectedItem.Id)}
-        />
-      </>
-    );
+    return <ModalYesNo
+              message={`Are you sure you want to delete ${selectedItem.Employee}?`}
+              onClose={() => setYesNoModal(false)}
+              onYes={() => url === "staff" ? deleteUser(selectedItem.Id) : deleteProduct(selectedItem.Id)}
+            />
   }
 
 
