@@ -130,6 +130,9 @@
 .table-row {
   border-bottom: 1px solid #242424;
   transition: background 0.15s ease;
+  height: 60px !important;
+  min-height: 60px !important;
+  max-height: 60px !important;
 }
 
 .table-row:last-child {
@@ -234,7 +237,10 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 30px 0 0 0;
+  position: absolute;
+  width: -webkit-fill-available;
+  bottom: 0;
+  padding: 0 25px 25px 0;
 }
 
 .pagination-info {
@@ -301,4 +307,9 @@
   font-size: 30px;
   padding: 0 2px;
   user-select: none;
+}
+
+/*pagination for admin*/
+.sm-container .pagination {
+  padding: 0 355px 25px 0 !important;
 }

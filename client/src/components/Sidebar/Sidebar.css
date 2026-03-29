@@ -4,7 +4,7 @@ body {
 
 .sidebar-container {
   width: auto;
-  height: 100%;
+  height: 100vh;
   background: #1C1C1E;
   display: flex;
   color: #FFFFFF;
