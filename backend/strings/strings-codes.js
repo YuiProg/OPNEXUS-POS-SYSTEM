@@ -22,6 +22,7 @@ const Strings = Object.freeze({
     PNUM_ERR: 'Phone number is required.',
     ADDR_ERR: 'Address is required.',
     GEND_ERR: 'Gender is required.',
+    EMAIL_ERR: 'Email is required.',
 
     //products fail
     FAILED_ADD: 'Failed to add product.',

@@ -11,8 +11,7 @@ import Button from "../../components/TRButton/Button.jsx";
 const {
     UNAUTHORIZED_MESS,
     pw,
-    nm,
-    us
+    em
 } = Strings;
 
 class Login extends React.Component {
@@ -20,7 +19,7 @@ class Login extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: '',
+            email: '',
             password: '',
             error: null,
             loading: false,
@@ -61,9 +60,9 @@ class Login extends React.Component {
 
     handleLogin = (e) => {
         e.preventDefault();
-        const { username, password } = this.state;
+        const { email, password } = this.state;
         const loginUser = AuthStore.getState().loginUser;
-        loginUser(username, password);
+        loginUser(email, password);
     };
 
     render() {
@@ -88,7 +87,7 @@ class Login extends React.Component {
                         <img src={bg_logo}>
                         </img>    
                         <form onSubmit={(e) => this.handleLogin(e)}>
-                            <InputField required text onChange={(e) => this.setState({username: e})} placeholder={us + nm} onEnterDown={() => {}}/>
+                            <InputField email required onChange={(e) => this.setState({email: e})} placeholder={em} onEnterDown={() => {}}/>
                             <InputField required password onChange={(e) => this.setState({password: e})} placeholder={pw} onEnterDown={() => {}}/>
                             <Button error text={loading ? 'Logging in…' : 'Login'} submit disabled={loading}/>
                         </form>

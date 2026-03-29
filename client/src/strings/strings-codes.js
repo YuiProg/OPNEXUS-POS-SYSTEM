@@ -25,7 +25,8 @@ const Strings = Object.freeze({
     UNAUTHORIZED_MESS: 'Unauthorized',
     FORBIDDEN_MESS: 'Forbidden',
 
-    //cred
+    //cred,
+    em: 'Email',
     usnm: 'username',
     pw: 'password',
     nm: 'name',

@@ -25,14 +25,14 @@ export const register = async (req, res) => {
 
 export const loginUser = async (req, res) => {
     try {
-        const {username, password} = req.body;
-        const user = await User.loginUser(username, password);
+        const {email, password} = req.body;
+        const user = await User.loginUser(email, password);
         
         const {password: _, ...userWithoutPassword} = user.toObject();
         generateToken(user._id, res);
         ApiResponseModel(res, SUCCESS, SUCCESS_MESS, userWithoutPassword);
     } catch (error) {
-        ApiResponseModel(res, error.message, ERROR);
+        ApiResponseModel(res, ERROR, error.message);
     }
 }
 
