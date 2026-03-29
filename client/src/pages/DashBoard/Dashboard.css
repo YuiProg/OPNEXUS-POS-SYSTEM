@@ -56,10 +56,10 @@ h1 {
 
 .top-three-contents {
   display: grid;
-  grid-template-columns: 0.5fr 0.5fr 1fr;
+  grid-template-columns: 0.48fr 0.5fr 1fr;
   flex-direction: row;
   align-items: center;
-  gap: 12px;
+  gap: 20px;
 }
 
 .dashboard-container__graph-container {
