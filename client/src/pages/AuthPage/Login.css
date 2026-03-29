@@ -1,6 +1,6 @@
 .login-container{
 	height: 100vh;
-	background-color: #000;
+	background-color: #111;
 	display: flex;
 	flex-direction: row;
 }
@@ -14,25 +14,15 @@
 	width: 212px;
 	height: 212px;
 	align-self: center;
-}
-.login-container__image-one{
-	width: 66px;
-	height: 66px;
-	position: absolute;
-}
-.login-container__image-two{
-	width: 580px;
-    height: 717px;
-    position: relative;
-    top: 6%;
-    left: 20%;	
+	object-fit: cover;
+	overflow: visible;
 }
 
 /* Login Form Container */
 .login-container__credentials {
 	width: 20%;
 	padding: 24px 30px 0 30px;
-	background-color: #111111;
+	background-color: #1C1C1E;
 	display: flex;
     flex-direction: column;
 	gap: 141px;
@@ -53,4 +43,104 @@
 	font-weight: 400;
 	font-size: 12px;
 	color: #fff;
+}
+
+.login-container__image {
+	position: relative;
+}
+
+.login-container__image img {
+	position: absolute;
+	transition: all 0.3s ease-in-out;
+}
+
+img.login-container__image-three {
+  top: 50%;
+  left: 40%;
+  width: 250px;
+	transition: all 0.3s ease-in-out;
+}
+
+img.login-container__image-two {
+  top: 15%;
+  left: 30%;
+  width: 300px;
+	transition: all 0.3s ease-in-out;
+}
+
+img.login-container__image-one {
+  top: 5%;
+  left: 45%;
+	width: 402px;
+	z-index: 100;
+	transition: all 0.3s ease-in-out;
+}
+
+/*login button*/
+.login-container:has(.TR-button:hover) .login-container__image img {
+  top: 0;
+  left: 0;
+  transform: none;
+	width: 350px;
+}
+
+.login-container:has(.TR-button:hover) img.login-container__image-two {
+	top: 25%;
+	left: 15%;
+	transform: none;
+}
+
+.login-container:has(.TR-button:hover) img.login-container__image-one {
+  top: 25%;
+  left: 65%;
+}
+
+.login-container:has(.TR-button:hover) img.login-container__image-three {
+  top: 25%;
+  left: 40%;	
+	transform: none;
+}
+
+/* Email Typing */
+.login-container:has(.input-container:first-child input:focus) img.login-container__image-one,
+.login-container:has(.input-container:first-child input:not(:placeholder-shown)) img.login-container__image-one {
+  top: 50%;
+  left: 40%;
+  width: 250px;
+}
+
+.login-container:has(.input-container:first-child input:focus) img.login-container__image-two,
+.login-container:has(.input-container:first-child input:not(:placeholder-shown)) img.login-container__image-two {
+  top: 5%;
+  left: 45%;
+  width: 402px;
+}
+
+.login-container:has(.input-container:first-child input:focus) img.login-container__image-three,
+.login-container:has(.input-container:first-child input:not(:placeholder-shown)) img.login-container__image-three {
+  top: 15%;
+  left: 30%;
+  width: 300px;
+}
+/* Password Typing */
+.login-container:has(.input-container:nth-child(2) input:focus) img.login-container__image-one,
+.login-container:has(.input-container:nth-child(2) input:not(:placeholder-shown)) img.login-container__image-one {
+  top: 15%;
+  left: 30%;
+  width: 300px;
+	z-index: 0;
+}
+
+.login-container:has(.input-container:nth-child(2) input:focus) img.login-container__image-two,
+.login-container:has(.input-container:nth-child(2) input:not(:placeholder-shown)) img.login-container__image-two {
+	top: 50%;
+  left: 40%;
+  width: 250px;
+}
+
+.login-container:has(.input-container:nth-child(2) input:focus) img.login-container__image-three,
+.login-container:has(.input-container:nth-child(2) input:not(:placeholder-shown)) img.login-container__image-three {
+  top: 5%;
+  left: 45%;
+  width: 402px;
 }

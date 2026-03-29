@@ -3,8 +3,10 @@ import './Login.css';
 import AuthStore from "../../context/Authstore.js";
 import Strings from "../../strings/strings-codes.js";
 import InputField from "../../components/TRInputField/InputFIeld.jsx";
-import bg_image from "../../assets/images/ProductsLoginImage.png"
-import bg_logo from "../../assets/images/loginImageLogo.png"
+import bg_image1 from "../../assets/images/ProductsLoginImage1.svg";
+import bg_image2 from "../../assets/images/ProductsLoginImage2.svg";
+import bg_image3 from "../../assets/images/ProductsLoginImage3.svg";
+import bg_logo from "../../assets/images/loginImageLogo.png";
 import Toast from "../../toast/Toast.jsx";
 import Button from "../../components/TRButton/Button.jsx";
 
@@ -80,8 +82,9 @@ class Login extends React.Component {
                 )} */}
                 <div className="login-container">
                     <div className="login-container__image">
-                        <img src={bg_logo} className="login-container__image-one"/> 
-                        <img src={bg_image} className="login-container__image-two"/>
+                        <img src={bg_image1} className="login-container__image-one"/>
+                        <img src={bg_image2} className="login-container__image-two"/>
+                        <img src={bg_image3} className="login-container__image-three"/>
                     </div>
                     <div className="login-container__credentials">
                         <img src={bg_logo}>

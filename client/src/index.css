@@ -21,7 +21,6 @@ body
 
 img, video, canvas {
   max-width: 100%;
-  display: block;
   height: auto;
 }
 
