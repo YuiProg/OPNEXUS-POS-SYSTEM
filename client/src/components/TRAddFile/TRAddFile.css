@@ -1,6 +1,6 @@
 .tr-addfile-container {
     width: auto;
-    height: 100%;
+    height: auto;
     border: 1px dashed;
     cursor: pointer;
 }

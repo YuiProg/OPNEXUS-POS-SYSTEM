@@ -199,3 +199,12 @@
     padding: 20px;
     border-radius: 25px;
 }
+
+
+/* edit modal */
+
+.modal-edit-container {
+    width: 400px;
+    height: 400px;
+    background-color: #1C1C1E;
+}

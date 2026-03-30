@@ -8,6 +8,7 @@ import { Modal } from "../../TRModal/Modal";
 import { InputRow, TRInputFormPanel, InputForm } from "../../components/TRInputForm/TRInputForm";
 import ModalStore from "../../context/ModalStore";
 import ProductStore from "../../context/ProductStore";
+import toast from "react-hot-toast";
 
 class Inventory extends React.Component {
   constructor(props) {
@@ -75,8 +76,22 @@ class Inventory extends React.Component {
       setUrl("inventory");
   }
 
-  render() {
+  showEditModal = async (item) => {
+    const { setSelectedItem, setEditProductModal } = ModalStore.getState();
+    const { fetchProductSingle } = ProductStore.getState();
+    try {
+      const product = await fetchProductSingle(item.Id);
+      setSelectedItem(product.data[0]);
+      setEditProductModal(true);
+      console.log(product.data[0]);
+    } catch (error) {
+      toast.error(error.message);
+      console.log(error);
+    }
+  }
 
+  render() {
+    //const { setEditProductModal } = ModalStore.getState();
     const tableData = {
       header: "ITEMS TEST",
       hasButton: this.state.isAdmin,
@@ -114,7 +129,7 @@ class Inventory extends React.Component {
               hasAction={this.state.isAdmin}
               hasSelect={this.state.isAdmin}
               onDelete={(item) => this.showDeleteModal(item)}
-              onEdit={() => {}}
+              onEdit={(item) => this.showEditModal(item)}
               search={this.state.searchValue}
             />
           </div>

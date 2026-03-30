@@ -81,6 +81,23 @@ productSchema.statics.addProduct = async function (data, user) {
     return newProduct;
 }
 
+productSchema.statics.fetchSingle = async function (id) {
+    const product = await this.find({_id: id});
+    return product;
+}
+
+productSchema.statics.updateProduct = async function (id, data) {
+    
+    if (typeof data.image === "string" && data.image.includes("data:image")) {
+        const updateProductImage = await cloudinary.uploader.upload(data.image);
+        data.productImage = updateProductImage.secure_url;
+        data.productImageId = updateProductImage.public_id;
+    } 
+    
+    const updatedProduct = await this.findByIdAndUpdate(id, data, { new: true });
+    return updatedProduct;
+}
+
 productSchema.statics.fetchProducts = async function (selectedBranch) {
     if (selectedBranch !== "any") {
         const productByBranch = await this.find({productBranch: selectedBranch});

@@ -38,6 +38,11 @@ const Strings = Object.freeze({
     NEW_PRODUCT: 'New product created,',
     NEW_BRANCH: 'New branch created.',
     GET_BRANCH: 'Branches found',
+    GET_PRODUCT: 'Products found',
+    DELETE_PRODUCT: 'Product(s) deleted.',
+    DELETE_BRANCH: 'Branch deleted.',
+    UPDATE_PRODUCT: 'Product updated.',
+    UPDATE_BRANCH: 'Branch updated.',
 
     //credy
     usnm: 'username',

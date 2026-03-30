@@ -6,7 +6,13 @@ class TRAddfile extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
-            image: null
+            image: this.props.image ? this.props.image : null
+        }
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.value !== this.props.value && this.props.value !== undefined) {
+            this.setState({image: this.props.value});
         }
     }
 

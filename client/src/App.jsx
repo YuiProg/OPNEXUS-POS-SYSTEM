@@ -1,12 +1,16 @@
 import { useEffect, lazy, Suspense } from "react";
-import "./App.css";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Login from "./pages/AuthPage/Login.jsx";
 import AuthStore from "./context/Authstore.js";
 import Sidebar from "./components/Sidebar/Sidebar.jsx";
 import POS from "./pages/POS/POS.jsx";
 import TimeInOut from "./pages/TimeInOut/TimeInOut.jsx";
-import { Modal, ModalConfim, ModalYesNo } from "./TRModal/Modal.jsx";
+import {
+  Modal,
+  ModalConfim,
+  ModalEditItem,
+  ModalYesNo,
+} from "./TRModal/Modal.jsx";
 import { InputForm, InputRow } from "./components/TRInputForm/TRInputForm.jsx";
 import InputField from "./components/TRInputField/InputFIeld.jsx";
 import ModalStore from "./context/ModalStore.js";
@@ -19,13 +23,16 @@ import Strings from "./strings/strings-codes.js";
 import Branches from "./pages/Branches/Branches.jsx";
 import BranchStore from "./context/BranchStore.js";
 import { Table } from "./components/TRTable/TrTable.jsx";
-import { Toaster } from 'react-hot-toast';
+import { Toaster } from "react-hot-toast";
 
 import Button from "./components/TRButton/Button.jsx";
+import Input from "@mui/material/Input";
 
 const Inventory = lazy(() => import("./pages/Inventory/Inventory.jsx"));
 const Dashboard = lazy(() => import("./pages/DashBoard/Dashboard.jsx"));
-const StaffManagement = lazy(() => import("./pages/StaffManagement/StaffManagement.jsx"));
+const StaffManagement = lazy(
+  () => import("./pages/StaffManagement/StaffManagement.jsx"),
+);
 
 function App() {
   //store instantiate wag burahin baka gamitin sa susunod
@@ -45,22 +52,27 @@ function App() {
     setInput,
     addUser,
     deleteMultipleUsers,
-    deleteUser
+    deleteUser,
   } = AuthStore();
-  const { 
-    isOpen, 
-    setModal, 
-    deleteModal, 
-    setDeleteModal, 
-    selectedItems, 
-    url, 
+  const {
+    isOpen,
+    setModal,
+    deleteModal,
+    setDeleteModal,
+    selectedItems,
+    url,
     confirmModal,
     setConfirmModal,
     showAddModal,
     setShowAddModal,
     selectedItem,
     setYesNoModal,
-    yesNoModal 
+    yesNoModal,
+    editProductModal,
+    setEditProductModal,
+    changesModal,
+    setChangesModal,
+    setUpdatedItem
   } = ModalStore();
   const {
     setProductData,
@@ -70,7 +82,8 @@ function App() {
     categories,
     addLoading,
     deleteMultipleProducts,
-    deleteProduct
+    deleteProduct,
+    updateProduct,
   } = ProductStore();
   //const { showModalBranch, setShowModal } = BranchStore();
 
@@ -89,22 +102,29 @@ function App() {
       </div>
     );
 
-  const defaultRoute = AuthUser?.role.toLowerCase() === "clerk" ? "/inventory" : "/dashboard";
+  const defaultRoute =
+    AuthUser?.role.toLowerCase() === "clerk" ? "/inventory" : "/dashboard";
 
   const postProduct = (e) => {
     e.preventDefault();
     addNewProduct();
   };
 
+  const updateProductSelected = (e) => {
+    e.preventDefault();
+    updateProduct();
+  };
+
   const showDeleteConfirmModal = () => {
     const tableData = {
       header: "Delete Data?",
       hasButton: true,
-      CB: () => url === "staff" 
-        ? deleteMultipleUsers(selectedItems) 
-        : url === "inventory" 
-        ? deleteMultipleProducts(selectedItems)
-        : null,
+      CB: () =>
+        url === "staff"
+          ? deleteMultipleUsers(selectedItems)
+          : url === "inventory"
+            ? deleteMultipleProducts(selectedItems)
+            : null,
       buttonInfo: "DELETE",
     };
 
@@ -115,14 +135,17 @@ function App() {
     );
   };
 
-
   //add user modal to hindi branch
-  const showUserModal = () => {
+  const showUserModal = (isUpdate) => {
     return (
       <Modal
         onClose={() => setShowAddModal(false)}
-        header="Add clerk"
-        subHeader="Fill in the details for the clerk"
+        header={isUpdate ? "Update clerk" : "Add clerk"}
+        subHeader={
+          isUpdate
+            ? "Update the details for the clerk"
+            : "Fill in the details for the clerk"
+        }
         hasCancel
         onCancel={() => setShowAddModal(false)}
       >
@@ -220,38 +243,60 @@ function App() {
   };
 
   const showConfirmModal = () => {
-    return <ModalConfim 
-              message={`Deleted ${selectedItems.length} item/s`} 
-              onClose={() => setConfirmModal(false)}
-            />
-  }
+    return (
+      <ModalConfim
+        message={`Deleted ${selectedItems.length} item/s`}
+        onClose={() => setConfirmModal(false)}
+      />
+    );
+  };
 
   const showYesNoModal = () => {
-    return <ModalYesNo
-              message={`Are you sure you want to delete ${url === "staff" ? selectedItem.Employee : selectedItem.Name}?`}
-              onClose={() => setYesNoModal(false)}
-              onYes={() => url === "staff" ? deleteUser(selectedItem.Id) : deleteProduct(selectedItem.Id)}
-            />
-  }
+    return (
+      <ModalYesNo
+        message={`Are you sure you want to delete ${url === "staff" ? selectedItem.Employee : selectedItem.Name}?`}
+        onClose={() => setYesNoModal(false)}
+        onYes={() =>
+          url === "staff"
+            ? deleteUser(selectedItem.Id)
+            : deleteProduct(selectedItem.Id)
+        }
+      />
+    );
+  };
 
+  const showModalAddProduct = (isUpdate) => {
+    //i request nalang yung product sa backend kesa kunin yung selecteditem store since di naman pala na store yung image link
 
-  const showModalAddProduct = () => {
+    if (isUpdate && addLoading) {
+      return <div>LOADING...</div>;
+    }
     return (
       <>
         <Modal
-          onClose={() => setModal(false)}
-          header="Add new stock"
-          subHeader="Fill in the details for the new stock item"
+          onClose={() => setModal(false) || setEditProductModal(false)}
+          header={isUpdate ? "Update stock item" : "Add new stock item"}
+          subHeader={
+            isUpdate
+              ? "Update the details for the stock item"
+              : "Fill in the details for the new stock item"
+          }
           hasCancel
-          onCancel={() => setModal(false)}
+          onCancel={() => setModal(false) || setEditProductModal(false)}
         >
           <InputForm
             isRequired
-            onSubmit={(e) => postProduct(e)}
+            onSubmit={(e) =>
+              isUpdate ? updateProductSelected(e) : postProduct(e)
+            }
             btnDisabled={addLoading}
           >
             <InputRow gap={15} titles={["ProductID"]}>
-              <InputField placeholder="PRODUCT ID (auto generated)" disabled />
+              <InputField
+                placeholder="PRODUCT ID (auto generated)"
+                disabled
+                value={isUpdate ? selectedItem._id : null}
+              />
             </InputRow>
             <InputRow
               gap={15}
@@ -265,16 +310,19 @@ function App() {
                 text
                 placeholder="Product Name"
                 onChange={(value) => setProductData("productName", value)}
+                value={isUpdate ? selectedItem.productName : null}
               />
               <InputField
                 number
                 placeholder="200"
                 onChange={(value) => setProductData("quantity", value)}
+                value={isUpdate ? selectedItem.quantity : null}
               />
               <InputField
                 number
                 placeholder="$50"
                 onChange={(value) => setProductData("price", value)}
+                value={isUpdate ? selectedItem.price : null}
               />
             </InputRow>
             <InputRow
@@ -285,21 +333,161 @@ function App() {
                 maxWidth
                 options={categories}
                 onChange={(value) => setProductData("category", value)}
+                value={isUpdate ? selectedItem.category : null}
               />
               <DropDown
                 maxWidth
                 options={branches}
                 onChange={(value) => setProductData("productBranch", value)}
+                value={isUpdate ? selectedItem.productBranch : null}
               />
             </InputRow>
             <InputRow titles={["Add file"]}>
-              <TRAddfile onChange={(value) => setProductData("image", value)} />
+              <TRAddfile
+                image={isUpdate ? selectedItem.productImage : null}
+                onChange={(value) => setProductData("image", value)}
+              />
             </InputRow>
           </InputForm>
         </Modal>
       </>
     );
   };
+
+  const viewChangesModal = () => {
+    const { updatedItem } = ModalStore.getState();
+    const { data, oldModel } = updatedItem;
+    const oldData = oldModel[0];
+    console.log(updatedItem);
+    return (
+      <Modal
+        header="View Changes"
+        subHeader="View the updated details of the product"
+        onClose={() => setChangesModal(false)}
+      >
+        <InputRow gap={15}>
+          <InputForm noBtn>
+            <InputRow gap={15} titles={["Product Id", "Product Name"]}>
+              <InputField
+                text
+                placeholder="Product ID"
+                disabled
+                value={data._id}
+              />
+              <InputField
+                text
+                placeholder="Product Name"
+                disabled
+                value={oldData.productName}
+              />
+            </InputRow>
+            <InputRow gap={15} titles={["Quantity", "Price"]}>
+              <InputField
+                number
+                placeholder="Quantity"
+                disabled
+                value={data.quantity}
+              />
+              <InputField
+                number
+                placeholder="Price"
+                disabled
+                value={oldData.price}
+              />
+            </InputRow>
+            <InputRow titles={["Category", "Branch"]} gap={15}>
+              <InputField
+                text
+                placeholder="Category"
+                disabled
+                value={data.category}
+              />
+              <InputField
+                text
+                placeholder="Branch"
+                disabled
+                value={oldData.productBranch}
+              />
+            </InputRow>
+            <InputRow titles={["Product Image"]} gap={15}>
+              <TRAddfile image={oldData.productImage} disabled />
+            </InputRow>
+          </InputForm>
+          <InputForm noBtn>
+            <InputRow gap={15} titles={["Product Id", "Product Name"]}>
+              <InputField
+                text
+                placeholder="Product ID"
+                disabled
+                value={data._id}
+              />
+              <InputField
+                text
+                placeholder="Product Name"
+                color={oldData.productName !== data.productName && "green"}
+                disabled
+                value={data.productName}
+              />
+            </InputRow>
+            <InputRow gap={15} titles={["Quantity", "Price"]}>
+              <InputField
+                number
+                placeholder="Quantity"
+                color={oldData.quantity !== data.quantity && "green"}
+                disabled
+                value={data.quantity}
+              />
+              <InputField
+                number
+                placeholder="Price"
+                color={oldData.price !== data.price && "green"}
+                disabled
+                value={data.price}
+              />
+            </InputRow>
+            <InputRow titles={["Category", "Branch"]} gap={15}>
+              <InputField
+                text
+                placeholder="Category"
+                color={oldData.category !== data.category && "green"}
+                disabled
+                value={data.category}
+              />
+              <InputField
+                text
+                placeholder="Branch"
+                color={oldData.productBranch !== data.productBranch && "green"}
+                disabled
+                value={data.productBranch}
+              />
+            </InputRow>
+            <InputRow titles={["Product Image"]} gap={15}>
+              <TRAddfile image={data.productImage} disabled />
+            </InputRow>
+          </InputForm>
+        </InputRow>
+        <div
+          style={{
+            display: "flex",
+            width: "100%",
+            alignItems: "end",
+            justifyContent: "end",
+            marginTop: "15px",
+          }}
+        >
+          <Button
+            success
+            text="PROCEED"
+            onClick={() => {
+              setChangesModal(false);
+              setUpdatedItem(null);
+            }}
+          />
+        </div>
+      </Modal>
+    );
+  };
+
   // eslint-disable-next-line no-unused-vars
   const showToastError = (type) => {
     switch (type) {
@@ -310,14 +498,26 @@ function App() {
     }
   };
 
+  // const showModalEditItem = () => {
+  //   return (
+  //     <ModalEditItem
+
+  //     />
+  //   );
+  // }
+
   const returnModals = () => {
     return (
       <>
-        {deleteModal && selectedItems.length > 0 ? showDeleteConfirmModal() : null}
-        {isOpen && showModalAddProduct()}
+        {deleteModal && selectedItems.length > 0
+          ? showDeleteConfirmModal()
+          : null}
+        {isOpen && showModalAddProduct(false)}
         {showAddModal && showUserModal()}
         {confirmModal && showConfirmModal()}
         {yesNoModal && showYesNoModal()}
+        {editProductModal && showModalAddProduct(true)}
+        {changesModal && viewChangesModal()}
       </>
     );
   };
@@ -325,7 +525,7 @@ function App() {
   return (
     <>
       {returnModals()}
-      <Toaster position="top-center"/>
+      <Toaster position="top-center" />
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
           <Route
