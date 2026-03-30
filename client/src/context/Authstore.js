@@ -56,6 +56,24 @@ const AuthStore = create((set, get) => ({
         set({input: inputs});
     },
 
+    resetInput: () => set({
+        input: {
+            username: '',
+            email: '',
+            password: '',
+            firstName: '',
+            middleName: '',
+            lastName: '',
+            gender: '',
+            phoneNumber: null,
+            shift: '',
+            role: '',
+            address: '',
+            branch: '',
+            salary: null
+        }
+    }),
+
     checkAuth: async () => {
         try {
             const user = await axiosInstance.get(getUser);
@@ -219,6 +237,7 @@ const AuthStore = create((set, get) => ({
             setChangesModal(true);
             toast.success('User updated');
             get().fetchUsers();
+            get().resetInput();
         } catch (error) {
             toast.error(error.message);
             set({errorUser: axiosError(error)});
