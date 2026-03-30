@@ -60,6 +60,14 @@ class Inventory extends React.Component {
     this.setState({ searchValue: value });
   }
 
+  showDeleteModal = (item) => {
+    const { setSelectedItem, setYesNoModal, setUrl } = ModalStore.getState();
+      setSelectedItem(item);
+      setYesNoModal(true);
+      setUrl("inventory");
+
+  }
+
   showConfirmDelModal = (e) => {
       const { setDeleteModal, setSelectedItems, setUrl } = ModalStore.getState();
       setDeleteModal(true);
@@ -105,7 +113,7 @@ class Inventory extends React.Component {
               isDetailed={tableData}
               hasAction={this.state.isAdmin}
               hasSelect={this.state.isAdmin}
-              onDelete={() => {}}
+              onDelete={(item) => this.showDeleteModal(item)}
               onEdit={() => {}}
               search={this.state.searchValue}
             />

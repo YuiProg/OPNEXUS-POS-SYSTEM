@@ -149,18 +149,25 @@ const ProductStore = create((set, get) => ({
 
   //UNDEFINED YUNG ID DAW PUTANGINA
   deleteProduct: async () => {
-    const { selectedItem } = ModalStore.getState();
+    const { selectedItem, setYesNoModal } = ModalStore.getState();
 
     try {
         const result = await axiosInstance.post(deleteSingleProduct, {
           id: selectedItem.Id
         });
         
-        console.log(result);
+        if (result.data.status === "Success") {
+          const products = get().products;
+          const newData = products.filter((p) => p.Id !== selectedItem.Id);
+          set({products: newData});
+          toast.success('Product deleted');
+        }
     } catch (error) {
       toast.error(error.message);
       console.log(error);
       set({ errorProduct: axiosError(error) });
+    } finally {
+      setYesNoModal(false);
     }
   }
 
