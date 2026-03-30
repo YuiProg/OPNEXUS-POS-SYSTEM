@@ -31,15 +31,13 @@ class DonutChart extends React.Component {
           <PieChart
             series={[
               { 
-                innerRadius: 30, 
-                outerRadius: 50, 
+                innerRadius: 50, 
+                outerRadius: 80, 
                 data: donutData, 
               }]}
             {...donutSettings}
           />
-          <h3 className="dc-label">PHP</h3>
-          {/* backend data */}
-          <h4 className="dc-value">4,180</h4>
+
         </div>
         <div className="dc-legend">
           <div className="legend-item">
