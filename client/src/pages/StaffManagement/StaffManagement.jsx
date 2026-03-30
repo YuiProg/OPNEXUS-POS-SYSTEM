@@ -11,6 +11,7 @@ import AuthStore from "../../context/Authstore";
 import ModalStore from "../../context/ModalStore";
 import ProductStore from "../../context/ProductStore";
 import ActiveStaffs from "./ActiveStaffs/ActiveStaffs";
+import toast from "react-hot-toast";
 
 class StaffManagement extends React.Component {
     constructor (props) {
@@ -46,6 +47,20 @@ class StaffManagement extends React.Component {
         setSelectedItem(item);
         setYesNoModal(true);
         setUrl("staff");
+    }
+
+    showEditModal = async (item) => {
+        const { setEditUserModal, setSelectedItem, setUrl } = ModalStore.getState();
+        const { getSingleUser } = AuthStore.getState();
+        try {
+            const user = await getSingleUser(item.Id);
+            setSelectedItem(user.data);
+            setEditUserModal(true);
+            setUrl('staff');
+        } catch (error) {
+            toast.error(error.message);
+            console.log(error);
+        }
     }
 
     render () {
@@ -117,7 +132,7 @@ class StaffManagement extends React.Component {
                             hasSelect
                             hasAction
                             onDelete={(e) => this.showDeleteModal(e)}
-                            onEdit={() => {}}
+                            onEdit={(item) => this.showEditModal(item)}
                             search={this.state.search}
                             />
                     </div>

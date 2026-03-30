@@ -13,6 +13,8 @@ const ApiConfig = Object.freeze({
     fetchUsers: apiEndpoint + 'getUsers',
     deleteMultipleUsers: apiEndpoint + 'userDeleteMultiple',
     deleteSingleUser: apiEndpoint + 'deleteSingleUser',
+    GET_SINGLE_USER: apiEndpoint + 'getSingleUser/:id',
+    UPDATE_USER: apiEndpoint + 'updateUser/:id',
     //==============================
 
     //=========add product==========

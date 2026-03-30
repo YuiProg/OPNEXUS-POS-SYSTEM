@@ -17,7 +17,9 @@ const {
     getUser,
     addUser,
     fetchUsers,
-    deleteMultipleUsers
+    deleteMultipleUsers,
+    GET_SINGLE_USER,
+    UPDATE_USER
 } = ApiConfig;
 
 const {
@@ -171,6 +173,62 @@ const AuthStore = create((set, get) => ({
             .map(({ username, createdAt, createdById, updatedAt, __v, firstName, _id, middleName, gender, lastName, address, ...rest }) => rest);
             console.log(cleanedData);
             set({users: cleanedData});
+        } catch (error) {
+            toast.error(error.message);
+            set({errorUser: axiosError(error)});
+        }
+    },
+
+    updateUser: async () => {
+        try {
+            const { selectedItem, setUpdatedItem, setEditUserModal, setChangesModal } = ModalStore.getState();
+            const {
+                username, 
+                email,  
+                firstName, 
+                middleName, 
+                lastName, 
+                gender, 
+                address,
+                role,
+                shift,
+                salary,
+                branch,
+                phoneNumber
+            } = get().input;
+
+            const payload = {
+                username: username || selectedItem.username,
+                email: email || selectedItem.email,
+                phoneNumber: phoneNumber || selectedItem.phoneNumber,
+                firstName: firstName || selectedItem.firstName,
+                middleName: middleName || selectedItem.middleName,
+                lastName: lastName || selectedItem.lastName,
+                gender: gender || selectedItem.gender,
+                address: address || selectedItem.address,
+                role: role || selectedItem.role,
+                shift: shift || selectedItem.shift,
+                salary: salary || selectedItem.salary,
+                branchLocation: branch || selectedItem.branchLocation
+            }
+            
+            const newUser = await axiosInstance.post(UPDATE_USER.replace(':id', selectedItem._id), payload);
+            console.log(newUser.data);
+            setUpdatedItem(newUser.data);
+            setEditUserModal(false);
+            setChangesModal(true);
+            toast.success('User updated');
+            get().fetchUsers();
+        } catch (error) {
+            toast.error(error.message);
+            set({errorUser: axiosError(error)});
+        }
+    },
+
+    getSingleUser: async (id) => {
+        try {
+            const user = await axiosInstance.get(GET_SINGLE_USER.replace(':id', id));
+            return user.data;
         } catch (error) {
             toast.error(error.message);
             set({errorUser: axiosError(error)});

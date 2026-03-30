@@ -144,6 +144,14 @@ userSchema.statics.getUsers = async function () {
     return users;
 }
 
+userSchema.statics.getSingleUser = async function (id) {
+    const user = await this.findOne({_id: id}).select("-password");
+    if (!user) {
+        throw new Error(USER_NOT_EXIST);
+    }
+    return user;
+}
+
 userSchema.statics.deleteMultiple = async function (data) {
     const result = await this.deleteMany({_id: {$in: data}});
     return result;
