@@ -17,14 +17,14 @@
   border-bottom: 5px solid #222222;
 }
 
-.tr-radio-container {
+/* .tr-radio-container {
   display: flex;
   flex-direction: row;
 }
 
 .tr-radio-container label {
   padding-right: 40px;
-}
+} */
 
 .bm-header {
   display: flex;
