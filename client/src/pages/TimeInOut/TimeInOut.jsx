@@ -2,20 +2,26 @@ import React from "react";
 import "./TimeInOut.css";
 import { Table } from "../../components/TRTable/TrTable";
 import Button from "../../components/TRButton/Button";
+import TimeInOutStore from "../../context/TimeinOut";
 import { CircleUserRound } from 'lucide-react';
 
 class TimeInOut extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      time: this.timenow()
+      time: this.timenow(),
+      date: this.dateNow()
     };
   }
 
   componentDidMount() {
+    const { getData } = TimeInOutStore.getState();
+    
     this.interval = setInterval(() => {
-      this.setState({ time: this.timenow() });
+      this.setState({ time: this.timenow(), date: this.dateNow()});
     }, 1000);
+
+    getData();
   }
 
   componentWillUnmount() {
@@ -46,7 +52,9 @@ class TimeInOut extends React.Component {
       return `${dayName} ${month} ${day} ${year}`;
     }
 
+
   render() {
+    const { timeIn, timedIn, timeOut, timeData } = TimeInOutStore.getState();
     const { user } = this.props;
     
     return (
@@ -57,23 +65,20 @@ class TimeInOut extends React.Component {
             <p className="timeinout-sentence">Clock in when you start, clock out when you finish.</p>
           </div>
         </div>
-        <div className="timeinout-main-contents">
-          <Table data={[]}/>
-          <div className="timeinout-timer">
-            <input type="date" />
-            <div className="timeinout-user-container">
-              <div className="timeinout-user">
-                <CircleUserRound className="user-icon-pic"/>
-                <h1 className="user-name">{`${user.firstName} ${user.middleName} ${user.lastName}`}</h1>
-                <p className="user-role">{user.role}</p>
-              </div>
-              <div className="timeinout-datetime">
-                <p className="current-time">{this.state.time}</p>
-                <p className="current-date">{this.dateNow()}</p>
-              </div>
-              <Button className="timeinout-clock-button" error text="CLOCK IN"/>
+        <div className="timeinout-main-content">
+            <Table data={timeData}/>
+            <div className="timeinout-timer">
+                <div>
+                    <input type="date" />
+                    <div className="timeinout-user-container">
+                        <h1>{`${user.firstName} ${user.middleName} ${user.lastName}`}</h1>
+                        <p>{user.role}</p>
+                        <p>{this.state.time}</p>
+                        <p>{this.dateNow()}</p>
+                        {timedIn ? <Button error text="CLOCK OUT" onClick={() => timeOut(this.timenow(), this.dateNow())}/> : <Button success text="CLOCK IN" onClick={() => timeIn(this.timenow(), this.dateNow())}/>}
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
       </div>
     );

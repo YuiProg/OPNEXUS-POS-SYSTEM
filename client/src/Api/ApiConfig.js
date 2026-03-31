@@ -27,7 +27,12 @@ const ApiConfig = Object.freeze({
     //branch cards
     setBranchActive: apiEndpoint + 'setBranchActive',
     getBranches: apiEndpoint + 'getBranch',
-    addBranch: apiEndpoint + 'addBranch'
+    addBranch: apiEndpoint + 'addBranch',
+
+    //timein
+    TIMEIN: apiEndpoint + 'timein',
+    TIMEOUT: apiEndpoint + 'timeout',
+    GETDATATIME: apiEndpoint + 'getTimeData',
 })
 
 export default ApiConfig;

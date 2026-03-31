@@ -13,6 +13,12 @@ const Strings = Object.freeze({
     USER_NOT_EXIST: 'User does not exist.',
     USER_LOGOUT: 'User logged out.',
 
+    //time in / out
+    TIME_IN_SUCC: 'Timed in successfully',
+    TIME_IN_ERR: 'Failed to time in!',
+    TIME_OUT_SUCC: 'Timed out successfully',
+    TIME_OUT_ERR: 'Failed to time out',
+
     //products fail
     FAILED_ADD: 'Failed to add product.',
     INVALID_PRODUCT_CODE: 'Invalid product code.',

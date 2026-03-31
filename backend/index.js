@@ -7,6 +7,7 @@ import connectDB from './lib/DB.js';
 import authRoutes from './routes/auth.routes.js';
 import productRoutes from './routes/product.routes.js';
 import branchRoutes from './routes/branch.routes.js';
+import timeinRoutes from './routes/timeinout.routes.js';
 import dns from 'dns';
 import { app, server } from './lib/socket.js';
 
@@ -35,6 +36,8 @@ app.use('/api', authRoutes);
 app.use('/api', productRoutes);
 //branch routes
 app.use('/api', branchRoutes);
+//time in / out routes
+app.use('/api', timeinRoutes);
 
 server.listen(process.env.PORT, () => {
     connectDB();

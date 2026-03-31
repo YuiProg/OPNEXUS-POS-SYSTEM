@@ -95,14 +95,14 @@ class Sidebar extends React.Component {
                 link: "/staff",
             },
             {
-                title: "Logs",
-                icon: <Logs />,
-                link: "/logs",
-            },
-            {
                 title: "Branches",
                 icon: <Warehouse/>,
                 link: "/branch",
+            },
+            {
+                title: "Logs",
+                icon: <Logs />,
+                link: "/logs",
             },
             // {
             //     title: "Settings",
