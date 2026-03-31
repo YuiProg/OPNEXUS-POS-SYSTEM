@@ -36,6 +36,11 @@ class DonutChart extends React.Component {
                 data: donutData, 
               }]}
             {...donutSettings}
+            sx={{
+              '& .MuiPieArc-root': {
+                stroke: 'none', // Removes the stroke (outline) // Ensures no stroke width is applied
+              },
+            }}
           />
         </div>
         <div className="dc-legend">
