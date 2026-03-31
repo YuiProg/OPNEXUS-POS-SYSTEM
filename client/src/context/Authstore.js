@@ -98,7 +98,6 @@ const AuthStore = create((set, get) => ({
             });
             
             set({ AuthUser: authUser.data });
-            toast.success('Login successfull');
             await get().checkAuth();
             
         } catch (error) {

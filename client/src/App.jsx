@@ -103,7 +103,7 @@ export default function App() {
     );
 
   const defaultRoute =
-    AuthUser?.role.toLowerCase() === "clerk" ? "/inventory" : "/dashboard";
+    AuthUser?.role.toLowerCase() === "clerk" ? "/timeinout" : "/dashboard";
 
   const postProduct = (e) => {
     e.preventDefault();
@@ -803,7 +803,7 @@ export default function App() {
             path="/dashboard"
             element={
               AuthUser?.role.toLowerCase() === "clerk" ? (
-                <Navigate to="/inventory" replace />
+                <Navigate to="/timeinout" replace />
               ) : (
                 <Sidebar user={AuthUser}>
                   <Dashboard />
@@ -825,7 +825,7 @@ export default function App() {
             path="/staff"
             element={
               AuthUser?.role.toLowerCase() === "clerk" ? (
-                <Navigate to="/inventory" replace />
+                <Navigate to="/timeinout" replace />
               ) : (
                 <Sidebar user={AuthUser}>
                   <StaffManagement />
@@ -844,15 +844,6 @@ export default function App() {
           />
 
           <Route
-            path="/timeinout"
-            element={
-              <Sidebar user={AuthUser}>
-                <TimeInOut />
-              </Sidebar>
-            }
-          />
-
-          <Route
             path="/monitor"
             element={<Sidebar user={AuthUser}>{null}</Sidebar>}
           />
@@ -861,7 +852,7 @@ export default function App() {
             path="/branch"
             element={
               AuthUser?.role.toLowerCase() === "clerk" ? (
-                <Navigate to="/inventory" replace />
+                <Navigate to="/timeinout" replace />
               ) : (
                 <Sidebar user={AuthUser}>
                   <Branches />
