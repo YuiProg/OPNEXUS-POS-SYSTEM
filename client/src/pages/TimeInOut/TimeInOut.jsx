@@ -2,19 +2,25 @@ import React from "react";
 import "./TimeInOut.css";
 import { Table } from "../../components/TRTable/TrTable";
 import Button from "../../components/TRButton/Button";
+import TimeInOutStore from "../../context/TimeinOut";
 
 class TimeInOut extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      time: this.timenow()
+      time: this.timenow(),
+      date: this.dateNow()
     };
   }
 
   componentDidMount() {
+    const { getData } = TimeInOutStore.getState();
+    
     this.interval = setInterval(() => {
-      this.setState({ time: this.timenow() });
+      this.setState({ time: this.timenow(), date: this.dateNow()});
     }, 1000);
+
+    getData();
   }
 
   componentWillUnmount() {
@@ -45,7 +51,9 @@ class TimeInOut extends React.Component {
         return `${dayName} ${month} ${day} ${year}`;
     }
 
+
   render() {
+    const { timeIn, timedIn, timeOut, timeData } = TimeInOutStore.getState();
     const { user } = this.props;
     
     return (
@@ -57,7 +65,7 @@ class TimeInOut extends React.Component {
           </div>
         </div>
         <div className="timeinout-main-content">
-            <Table data={[]}/>
+            <Table data={timeData}/>
             <div className="timeinout-timer">
                 <div>
                     <input type="date" />
@@ -66,7 +74,7 @@ class TimeInOut extends React.Component {
                         <p>{user.role}</p>
                         <p>{this.state.time}</p>
                         <p>{this.dateNow()}</p>
-                        <Button error text="CLOCK IN"/>
+                        {timedIn ? <Button error text="CLOCK OUT" onClick={() => timeOut(this.timenow(), this.dateNow())}/> : <Button success text="CLOCK IN" onClick={() => timeIn(this.timenow(), this.dateNow())}/>}
                     </div>
                 </div>
             </div>
