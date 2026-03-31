@@ -1,17 +1,17 @@
 import express from 'express';
 import ApiConfig from '../Api/ApiConfig.js';
-import { addBranches, getBranch } from '../controller/branch.controller.js';
+import {addBranches, getBranch} from '../controller/branch.Controller.js';
 import protectRoutes from '../middleware/protectRoutes.js';
 
 const {
-    addBranch,
-    getBranches
+    ADDBRANCH,
+    GETBRANCHES
 } = ApiConfig;
 
 const router = express.Router();
 
-router.post(addBranch, protectRoutes, addBranches);
+router.post(ADDBRANCH, protectRoutes, addBranches);
 
-router.get(getBranches, protectRoutes, getBranch);
+router.get(GETBRANCHES, protectRoutes, getBranch);
 
 export default router;

@@ -10,7 +10,6 @@ const {
     NAME_EXIST,
     CRED_ERROR,
     USER_NOT_EXIST,
-    INVALID_ID,
     SHIFT_ERR,
     SALARY_ERR,
     FNAME_ERR,
@@ -86,6 +85,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, ADDR_ERR]
     },
+    timedIn: {
+        type: Boolean,
+        default: false
+    }
 }, {timestamps: true});
 
 userSchema.pre('save', async function () {

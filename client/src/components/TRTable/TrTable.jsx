@@ -209,7 +209,7 @@
             <div className="pagination">
               <span className="pagination-info">
                 {filteredData
-                  ? `showing ${Math.min(startIndex + 1, filteredData.length)} to ${Math.min(startIndex + this.rowsPerPage, filteredData.length)} of ${filteredData.length} results`
+                  ? `showing ${Math.min(startIndex + this.rowsPerPage, filteredData.length)} of ${filteredData.length} results`
                   : null}
               </span>
               <div className="pagination-controls">

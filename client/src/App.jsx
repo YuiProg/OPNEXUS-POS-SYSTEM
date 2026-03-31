@@ -779,7 +779,7 @@ export default function App() {
   return (
     <>
       {returnModals()}
-      <Toaster position="top-center" />
+      <Toaster position="bottom-right"/>
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
           <Route
