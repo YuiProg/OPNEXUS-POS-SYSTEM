@@ -58,6 +58,19 @@ class Sidebar extends React.Component {
 
     }
 
+    passProps = () => {
+        const { user } = this.props;
+
+        const enhancedChildren = React.Children.map(this.props.children, (child) => {
+            if (!child) return;
+            return React.cloneElement(child, {
+                user
+            }); 
+        });
+
+        return enhancedChildren;
+    }
+
     render() {
         // if (this.state.redirect) {
         //     return <Navigate to="/inventory" />;
@@ -163,7 +176,7 @@ class Sidebar extends React.Component {
                     </div>
                 </aside>
                 <main className="children">
-                    {this.props.children}
+                    {this.passProps()}
                 </main>
             </div>
         );

@@ -5,6 +5,12 @@ const BranchStore = create((set) => ({
     branches: [],
     errorBranch: null,
     showModalBranch: false,
+    input: {
+        location: '',
+        session: '',
+        isActive: false,
+        clerk: null
+    },
 
     setShowModal: (val) => set({showModalBranch: val}),
 

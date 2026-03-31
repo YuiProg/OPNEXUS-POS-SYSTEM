@@ -870,6 +870,18 @@ export default function App() {
             }
           />
 
+          <Route
+            path="/timeinout"
+            element={
+              AuthUser?.role.toLowerCase() === "admin" ? (
+                <Navigate to="/dashboard" replace />
+              ) : (
+                <Sidebar user={AuthUser}>
+                  <TimeInOut/>
+                </Sidebar>
+              )
+            }
+          />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Suspense>
