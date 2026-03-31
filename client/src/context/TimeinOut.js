@@ -26,11 +26,20 @@ const TimeInOutStore = create((set) => ({
         try {
             const response = await axiosInstance.get(GETDATATIME);
             const {data} = response.data;
+
+            toast.promise(axiosInstance.get(GETDATATIME), {
+                loading: 'Fetching data',
+                success: 'Done',
+                error: 'Error fetching data'
+            });
+
             /* eslint-disable no-unused-vars */
             const cleanedData = data.map(
                 ({
                 _id,
                 __v,
+                createdAt,
+                updatedAt,
                 ...rest
                 }) => rest,
             );
@@ -44,6 +53,8 @@ const TimeInOutStore = create((set) => ({
 
     timeIn: async (time, date) => {
         try {
+            set({timeInHour: time});
+            set({timedIn: true});
             const { AuthUser } = AuthStore.getState();
             const fullName = `${AuthUser.firstName} ${AuthUser.middleName} ${AuthUser.lastName}`;
 
@@ -56,8 +67,6 @@ const TimeInOutStore = create((set) => ({
             localStorage.setItem('timein', JSON.stringify(json));
             //const timedin = await axiosInstance.post(TIMEIN, AuthUser);
             //console.log(timedin);
-            set({timeInHour: time});
-            set({timedIn: true});
             toast.success(TIME_IN_SUCC);
         } catch (error) {
             if (axiosError(error)) {
@@ -81,7 +90,12 @@ const TimeInOutStore = create((set) => ({
 
             const timeout = await axiosInstance.post(TIMEOUT, payload);
             const {data} = timeout.data;
-            
+            toast.promise(axiosInstance.post(TIMEOUT, payload), 
+            {
+                loading: 'Loading',
+                success: 'Successfully timed out',
+                error: 'Failed to time out'
+            });
             const updatedData = {
                 employeeName: fullName,
                 userId: data.userId,
@@ -102,6 +116,11 @@ const TimeInOutStore = create((set) => ({
             if (axiosError(error)) {
                 toast.error(error.message);
             }
+            localStorage.removeItem('timein');
+            localStorage.removeItem('latestout');
+        } finally {
+            localStorage.removeItem('timein');
+            localStorage.removeItem('latestout');
         }
     }
 

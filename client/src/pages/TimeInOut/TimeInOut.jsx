@@ -68,7 +68,7 @@ class TimeInOut extends React.Component {
           </div>
         </div>
         <div className="timeinout-main-contents">
-          <Table data={timeData}/>
+          <Table data={timeData} isDetailed={{header: "Time logs"}}/>
           <div className="timeinout-timer">
             <div className="calendar-container">
               <div className="calendar">
@@ -123,7 +123,7 @@ class TimeInOut extends React.Component {
                 <p className="current-time">{this.state.time}</p>
                 <p className="current-date">{this.dateNow()}</p>
               </div>
-              {timedIn ? <Button error text="CLOCK OUT" onClick={() => timeOut(this.timenow(), this.dateNow())}/> : <Button success text="CLOCK IN" onClick={() => timeIn(this.timenow(), this.dateNow())}/>}
+              {timedIn ? <Button maxWidth error text="CLOCK OUT" onClick={() => timeOut(this.timenow(), this.dateNow())}/> : <Button maxWidth success text="CLOCK IN" onClick={() => timeIn(this.timenow(), this.dateNow())}/>}
             </div>
           </div>
         </div>

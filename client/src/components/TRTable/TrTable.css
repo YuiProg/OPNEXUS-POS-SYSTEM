@@ -232,15 +232,13 @@
 
 /* ── Pagination ── */
 .pagination {
-  height: auto;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  position: absolute;
-  width: -webkit-fill-available;
-  bottom: 0;
-  padding: 0 25px 25px 0;
+  padding: 16px 16px 0 16px;
+  margin-top: 12px;
+
 }
 
 .pagination-info {
@@ -310,8 +308,3 @@
 }
 
 /*pagination for admin*/
-.sm-container .pagination {
-  padding: 0 !important;
-  position: relative !important;
-  margin-top: 25px;
-}
