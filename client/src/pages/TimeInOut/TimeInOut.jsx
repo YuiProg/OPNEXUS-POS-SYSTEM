@@ -65,20 +65,25 @@ class TimeInOut extends React.Component {
             <p className="timeinout-sentence">Clock in when you start, clock out when you finish.</p>
           </div>
         </div>
-        <div className="timeinout-main-content">
-            <Table data={timeData}/>
-            <div className="timeinout-timer">
-                <div>
-                    <input type="date" />
-                    <div className="timeinout-user-container">
-                        <h1>{`${user.firstName} ${user.middleName} ${user.lastName}`}</h1>
-                        <p>{user.role}</p>
-                        <p>{this.state.time}</p>
-                        <p>{this.dateNow()}</p>
-                        {timedIn ? <Button error text="CLOCK OUT" onClick={() => timeOut(this.timenow(), this.dateNow())}/> : <Button success text="CLOCK IN" onClick={() => timeIn(this.timenow(), this.dateNow())}/>}
-                    </div>
-                </div>
+        <div className="timeinout-main-contents">
+          <Table data={timeData}/>
+          <div className="timeinout-timer">
+            <div className="calendar-container">
+              <input type="date" />
             </div>
+            <div className="timeinout-user-container">
+              <div className="timeinout-user">
+                <CircleUserRound className="user-icon-pic"/>
+                <h1 className="user-name">{`${user.firstName} ${user.middleName} ${user.lastName}`}</h1>
+                <p className="user-role">{user.role}</p>
+              </div>
+              <div className="timeinout-datetime">
+                <p className="current-time">{this.state.time}</p>
+                <p className="current-date">{this.dateNow()}</p>
+              </div>
+              {timedIn ? <Button error text="CLOCK OUT" onClick={() => timeOut(this.timenow(), this.dateNow())}/> : <Button success text="CLOCK IN" onClick={() => timeIn(this.timenow(), this.dateNow())}/>}
+            </div>
+          </div>
         </div>
       </div>
     );
