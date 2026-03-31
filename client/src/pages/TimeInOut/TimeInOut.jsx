@@ -4,6 +4,9 @@ import { Table } from "../../components/TRTable/TrTable";
 import Button from "../../components/TRButton/Button";
 import TimeInOutStore from "../../context/TimeinOut";
 import { CircleUserRound } from 'lucide-react';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 
 class TimeInOut extends React.Component {
   constructor(props) {
@@ -38,20 +41,19 @@ class TimeInOut extends React.Component {
     return `${String(hours).padStart(2, '0')}:${minutes}:${seconds} ${ampm}`;
   }
 
-    dateNow = () => {
-      const date = new Date();
-      const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-      const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  dateNow = () => {
+    const date = new Date();
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-      const dayName = days[date.getDay()];
-      const month = months[date.getMonth()];
-      const year = date.getFullYear();
+    const dayName = days[date.getDay()];
+    const month = months[date.getMonth()];
+    const year = date.getFullYear();
 
-      const day = date.getDate();
+    const day = date.getDate();
 
-      return `${dayName} ${month} ${day} ${year}`;
-    }
-
+    return `${dayName} ${month} ${day} ${year}`;
+  }
 
   render() {
     const { timeIn, timedIn, timeOut, timeData } = TimeInOutStore.getState();
@@ -69,7 +71,47 @@ class TimeInOut extends React.Component {
           <Table data={timeData}/>
           <div className="timeinout-timer">
             <div className="calendar-container">
-              <input type="date" />
+              <div className="calendar">
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DateCalendar 
+                    sx={{
+                      // Target the PickersDay component for styling
+                      '& .MuiPickersDay-root': {
+                        color: '#FF4D52', // Change the text color to red
+                        fontWeight: 'bold',
+                        alignItems: 'center',
+                        '&.Mui-selected': {
+                          backgroundColor: '#FF4D52', // Background for selected day
+                          color: 'white', // Text color for selected day
+                        },
+                        '&.Mui-disabled': {
+                          color: 'grey', // Text color for disabled days
+                        },
+                        '&:hover': {
+                          backgroundColor: '#ebebf58a', // Background on hover
+                        },
+                        '&.MuiPickersDay-today': {
+                          borderColor: '#fff', // Border color for today's date
+                        },
+                        '&.MuiPickersDay-dayOutsideMonth': {
+                          color: 'lightgrey', // Text color for days outside the current month
+                        },
+                      },
+
+                      '& .MuiDayCalendar-weekDayLabel': {
+                        color: '#ebebf58a', // Text color for week day labels
+                        fontWeight: 'bold',
+                      },
+                      '& .MuiIconButton-root': {
+                          color: '#FF4D52', // Color for the navigation arrows
+                      },
+                      '& .MuiPickersCalendarHeader-label': {
+                          color: '#FF4D52', // Text color for month and year
+                      },
+                    }}
+                  />
+                </LocalizationProvider>
+              </div>
             </div>
             <div className="timeinout-user-container">
               <div className="timeinout-user">
