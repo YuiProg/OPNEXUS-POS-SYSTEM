@@ -3,9 +3,9 @@ import "./DonutChart.css";
 import { PieChart } from '@mui/x-charts/PieChart';
 
 const donutData = [
-  { label: 'PHP 18,000', value: 400, color: '#34C759' },
-  { label: 'PHP 12,320', value: 300, color: '#FF383C' },
-  { label: 'PHP 1,500', value: 1000, color: '#0088FF' },
+  { label: 'PHP 18,000', value: 1000, color: '#C4161C' },
+  { label: 'PHP 12,320', value: 300, color: '#FFA000' },
+  { label: 'PHP 1,500', value: 400, color: '#0088FF' },
 ];
 
 const donutSettings = {

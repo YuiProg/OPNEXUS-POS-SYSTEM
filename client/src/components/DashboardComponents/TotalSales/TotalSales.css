@@ -1,5 +1,6 @@
 .total-sales-container {
-    background-color: #FFE2E5;
+    background: rgba(196, 22, 28, 0.3);
+    border: 1px solid #85181A;
     width: 100%;
     border-radius: 16px;
     padding: 30px;
@@ -9,18 +10,18 @@
     font-family: 'Segoe UI', system-ui, sans-serif;
     font-size: 24px;
     font-weight: 400;
-    color: #333;
+    color: rgba(255, 255, 255, 0.7);
 }
 .total-sales-amount {
     font-family: 'Segoe UI', system-ui, sans-serif;
     font-size: 24px;
     font-weight: 800;
-    color: #333;
+    color: #fff;
 }
 .total-sales-change {
     font-family: 'Segoe UI', system-ui, sans-serif;
     font-size: 12px;
-    color: #2f33ec;
+    color: #22C55E;
 }
 
 .total-sales-icon {
