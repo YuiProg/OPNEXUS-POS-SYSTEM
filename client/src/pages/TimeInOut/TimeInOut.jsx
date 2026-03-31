@@ -2,6 +2,7 @@ import React from "react";
 import "./TimeInOut.css";
 import { Table } from "../../components/TRTable/TrTable";
 import Button from "../../components/TRButton/Button";
+import { CircleUserRound } from 'lucide-react';
 
 class TimeInOut extends React.Component {
   constructor(props) {
@@ -32,17 +33,17 @@ class TimeInOut extends React.Component {
   }
 
     dateNow = () => {
-        const date = new Date();
-        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      const date = new Date();
+      const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-        const dayName = days[date.getDay()];
-        const month = months[date.getMonth()];
-        const year = date.getFullYear();
+      const dayName = days[date.getDay()];
+      const month = months[date.getMonth()];
+      const year = date.getFullYear();
 
-        const day = date.getDate();
+      const day = date.getDate();
 
-        return `${dayName} ${month} ${day} ${year}`;
+      return `${dayName} ${month} ${day} ${year}`;
     }
 
   render() {
@@ -53,23 +54,26 @@ class TimeInOut extends React.Component {
         <div className="timeinout-top-contents">
           <div className="timeinout-header">
             <h1 className="timeinout-bigtitle">Time In / Out</h1>
-            <p className="timeintout-sentence">Clock in when you start, clock out when you finish.</p>
+            <p className="timeinout-sentence">Clock in when you start, clock out when you finish.</p>
           </div>
         </div>
-        <div className="timeinout-main-content">
-            <Table data={[]}/>
-            <div className="timeinout-timer">
-                <div>
-                    <input type="date" />
-                    <div className="timeinout-user-container">
-                        <h1>{`${user.firstName} ${user.middleName} ${user.lastName}`}</h1>
-                        <p>{user.role}</p>
-                        <p>{this.state.time}</p>
-                        <p>{this.dateNow()}</p>
-                        <Button error text="CLOCK IN"/>
-                    </div>
-                </div>
+        <div className="timeinout-main-contents">
+          <Table data={[]}/>
+          <div className="timeinout-timer">
+            <input type="date" />
+            <div className="timeinout-user-container">
+              <div className="timeinout-user">
+                <CircleUserRound className="user-icon-pic"/>
+                <h1 className="user-name">{`${user.firstName} ${user.middleName} ${user.lastName}`}</h1>
+                <p className="user-role">{user.role}</p>
+              </div>
+              <div className="timeinout-datetime">
+                <p className="current-time">{this.state.time}</p>
+                <p className="current-date">{this.dateNow()}</p>
+              </div>
+              <Button className="timeinout-clock-button" error text="CLOCK IN"/>
             </div>
+          </div>
         </div>
       </div>
     );
