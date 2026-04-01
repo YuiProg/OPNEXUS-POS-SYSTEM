@@ -109,14 +109,14 @@
 }
 
 .setting-title {
-  font-size: 30px;
+  font-size: 20px;
   line-height: 1;
   font-weight: 500;
   margin-bottom: 8px;
 }
 
 .setting-subtitle {
-  font-size: 22px;
+  font-size: 12px;
   line-height: 1;
   color: rgba(255, 255, 255, 0.75);
 }
