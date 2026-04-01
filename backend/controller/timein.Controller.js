@@ -25,10 +25,30 @@ export const clockIn = async (req, res) => {
 
 export const clockOut = async (req, res) => {
     const data = req.body;
-    const {userId} = req.user;
+    const { userId } = req.user;
     try {
-        const updateUser = await User.updateUser(userId, {timedIn: false, time: null})
-        const newTime = await TimeinOut.saveOut(data, userId);
+        const timeInVal = data.clockIn;
+        const timeOutVal = data.clockOut;
+
+        const parseTime = (timeStr) => {
+            const [time, modifier] = timeStr.split(' ');
+            let [hours, minutes, seconds] = time.split(':').map(Number);
+            if (modifier === 'AM' && hours === 12) hours = 0;
+            if (modifier === 'PM' && hours !== 12) hours += 12;
+            const date = new Date();
+            date.setHours(hours, minutes, seconds, 0);
+            return date;
+        };
+
+        const inTime = parseTime(timeInVal);
+        const outTime = parseTime(timeOutVal);
+
+        const diffMs = outTime - inTime;
+        const totalHours = Math.floor(diffMs / 1000 / 60 / 60);
+
+        const updateUser = await User.updateUser(userId, { timedIn: false, time: null });
+        const newTime = await TimeinOut.saveOut({ ...data, totalHours }, userId);
+        console.log({ ...data, totalHours });
         console.log('\u001b[1;32mClock out success');
         ApiResponseModel(res, CREATED, TIME_OUT_SUCC, newTime, updateUser);
     } catch (error) {

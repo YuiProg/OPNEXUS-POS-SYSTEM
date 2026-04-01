@@ -39,6 +39,16 @@ branchSchema.statics.getBranch = async function () {
     return branches;
 }
 
+branchSchema.statics.setActive = async function (location) {
+    const res = await this.findOneAndUpdate({location}, {active: true}, {new: true});
+    return res;
+}
+
+branchSchema.statics.setOffline = async function (location) {
+    const res = await this.findOneAndUpdate({location}, {active: false}, {new: false});
+    return res;
+}
+
 const Branch = mongoose.model('branch', branchSchema);
 
 export default Branch;

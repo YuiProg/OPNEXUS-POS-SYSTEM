@@ -80,7 +80,7 @@ export default function App() {
   const {
     setProductData,
     addNewProduct,
-    branches,
+    //branches,
     //errorProduct,
     categories,
     addLoading,
@@ -92,7 +92,8 @@ export default function App() {
     showModalBranch, 
     setShowModal,
     setBranchInput,
-    newBranch
+    newBranch,
+    branches,
   } = BranchStore();
 
   const { SERVER_ERROR, PROD_FAIL } = Strings;
@@ -156,6 +157,8 @@ export default function App() {
 
   //add user modal to hindi branch
   const showUserModal = (isUpdate) => {
+    const mainBranches = branches?.map(d => d.location);
+    //console.log(mainBranches);
     return (
       <Modal
         onClose={() => setShowAddModal(false) || setEditUserModal(false)}
@@ -265,7 +268,7 @@ export default function App() {
             />
             <DropDown
               maxWidth
-              options={branches}
+              options={mainBranches}
               onChange={(value) => setInput("branch", value)}
               value={isUpdate ? selectedItem.branchLocation : null}
             />
@@ -300,7 +303,7 @@ export default function App() {
 
   const showModalAddProduct = (isUpdate) => {
     //i request nalang yung product sa backend kesa kunin yung selecteditem store since di naman pala na store yung image link
-
+    const mainBranches = branches?.map(d => d.location);
     if (isUpdate && addLoading) {
       return <div>LOADING...</div>;
     }
@@ -370,7 +373,7 @@ export default function App() {
               />
               <DropDown
                 maxWidth
-                options={branches}
+                options={mainBranches}
                 onChange={(value) => setProductData("productBranch", value)}
                 value={isUpdate ? selectedItem.productBranch : null}
               />

@@ -9,6 +9,7 @@ import { InputRow, TRInputFormPanel, InputForm } from "../../components/TRInputF
 import ModalStore from "../../context/ModalStore";
 import ProductStore from "../../context/ProductStore";
 import toast from "react-hot-toast";
+import BranchStore from "../../context/BranchStore";
 
 class Inventory extends React.Component {
   constructor(props) {
@@ -29,13 +30,11 @@ class Inventory extends React.Component {
     }
   }
 
-  componentDidUpdate() {
-    
-  }
-
   componentDidMount() {
     const { fetchProducts } = ProductStore.getState();
+    const { getBranch } = BranchStore.getState();
     this.checkRole();
+    getBranch();
     fetchProducts();
     
     this.unsubscribe = ProductStore.subscribe((state) => {
@@ -63,10 +62,9 @@ class Inventory extends React.Component {
 
   showDeleteModal = (item) => {
     const { setSelectedItem, setYesNoModal, setUrl } = ModalStore.getState();
-      setSelectedItem(item);
-      setYesNoModal(true);
-      setUrl("inventory");
-
+    setSelectedItem(item);
+    setYesNoModal(true);
+    setUrl("inventory");
   }
 
   showConfirmDelModal = (e) => {

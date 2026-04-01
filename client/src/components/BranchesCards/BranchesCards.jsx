@@ -8,14 +8,14 @@ class BranchesCards extends React.Component {
 
     render () {
 
-        const sampleData = [
-            {location: 'Longos', clerk: 'Riki', shift: 'morning', session: '2h', active: true},
-            {location: 'Gatbuca', clerk: 'Riki', shift: 'morning', session: 'n/a', active: false},
-            {location: 'Longos', clerk: 'Riki', shift: 'morning', session: '2h', active: true},
-            {location: 'Longos', clerk: 'Riki', shift: 'morning', session: '2h', active: true},
-            {location: 'Longos', clerk: 'Riki', shift: 'morning', session: '2h', active: true},
-            {location: 'Longos', clerk: 'Riki', shift: 'morning', session: '2h', active: true}
-        ];
+        // const sampleData = [
+        //     {location: 'Longos', clerk: 'Riki', shift: 'morning', session: '2h', active: true},
+        //     {location: 'Gatbuca', clerk: 'Riki', shift: 'morning', session: 'n/a', active: false},
+        //     {location: 'Longos', clerk: 'Riki', shift: 'morning', session: '2h', active: true},
+        //     {location: 'Longos', clerk: 'Riki', shift: 'morning', session: '2h', active: true},
+        //     {location: 'Longos', clerk: 'Riki', shift: 'morning', session: '2h', active: true},
+        //     {location: 'Longos', clerk: 'Riki', shift: 'morning', session: '2h', active: true}
+        // ];
 
         
         const {

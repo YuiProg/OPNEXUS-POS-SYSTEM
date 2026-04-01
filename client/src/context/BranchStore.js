@@ -44,7 +44,9 @@ const BranchStore = create((set, get) => ({
             set({showModalBranch: false});
             toast.success(`Branch ${newBranchData.location} added!`);
         } catch (error) {
-            toast.error(error.message);
+            if (axiosError(error)) {
+                toast.error(error.response.data.status);
+            }
             set({errorUser: axiosError(error)});
         }
     },
@@ -53,11 +55,9 @@ const BranchStore = create((set, get) => ({
         try {
             const branches = await axiosInstance.get(GETBRANCHES);
             const data = branches.data.data;
-            /* eslint-disable no-unused-vars */
-            const cleanedData = data.map(({_id, __v, clerkId, ...rest}) => rest);
-            set({branches: cleanedData});
+            set({branches: data});
         } catch (error) {
-            toast.error(error.message);
+            //toast.error(error.message);
             set({errorUser: axiosError(error)});
         }
     }

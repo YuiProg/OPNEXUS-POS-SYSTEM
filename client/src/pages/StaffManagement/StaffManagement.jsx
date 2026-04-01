@@ -24,7 +24,9 @@ class StaffManagement extends React.Component {
 
     componentDidMount () {
         const {fetchUsers} = AuthStore.getState();
+        const { getBranch } = BranchStore.getState();
         fetchUsers();
+        getBranch();
         this.unsubscribe = AuthStore.subscribe((state) => {
             const users = state.users;
             this.setState({users: users});

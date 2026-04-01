@@ -41,3 +41,23 @@ export const getBranch = async (req, res) => {
         ApiResponseModel(res, ERROR, error.message);
     }
 }
+
+export const setActiveBranch = async (req, res) => {
+    const { location } = req.params;
+    try {
+        const updated = await Branch.setActive(location);
+        ApiResponseModel(res, SUCCESS, 'Updated branch', updated);
+    } catch (error) {
+        ApiResponseModel(res, ERROR, error.message);
+    }
+}
+
+export const setOfflineBranch = async (req, res) => {
+    const {location} = req.params;
+    try {
+        const updated = await Branch.setOffline(location);
+        ApiResponseModel(res, SUCCESS, 'Updated branch', updated);
+    } catch (error) {
+        ApiResponseModel(res, ERROR, error.message);
+    }
+}

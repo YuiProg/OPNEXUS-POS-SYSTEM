@@ -21,6 +21,10 @@ const timeinSchema = new mongoose.Schema({
     clockOut: {
         type: String,
         required: false
+    },
+    totalHours: {
+        type: Number,
+        required: false
     }
 }, {timestamps: true});
 

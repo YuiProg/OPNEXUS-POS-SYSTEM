@@ -14,7 +14,9 @@ const {
 const {
     TIMEOUT,
     TIMEIN,
-    GETDATATIME
+    GETDATATIME,
+    SETBRANCHACTIVE,
+    SETBRANCHOFFLINE
 } = ApiConfig;
 
 
@@ -54,22 +56,24 @@ const TimeInOutStore = create((set) => ({
     timeIn: async (time, date) => {
         set({loading: true});
         try {
-            const {checkAuth} = AuthStore.getState();
+            const {checkAuth, AuthUser} = AuthStore.getState();
+            console.log(AuthUser.branchLocation);
             set({timeInHour: time});
             set({timedIn: true});
-            const { AuthUser } = AuthStore.getState();
-            const fullName = `${AuthUser.firstName} ${AuthUser.middleName} ${AuthUser.lastName}`;
+            //const fullName = `${AuthUser.firstName} ${AuthUser.middleName} ${AuthUser.lastName}`;
 
-            const json = {
-                employeeName: fullName,
-                date: date,
-                clockIn: time
-            }
+            // const json = {
+            //     employeeName: fullName,
+            //     date: date,
+            //     clockIn: time
+            // }
 
             //localStorage.setItem('timein', JSON.stringify(json));
             console.log(time);
             const timein = await axiosInstance.post(TIMEIN, {time});
+            const activeBranch = await axiosInstance.post(SETBRANCHACTIVE.replace(':location', AuthUser.branchLocation));
             await checkAuth();
+            console.log(activeBranch.data);
             console.log(timein.data);
             //const timedin = await axiosInstance.post(TIMEIN, AuthUser);
             //console.log(timedin);
@@ -98,6 +102,8 @@ const TimeInOutStore = create((set) => ({
                 clockOut: time
             };
             const timeout = await axiosInstance.post(TIMEOUT, payload);
+            const activeBranch = await axiosInstance.post(SETBRANCHOFFLINE.replace(':location', AuthUser.branchLocation));
+            console.log(activeBranch);
             await checkAuth();
             const {data} = timeout.data;
 
@@ -106,7 +112,8 @@ const TimeInOutStore = create((set) => ({
                 userId: data.userId,
                 date: date,
                 clockIn: AuthUser.time,
-                clockOut: time
+                clockOut: time,
+                totalHours: data.totalHours
             }
             //console.log(timeout.data);
             //const cleanedData = data.map(({__v, _id, ...rest}) => rest);
