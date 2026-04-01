@@ -53,7 +53,6 @@ export default function App() {
     deleteUser,
     updateUser,
     fetchUsers,
-    users
   } = AuthStore();
   const {
     isOpen,
