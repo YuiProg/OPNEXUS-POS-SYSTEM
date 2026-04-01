@@ -1,0 +1,17 @@
+name: Continuous Deployment
+
+on:
+  push:
+    branches: [ main ]  # Or your primary branch name
+
+jobs:
+  deploy:
+    name: Deploy to Render
+    runs-on: ubuntu-latest
+    # This ensures deployment only happens AFTER your CI passes
+    # needs: [ci_job_name] 
+
+    steps:
+      - name: Trigger Render Deploy Hook
+        run: |
+          curl -f ${{ secrets.RENDER_DEPLOY_HOOK }}
