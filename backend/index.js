@@ -14,18 +14,14 @@ import { app, server } from './lib/socket.js';
 
 dotenv.config();
 
-// Standardize directory name for ES modules
 const __dirname = path.resolve();
 
-// Only set custom DNS if specifically needed for your environment; 
-// Render usually handles this automatically.
 dns.setServers(["1.1.1.1", "8.8.8.8"]);
 
-// CORS Configuration
 const allowedOrigins = [
     'http://localhost:5173', 
     'http://localhost:3000',
-    process.env.CLIENT_URL // This will be your Render URL
+    process.env.CLIENT_URL 
 ];
 
 app.use(cors({
@@ -56,15 +52,17 @@ app.get('/test', (req, res) => {
     res.send('Server is up and running!');
 });
 
-
+// --- RENDER PRODUCTION LOGIC ---
 if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, 'client/dist')));
+    // Note the '..' - this jumps out of /backend to find /client
+    const clientDistPath = path.join(__dirname, 'client', 'dist');
+    
+    app.use(express.static(clientDistPath));
 
     app.get('*', (req, res) => {
-        res.sendFile(path.resolve(__dirname, 'client', 'dist', 'index.html'));
+        res.sendFile(path.resolve(clientDistPath, 'index.html'));
     });
 }
-
 
 const PORT = process.env.PORT || 3000;
 
