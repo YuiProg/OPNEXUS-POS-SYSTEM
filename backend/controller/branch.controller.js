@@ -1,6 +1,5 @@
 import ApiResponseModel from "../models/ApiResponseModel.js";
 import Branch from "../models/Branches.js";
-import User from "../models/UserModel.js";
 import Strings from "../strings/strings-codes.js";
 
 const {

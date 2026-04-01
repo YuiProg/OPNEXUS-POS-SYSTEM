@@ -1,8 +1,7 @@
 import express from 'express';
 import ApiConfig from '../Api/ApiConfig.js';
-
 import protectRoutes from '../middleware/protectRoutes.js';
-import { addBranches, getBranch, getBranchByLocation, setActiveBranch, setOfflineBranch, updateBranch } from '../controller/branch.Controller.js';
+import {addBranches, getBranch, getBranchByLocation, setActiveBranch, setOfflineBranch, updateBranch} from '../controller/branch.Controller.js';
 
 const {
     ADDBRANCH,
