@@ -22,17 +22,17 @@ class BranchesCards extends React.Component {
             // eslint-disable-next-line no-unused-vars
             data
         } = this.props;
-
+        console.log(data);
         return (
             <>
-            {sampleData.map((data, i) => {
+            {data?.map((data, i) => {
                 return(
                     <div key={i} className={data.active ? "branch-card-container active" : "branch-card-container offline"}>
                         <h1 className="branch-card-header">{data.location}</h1>
                         <div className="branch-card-button-items">
                             <div>
                                 <p className="branch-card-clerk">Clerk</p>
-                                <h3 className="branch-card-clerk-header">{data.clerk}</h3>
+                                <h3 className="branch-card-clerk-header">{data.clerkName}</h3>
                             </div>
                             <div>
                                 <p className="branch-card-clerk">Session</p>

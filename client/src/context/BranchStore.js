@@ -1,32 +1,64 @@
 import { create } from "zustand";
 import ApiConfig from "../Api/ApiConfig";
+import toast from "react-hot-toast";
+import axiosError from "../helpers/axiosError";
+import axiosInstance from "../helpers/axiosInstance";
 
-const BranchStore = create((set) => ({
+const {
+    ADDBRANCH,
+    GETBRANCHES
+} = ApiConfig;
+
+const BranchStore = create((set, get) => ({
     branches: [],
     errorBranch: null,
     showModalBranch: false,
     input: {
         location: '',
-        session: '',
-        isActive: false,
         clerk: null
+    },
+    selectedBranch: "Branch",
+
+    setBranchInput: (name, val) => {
+        const inputs = get().input;
+        inputs[name] = val;
+        set({input: inputs});
     },
 
     setShowModal: (val) => set({showModalBranch: val}),
 
-    newBranch: async (data) => {
+    newBranch: async () => {
         try {
-            
+            const data = get().input;
+            const newBranch = await axiosInstance.post(ADDBRANCH, data);
+            const newBranchData = newBranch.data.data;
+            //console.log(newBranchData);
+            const newData = {
+                clerkname: newBranchData.clerkName,
+                location: newBranchData.location,
+                role: newBranchData.role,
+                session: newBranchData.session,
+                active: newBranchData.active
+            }
+            set((state) => ({branches: [newData, ...state.branches]}));
+            set({showModalBranch: false});
+            toast.success(`Branch ${newBranchData.location} added!`);
         } catch (error) {
-            
+            toast.error(error.message);
+            set({errorUser: axiosError(error)});
         }
     },
 
     getBranch: async () => {
         try {
-            
+            const branches = await axiosInstance.get(GETBRANCHES);
+            const data = branches.data.data;
+            /* eslint-disable no-unused-vars */
+            const cleanedData = data.map(({_id, __v, clerkId, ...rest}) => rest);
+            set({branches: cleanedData});
         } catch (error) {
-            
+            toast.error(error.message);
+            set({errorUser: axiosError(error)});
         }
     }
 }));

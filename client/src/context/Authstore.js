@@ -189,11 +189,11 @@ const AuthStore = create((set, get) => ({
             const cleanedData = data
             .filter((user) => user._id !== userId)
             // eslint-disable-next-line no-unused-vars
-            .map(({ username, timedIn, time, createdAt, createdById, updatedAt, __v, firstName, _id, middleName, gender, lastName, address, ...rest }) => rest);
-            console.log(cleanedData);
+            .map(({email, timedIn, time, createdAt, createdById, updatedAt, __v, firstName, _id, middleName, gender, lastName, address, ...rest }) => rest);
+            //console.log(cleanedData);
             set({users: cleanedData});
         } catch (error) {
-            toast.error(error.message);
+            //toast.error(error.message);
             set({errorUser: axiosError(error)});
         } finally {
             set({fetchLoading: false});

@@ -6,16 +6,26 @@ const branchSchema = new mongoose.Schema({
         required: false
     },
     clerkId: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         required: false
     },
     location: {
         type: String,
-        requried: true
+        requried: true,
+        unique: [true, 'Location already exist']
+    },
+    role: {
+        type: String,
+        required: false
+    },
+    session: {
+        type: String,
+        required: true
     },
     active: {
         type: Boolean,
-        default: false
+        default: false,
+        required: false
     }
 });
 
@@ -25,7 +35,7 @@ branchSchema.statics.addBranch = async function (data) {
 }
 
 branchSchema.statics.getBranch = async function () {
-    const branches = await this.find({});
+    const branches = await this.find();
     return branches;
 }
 

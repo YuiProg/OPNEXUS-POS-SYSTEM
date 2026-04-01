@@ -24,6 +24,7 @@ import Branches from "./pages/Branches/Branches.jsx";
 import { Table } from "./components/TRTable/TrTable.jsx";
 import { Toaster } from "react-hot-toast";
 import Button from "./components/TRButton/Button.jsx";
+import BranchStore from "./context/BranchStore.js";
 
 const Inventory = lazy(() => import("./pages/Inventory/Inventory.jsx"));
 const Dashboard = lazy(() => import("./pages/DashBoard/Dashboard.jsx"));
@@ -51,6 +52,8 @@ export default function App() {
     deleteMultipleUsers,
     deleteUser,
     updateUser,
+    fetchUsers,
+    users
   } = AuthStore();
   const {
     isOpen,
@@ -85,13 +88,19 @@ export default function App() {
     deleteProduct,
     updateProduct,
   } = ProductStore();
-  //const { showModalBranch, setShowModal } = BranchStore();
+  const { 
+    showModalBranch, 
+    setShowModal,
+    setBranchInput,
+    newBranch
+  } = BranchStore();
 
   const { SERVER_ERROR, PROD_FAIL } = Strings;
 
   useEffect(() => {
     checkAuth();
-  }, [checkAuth]);
+    fetchUsers();
+  }, [checkAuth, fetchUsers]);
 
   //BUG PAG NAG LOG OUT HINDI NAG REREDIRECT TO /LOGIN
 
@@ -119,6 +128,11 @@ export default function App() {
     e.preventDefault();
     updateUser();
   };
+
+  const addBranch = (e) => {
+    e.preventDefault();
+    newBranch();
+  }
 
   const showDeleteConfirmModal = () => {
     const tableData = {
@@ -732,6 +746,26 @@ export default function App() {
     );
   };
 
+  const AddBranchModal = () => {
+    // const users2 = users.map(data=>data.username);
+    // console.log(users2);
+    const clerks = users.filter(d => d.role.toLowerCase() === 'clerk')
+                        .map((d => d.username));
+
+    return (
+      <Modal header="Add branches" subHeader="Add branches to your liking" onClose={() => setShowModal(false)}>
+        <InputForm isRequired onSubmit={(e) => addBranch(e)}>
+          <InputRow titles={['Set location']}>
+            <InputField text placeholder="Set Branch Location" onChange={value => setBranchInput('location', value)}/>
+          </InputRow>
+          <InputRow titles={['Assign user']}>
+            <DropDown options={clerks} defaultValue="user" onChange={value => setBranchInput('clerk', value)}/>
+          </InputRow>
+        </InputForm>
+      </Modal>
+    );
+  }
+
   // eslint-disable-next-line no-unused-vars
   const showToastError = (type) => {
     switch (type) {
@@ -771,6 +805,7 @@ export default function App() {
         {yesNoModal && showYesNoModal()}
         {editProductModal && showModalAddProduct(true)}
         {editUserModal && showUserModal(true)}
+        {showModalBranch && AddBranchModal()}
       </>
     );
   };
@@ -855,7 +890,7 @@ export default function App() {
                 <Navigate to="/timeinout" replace />
               ) : (
                 <Sidebar user={AuthUser}>
-                  <Branches />
+                  <Branches/>
                 </Sidebar>
               )
             }
@@ -879,3 +914,4 @@ export default function App() {
     </>
   );
 }
+

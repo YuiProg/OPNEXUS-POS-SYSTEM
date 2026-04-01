@@ -159,8 +159,18 @@ userSchema.statics.getSingleUser = async function (id) {
     return user;
 }
 
+userSchema.statics.getUserByUsername = async function (username) {
+    const user = await this.findOne({username: username});
+    return user;
+}
+
 userSchema.statics.deleteMultiple = async function (data) {
     const result = await this.deleteMany({_id: {$in: data}});
+    return result;
+}
+
+userSchema.statics.getUsersById = async function (data) {
+    const result = await this.find({_id: {$in: data}});
     return result;
 }
 

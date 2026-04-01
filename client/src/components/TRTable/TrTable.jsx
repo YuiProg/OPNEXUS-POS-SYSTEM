@@ -5,6 +5,8 @@ import {
   SquarePen,
   ChevronLeft,
   ChevronRight,
+  ChevronUp,
+  ChevronDown,
   Archive,
 } from "lucide-react";
 import PropTypes from "prop-types";
@@ -24,6 +26,8 @@ export class Table extends React.Component {
         : [],
       productSelect: null,
       currentPage: 1,
+      sortKey: null,       // which column is being sorted
+      sortDir: null,       // 'asc' or 'desc'
     };
   }
 
@@ -81,22 +85,54 @@ export class Table extends React.Component {
     );
   }
 
+  // Cycles: none -> asc -> desc -> none
+  handleSort = (key) => {
+    this.setState((prev) => {
+      if (prev.sortKey !== key) return { sortKey: key, sortDir: "asc", currentPage: 1 };
+      if (prev.sortDir === "asc") return { sortKey: key, sortDir: "desc", currentPage: 1 };
+      return { sortKey: null, sortDir: null, currentPage: 1 };
+    });
+  };
+
+  sortData = (array) => {
+    const { sortKey, sortDir } = this.state;
+    if (!sortKey || !sortDir) return array;
+
+    return [...array].sort((a, b) => {
+      const aVal = a[sortKey];
+      const bVal = b[sortKey];
+
+      // Numbers
+      if (!isNaN(aVal) && !isNaN(bVal)) {
+        return sortDir === "asc" ? aVal - bVal : bVal - aVal;
+      }
+
+      // Strings
+      const aStr = String(aVal).toLowerCase();
+      const bStr = String(bVal).toLowerCase();
+      if (aStr < bStr) return sortDir === "asc" ? -1 : 1;
+      if (aStr > bStr) return sortDir === "asc" ? 1 : -1;
+      return 0;
+    });
+  };
+
   render() {
     const { data, hasSelect, hasAction, onDelete, onEdit, isDetailed, search, onView, isLoading } =
       this.props;
-    const { selectAll, selected, currentPage } = this.state;
+    const { selectAll, selected, currentPage, sortKey, sortDir } = this.state;
 
     //for testing wag i remove. wag rin tanggalin yung comment sasabog to
     //console.log(this.filterByValue(data, search));
 
     const filteredData = search ? this.filterByValue(data, search) : data;
+    const sortedData = this.sortData(filteredData);
 
-    const totalPages = filteredData
-      ? Math.ceil(filteredData.length / this.rowsPerPage)
+    const totalPages = sortedData
+      ? Math.ceil(sortedData.length / this.rowsPerPage)
       : null;
     const startIndex = (currentPage - 1) * this.rowsPerPage;
-    const paginatedData = filteredData
-      ? filteredData.slice(startIndex, startIndex + this.rowsPerPage)
+    const paginatedData = sortedData
+      ? sortedData.slice(startIndex, startIndex + this.rowsPerPage)
       : null;
     const paginatedSelected = paginatedData
       ? selected.slice(startIndex, startIndex + this.rowsPerPage)
@@ -110,7 +146,7 @@ export class Table extends React.Component {
         : [];
 
     const hasData = paginatedData && paginatedData.length > 0;
-    const shouldPaginate = filteredData && filteredData.length > this.rowsPerPage;
+    const shouldPaginate = sortedData && sortedData.length > this.rowsPerPage;
 
     // TODO: fix this later ps. what the fuck is this shit
     let pageNumbers = [];
@@ -118,7 +154,6 @@ export class Table extends React.Component {
       pageNumbers.push(i);
     }
 
-    // Column count for skeleton rows
     const colCount =
       (headers ? headers.length : 0) +
       (hasSelect ? 1 : 0) +
@@ -170,8 +205,25 @@ export class Table extends React.Component {
                   </th>
                 ) : null}
                 {headers.map((h, i) => (
-                  <th className="table-th" key={i}>
-                    {h.toUpperCase()}
+                  <th
+                    className="table-th table-th--sortable"
+                    key={i}
+                    onClick={() => this.handleSort(h)}
+                  >
+                    <span className="table-th-content">
+                      {h.toUpperCase()}
+                      <span className="table-sort-icon">
+                        {sortKey === h ? (
+                          sortDir === "asc" ? (
+                            <ChevronUp size={14} />
+                          ) : (
+                            <ChevronDown size={14} />
+                          )
+                        ) : (
+                          <ChevronDown size={14} className="table-sort-icon--inactive" />
+                        )}
+                      </span>
+                    </span>
                   </th>
                 ))}
                 {hasAction && data && data.length > 0 ? (
@@ -194,9 +246,7 @@ export class Table extends React.Component {
                   onView={(e) => onView(e)}
                 />
               ) : (
-                <TableNoData
-                  colSpan={colCount}
-                />
+                <TableNoData colSpan={colCount} />
               )}
             </tbody>
           </table>
@@ -205,8 +255,8 @@ export class Table extends React.Component {
         {shouldPaginate && (
           <div className="pagination">
             <span className="pagination-info">
-              {filteredData
-                ? `showing ${Math.min(startIndex + this.rowsPerPage, filteredData.length)} of ${filteredData.length} results`
+              {sortedData
+                ? `showing ${Math.min(startIndex + this.rowsPerPage, sortedData.length)} of ${sortedData.length} results`
                 : null}
             </span>
             <div className="pagination-controls">

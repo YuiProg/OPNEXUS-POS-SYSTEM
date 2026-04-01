@@ -25,12 +25,12 @@ const timeinSchema = new mongoose.Schema({
 }, {timestamps: true});
 
 timeinSchema.statics.saveOut = async function (data, id) {
-    const newData = this.create({...data, userId: id});
+    const newData = await this.create({...data, userId: id});
     return newData;
 }
 
 timeinSchema.statics.getData = async function (userId) {
-    const data = this.find({userId}).sort({createdAt: -1});
+    const data = await this.find({userId}).sort({createdAt: -1});
     return data;
 }
 

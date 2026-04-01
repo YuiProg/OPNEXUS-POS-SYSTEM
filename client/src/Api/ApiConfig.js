@@ -12,6 +12,7 @@ const ApiConfig = Object.freeze({
     deleteMultipleUsers: apiEndpoint + 'userDeleteMultiple',
     deleteSingleUser: apiEndpoint + 'deleteSingleUser',
     GET_SINGLE_USER: apiEndpoint + 'getSingleUser/:id',
+    GET_USERS_BY_ID: apiEndpoint + 'getUsersById',
     UPDATE_USER: apiEndpoint + 'updateUser/:id',
     //==============================
 
@@ -25,9 +26,9 @@ const ApiConfig = Object.freeze({
     //==============================
 
     //branch cards
-    setBranchActive: apiEndpoint + 'setBranchActive',
-    getBranches: apiEndpoint + 'getBranch',
-    addBranch: apiEndpoint + 'addBranch',
+    SETBRANCHACTIVE: apiEndpoint + 'setBranchActive',
+    GETBRANCHES: apiEndpoint + 'getBranch',
+    ADDBRANCH: apiEndpoint + 'addBranch',
 
     //timein
     TIMEIN: apiEndpoint + 'timein',

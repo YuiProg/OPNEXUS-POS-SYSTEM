@@ -31,6 +31,10 @@ class StaffManagement extends React.Component {
         });
     }
 
+    componentWillUnmount () {
+        if (this.unsubscribe) this.unsubscribe;
+    }
+
     showConfirmDelModal = (e) => {
         const { setDeleteModal, setSelectedItems, setUrl } = ModalStore.getState();
         setDeleteModal(true);
@@ -72,7 +76,7 @@ class StaffManagement extends React.Component {
             header: "STAFFS",
             hasButton: true,
             CB: () => setShowAddModal(true),
-            buttonInfo: "+NEW CLERK",
+            buttonInfo: "NEW CLERK",
             search: (
                 <InputField
                 placeholder="Search staff"
