@@ -32,6 +32,8 @@ const ApiConfig = Object.freeze({
     SETBRANCHOFFLINE: apiEndpoint + 'setBranchOffline/:location',
     GETBRANCHES: apiEndpoint + 'getBranch',
     ADDBRANCH: apiEndpoint + 'addBranch',
+    UPDATEBRANCH: apiEndpoint + 'updateBranch/:location',
+    GETBRANCHBYLOCATION: apiEndpoint + 'branchLocation/:location',
     //=================================
 
     //timein

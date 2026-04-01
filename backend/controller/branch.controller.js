@@ -16,14 +16,10 @@ export const addBranches = async (req, res) => {
         const data = req.body;
         //const {userId} = req.user;
 
-        const fetchUser = await User.getUserByUsername(data.clerk);
+        //const fetchUser = await User.getUserByUsername(data.clerk);
 
         const payload = {
-            clerkName: data.clerk,
             location: data.location,
-            clerkId: fetchUser._id,
-            session: fetchUser.shift,
-            role: fetchUser.role
         }
         //console.log(payload);
         const newbranch = await Branch.addBranch(payload);
@@ -33,10 +29,32 @@ export const addBranches = async (req, res) => {
     }
 }
 
+export const updateBranch = async (req, res) => {
+    try {
+        const { location } = req.params;
+        const data = req.body;
+        console.log(data);
+        const updatedBranch = await Branch.updateBranch(location, data);
+        ApiResponseModel(res, SUCCESS, GET_BRANCH, updatedBranch);
+    } catch (error) {
+        ApiResponseModel(res, ERROR, error.message);
+    }
+}
+
 export const getBranch = async (req, res) => {
     try {
         const branches = await Branch.getBranch();
         ApiResponseModel(res, SUCCESS, GET_BRANCH, branches);
+    } catch (error) {
+        ApiResponseModel(res, ERROR, error.message);
+    }
+}
+
+export const getBranchByLocation = async (req, res) => {
+    try {
+        const { location } = req.params;
+        const branch = await Branch.getBranchByLocation(location);
+        ApiResponseModel(res, SUCCESS, GET_BRANCH, branch);
     } catch (error) {
         ApiResponseModel(res, ERROR, error.message);
     }

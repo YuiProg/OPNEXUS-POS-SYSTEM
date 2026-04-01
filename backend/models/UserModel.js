@@ -37,7 +37,7 @@ const userSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
-        unique: [true, NAME_EXIST],
+        unique: true
     },
     password: {
         type: String,
@@ -45,7 +45,7 @@ const userSchema = new mongoose.Schema({
     },
     branchLocation: {
         type: String,
-        required: [true, BRANCH_REQ],
+        required: [false, BRANCH_REQ],
     },
     shift: {
         type: String,

@@ -6,7 +6,8 @@ import axiosInstance from "../helpers/axiosInstance";
 
 const {
     ADDBRANCH,
-    GETBRANCHES
+    GETBRANCHES,
+    GETBRANCHBYLOCATION
 } = ApiConfig;
 
 const BranchStore = create((set, get) => ({
@@ -20,9 +21,9 @@ const BranchStore = create((set, get) => ({
     selectedBranch: "Branch",
 
     setBranchInput: (name, val) => {
-        const inputs = get().input;
-        inputs[name] = val;
-        set({input: inputs});
+        set((state) => ({
+            input: { ...state.input, [name]: val }
+        }));
     },
 
     setShowModal: (val) => set({showModalBranch: val}),
@@ -30,7 +31,8 @@ const BranchStore = create((set, get) => ({
     newBranch: async () => {
         try {
             const data = get().input;
-            const newBranch = await axiosInstance.post(ADDBRANCH, data);
+            console.log(data);
+            const newBranch = await axiosInstance.post(ADDBRANCH, {location: data.location});
             const newBranchData = newBranch.data.data;
             //console.log(newBranchData);
             const newData = {
@@ -44,10 +46,10 @@ const BranchStore = create((set, get) => ({
             set({showModalBranch: false});
             toast.success(`Branch ${newBranchData.location} added!`);
         } catch (error) {
+            console.log(error);
             if (axiosError(error)) {
                 toast.error(error.response.data.status);
             }
-            set({errorUser: axiosError(error)});
         }
     },
 
@@ -58,7 +60,17 @@ const BranchStore = create((set, get) => ({
             set({branches: data});
         } catch (error) {
             //toast.error(error.message);
-            set({errorUser: axiosError(error)});
+            console.log(error.message);
+        }
+    },
+
+    getBranchByLocation: async (location) => {
+        try {
+            const branch = await axiosInstance.get(GETBRANCHBYLOCATION.replace(':location', location));
+            const data = branch.data.data;
+            return data;
+        } catch (error) {
+            console.log(error.message);
         }
     }
 }));

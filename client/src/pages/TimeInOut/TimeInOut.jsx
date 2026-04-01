@@ -118,6 +118,7 @@ class TimeInOut extends React.Component {
                 <CircleUserRound className="user-icon-pic"/>
                 <h1 className="user-name">{`${user.firstName} ${user.middleName} ${user.lastName}`}</h1>
                 <p className="user-role">{user.role}</p>
+                <p>BRANCH: {user.branchLocation}</p>
               </div>
               <div className="timeinout-datetime">
                 <p className="current-time">{this.state.time}</p>

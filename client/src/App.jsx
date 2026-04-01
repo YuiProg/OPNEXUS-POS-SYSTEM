@@ -752,8 +752,8 @@ export default function App() {
   const AddBranchModal = () => {
     // const users2 = users.map(data=>data.username);
     // console.log(users2);
-    const clerks = users.filter(d => d.role.toLowerCase() === 'clerk')
-                        .map((d => d.username));
+    //const clerks = users.filter(d => d.role.toLowerCase() === 'clerk')
+                        //.map((d => d.username));
 
     return (
       <Modal header="Add branches" subHeader="Add branches to your liking" onClose={() => setShowModal(false)}>
@@ -761,9 +761,9 @@ export default function App() {
           <InputRow titles={['Set location']}>
             <InputField text placeholder="Set Branch Location" onChange={value => setBranchInput('location', value)}/>
           </InputRow>
-          <InputRow titles={['Assign user']}>
+          {/* <InputRow titles={['Assign user']}>
             <DropDown options={clerks} defaultValue="user" onChange={value => setBranchInput('clerk', value)}/>
-          </InputRow>
+          </InputRow> */}
         </InputForm>
       </Modal>
     );

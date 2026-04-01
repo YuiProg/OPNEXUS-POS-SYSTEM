@@ -1,9 +1,21 @@
 import mongoose from "mongoose";
+import { customAlphabet } from "nanoid";
+import Strings from "../strings/strings-codes.js";
+
+const {
+    ID_SECRET
+} = Strings;
+
+const nanoid = customAlphabet(ID_SECRET, 5);
 
 const branchSchema = new mongoose.Schema({
+    _id: {
+        type: String,
+        default: () => `BR-${nanoid()}`
+    },
     clerkName: {
         type: String,
-        required: false
+        required: false,
     },
     clerkId: {
         type: String,
@@ -11,8 +23,8 @@ const branchSchema = new mongoose.Schema({
     },
     location: {
         type: String,
-        requried: true,
-        unique: [true, 'Location already exist']
+        required: true,
+        unique: true
     },
     role: {
         type: String,
@@ -20,7 +32,7 @@ const branchSchema = new mongoose.Schema({
     },
     session: {
         type: String,
-        required: true
+        required: false
     },
     active: {
         type: Boolean,
@@ -39,6 +51,16 @@ branchSchema.statics.getBranch = async function () {
     return branches;
 }
 
+branchSchema.statics.getBranchByLocation = async function (location) {
+    const branch = await this.findOne({location});
+    return branch;
+}
+
+branchSchema.statics.updateBranch = async function (location, data) {
+    const updatedBranch = await this.findOneAndUpdate({location}, data, {new: true});
+    return updatedBranch;
+}
+
 branchSchema.statics.setActive = async function (location) {
     const res = await this.findOneAndUpdate({location}, {active: true}, {new: true});
     return res;
@@ -48,6 +70,7 @@ branchSchema.statics.setOffline = async function (location) {
     const res = await this.findOneAndUpdate({location}, {active: false}, {new: false});
     return res;
 }
+
 
 const Branch = mongoose.model('branch', branchSchema);
 

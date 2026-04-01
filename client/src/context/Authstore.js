@@ -10,6 +10,7 @@ import { Navigate } from 'react-router-dom';
 import {io} from 'socket.io-client';
 import toast from 'react-hot-toast';
 import ModalStore from './ModalStore';
+import BranchStore from './BranchStore';
 
 const { 
     loginUsers,
@@ -19,7 +20,8 @@ const {
     fetchUsers,
     deleteMultipleUsers,
     GET_SINGLE_USER,
-    UPDATE_USER
+    UPDATE_USER,
+    UPDATEBRANCH
 } = ApiConfig;
 
 const {
@@ -133,6 +135,7 @@ const AuthStore = create((set, get) => ({
 
     addUser: async () => {
         const { setShowAddModal } = ModalStore.getState();
+        const { getBranchByLocation } = BranchStore.getState();
         try {
             const data = get().input;
             const payload = {
@@ -152,8 +155,25 @@ const AuthStore = create((set, get) => ({
             };
 
             //console.log(payload);
+
+            //get muna yung branch check kung may laman na
+
+            const check = await getBranchByLocation(data.branch);
+            console.log(check);
+            if (check.clerkName) {
+                return toast.error('Branch already has a user!');
+            }
+            
             const newUser = await axiosInstance.post(addUser, payload);
             const {_id, firstName, middleName, lastName, shift, salary, role, phoneNumber, branchLocation} = newUser.data.data;
+
+            const updateBranch = await axiosInstance.post(UPDATEBRANCH.replace(':location', data.branch), {
+                clerkName: data.username,
+                clerkId: _id,
+                role: role,
+                session: shift
+            });
+            console.log(updateBranch);
             const newData = {
                 Id: _id,
                 Employee: `${firstName.toUpperCase()} ${middleName.toUpperCase()} ${lastName.toUpperCase()}`,
@@ -171,11 +191,10 @@ const AuthStore = create((set, get) => ({
             // if (newUser.data.status === "Success") {
             //     window.location.reload();
             // }
+            setShowAddModal(false);
         } catch (error) {
             toast.error(error.message);
             set({errorUser: axiosError(error)});
-        } finally {
-            setShowAddModal(false);
         }
     },
 
@@ -189,7 +208,7 @@ const AuthStore = create((set, get) => ({
             const cleanedData = data
             .filter((user) => user._id !== userId)
             // eslint-disable-next-line no-unused-vars
-            .map(({email, timedIn, time, createdAt, createdById, updatedAt, __v, firstName, _id, middleName, gender, lastName, address, ...rest }) => rest);
+            .map(({username, timedIn, time, createdAt, createdById, updatedAt, __v, firstName, _id, middleName, gender, lastName, address, ...rest }) => rest);
             //console.log(cleanedData);
             set({users: cleanedData});
         } catch (error) {
@@ -232,6 +251,13 @@ const AuthStore = create((set, get) => ({
                 salary: salary || selectedItem.salary,
                 branchLocation: branch || selectedItem.branchLocation
             }
+            const updateOldBranch = await axiosInstance.post(UPDATEBRANCH.replace(':location', branch || selectedItem.branchLocation), {
+                clerkName: username || selectedItem.username,
+                clerkId: selectedItem._id,
+                role: role || selectedItem.role,
+                session: shift || selectedItem.shift,
+            })
+            console.log(updateOldBranch.data);
             
             const newUser = await axiosInstance.post(UPDATE_USER.replace(':id', selectedItem._id), payload);
             console.log(newUser.data);
