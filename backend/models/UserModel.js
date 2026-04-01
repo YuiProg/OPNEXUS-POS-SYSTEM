@@ -88,6 +88,10 @@ const userSchema = new mongoose.Schema({
     timedIn: {
         type: Boolean,
         default: false
+    },
+    time: {
+        type: String,
+        required: false
     }
 }, {timestamps: true});
 

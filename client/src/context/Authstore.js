@@ -49,6 +49,7 @@ const AuthStore = create((set, get) => ({
     },
     users: [],
     onlineUsers: [],
+    fetchLoading: false,
 
     setInput: (name, value) => {
         const inputs = get().input;
@@ -179,6 +180,7 @@ const AuthStore = create((set, get) => ({
     },
 
     fetchUsers: async () => {
+        set({fetchLoading: true});
         try {
             const users = await axiosInstance.get(fetchUsers);
             const data = users.data.data;
@@ -193,6 +195,8 @@ const AuthStore = create((set, get) => ({
         } catch (error) {
             toast.error(error.message);
             set({errorUser: axiosError(error)});
+        } finally {
+            set({fetchLoading: false});
         }
     },
 

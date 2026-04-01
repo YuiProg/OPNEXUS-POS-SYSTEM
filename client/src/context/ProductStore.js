@@ -18,6 +18,7 @@ const {
 
 const ProductStore = create((set, get) => ({
   productName: "",
+  fetchLoading: false,
   quantity: 0,
   price: 0,
   category: "",
@@ -107,6 +108,7 @@ const ProductStore = create((set, get) => ({
   },
 
   fetchProducts: async () => {
+    set({fetchLoading: true});
     try {
       const { selectedBranch } = AuthStore.getState();
       console.log(selectedBranch);
@@ -143,6 +145,8 @@ const ProductStore = create((set, get) => ({
       toast.error(error.message);
       console.log(error);
       set({ errorProduct: axiosError(error) });
+    } finally {
+      set({fetchLoading: false});
     }
   },
 

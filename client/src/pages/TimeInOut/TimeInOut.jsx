@@ -56,7 +56,7 @@ class TimeInOut extends React.Component {
   }
 
   render() {
-    const { timeIn, timedIn, timeOut, timeData } = TimeInOutStore.getState();
+    const { timeIn, timeOut, timeData, timeInLoading, loading } = TimeInOutStore.getState();
     const { user } = this.props;
     
     return (
@@ -68,7 +68,7 @@ class TimeInOut extends React.Component {
           </div>
         </div>
         <div className="timeinout-main-contents">
-          <Table data={timeData} isDetailed={{header: "Time logs"}}/>
+          <Table data={timeData} isDetailed={{header: "Time logs"}} isLoading={timeInLoading} />
           <div className="timeinout-timer">
             <div className="calendar-container">
               <div className="calendar">
@@ -123,7 +123,7 @@ class TimeInOut extends React.Component {
                 <p className="current-time">{this.state.time}</p>
                 <p className="current-date">{this.dateNow()}</p>
               </div>
-              {timedIn ? <Button maxWidth error text="CLOCK OUT" onClick={() => timeOut(this.timenow(), this.dateNow())}/> : <Button maxWidth success text="CLOCK IN" onClick={() => timeIn(this.timenow(), this.dateNow())}/>}
+              {user?.timedIn ? <Button disabled={loading} maxWidth error text="CLOCK OUT" onClick={() => timeOut(this.timenow(), this.dateNow())}/> : <Button disabled={loading} maxWidth success text="CLOCK IN" onClick={() => timeIn(this.timenow(), this.dateNow())}/>}
             </div>
           </div>
         </div>

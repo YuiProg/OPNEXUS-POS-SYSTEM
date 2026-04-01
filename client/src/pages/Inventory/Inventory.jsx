@@ -92,6 +92,7 @@ class Inventory extends React.Component {
 
   render() {
     //const { setEditProductModal } = ModalStore.getState();
+    const { fetchLoading } = ProductStore.getState();
     const tableData = {
       header: "ITEMS TEST",
       hasButton: this.state.isAdmin,
@@ -131,6 +132,7 @@ class Inventory extends React.Component {
               onDelete={(item) => this.showDeleteModal(item)}
               onEdit={(item) => this.showEditModal(item)}
               search={this.state.searchValue}
+              isLoading={fetchLoading}
             />
           </div>
         </div>

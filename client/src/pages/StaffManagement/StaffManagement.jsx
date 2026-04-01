@@ -66,7 +66,7 @@ class StaffManagement extends React.Component {
     render () {
         //const {setShowModal} = BranchStore.getState();
         const { setShowAddModal } = ModalStore.getState();
-        const { onlineUsers } = AuthStore.getState();
+        const { onlineUsers, fetchLoading } = AuthStore.getState();
 
         const tableData = {
             header: "STAFFS",
@@ -134,6 +134,7 @@ class StaffManagement extends React.Component {
                             onDelete={(e) => this.showDeleteModal(e)}
                             onEdit={(item) => this.showEditModal(item)}
                             search={this.state.search}
+                            isLoading={fetchLoading}
                             />
                     </div>
                     <div className="sm-active-staffs">

@@ -307,4 +307,16 @@
   user-select: none;
 }
 
-/*pagination for admin*/
+/* ── Spinner ── */
+.table-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #2e2e2e;
+  border-top-color: #c0392b;
+  border-radius: 50%;
+  animation: spinner-rotate 0.8s linear infinite;
+}
+
+@keyframes spinner-rotate {
+  to { transform: rotate(360deg); }
+}
