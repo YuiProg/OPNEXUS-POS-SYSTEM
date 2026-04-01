@@ -69,7 +69,7 @@ export class InputForm extends React.Component {
 
     render () {
         const { onSubmit, btnTXT, hasCancel, onCancel, cancelTXT, btnDisabled, noBtn } = this.props;
-
+        console.log(this.props);
         return (
             <form className="tr-inputform" onSubmit={(e) => onSubmit(e)}>
                 {this.passPropsToChildren()}

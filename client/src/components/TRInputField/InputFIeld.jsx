@@ -6,11 +6,20 @@ class InputField extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: "",
+      value: this.props.value ? this.props.value : "",
       error: null,
-      searchValue: "",
+      searchValue: this.props.value ? this.props.value : "",
       showPassword: false
     };
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.value !== this.props.value && this.props.value !== undefined) {
+      this.setState({
+        value: this.props.value,
+        searchValue: this.props.value,
+      });
+    }
   }
 
   checkNumber = (e) => {
@@ -23,7 +32,7 @@ class InputField extends React.Component {
       return value;
     }
 
-    if (text || password || email) { 
+    if (text || password || email) {
       this.setState({ error: null, value: value });
       return value;
     }
@@ -40,16 +49,16 @@ class InputField extends React.Component {
 
   handleSearch = (e) => {
     const value = e.target.value;
-    this.setState({searchValue: value});
+    this.setState({ searchValue: value });
     return value;
-  }
+  };
 
   handleEnterDown = (e, CB) => {
     const key = e.key;
-    if (key === 'Enter') {
+    if (key === "Enter") {
       return CB(e.target.value);
     }
-  }
+  };
 
   render() {
     const {
@@ -62,7 +71,7 @@ class InputField extends React.Component {
       onEnterDown,
       color,
       isRequired,
-      email
+      email,
     } = this.props;
 
     return (
@@ -76,26 +85,52 @@ class InputField extends React.Component {
           {!isSearch ? (
             <>
               <input
-                  style={disabled ? {backgroundColor: color, cursor: 'not-allowed'} : {backgroundColor: color}}
-                  type={password ? (this.state.showPassword ? "text" : "password") : email ? "email" : "text"}
-                  required={required || isRequired}
-                  onChange={(e) => onChange(this.checkNumber(e))}
-                  disabled={disabled}
-                  value={this.state.value}
-                  placeholder=" "
-                  onKeyDown={(e) => this.handleEnterDown(e, onEnterDown)}
-                />
-                <label className="floating-label">{placeholder}</label>
-                {password && (
-                  this.state.showPassword
-                    ? <Eye className="eye-icon" onClick={() => this.setState({ showPassword: false })} />
-                    : <EyeClosed className="eye-icon" onClick={() => this.setState({ showPassword: true })} />
-                )}
+                style={
+                  disabled
+                    ? { backgroundColor: color, cursor: "not-allowed" }
+                    : { backgroundColor: color }
+                }
+                type={
+                  password
+                    ? this.state.showPassword
+                      ? "text"
+                      : "password"
+                    : email
+                    ? "email"
+                    : "text"
+                }
+                required={required || isRequired}
+                onChange={(e) => {
+                  const val = this.checkNumber(e);
+                  if (val !== undefined) onChange(val);
+                }}
+                disabled={disabled}
+                value={this.state.value}
+                placeholder=" "
+                onKeyDown={(e) => this.handleEnterDown(e, onEnterDown)}
+              />
+              <label className="floating-label">{placeholder}</label>
+              {password &&
+                (this.state.showPassword ? (
+                  <Eye
+                    className="eye-icon"
+                    onClick={() => this.setState({ showPassword: false })}
+                  />
+                ) : (
+                  <EyeClosed
+                    className="eye-icon"
+                    onClick={() => this.setState({ showPassword: true })}
+                  />
+                ))}
             </>
           ) : (
             <>
               <input
-                style={disabled ? {backgroundColor: color, cursor: 'not-allowed'} : {backgroundColor: color}}
+                style={
+                  disabled
+                    ? { backgroundColor: color, cursor: "not-allowed" }
+                    : { backgroundColor: color }
+                }
                 type="text"
                 required={required || isRequired}
                 onChange={(e) => this.handleSearch(e)}

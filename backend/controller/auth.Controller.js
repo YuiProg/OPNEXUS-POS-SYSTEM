@@ -39,9 +39,13 @@ export const loginUser = async (req, res) => {
 export const updateUser = async (req, res) => {
     try {
         const data = req.body;
-        const {id} = req.query;
+        const {id} = req.params;
+        const oldModel = await User.getSingleUser(id);
+        if (!oldModel) {
+            return ApiResponseModel(res, ERROR, "User not found");
+        }
         const updated_user = await User.updateUser(id, data);
-        ApiResponseModel(res, SUCCESS, SUCCESS_MESS, updated_user);
+        ApiResponseModel(res, SUCCESS, SUCCESS_MESS, updated_user, oldModel);
     } catch (error) {
         ApiResponseModel(res, error.message, ERROR);
     }
@@ -65,6 +69,16 @@ export const getAuthUser = async (req, res) => {
     }
 }
 
+export const getSingleUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const user = await User.getSingleUser(id);
+        ApiResponseModel(res, SUCCESS, SUCCESS_MESS, user);
+    } catch (error) {
+        ApiResponseModel(res, ERROR, error.message);
+    }
+}
+
 export const getUsers = async (req, res) => {
     try {
         const users = await User.getUsers();
@@ -78,6 +92,8 @@ export const getUsers = async (req, res) => {
         ApiResponseModel(res, ERROR, error.message);
     }
 }
+
+
 
 export const deleteMultiple = async (req, res) => {
     try {

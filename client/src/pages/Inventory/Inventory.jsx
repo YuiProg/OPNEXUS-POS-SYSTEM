@@ -8,6 +8,8 @@ import { Modal } from "../../TRModal/Modal";
 import { InputRow, TRInputFormPanel, InputForm } from "../../components/TRInputForm/TRInputForm";
 import ModalStore from "../../context/ModalStore";
 import ProductStore from "../../context/ProductStore";
+import toast from "react-hot-toast";
+import BranchStore from "../../context/BranchStore";
 
 class Inventory extends React.Component {
   constructor(props) {
@@ -28,13 +30,11 @@ class Inventory extends React.Component {
     }
   }
 
-  componentDidUpdate() {
-    
-  }
-
   componentDidMount() {
     const { fetchProducts } = ProductStore.getState();
+    const { getBranch } = BranchStore.getState();
     this.checkRole();
+    getBranch();
     fetchProducts();
     
     this.unsubscribe = ProductStore.subscribe((state) => {
@@ -60,6 +60,13 @@ class Inventory extends React.Component {
     this.setState({ searchValue: value });
   }
 
+  showDeleteModal = (item) => {
+    const { setSelectedItem, setYesNoModal, setUrl } = ModalStore.getState();
+    setSelectedItem(item);
+    setYesNoModal(true);
+    setUrl("inventory");
+  }
+
   showConfirmDelModal = (e) => {
       const { setDeleteModal, setSelectedItems, setUrl } = ModalStore.getState();
       setDeleteModal(true);
@@ -67,8 +74,23 @@ class Inventory extends React.Component {
       setUrl("inventory");
   }
 
-  render() {
+  showEditModal = async (item) => {
+    const { setSelectedItem, setEditProductModal } = ModalStore.getState();
+    const { fetchProductSingle } = ProductStore.getState();
+    try {
+      const product = await fetchProductSingle(item.Id);
+      setSelectedItem(product.data[0]);
+      setEditProductModal(true);
+      console.log(product.data[0]);
+    } catch (error) {
+      toast.error(error.message);
+      console.log(error);
+    }
+  }
 
+  render() {
+    //const { setEditProductModal } = ModalStore.getState();
+    const { fetchLoading } = ProductStore.getState();
     const tableData = {
       header: "ITEMS TEST",
       hasButton: this.state.isAdmin,
@@ -105,9 +127,10 @@ class Inventory extends React.Component {
               isDetailed={tableData}
               hasAction={this.state.isAdmin}
               hasSelect={this.state.isAdmin}
-              onDelete={() => {}}
-              onEdit={() => {}}
+              onDelete={(item) => this.showDeleteModal(item)}
+              onEdit={(item) => this.showEditModal(item)}
               search={this.state.searchValue}
+              isLoading={fetchLoading}
             />
           </div>
         </div>

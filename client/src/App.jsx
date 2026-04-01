@@ -1,12 +1,16 @@
 import { useEffect, lazy, Suspense } from "react";
-import "./App.css";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Login from "./pages/AuthPage/Login.jsx";
 import AuthStore from "./context/Authstore.js";
 import Sidebar from "./components/Sidebar/Sidebar.jsx";
 import POS from "./pages/POS/POS.jsx";
 import TimeInOut from "./pages/TimeInOut/TimeInOut.jsx";
-import { Modal, ModalConfim, ModalYesNo } from "./TRModal/Modal.jsx";
+import {
+  Modal,
+  ModalConfim,
+  ModalEditItem,
+  ModalYesNo,
+} from "./TRModal/Modal.jsx";
 import { InputForm, InputRow } from "./components/TRInputForm/TRInputForm.jsx";
 import InputField from "./components/TRInputField/InputFIeld.jsx";
 import ModalStore from "./context/ModalStore.js";
@@ -17,17 +21,18 @@ import Loading from "./components/Loading/Loading.jsx";
 import Toast from "./toast/Toast.jsx";
 import Strings from "./strings/strings-codes.js";
 import Branches from "./pages/Branches/Branches.jsx";
-import BranchStore from "./context/BranchStore.js";
 import { Table } from "./components/TRTable/TrTable.jsx";
-import { Toaster } from 'react-hot-toast';
-
+import { Toaster } from "react-hot-toast";
 import Button from "./components/TRButton/Button.jsx";
+import BranchStore from "./context/BranchStore.js";
 
 const Inventory = lazy(() => import("./pages/Inventory/Inventory.jsx"));
 const Dashboard = lazy(() => import("./pages/DashBoard/Dashboard.jsx"));
-const StaffManagement = lazy(() => import("./pages/StaffManagement/StaffManagement.jsx"));
+const StaffManagement = lazy(
+  () => import("./pages/StaffManagement/StaffManagement.jsx"),
+);
 
-function App() {
+export default function App() {
   //store instantiate wag burahin baka gamitin sa susunod
   // const checkAuth = AuthStore(state => state.checkAuth);
   // const AuthUser = AuthStore(state => state.AuthUser);
@@ -45,40 +50,58 @@ function App() {
     setInput,
     addUser,
     deleteMultipleUsers,
-    deleteUser
+    deleteUser,
+    updateUser,
+    fetchUsers,
+    users
   } = AuthStore();
-  const { 
-    isOpen, 
-    setModal, 
-    deleteModal, 
-    setDeleteModal, 
-    selectedItems, 
-    url, 
+  const {
+    isOpen,
+    setModal,
+    deleteModal,
+    setDeleteModal,
+    selectedItems,
+    url,
     confirmModal,
     setConfirmModal,
     showAddModal,
     setShowAddModal,
     selectedItem,
     setYesNoModal,
-    yesNoModal 
+    yesNoModal,
+    editProductModal,
+    setEditProductModal,
+    changesModal,
+    setChangesModal,
+    setUpdatedItem,
+    editUserModal,
+    setEditUserModal,
   } = ModalStore();
   const {
     setProductData,
     addNewProduct,
-    branches,
+    //branches,
     //errorProduct,
     categories,
     addLoading,
     deleteMultipleProducts,
-    deleteProduct
+    deleteProduct,
+    updateProduct,
   } = ProductStore();
-  //const { showModalBranch, setShowModal } = BranchStore();
+  const { 
+    showModalBranch, 
+    setShowModal,
+    setBranchInput,
+    newBranch,
+    branches,
+  } = BranchStore();
 
   const { SERVER_ERROR, PROD_FAIL } = Strings;
 
   useEffect(() => {
     checkAuth();
-  }, [checkAuth]);
+    fetchUsers();
+  }, [checkAuth, fetchUsers]);
 
   //BUG PAG NAG LOG OUT HINDI NAG REREDIRECT TO /LOGIN
 
@@ -89,22 +112,39 @@ function App() {
       </div>
     );
 
-  const defaultRoute = AuthUser?.role.toLowerCase() === "clerk" ? "/inventory" : "/dashboard";
+  const defaultRoute =
+    AuthUser?.role.toLowerCase() === "clerk" ? "/timeinout" : "/dashboard";
 
   const postProduct = (e) => {
     e.preventDefault();
     addNewProduct();
   };
 
+  const updateProductSelected = (e) => {
+    e.preventDefault();
+    updateProduct();
+  };
+
+  const updateUserSelected = (e) => {
+    e.preventDefault();
+    updateUser();
+  };
+
+  const addBranch = (e) => {
+    e.preventDefault();
+    newBranch();
+  }
+
   const showDeleteConfirmModal = () => {
     const tableData = {
       header: "Delete Data?",
       hasButton: true,
-      CB: () => url === "staff" 
-        ? deleteMultipleUsers(selectedItems) 
-        : url === "inventory" 
-        ? deleteMultipleProducts(selectedItems)
-        : null,
+      CB: () =>
+        url === "staff"
+          ? deleteMultipleUsers(selectedItems)
+          : url === "inventory"
+            ? deleteMultipleProducts(selectedItems)
+            : null,
       buttonInfo: "DELETE",
     };
 
@@ -115,22 +155,27 @@ function App() {
     );
   };
 
-
   //add user modal to hindi branch
-  const showUserModal = () => {
+  const showUserModal = (isUpdate) => {
+    const mainBranches = branches?.map(d => d.location);
+    //console.log(mainBranches);
     return (
       <Modal
-        onClose={() => setShowAddModal(false)}
-        header="Add clerk"
-        subHeader="Fill in the details for the clerk"
+        onClose={() => setShowAddModal(false) || setEditUserModal(false)}
+        header={isUpdate ? "Update clerk" : "Add clerk"}
+        subHeader={
+          isUpdate
+            ? "Update the details for the clerk"
+            : "Fill in the details for the clerk"
+        }
         hasCancel
-        onCancel={() => setShowAddModal(false)}
+        onCancel={() => setShowAddModal(false) || setEditUserModal(false)}
       >
         <InputForm
           isRequired
           onSubmit={(e) => {
             e.preventDefault();
-            addUser();
+            isUpdate ? updateUserSelected(e) : addUser(e);
           }}
         >
           <InputRow gap={15} titles={["Username", "Email", "Password"]}>
@@ -138,17 +183,21 @@ function App() {
               text
               placeholder="Enter Username"
               onChange={(value) => setInput("username", value)}
+              value={isUpdate ? selectedItem.username : null}
             />
             <InputField
               email
               placeholder="Enter Email"
               onChange={(value) => setInput("email", value)}
+              value={isUpdate ? selectedItem.email : null}
             />
-            <InputField
-              password
-              placeholder="Enter Password"
-              onChange={(value) => setInput("password", value)}
-            />
+            {!isUpdate && (
+              <InputField
+                password
+                placeholder="Enter Password"
+                onChange={(value) => setInput("password", value)}
+              />
+            )}
           </InputRow>
           <InputRow
             gap={15}
@@ -158,16 +207,19 @@ function App() {
               text
               placeholder="Enter First Name"
               onChange={(value) => setInput("firstName", value)}
+              value={isUpdate ? selectedItem.firstName : null}
             />
             <InputField
               text
               placeholder="Enter Middle Name"
               onChange={(value) => setInput("middleName", value)}
+              value={isUpdate ? selectedItem.middleName : null}
             />
             <InputField
               text
               placeholder="Enter Last Name"
               onChange={(value) => setInput("lastName", value)}
+              value={isUpdate ? selectedItem.lastName : null}
             />
           </InputRow>
           <InputRow gap={15} titles={["Phone Number", "Address", "Salary"]}>
@@ -175,16 +227,19 @@ function App() {
               number
               placeholder="(+63)"
               onChange={(value) => setInput("phoneNumber", value)}
+              value={isUpdate ? selectedItem.phoneNumber : null}
             />
             <InputField
               text
               placeholder="Enter Address"
               onChange={(value) => setInput("address", value)}
+              value={isUpdate ? selectedItem.address : null}
             />
             <InputField
               number
               placeholder="Enter Salary"
               onChange={(value) => setInput("salary", value)}
+              value={isUpdate ? selectedItem.salary : null}
             />
           </InputRow>
           <InputRow gap={15} titles={["Role", "Shift"]}>
@@ -193,12 +248,14 @@ function App() {
               options={["Admin", "Clerk"]}
               defaultValue="Role"
               onChange={(value) => setInput("role", value)}
+              value={isUpdate ? selectedItem.role : null}
             />
             <DropDown
               maxWidth
               options={["Day", "Night"]}
               defaultValue="Shift"
               onChange={(value) => setInput("shift", value)}
+              value={isUpdate ? selectedItem.shift : null}
             />
           </InputRow>
           <InputRow gap={15} titles={["Gender", "Branch"]}>
@@ -207,11 +264,13 @@ function App() {
               options={["Male", "Female"]}
               defaultValue="Gender"
               onChange={(value) => setInput("gender", value)}
+              value={isUpdate ? selectedItem.gender : null}
             />
             <DropDown
               maxWidth
-              options={branches}
+              options={mainBranches}
               onChange={(value) => setInput("branch", value)}
+              value={isUpdate ? selectedItem.branchLocation : null}
             />
           </InputRow>
         </InputForm>
@@ -220,38 +279,60 @@ function App() {
   };
 
   const showConfirmModal = () => {
-    return <ModalConfim 
-              message={`Deleted ${selectedItems.length} item/s`} 
-              onClose={() => setConfirmModal(false)}
-            />
-  }
+    return (
+      <ModalConfim
+        message={`Deleted ${selectedItems.length} item/s`}
+        onClose={() => setConfirmModal(false)}
+      />
+    );
+  };
 
   const showYesNoModal = () => {
-    return <ModalYesNo
-              message={`Are you sure you want to delete ${selectedItem.Employee}?`}
-              onClose={() => setYesNoModal(false)}
-              onYes={() => url === "staff" ? deleteUser(selectedItem.Id) : deleteProduct(selectedItem.Id)}
-            />
-  }
+    return (
+      <ModalYesNo
+        message={`Are you sure you want to delete ${url === "staff" ? selectedItem.Employee : selectedItem.Name}?`}
+        onClose={() => setYesNoModal(false)}
+        onYes={() =>
+          url === "staff"
+            ? deleteUser(selectedItem.Id)
+            : deleteProduct(selectedItem.Id)
+        }
+      />
+    );
+  };
 
-
-  const showModalAddProduct = () => {
+  const showModalAddProduct = (isUpdate) => {
+    //i request nalang yung product sa backend kesa kunin yung selecteditem store since di naman pala na store yung image link
+    const mainBranches = branches?.map(d => d.location);
+    if (isUpdate && addLoading) {
+      return <div>LOADING...</div>;
+    }
     return (
       <>
         <Modal
-          onClose={() => setModal(false)}
-          header="Add new stock"
-          subHeader="Fill in the details for the new stock item"
+          onClose={() => setModal(false) || setEditProductModal(false)}
+          header={isUpdate ? "Update stock item" : "Add new stock item"}
+          subHeader={
+            isUpdate
+              ? "Update the details for the stock item"
+              : "Fill in the details for the new stock item"
+          }
           hasCancel
-          onCancel={() => setModal(false)}
+          onCancel={() => setModal(false) || setEditProductModal(false)}
         >
           <InputForm
             isRequired
-            onSubmit={(e) => postProduct(e)}
+            onSubmit={(e) =>
+              isUpdate ? updateProductSelected(e) : postProduct(e)
+            }
             btnDisabled={addLoading}
           >
             <InputRow gap={15} titles={["ProductID"]}>
-              <InputField placeholder="PRODUCT ID (auto generated)" disabled />
+              <InputField
+                placeholder="PRODUCT ID (auto generated)"
+                disabled
+                value={isUpdate ? selectedItem._id : null}
+              />
             </InputRow>
             <InputRow
               gap={15}
@@ -265,16 +346,19 @@ function App() {
                 text
                 placeholder="Product Name"
                 onChange={(value) => setProductData("productName", value)}
+                value={isUpdate ? selectedItem.productName : null}
               />
               <InputField
                 number
                 placeholder="200"
                 onChange={(value) => setProductData("quantity", value)}
+                value={isUpdate ? selectedItem.quantity : null}
               />
               <InputField
                 number
                 placeholder="$50"
                 onChange={(value) => setProductData("price", value)}
+                value={isUpdate ? selectedItem.price : null}
               />
             </InputRow>
             <InputRow
@@ -285,21 +369,406 @@ function App() {
                 maxWidth
                 options={categories}
                 onChange={(value) => setProductData("category", value)}
+                value={isUpdate ? selectedItem.category : null}
               />
               <DropDown
                 maxWidth
-                options={branches}
+                options={mainBranches}
                 onChange={(value) => setProductData("productBranch", value)}
+                value={isUpdate ? selectedItem.productBranch : null}
               />
             </InputRow>
             <InputRow titles={["Add file"]}>
-              <TRAddfile onChange={(value) => setProductData("image", value)} />
+              <TRAddfile
+                image={isUpdate ? selectedItem.productImage : null}
+                onChange={(value) => setProductData("image", value)}
+              />
             </InputRow>
           </InputForm>
         </Modal>
       </>
     );
   };
+
+  const viewUserChangesModal = () => {
+    const { updatedItem } = ModalStore.getState();
+    const { data, oldModel } = updatedItem;
+
+    return (
+      <Modal
+        header="View Changes"
+        subHeader="View the updated details of the user"
+        onClose={() => setChangesModal(false)}
+      >
+        <InputRow gap={15}>
+          <InputForm noBtn>
+            <InputRow gap={15} titles={["Username", "Email"]}>
+              <InputField
+                text
+                placeholder="Username"
+                value={oldModel.username}
+                disabled
+              />
+              <InputField
+                text
+                placeholder="Email"
+                value={oldModel.email}
+                disabled
+              />
+            </InputRow>
+            <InputRow
+              gap={15}
+              titles={["First Name", "Middle Name", "Last Name"]}
+            >
+              <InputField
+                text
+                placeholder="First Name"
+                value={oldModel.firstName}
+                disabled
+              />
+              <InputField
+                text
+                placeholder="Middle Name"
+                value={oldModel.middleName}
+                disabled
+              />
+              <InputField
+                text
+                placeholder="Last Name"
+                value={oldModel.lastName}
+                disabled
+              />
+            </InputRow>
+            <InputRow gap={15} titles={["Phone Number", "Address", "Salary"]}>
+              <InputField
+                text
+                placeholder="First Name"
+                value={oldModel.phoneNumber}
+                disabled
+              />
+              <InputField
+                text
+                placeholder="Middle Name"
+                value={oldModel.address}
+                disabled
+              />
+              <InputField
+                text
+                placeholder="Last Name"
+                value={oldModel.salary}
+                disabled
+              />
+            </InputRow>
+            <InputRow gap={15} titles={["Role", "Shift"]}>
+              <InputField
+                text
+                placeholder="Role"
+                value={oldModel.role}
+                disabled
+              />
+              <InputField
+                text
+                placeholder="Shift"
+                value={oldModel.shift}
+                disabled
+              />
+            </InputRow>
+            <InputRow gap={15} titles={["Gender", "Branch"]}>
+              <InputField
+                text
+                placeholder="Gender"
+                value={oldModel.gender}
+                disabled
+              />
+              <InputField
+                text
+                placeholder="Branch"
+                value={oldModel.branchLocation}
+                disabled
+              />
+            </InputRow>
+          </InputForm>
+
+          <InputForm noBtn>
+            <InputRow gap={15} titles={["Username", "Email"]}>
+              <InputField
+                text
+                placeholder="Username"
+                value={data.username}
+                color={oldModel.username !== data.username && "#F59E0B"}
+                disabled
+              />
+              <InputField
+                text
+                placeholder="Email"
+                value={data.email}
+                disabled
+                color={oldModel.email !== data.email && "#F59E0B"}
+              />
+            </InputRow>
+            <InputRow
+              gap={15}
+              titles={["First Name", "Middle Name", "Last Name"]}
+            >
+              <InputField
+                text
+                placeholder="First Name"
+                value={data.firstName}
+                disabled
+                color={oldModel.firstName !== data.firstName && "#F59E0B"}
+              />
+              <InputField
+                text
+                placeholder="Middle Name"
+                value={data.middleName}
+                disabled
+                color={oldModel.middleName !== data.middleName && "#F59E0B"}
+              />
+              <InputField
+                text
+                placeholder="Last Name"
+                value={data.lastName}
+                disabled
+                color={oldModel.lastName !== data.lastName && "#F59E0B"}
+              />
+            </InputRow>
+            <InputRow gap={15} titles={["Phone Number", "Address", "Salary"]}>
+              <InputField
+                text
+                placeholder="First Name"
+                value={data.phoneNumber}
+                disabled
+                color={oldModel.phoneNumber !== data.phoneNumber && "#F59E0B"}
+              />
+              <InputField
+                text
+                placeholder="Middle Name"
+                value={data.address}
+                disabled
+                color={oldModel.address !== data.address && "#F59E0B"}
+              />
+              <InputField
+                text
+                placeholder="Last Name"
+                value={data.salary}
+                disabled
+                color={oldModel.salary !== data.salary && "#F59E0B"}
+              />
+            </InputRow>
+            <InputRow gap={15} titles={["Role", "Shift"]}>
+              <InputField
+                text
+                placeholder="Role"
+                value={data.role}
+                disabled
+                color={oldModel.role !== data.role && "#F59E0B"}
+              />
+              <InputField
+                text
+                placeholder="Shift"
+                value={data.shift}
+                disabled
+                color={oldModel.shift !== data.shift && "#F59E0B"}
+              />
+            </InputRow>
+            <InputRow gap={15} titles={["Gender", "Branch"]}>
+              <InputField
+                text
+                placeholder="Gender"
+                value={data.gender}
+                disabled
+                color={oldModel.gender !== data.gender && "#F59E0B"}
+              />
+              <InputField
+                text
+                placeholder="Branch"
+                value={data.branchLocation}
+                disabled
+                color={
+                  oldModel.branchLocation !== data.branchLocation && "#F59E0B"
+                }
+              />
+            </InputRow>
+          </InputForm>
+        </InputRow>
+        <div
+          style={{
+            display: "flex",
+            width: "100%",
+            alignItems: "end",
+            justifyContent: "end",
+            marginTop: "15px",
+          }}
+        >
+          <Button
+            success
+            text="PROCEED"
+            onClick={() => {
+              setChangesModal(false);
+              setUpdatedItem(null);
+            }}
+          />
+        </div>
+      </Modal>
+    );
+  };
+
+  const viewProductChangesModal = () => {
+    const { updatedItem } = ModalStore.getState();
+    const { data, oldModel } = updatedItem;
+    const oldData = oldModel[0];
+    //console.log(updatedItem);
+    return (
+      <Modal
+        header="View Changes"
+        subHeader="View the updated details of the product"
+        onClose={() => setChangesModal(false)}
+      >
+        <InputRow gap={15}>
+          <InputForm noBtn>
+            <InputRow gap={15} titles={["Product Id", "Product Name"]}>
+              <InputField
+                text
+                placeholder="Product ID"
+                disabled
+                value={data._id}
+              />
+              <InputField
+                text
+                placeholder="Product Name"
+                disabled
+                value={oldData.productName}
+              />
+            </InputRow>
+            <InputRow gap={15} titles={["Quantity", "Price"]}>
+              <InputField
+                number
+                placeholder="Quantity"
+                disabled
+                value={data.quantity}
+              />
+              <InputField
+                number
+                placeholder="Price"
+                disabled
+                value={oldData.price}
+              />
+            </InputRow>
+            <InputRow titles={["Category", "Branch"]} gap={15}>
+              <InputField
+                text
+                placeholder="Category"
+                disabled
+                value={data.category}
+              />
+              <InputField
+                text
+                placeholder="Branch"
+                disabled
+                value={oldData.productBranch}
+              />
+            </InputRow>
+            <InputRow titles={["Product Image"]} gap={15}>
+              <TRAddfile image={oldData.productImage} disabled />
+            </InputRow>
+          </InputForm>
+          <InputForm noBtn>
+            <InputRow gap={15} titles={["Product Id", "Product Name"]}>
+              <InputField
+                text
+                placeholder="Product ID"
+                disabled
+                value={data._id}
+              />
+              <InputField
+                text
+                placeholder="Product Name"
+                color={oldData.productName !== data.productName && "#F59E0B"}
+                disabled
+                value={data.productName}
+              />
+            </InputRow>
+            <InputRow gap={15} titles={["Quantity", "Price"]}>
+              <InputField
+                number
+                placeholder="Quantity"
+                color={oldData.quantity !== data.quantity && "#F59E0B"}
+                disabled
+                value={data.quantity}
+              />
+              <InputField
+                number
+                placeholder="Price"
+                color={oldData.price !== data.price && "#F59E0B"}
+                disabled
+                value={data.price}
+              />
+            </InputRow>
+            <InputRow titles={["Category", "Branch"]} gap={15}>
+              <InputField
+                text
+                placeholder="Category"
+                color={oldData.category !== data.category && "#F59E0B"}
+                disabled
+                value={data.category}
+              />
+              <InputField
+                text
+                placeholder="Branch"
+                color={
+                  oldData.productBranch !== data.productBranch && "#F59E0B"
+                }
+                disabled
+                value={data.productBranch}
+              />
+            </InputRow>
+            <InputRow titles={["Product Image"]} gap={15}>
+              <TRAddfile image={data.productImage} disabled />
+            </InputRow>
+          </InputForm>
+        </InputRow>
+        <div
+          style={{
+            display: "flex",
+            width: "100%",
+            alignItems: "end",
+            justifyContent: "end",
+            marginTop: "15px",
+          }}
+        >
+          <Button
+            success
+            text="PROCEED"
+            onClick={() => {
+              setChangesModal(false);
+              setUpdatedItem(null);
+            }}
+          />
+        </div>
+      </Modal>
+    );
+  };
+
+  const AddBranchModal = () => {
+    // const users2 = users.map(data=>data.username);
+    // console.log(users2);
+    //const clerks = users.filter(d => d.role.toLowerCase() === 'clerk')
+                        //.map((d => d.username));
+
+    return (
+      <Modal header="Add branches" subHeader="Add branches to your liking" onClose={() => setShowModal(false)}>
+        <InputForm isRequired onSubmit={(e) => addBranch(e)}>
+          <InputRow titles={['Set location']}>
+            <InputField text placeholder="Set Branch Location" onChange={value => setBranchInput('location', value)}/>
+          </InputRow>
+          {/* <InputRow titles={['Assign user']}>
+            <DropDown options={clerks} defaultValue="user" onChange={value => setBranchInput('clerk', value)}/>
+          </InputRow> */}
+        </InputForm>
+      </Modal>
+    );
+  }
+
   // eslint-disable-next-line no-unused-vars
   const showToastError = (type) => {
     switch (type) {
@@ -310,22 +779,45 @@ function App() {
     }
   };
 
+  // const showModalEditItem = () => {
+  //   return (
+  //     <ModalEditItem
+
+  //     />
+  //   );
+  // }
+
   const returnModals = () => {
+    const location = () => {
+      if (changesModal && window.location.pathname === "/staff") {
+        return viewUserChangesModal();
+      } else if (changesModal && window.location.pathname === "/inventory") {
+        return viewProductChangesModal();
+      }
+    };
+
     return (
       <>
-        {deleteModal && selectedItems.length > 0 ? showDeleteConfirmModal() : null}
-        {isOpen && showModalAddProduct()}
+        {location()}
+        {deleteModal && selectedItems.length > 0
+          ? showDeleteConfirmModal()
+          : null}
+        {isOpen && showModalAddProduct(false)}
         {showAddModal && showUserModal()}
         {confirmModal && showConfirmModal()}
         {yesNoModal && showYesNoModal()}
+        {editProductModal && showModalAddProduct(true)}
+        {editUserModal && showUserModal(true)}
+        {showModalBranch && AddBranchModal()}
       </>
     );
   };
 
+  //ROUTING
   return (
     <>
       {returnModals()}
-      <Toaster position="top-center"/>
+      <Toaster position="bottom-right"/>
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
           <Route
@@ -349,7 +841,7 @@ function App() {
             path="/dashboard"
             element={
               AuthUser?.role.toLowerCase() === "clerk" ? (
-                <Navigate to="/inventory" replace />
+                <Navigate to="/timeinout" replace />
               ) : (
                 <Sidebar user={AuthUser}>
                   <Dashboard />
@@ -371,7 +863,7 @@ function App() {
             path="/staff"
             element={
               AuthUser?.role.toLowerCase() === "clerk" ? (
-                <Navigate to="/inventory" replace />
+                <Navigate to="/timeinout" replace />
               ) : (
                 <Sidebar user={AuthUser}>
                   <StaffManagement />
@@ -390,15 +882,6 @@ function App() {
           />
 
           <Route
-            path="/timeinout"
-            element={
-              <Sidebar user={AuthUser}>
-                <TimeInOut />
-              </Sidebar>
-            }
-          />
-
-          <Route
             path="/monitor"
             element={<Sidebar user={AuthUser}>{null}</Sidebar>}
           />
@@ -407,15 +890,27 @@ function App() {
             path="/branch"
             element={
               AuthUser?.role.toLowerCase() === "clerk" ? (
-                <Navigate to="/inventory" replace />
+                <Navigate to="/timeinout" replace />
               ) : (
                 <Sidebar user={AuthUser}>
-                  <Branches />
+                  <Branches/>
                 </Sidebar>
               )
             }
           />
 
+          <Route
+            path="/timeinout"
+            element={
+              AuthUser?.role.toLowerCase() === "admin" ? (
+                <Navigate to="/dashboard" replace />
+              ) : (
+                <Sidebar user={AuthUser}>
+                  <TimeInOut/>
+                </Sidebar>
+              )
+            }
+          />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Suspense>
@@ -423,4 +918,3 @@ function App() {
   );
 }
 
-export default App;

@@ -83,12 +83,36 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  gap: 5px;
+}
+
+.user-clock-in {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2px;
+  padding: 0 10px;
+  margin-bottom: 2%;
+}
+
+.user-clock-in .clock-label {
+  font-size: 13px;
+  font-weight: 300;
+}
+
+.user-clock-in .clock-value {
+  font-size: 13px;
+  font-weight: 500;
+  color: #22C55E;
 }
 
 .user-panel .userName {
   font-size: 18px;
   font-weight: 300;
-  margin-bottom: 0;
+  margin: 0;
 }
 
 .user-panel .userRole {

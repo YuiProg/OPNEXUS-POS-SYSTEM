@@ -5,16 +5,27 @@
     position: relative;
 }
 
-.branch-card-header{
+.branch-card-details {
+    height: 100%;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.branch-card-header {
+    font-size: 28px;
     font-weight: 200;
     margin: 0;
+    overflow-wrap: break-word;
 }
 
 .branch-card-button-items {
     margin-top: 20px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    justify-content: flex-end;
+    gap: 15px;
 }
 
 .branch-card-clerk {

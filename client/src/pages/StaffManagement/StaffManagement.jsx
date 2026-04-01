@@ -11,6 +11,7 @@ import AuthStore from "../../context/Authstore";
 import ModalStore from "../../context/ModalStore";
 import ProductStore from "../../context/ProductStore";
 import ActiveStaffs from "./ActiveStaffs/ActiveStaffs";
+import toast from "react-hot-toast";
 
 class StaffManagement extends React.Component {
     constructor (props) {
@@ -23,11 +24,17 @@ class StaffManagement extends React.Component {
 
     componentDidMount () {
         const {fetchUsers} = AuthStore.getState();
+        const { getBranch } = BranchStore.getState();
         fetchUsers();
+        getBranch();
         this.unsubscribe = AuthStore.subscribe((state) => {
             const users = state.users;
             this.setState({users: users});
         });
+    }
+
+    componentWillUnmount () {
+        if (this.unsubscribe) this.unsubscribe;
     }
 
     showConfirmDelModal = (e) => {
@@ -48,16 +55,30 @@ class StaffManagement extends React.Component {
         setUrl("staff");
     }
 
+    showEditModal = async (item) => {
+        const { setEditUserModal, setSelectedItem, setUrl } = ModalStore.getState();
+        const { getSingleUser } = AuthStore.getState();
+        try {
+            const user = await getSingleUser(item.Id);
+            setSelectedItem(user.data);
+            setEditUserModal(true);
+            setUrl('staff');
+        } catch (error) {
+            toast.error(error.message);
+            console.log(error);
+        }
+    }
+
     render () {
         //const {setShowModal} = BranchStore.getState();
         const { setShowAddModal } = ModalStore.getState();
-        const { onlineUsers } = AuthStore.getState();
+        const { onlineUsers, fetchLoading } = AuthStore.getState();
 
         const tableData = {
             header: "STAFFS",
             hasButton: true,
             CB: () => setShowAddModal(true),
-            buttonInfo: "+NEW CLERK",
+            buttonInfo: "NEW CLERK",
             search: (
                 <InputField
                 placeholder="Search staff"
@@ -117,8 +138,9 @@ class StaffManagement extends React.Component {
                             hasSelect
                             hasAction
                             onDelete={(e) => this.showDeleteModal(e)}
-                            onEdit={() => {}}
+                            onEdit={(item) => this.showEditModal(item)}
                             search={this.state.search}
+                            isLoading={fetchLoading}
                             />
                     </div>
                     <div className="sm-active-staffs">

@@ -10,7 +10,6 @@ const {
     NAME_EXIST,
     CRED_ERROR,
     USER_NOT_EXIST,
-    INVALID_ID,
     SHIFT_ERR,
     SALARY_ERR,
     FNAME_ERR,
@@ -38,7 +37,7 @@ const userSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
-        unique: [true, NAME_EXIST],
+        unique: true
     },
     password: {
         type: String,
@@ -46,7 +45,7 @@ const userSchema = new mongoose.Schema({
     },
     branchLocation: {
         type: String,
-        required: [true, BRANCH_REQ],
+        required: [false, BRANCH_REQ],
     },
     shift: {
         type: String,
@@ -86,6 +85,14 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, ADDR_ERR]
     },
+    timedIn: {
+        type: Boolean,
+        default: false
+    },
+    time: {
+        type: String,
+        required: false
+    }
 }, {timestamps: true});
 
 userSchema.pre('save', async function () {
@@ -144,8 +151,26 @@ userSchema.statics.getUsers = async function () {
     return users;
 }
 
+userSchema.statics.getSingleUser = async function (id) {
+    const user = await this.findOne({_id: id}).select("-password");
+    if (!user) {
+        throw new Error(USER_NOT_EXIST);
+    }
+    return user;
+}
+
+userSchema.statics.getUserByUsername = async function (username) {
+    const user = await this.findOne({username: username});
+    return user;
+}
+
 userSchema.statics.deleteMultiple = async function (data) {
     const result = await this.deleteMany({_id: {$in: data}});
+    return result;
+}
+
+userSchema.statics.getUsersById = async function (data) {
+    const result = await this.find({_id: {$in: data}});
     return result;
 }
 

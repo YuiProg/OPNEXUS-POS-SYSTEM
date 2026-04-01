@@ -58,6 +58,19 @@ class Sidebar extends React.Component {
 
     }
 
+    passProps = () => {
+        const { user } = this.props;
+
+        const enhancedChildren = React.Children.map(this.props.children, (child) => {
+            if (!child) return;
+            return React.cloneElement(child, {
+                user
+            }); 
+        });
+
+        return enhancedChildren;
+    }
+
     render() {
         // if (this.state.redirect) {
         //     return <Navigate to="/inventory" />;
@@ -82,14 +95,14 @@ class Sidebar extends React.Component {
                 link: "/staff",
             },
             {
-                title: "Logs",
-                icon: <Logs />,
-                link: "/logs",
-            },
-            {
                 title: "Branches",
                 icon: <Warehouse/>,
                 link: "/branch",
+            },
+            {
+                title: "Logs",
+                icon: <Logs />,
+                link: "/logs",
             },
             // {
             //     title: "Settings",
@@ -152,6 +165,11 @@ class Sidebar extends React.Component {
                             ) : null}
                         </ul>
                         <div className="user-panel">
+                            <div className="user-clock-in">
+                                <Clock />
+                                <p className="clock-label">Clocked in at</p>
+                                <p className="clock-value">4:20 PM</p>
+                            </div>
                             {this.props.user ? (
                                 <>
                                 <p className="userName">{user.username}</p>
@@ -163,7 +181,7 @@ class Sidebar extends React.Component {
                     </div>
                 </aside>
                 <main className="children">
-                    {this.props.children}
+                    {this.passProps()}
                 </main>
             </div>
         );

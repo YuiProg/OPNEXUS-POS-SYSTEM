@@ -88,6 +88,22 @@ export class ModalConfim extends React.Component {
     }
 }
 
+export class ModalEditItem extends React.Component {
+    constructor (props) {
+        super(props);
+    }
+
+    render () {
+        return (
+            <div className="modal-container-confirm">
+                <div className="modal-edit-container">
+                    
+                </div>
+            </div>
+        );
+    }
+}
+
 export class ModalYesNo extends React.Component {
     constructor (props) {
         super(props);
