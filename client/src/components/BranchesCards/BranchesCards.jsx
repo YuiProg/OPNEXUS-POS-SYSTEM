@@ -28,15 +28,17 @@ class BranchesCards extends React.Component {
             {data?.map((data, i) => {
                 return(
                     <div key={i} className={data.active ? "branch-card-container active" : "branch-card-container offline"}>
-                        <h1 className="branch-card-header">{data.location}</h1>
-                        <div className="branch-card-button-items">
-                            <div>
-                                <p className="branch-card-clerk">Clerk</p>
-                                <h3 className="branch-card-clerk-header">{data.clerkName}</h3>
-                            </div>
-                            <div>
-                                <p className="branch-card-clerk">Session</p>
-                                <h3 className="branch-card-clerk-header">{data.session}</h3>
+                        <div className="branch-card-details">
+                            <h1 className="branch-card-header">{data.location}</h1>
+                            <div className="branch-card-button-items">
+                                <div>
+                                    <p className="branch-card-clerk">Clerk</p>
+                                    <h3 className="branch-card-clerk-header">{data.clerkName}</h3>
+                                </div>
+                                <div>
+                                    <p className="branch-card-clerk">Session</p>
+                                    <h3 className="branch-card-clerk-header">{data.session}</h3>
+                                </div>
                             </div>
                         </div>
                     </div>
