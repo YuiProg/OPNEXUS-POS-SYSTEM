@@ -21,7 +21,7 @@ const {
 
 
 const TimeInOutStore = create((set) => ({
-    timedIn: localStorage.getItem('timein') ? true : false,
+    timedIn: null,
     timeInHour: null,
     timeData: [],
     timeInLoading: false,

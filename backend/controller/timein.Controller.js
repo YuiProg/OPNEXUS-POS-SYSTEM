@@ -29,7 +29,7 @@ export const clockOut = async (req, res) => {
     try {
         const timeInVal = data.clockIn;
         const timeOutVal = data.clockOut;
-
+        //CODE FROM CLAUDE AI
         const parseTime = (timeStr) => {
             const [time, modifier] = timeStr.split(' ');
             let [hours, minutes, seconds] = time.split(':').map(Number);
