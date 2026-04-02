@@ -25,8 +25,8 @@ import { Table } from "./components/TRTable/TrTable.jsx";
 import { Toaster } from "react-hot-toast";
 import Button from "./components/TRButton/Button.jsx";
 import BranchStore from "./context/BranchStore.js";
-import Logs from "./pages/LogsPage/Logs.jsx";
 
+const Logs = lazy(() => import("./pages/LogsPage/Logs.jsx"));
 const Inventory = lazy(() => import("./pages/Inventory/Inventory.jsx"));
 const Dashboard = lazy(() => import("./pages/DashBoard/Dashboard.jsx"));
 const StaffManagement = lazy(
