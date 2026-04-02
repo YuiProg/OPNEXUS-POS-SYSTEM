@@ -26,8 +26,8 @@ export class Table extends React.Component {
         : [],
       productSelect: null,
       currentPage: 1,
-      sortKey: null,       // which column is being sorted
-      sortDir: null,       // 'asc' or 'desc'
+      sortKey: null,
+      sortDir: null,
     };
   }
 
@@ -369,6 +369,15 @@ export class TableData extends React.Component {
     super(props);
   }
 
+  //when product is complete dapat may store sa settings pede pumili kung php ba or usd
+
+  formatValue = (key, value) => {
+    if (key === "salary" || key === "price") {
+      return `PHP ${Number(value).toLocaleString()}`;
+    }
+    return value;
+  };
+
   render() {
     const { data, hasSelect, selected, toggleRow, hasAction, CBD, CBE, onView } =
       this.props;
@@ -394,14 +403,14 @@ export class TableData extends React.Component {
                 />
               </td>
             ) : null}
-            {Object.values(row).map((value, colIndex) => (
+            {Object.entries(row).map(([key, value], colIndex) => (
               <td className="table-td" key={colIndex}>
                 {colIndex === 0 ? (
                   <strong style={{ cursor: "pointer" }} onClick={() => onView(row)}>
                     {value}
                   </strong>
                 ) : (
-                  value
+                  this.formatValue(key, value)
                 )}
               </td>
             ))}
