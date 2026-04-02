@@ -3,9 +3,8 @@ import "./DonutChart.css";
 import { PieChart } from '@mui/x-charts/PieChart';
 
 const donutData = [
-  { label: 'PHP 18,000', value: 1000, color: '#C4161C' },
-  { label: 'PHP 12,320', value: 300, color: '#FFA000' },
-  { label: 'PHP 1,500', value: 400, color: '#0088FF' },
+  { label: 'PHP 18,000', value: 18000, color: '#c4161cae' },
+  { label: 'PHP 1,500', value: 1500, color: '#f59f0bab' },
 ];
 
 const donutSettings = {
@@ -55,13 +54,6 @@ class DonutChart extends React.Component {
             <div className="legend-circle" style={{backgroundColor: donutData[1].color}}></div>
             <div>
               <h4 className="dc-legend-fund">{donutData[1].label}</h4>
-              <p className="dc-legend-label">Utilities</p>
-            </div>
-          </div>
-          <div className="legend-item">
-            <div className="legend-circle" style={{backgroundColor: donutData[2].color}}></div>
-            <div>
-              <h4 className="dc-legend-fund">{donutData[2].label}</h4>
               <p className="dc-legend-label">Labor</p>
             </div>
           </div>

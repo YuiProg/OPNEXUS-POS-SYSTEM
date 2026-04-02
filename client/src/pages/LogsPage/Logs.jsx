@@ -34,8 +34,8 @@ class Logs extends React.Component {
             <div className="logs-container">
                 <div className="logs-top-contents">
                     <div className="logs-header">
-                        <h1 className="logs-bigtitle">Stock Overview</h1>
-                        <p className="logs-sentence">Manage stock, items, and quantities.</p>
+                        <h1 className="logs-bigtitle">Activity Logs</h1>
+                        <p className="logs-sentence">Track system actions and history.</p>
                     </div>
                     <div className="logs-branch-dropdown">
                         <p className="logs-branch-text">Branch</p>

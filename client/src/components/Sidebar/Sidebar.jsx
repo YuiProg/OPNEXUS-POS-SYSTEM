@@ -136,7 +136,7 @@ class Sidebar extends React.Component {
 
         return (
             <div className="sidebar-container">
-                <aside>
+                <aside className="sidebar-aside">
                     <img loading="lazy" fetchPriority="high" src="https://i.imgur.com/4hfuK5S.png" alt="logo" className="logo"/>
                     <div className="sidebar-below-container">
                         <ul className="sidebar-list">
@@ -167,7 +167,7 @@ class Sidebar extends React.Component {
                         <div className="user-panel">
                             {this.props.user.role.toLowerCase() === "clerk" && this.props.user.time && (
                                 <div className="user-clock-in">
-                                    <Clock />
+                                    <Clock className="clock-icon"/>
                                     <p className="clock-label">Clocked in at</p>
                                     <p className="clock-value">{this.props.user.time}</p>
                                 </div>
