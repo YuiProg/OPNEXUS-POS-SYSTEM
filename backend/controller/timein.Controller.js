@@ -2,6 +2,8 @@ import ApiResponseModel from "../models/ApiResponseModel.js";
 import Strings from "../strings/strings-codes.js";
 import TimeinOut from "../models/timeinModel.js";
 import User from "../models/UserModel.js";
+import {io} from '../lib/socket.js';
+
 
 const {
     ERROR,
@@ -16,6 +18,7 @@ export const clockIn = async (req, res) => {
     const {time} = req.body;
     try {
         const fetchUser = await User.updateUser(userId, {timedIn: true, time});
+        io.emit("recentActivity", {message: `${fetchUser.username} just timed in!`, userId: fetchUser._id});
         console.log('\u001b[1;32mClock in success');
         ApiResponseModel(res, CREATED, TIME_IN_SUCC, fetchUser);
     } catch (error) {
@@ -50,6 +53,7 @@ export const clockOut = async (req, res) => {
         const newTime = await TimeinOut.saveOut({ ...data, totalHours }, userId);
         console.log({ ...data, totalHours });
         console.log('\u001b[1;32mClock out success');
+        io.emit("recentActivity", {message: `${updateUser.username} just timed out!`, userId: updateUser._id});
         ApiResponseModel(res, CREATED, TIME_OUT_SUCC, newTime, updateUser);
     } catch (error) {
         ApiResponseModel(res, ERROR, error.message);

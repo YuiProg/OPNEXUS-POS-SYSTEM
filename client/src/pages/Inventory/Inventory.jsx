@@ -31,11 +31,12 @@ class Inventory extends React.Component {
   }
 
   componentDidMount() {
-    const { fetchProducts } = ProductStore.getState();
+    const { fetchProducts, subscribeToProducts } = ProductStore.getState();
     const { getBranch } = BranchStore.getState();
     this.checkRole();
     getBranch();
     fetchProducts();
+    subscribeToProducts();
     
     this.unsubscribe = ProductStore.subscribe((state) => {
       const products = state.products;
@@ -53,6 +54,8 @@ class Inventory extends React.Component {
   }
 
   componentWillUnmount() {
+    const {unsubscribeToProducts} = ProductStore.getState();
+    unsubscribeToProducts();
     if (this.unsubscribeModal) this.unsubscribeModal();
   }
 

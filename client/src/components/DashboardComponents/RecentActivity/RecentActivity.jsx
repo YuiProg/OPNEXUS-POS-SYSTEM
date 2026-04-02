@@ -9,7 +9,7 @@ class RecentActivity extends React.Component {
     render () {
 
         const {
-            recentActivity
+            activity
         } = this.props;
 
         return (
@@ -17,7 +17,7 @@ class RecentActivity extends React.Component {
                 <div className="ra-content">
                     <h2 className="ra-title">Recent Activity</h2>
                     <ul className="ra-list">
-                        <li className="recent-activity">{recentActivity || 'activity'}</li>
+                        <li className="recent-activity">{activity || 'No activities yet.'}</li>
                     </ul>
                 </div>
             </div>

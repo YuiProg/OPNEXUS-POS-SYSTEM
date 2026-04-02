@@ -2,6 +2,7 @@ import cloudinary from "../lib/cloudinary.js";
 import ApiResponseModel from "../models/ApiResponseModel.js";
 import Product from "../models/Products.js"
 import Strings from "../strings/strings-codes.js";
+import { io } from "../lib/socket.js";
 
 const {
     ERROR,
@@ -19,6 +20,13 @@ export const newProduct = async (req, res) => {
     console.log(data);
     try {
         const newProduct = await Product.addProduct(data, user);
+        
+        const payload = {
+            ...newProduct,
+            userId: user.userId
+        }
+
+        io.emit("newProduct", payload);
         ApiResponseModel(res, CREATED, NEW_PRODUCT, newProduct);
     } catch (error) {
         ApiResponseModel(res, ERROR, error.message);
