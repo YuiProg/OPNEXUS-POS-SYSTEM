@@ -66,32 +66,48 @@ if (process.env.NODE_ENV === 'production') {
 
 const PORT = process.env.PORT || 3000;
 
+
+//loading simulation by claude
 server.listen(PORT, async () => {
     const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
+    const clearLine = () => process.stdout.write('\r\u001b[K');
+
+    const colors = {
+        green:   '\u001b[1;32m',
+        cyan:    '\u001b[1;36m',
+        yellow:  '\u001b[1;33m',
+        magenta: '\u001b[1;35m',
+        blue:    '\u001b[1;34m',
+        white:   '\u001b[1;37m',
+        reset:   '\u001b[0m'
+    };
+
     const loadingSteps = [
-        { label: 'Initializing server', percent: 20 },
-        { label: 'Connecting to database', percent: 50, action: connectDB },
-        { label: 'Loading routes', percent: 75 },
-        { label: 'Starting socket', percent: 90 },
-        { label: 'Ready', percent: 100 },
+        { label: 'Initializing server',    percent: 20,  color: colors.cyan    },
+        { label: 'Connecting to database', percent: 50,  color: colors.yellow, action: connectDB },
+        { label: 'Loading routes',         percent: 75,  color: colors.magenta },
+        { label: 'Starting socket',        percent: 90,  color: colors.blue    },
+        { label: 'Ready',                  percent: 100, color: colors.green   },
     ];
 
     for (const step of loadingSteps) {
-        process.stdout.write(`\r\u001b[1;32m[${step.label}]... ${step.percent}%  `);
+        clearLine();
+        process.stdout.write(`${step.color}[${step.label}]... ${colors.white}${step.percent}%`);
         if (step.action) await step.action();
         await delay(500);
     }
 
-    process.stdout.write('\n\n');
-    console.log('╔══════════════════════════════════════════════════════╗');
-    console.log('║                     VAPORYA-POS                      ║');
-    console.log('╠══════════════════════════════════════════════════════╣');
-    console.log('║  DEV  >>  http://localhost:5173/login                ║');
-    console.log('╠══════════════════════════════════════════════════════╣');
-    console.log('║  PROD >>  https://vaporyapos.onrender.com/login      ║');
-    console.log('╠══════════════════════════════════════════════════════╣');
-    console.log(`║  PORT >>  3000                                       ║`);
-    console.log('╚══════════════════════════════════════════════════════╝');
-    console.log('\u001b[0m');
+    clearLine();
+    process.stdout.write('\n');
+    console.log(`${colors.green}╔══════════════════════════════════════════════════════╗`);
+    console.log(`║${colors.white}                     VAPORYA-POS                      ${colors.green}║`);
+    console.log(`╠══════════════════════════════════════════════════════╣`);
+    console.log(`║  ${colors.cyan}DEV  ${colors.white}>>  ${colors.blue}http://localhost:5173/login                ${colors.green}║`);
+    console.log(`╠══════════════════════════════════════════════════════╣`);
+    console.log(`║  ${colors.cyan}PROD ${colors.white}>>  ${colors.blue}https://vaporyapos.onrender.com/login      ${colors.green}║`);
+    console.log(`╠══════════════════════════════════════════════════════╣`);
+    console.log(`║  ${colors.cyan}PORT ${colors.white}>>  ${colors.yellow}${PORT}                                       ${colors.green}║`);
+    console.log(`╚══════════════════════════════════════════════════════╝`);
+    console.log(colors.reset);
 });
