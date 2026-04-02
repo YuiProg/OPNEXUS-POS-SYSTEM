@@ -4,7 +4,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
-//import dns from 'dns';
+import dns from 'dns';
 import connectDB from './lib/DB.js';
 import authRoutes from './routes/auth.routes.js';
 import productRoutes from './routes/product.routes.js';
@@ -16,7 +16,7 @@ dotenv.config();
 
 const __dirname = path.resolve();
 
-//dns.setServers(["1.1.1.1", "8.8.8.8"]);
+dns.setServers(["1.1.1.1", "8.8.8.8"]);
 
 const allowedOrigins = [
     'http://localhost:5173', 
