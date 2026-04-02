@@ -81,6 +81,24 @@ class Login extends React.Component {
                     />
                 )} */}
                 <div className="login-container">
+                    <div className="login-container__marquee" aria-hidden="true">
+                        {Array.from({ length: 20 }).map((_, rowIndex) => (
+                            <div key={rowIndex} className="login-container__marquee-row">
+                                <div className="login-container__marquee-track">
+                                    <span>RELX JUICE</span>
+                                    <span>XULTRA JUICE</span>
+                                    <span>PUFFS BLACK</span>
+                                    <span>VAPE FLAVOR</span>
+                                    <span>CLOUD CART</span>
+                                    <span>RELX JUICE</span>
+                                    <span>XULTRA JUICE</span>
+                                    <span>PUFFS BLACK</span>
+                                    <span>VAPE FLAVOR</span>
+                                    <span>CLOUD CART</span>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
                     <div className="login-container__image">
                         <img src={bg_image1} className="login-container__image-one"/>
                         <img src={bg_image2} className="login-container__image-two"/>
@@ -88,7 +106,8 @@ class Login extends React.Component {
                     </div>
                     <div className="login-container__credentials">
                         <img src={bg_logo}>
-                        </img>    
+                        </img>
+                        <p className="login-container__mobile-heading"> Vaporya POS System </p>    
                         <form onSubmit={(e) => this.handleLogin(e)}>
                             <InputField email required onChange={(e) => this.setState({email: e})} placeholder={em} onEnterDown={() => {}}/>
                             <InputField required password onChange={(e) => this.setState({password: e})} placeholder={pw} onEnterDown={() => {}}/>
