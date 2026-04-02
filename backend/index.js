@@ -66,7 +66,32 @@ if (process.env.NODE_ENV === 'production') {
 
 const PORT = process.env.PORT || 3000;
 
-server.listen(PORT, () => {
-    connectDB();
-    console.log(`Server running on port ${PORT}`);
+server.listen(PORT, async () => {
+    const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+
+    const loadingSteps = [
+        { label: 'Initializing server', percent: 20 },
+        { label: 'Connecting to database', percent: 50, action: connectDB },
+        { label: 'Loading routes', percent: 75 },
+        { label: 'Starting socket', percent: 90 },
+        { label: 'Ready', percent: 100 },
+    ];
+
+    for (const step of loadingSteps) {
+        process.stdout.write(`\r\u001b[1;32m[${step.label}]... ${step.percent}%  `);
+        if (step.action) await step.action();
+        await delay(500);
+    }
+
+    process.stdout.write('\n\n');
+    console.log('╔══════════════════════════════════════════════════════╗');
+    console.log('║                     VAPORYA-POS                      ║');
+    console.log('╠══════════════════════════════════════════════════════╣');
+    console.log('║  DEV  >>  http://localhost:5173/login                ║');
+    console.log('╠══════════════════════════════════════════════════════╣');
+    console.log('║  PROD >>  https://vaporyapos.onrender.com/login      ║');
+    console.log('╠══════════════════════════════════════════════════════╣');
+    console.log(`║  PORT >>  3000                                       ║`);
+    console.log('╚══════════════════════════════════════════════════════╝');
+    console.log('\u001b[0m');
 });
