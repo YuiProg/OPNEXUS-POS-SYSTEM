@@ -52,6 +52,7 @@ const AuthStore = create((set, get) => ({
     users: [],
     onlineUsers: [],
     fetchLoading: false,
+    recentActivity: null,
 
     setInput: (name, value) => {
         const inputs = get().input;
@@ -165,7 +166,7 @@ const AuthStore = create((set, get) => ({
             }
             
             const newUser = await axiosInstance.post(addUser, payload);
-            const {_id, firstName, middleName, lastName, shift, salary, role, phoneNumber, branchLocation} = newUser.data.data;
+            const {_id, shift, salary, role, phoneNumber, branchLocation, username} = newUser.data.data;
 
             const updateBranch = await axiosInstance.post(UPDATEBRANCH.replace(':location', data.branch), {
                 clerkName: data.username,
@@ -176,7 +177,8 @@ const AuthStore = create((set, get) => ({
             console.log(updateBranch);
             const newData = {
                 Id: _id,
-                Employee: `${firstName.toUpperCase()} ${middleName.toUpperCase()} ${lastName.toUpperCase()}`,
+                //Employee: `${firstName.toUpperCase()} ${middleName.toUpperCase()} ${lastName.toUpperCase()}`,
+                username,
                 Email: data.email,
                 branchlocation: branchLocation,
                 shift: shift,
@@ -208,7 +210,7 @@ const AuthStore = create((set, get) => ({
             const cleanedData = data
             .filter((user) => user._id !== userId)
             // eslint-disable-next-line no-unused-vars
-            .map(({username, timedIn, time, createdAt, createdById, updatedAt, __v, firstName, _id, middleName, gender, lastName, address, ...rest }) => rest);
+            .map(({Employee, username, timedIn, time, createdAt, createdById, updatedAt, __v, firstName, _id, middleName, gender, lastName, address, ...rest }) => rest);
             //console.log(cleanedData);
             set({users: cleanedData});
         } catch (error) {
@@ -220,6 +222,7 @@ const AuthStore = create((set, get) => ({
     },
 
     updateUser: async () => {
+        const { getBranchByLocation } = BranchStore.getState();
         try {
             const { selectedItem, setUpdatedItem, setEditUserModal, setChangesModal } = ModalStore.getState();
             const {
@@ -251,13 +254,33 @@ const AuthStore = create((set, get) => ({
                 salary: salary || selectedItem.salary,
                 branchLocation: branch || selectedItem.branchLocation
             }
-            const updateOldBranch = await axiosInstance.post(UPDATEBRANCH.replace(':location', branch || selectedItem.branchLocation), {
-                clerkName: username || selectedItem.username,
-                clerkId: selectedItem._id,
-                role: role || selectedItem.role,
-                session: shift || selectedItem.shift,
-            })
-            console.log(updateOldBranch.data);
+
+            //console.log(branch);
+            if (branch) {
+                const check = await getBranchByLocation(branch);
+                console.log(check);
+                if (check.clerkName) {
+                    return toast.error('Branch already has a user!');
+                }
+
+                console.log(`new branch ${branch} old branch ${selectedItem.branchLocation}`);
+                const defaultOldBranch = await axiosInstance.post(UPDATEBRANCH.replace(':location', selectedItem.branchLocation), {
+                    clerkName: null,
+                    clerkId: null,
+                    role: null,
+                    session: null
+                });
+                const updateOldBranch = await axiosInstance.post(UPDATEBRANCH.replace(':location', branch), {
+                    clerkName: username || selectedItem.username,
+                    clerkId: selectedItem._id,
+                    role: role || selectedItem.role,
+                    session: shift || selectedItem.shift,
+                })
+                console.log(updateOldBranch);
+                console.log(defaultOldBranch);
+            }
+            
+            //console.log(updateOldBranch.data);
             
             const newUser = await axiosInstance.post(UPDATE_USER.replace(':id', selectedItem._id), payload);
             console.log(newUser.data);
@@ -340,6 +363,15 @@ const AuthStore = create((set, get) => ({
         newSocket.on('onlineUsers', (data) => {
             console.log(data);
             set({ onlineUsers: data });
+        });
+
+        newSocket.on("recentActivity", (data) => {
+            //console.log(data);
+            const activity = data.message;
+            if (data.userId === get().AuthUser._id) return;
+            toast.success(activity);
+            set({recentActivity: activity});
+            return;
         });
     },
 

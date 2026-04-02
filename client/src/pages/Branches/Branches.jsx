@@ -1,6 +1,5 @@
 import React from "react";
-import './Branches.css';
-import DropDown from "../../components/TRDropDown/Dropdown";
+import "./Branches.css";
 import BranchesCards from "../../components/BranchesCards/BranchesCards";
 import Radio from "../../components/TRRadio/Radio";
 import Button from "../../components/TRButton/Button";
@@ -8,53 +7,91 @@ import BranchStore from "../../context/BranchStore";
 import AuthStore from "../../context/Authstore";
 
 class Branches extends React.Component {
-    constructor (props) {
+    constructor(props) {
         super(props);
         this.state = {
-            branches: []
-        }
+            branches: [],
+            filters: {
+                shift: null,     
+                availability: null, 
+            },
+        };
     }
 
-    componentDidMount () {
-        const {fetchUsers} = AuthStore.getState();
+    componentDidMount() {
+        const { fetchUsers } = AuthStore.getState();
         const { getBranch } = BranchStore.getState();
+
         fetchUsers();
         getBranch();
+
         this.unsubscribe = BranchStore.subscribe((state) => {
-            const branch = state.branches;
-            this.setState({branches: branch});
+            this.setState({ branches: state.branches || [] });
         });
     }
 
-    componentWillUnmount () {
-        if (this.unsubscribe) this.unsubscribe;
+    componentWillUnmount() {
+        if (this.unsubscribe) this.unsubscribe();
     }
 
-    render () {
-        const { setShowModal } = BranchStore.getState();
+    handleFilterChange = (type, value) => {
+        this.setState((prevState) => ({
+            filters: {
+                ...prevState.filters,
+                [type]: prevState.filters[type] === value ? null : value,
+            },
+        }));
+    };
 
-        const options= [
-            {label: 'Active', name: 'choice'},
-            {label: 'Offline', name: 'choice'}
-        ];
+    getFilteredBranches = () => {
+        const { branches, filters } = this.state;
+        const { shift, availability } = filters;
+
+        return branches.filter((branch) => {
+
+            const branchShift = String(branch.session || "").toLowerCase();
+            const branchAvailability = String(branch.availability || "").toLowerCase();
+
+            const matchShift = shift ? branchShift === shift : true;
+            const matchAvailability = availability
+                ? branchAvailability === availability
+                : true;
+
+            return matchShift && matchAvailability;
+        });
+    };
+
+    render() {
+        const { setShowModal } = BranchStore.getState();
+        const filteredBranches = this.getFilteredBranches();
 
         return (
             <div className="bm-container">
                 <div className="bm-top-contents">
                     <div className="bm-header">
                         <h1 className="bm-bigtitle">Branch Monitoring</h1>
-                        <p className="bm-sentence">See which branches are active and inactive.</p>
+                        <p className="bm-sentence">
+                            See which branches are active and inactive.
+                        </p>
                     </div>
                 </div>
-                {/* BRANCHES CARDS */}
+
                 <div className="branches-cards-activity">
                     <div className="branches-radio-container">
-                        <Radio options={options} defaultChecked="Active" onChange={value => console.log(value)}/>
-                        <Button error text="NEW BRANCH" onClick={() => setShowModal(true)}/>
+                        <Radio
+                            filters={this.state.filters}
+                            onFilterChange={this.handleFilterChange}
+                        />
+                        <Button
+                            error
+                            text="NEW BRANCH"
+                            onClick={() => setShowModal(true)}
+                        />
                     </div>
                 </div>
+
                 <div className="branches-cards-container">
-                    <BranchesCards data={this.state.branches}/>
+                    <BranchesCards data={filteredBranches} />
                 </div>
             </div>
         );

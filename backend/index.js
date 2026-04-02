@@ -4,7 +4,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
-//import dns from 'dns';
+import dns from 'dns';
 import connectDB from './lib/DB.js';
 import authRoutes from './routes/auth.routes.js';
 import productRoutes from './routes/product.routes.js';
@@ -16,7 +16,7 @@ dotenv.config();
 
 const __dirname = path.resolve();
 
-//dns.setServers(["1.1.1.1", "8.8.8.8"]);
+dns.setServers(["1.1.1.1", "8.8.8.8"]);
 
 const allowedOrigins = [
     'http://localhost:5173', 
@@ -66,7 +66,48 @@ if (process.env.NODE_ENV === 'production') {
 
 const PORT = process.env.PORT || 3000;
 
-server.listen(PORT, () => {
-    connectDB();
-    console.log(`Server running on port ${PORT}`);
+
+//loading simulation by claude
+server.listen(PORT, async () => {
+    const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+
+    const clearLine = () => process.stdout.write('\r\u001b[K');
+
+    const colors = {
+        green:   '\u001b[1;32m',
+        cyan:    '\u001b[1;36m',
+        yellow:  '\u001b[1;33m',
+        magenta: '\u001b[1;35m',
+        blue:    '\u001b[1;34m',
+        white:   '\u001b[1;37m',
+        reset:   '\u001b[0m'
+    };
+
+    const loadingSteps = [
+        { label: 'Initializing server',    percent: 20,  color: colors.cyan    },
+        { label: 'Connecting to database', percent: 50,  color: colors.yellow, action: connectDB },
+        { label: 'Loading routes',         percent: 75,  color: colors.magenta },
+        { label: 'Starting socket',        percent: 90,  color: colors.blue    },
+        { label: 'Ready',                  percent: 100, color: colors.green   },
+    ];
+
+    for (const step of loadingSteps) {
+        clearLine();
+        process.stdout.write(`${step.color}[${step.label}]... ${colors.white}${step.percent}%`);
+        if (step.action) await step.action();
+        await delay(500);
+    }
+
+    clearLine();
+    process.stdout.write('\n');
+    console.log(`${colors.green}╔══════════════════════════════════════════════════════╗`);
+    console.log(`║${colors.white}                     VAPORYA-POS                      ${colors.green}║`);
+    console.log(`╠══════════════════════════════════════════════════════╣`);
+    console.log(`║  ${colors.cyan}DEV  ${colors.white}>>  ${colors.blue}http://localhost:5173/login                ${colors.green}║`);
+    console.log(`╠══════════════════════════════════════════════════════╣`);
+    console.log(`║  ${colors.cyan}PROD ${colors.white}>>  ${colors.blue}https://vaporyapos.onrender.com/login      ${colors.green}║`);
+    console.log(`╠══════════════════════════════════════════════════════╣`);
+    console.log(`║  ${colors.cyan}PORT ${colors.white}>>  ${colors.yellow}${PORT}                                       ${colors.green}║`);
+    console.log(`╚══════════════════════════════════════════════════════╝`);
+    console.log(colors.reset);
 });

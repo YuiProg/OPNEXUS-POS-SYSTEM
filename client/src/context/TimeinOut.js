@@ -16,7 +16,8 @@ const {
     TIMEIN,
     GETDATATIME,
     SETBRANCHACTIVE,
-    SETBRANCHOFFLINE
+    SETBRANCHOFFLINE,
+    GETALLTIMEDATA
 } = ApiConfig;
 
 
@@ -24,6 +25,7 @@ const TimeInOutStore = create((set) => ({
     timedIn: null,
     timeInHour: null,
     timeData: [],
+    allTimeData: [],
     timeInLoading: false,
     loading: false,
 
@@ -131,6 +133,22 @@ const TimeInOutStore = create((set) => ({
             }
         } finally { 
             set({loading: false});
+        }
+    },
+
+    getAllData: async () => {
+        try {
+            set({timeInLoading: true});
+            const response = await axiosInstance.get(GETALLTIMEDATA);
+            const data = response.data.data;
+            const cleanedData = data.map(({_id, date, clockIn, clockOut, createdAt, updatedAt, __v, ...rest}) => rest);
+            set({allTimeData: cleanedData});
+        } catch (error) {
+            if (axiosError(error)) {
+                toast.error(error.message);
+            }
+        } finally {
+            set({timeInLoading: false});
         }
     }
 

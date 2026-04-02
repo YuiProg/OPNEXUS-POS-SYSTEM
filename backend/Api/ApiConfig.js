@@ -40,6 +40,7 @@ const ApiConfig = Object.freeze({
     TIMEIN: apiEndpoint + 'timein',
     TIMEOUT: apiEndpoint + 'timeout',
     GETDATATIME: apiEndpoint + 'getTimeData',
+    GETALLTIMEDATA: apiEndpoint + 'getAllTimeData'
 })
 
 export default ApiConfig;
