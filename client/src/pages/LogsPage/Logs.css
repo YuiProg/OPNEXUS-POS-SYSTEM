@@ -1,9 +1,21 @@
-.logs-container {
-  background-color: #111111;
-  width: 100%;
-  height: 100%;
+body {
+  background: #111111;
 }
 
+h1 {
+  margin: 0;
+}
+
+.logs-container {
+  width: auto;
+  height: 100%;
+  background: #111111;
+  padding: 16px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
 
 .logs-header {
   display: flex;
