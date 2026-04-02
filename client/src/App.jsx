@@ -25,6 +25,7 @@ import { Table } from "./components/TRTable/TrTable.jsx";
 import { Toaster } from "react-hot-toast";
 import Button from "./components/TRButton/Button.jsx";
 import BranchStore from "./context/BranchStore.js";
+import Logs from "./pages/Logs/Logs.jsx";
 
 const Inventory = lazy(() => import("./pages/Inventory/Inventory.jsx"));
 const Dashboard = lazy(() => import("./pages/DashBoard/Dashboard.jsx"));
@@ -909,6 +910,17 @@ export default function App() {
                 </Sidebar>
               )
             }
+          />
+
+          <Route
+            path="/logs"
+            element={AuthUser?.role.toLowerCase() === "clerk" ? (
+              <Navigate to="/timeinout" replace/>
+            ) : (
+              <Sidebar user={AuthUser}>
+                <Logs/>
+              </Sidebar>
+            )}
           />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
