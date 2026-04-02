@@ -141,7 +141,7 @@ const TimeInOutStore = create((set) => ({
             set({timeInLoading: true});
             const response = await axiosInstance.get(GETALLTIMEDATA);
             const data = response.data.data;
-            const cleanedData = data.map(({_id, createdAt, updatedAt, __v, ...rest}) => rest);
+            const cleanedData = data.map(({_id, date, clockIn, clockOut, createdAt, updatedAt, __v, ...rest}) => rest);
             set({allTimeData: cleanedData});
         } catch (error) {
             if (axiosError(error)) {
