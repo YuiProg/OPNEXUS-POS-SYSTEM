@@ -52,6 +52,7 @@ const AuthStore = create((set, get) => ({
     users: [],
     onlineUsers: [],
     fetchLoading: false,
+    recentActivity: null,
 
     setInput: (name, value) => {
         const inputs = get().input;
@@ -362,6 +363,15 @@ const AuthStore = create((set, get) => ({
         newSocket.on('onlineUsers', (data) => {
             console.log(data);
             set({ onlineUsers: data });
+        });
+
+        newSocket.on("recentActivity", (data) => {
+            //console.log(data);
+            const activity = data.message;
+            if (data.userId === get().AuthUser._id) return;
+            toast.success(activity);
+            set({recentActivity: activity});
+            return;
         });
     },
 

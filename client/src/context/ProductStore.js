@@ -250,6 +250,34 @@ const ProductStore = create((set, get) => ({
       setYesNoModal(false);
     }
   },
+
+  subscribeToProducts: () => {
+    const { AuthUser, socket } = AuthStore.getState();
+
+    if (!AuthUser?._id || !socket) return; 
+
+    socket.off("newProduct");
+
+    socket.on("newProduct", (data) => {
+      if (data.userId === AuthUser._id) return;
+      const cleanedData = data._doc;
+      const newData = {
+        Id: cleanedData._id,
+        Name: cleanedData.productName.toUpperCase(),
+        Branch: cleanedData.productBranch,
+        quantity: cleanedData.quantity,
+        category: cleanedData.category,
+        price: cleanedData.price,
+      };
+      set((state) => ({ products: [newData, ...state.products] }));
+    });
+  },
+
+  unsubscribeToProducts: () => {
+    const {socket} = AuthStore.getState();
+    if (!socket) return;
+    socket.off("newProduct");
+  }
 }));
 
 export default ProductStore;

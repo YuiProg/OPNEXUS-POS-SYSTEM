@@ -38,7 +38,7 @@ class Dashboard extends React.Component {
   // }
 
   render() {
-    const { onlineUsers } = AuthStore.getState();
+    const { onlineUsers, recentActivity } = AuthStore.getState();
 
     const active = onlineUsers.filter((d) => d.role === "Clerk");
     return (
@@ -61,7 +61,7 @@ class Dashboard extends React.Component {
         <div className="top-three-contents">
           <StaffCount activeClerks={active.length}/>
           <TodaysRevenue />
-          <RecentActivity />
+          <RecentActivity activity={recentActivity}/>
         </div>
         {/* BLUE CONTAINER */}
         <div className="dashboard-container__graph-container">
