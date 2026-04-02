@@ -28,6 +28,11 @@ const timeinSchema = new mongoose.Schema({
     }
 }, {timestamps: true});
 
+timeinSchema.statics.getAllData = async function () {
+    const data = await this.find({});
+    return data;
+}
+
 timeinSchema.statics.saveOut = async function (data, id) {
     const newData = await this.create({...data, userId: id});
     return newData;

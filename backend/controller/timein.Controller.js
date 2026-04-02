@@ -69,3 +69,14 @@ export const getTimeData = async (req, res) => {
         ApiResponseModel(res, ERROR, error.message);
     }
 }
+
+export const getAllTimeData = async (req, res) => {
+    try {
+        const data = await TimeinOut.getAllData();
+        ApiResponseModel(res, CREATED, SUCCESS_MESS, data);
+        console.log('\u001b[1;32mFetching all data for time in / out success');
+    } catch (error) {
+        console.log('\u001b[1;31mFetching all data for time in / out fail');
+        ApiResponseModel(res, ERROR, error.message);
+    }
+}
