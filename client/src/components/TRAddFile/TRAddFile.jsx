@@ -33,6 +33,8 @@ class TRAddfile extends React.Component {
     render () {
         const {
             onChange,
+            isRequired,
+            disabled
         } = this.props;
 
         return (
@@ -41,14 +43,14 @@ class TRAddfile extends React.Component {
                 ? (
                     <>
                     <input type="file" hidden accept="image/png" onChange={async (e) => onChange(await this.formatFile(e))}/>
-                    <div className="tr-addfile-details">
+                    <div disabled={disabled} className="tr-addfile-details">
                         <img src={this.state.image} alt="image" className="tr-image"/>
                     </div>
                     </>
                 ) 
                 : (
                     <>
-                    <input type="file" hidden accept="image/png" onChange={async (e) => onChange(await this.formatFile(e))}/>
+                    <input disabled={disabled} type="file" hidden accept="image/png" onChange={async (e) => onChange(await this.formatFile(e))}/>
                     <div className="tr-addfile-details">
                         <Image size={40}/>
                         <p className="tr-addfile-header">Select Image</p>

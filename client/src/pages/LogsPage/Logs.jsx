@@ -3,6 +3,7 @@ import './Logs.css';
 import DropDown from "../../components/TRDropDown/Dropdown";
 import { Table } from "../../components/TRTable/TrTable";
 import TimeInOutStore from "../../context/TimeinOut";
+import ModalStore from "../../context/ModalStore";
 
 class Logs extends React.Component {
     constructor (props) {
@@ -25,6 +26,12 @@ class Logs extends React.Component {
 
     componentWillUnmount() {
         if (this.unsubscribe) this.unsubscribe();
+    }
+
+    showViewModal = (data) => {
+        const { setTimeInModal, setSelectedItem } = ModalStore.getState();
+        setTimeInModal(true);
+        setSelectedItem(data);
     }
 
     render () { 
@@ -55,7 +62,7 @@ class Logs extends React.Component {
                         ) 
                         : this.state.selectedTab === 'time' 
                         ? (
-                            <Table data={this.state.timeInData} isLoading={timeInLoading}/>
+                            <Table data={this.state.timeInData} isLoading={timeInLoading} onRowSelect={(e) => this.showViewModal(e)}/>
                         ) 
                         : this.state.selectedTab === 'transact' 
                         ? (

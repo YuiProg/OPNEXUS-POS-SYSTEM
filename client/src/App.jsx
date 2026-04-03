@@ -25,6 +25,7 @@ import { Table } from "./components/TRTable/TrTable.jsx";
 import { Toaster } from "react-hot-toast";
 import Button from "./components/TRButton/Button.jsx";
 import BranchStore from "./context/BranchStore.js";
+import TimeInOutStore from "./context/TimeinOut.js";
 
 const Logs = lazy(() => import("./pages/LogsPage/Logs.jsx"));
 const Inventory = lazy(() => import("./pages/Inventory/Inventory.jsx"));
@@ -76,6 +77,8 @@ export default function App() {
     setUpdatedItem,
     editUserModal,
     setEditUserModal,
+    timeInModal,
+    setTimeInModal
   } = ModalStore();
   const {
     setProductData,
@@ -95,6 +98,10 @@ export default function App() {
     newBranch,
     branches,
   } = BranchStore();
+  const {
+    getData,
+    timeData
+  } = TimeInOutStore();
 
   const { SERVER_ERROR, PROD_FAIL } = Strings;
 
@@ -770,6 +777,14 @@ export default function App() {
     );
   }
 
+  const viewTimeRecordModal = () => {
+    return (
+      <Modal onClose={() => setTimeInModal(false)}>
+        
+      </Modal>
+    );
+  }
+
   // eslint-disable-next-line no-unused-vars
   const showToastError = (type) => {
     switch (type) {
@@ -810,6 +825,7 @@ export default function App() {
         {editProductModal && showModalAddProduct(true)}
         {editUserModal && showUserModal(true)}
         {showModalBranch && AddBranchModal()}
+        {timeInModal && viewTimeRecordModal()}
       </>
     );
   };

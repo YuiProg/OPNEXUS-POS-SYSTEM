@@ -8,6 +8,7 @@ const ModalStore = create((set) => ({
     showAddModal: false,
     selectedItems: [],
     selectedItem: null,
+    timeInModal: false,
     url: "",
 
     //viewing
@@ -23,6 +24,9 @@ const ModalStore = create((set) => ({
     //edit user
     editUserModal: false,
     setEditUserModal: (val) => set({editUserModal: val}),
+
+    //view time in and out
+    setTimeInModal: (val) =>set({timeInModal: val}),
 
     //update view item
     updatedItem: null,

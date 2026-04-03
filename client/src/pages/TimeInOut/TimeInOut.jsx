@@ -7,6 +7,7 @@ import { CircleUserRound } from 'lucide-react';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
+import AuthStore from "../../context/Authstore";
 
 class TimeInOut extends React.Component {
   constructor(props) {
@@ -20,12 +21,12 @@ class TimeInOut extends React.Component {
 
   componentDidMount() {
     const { getData } = TimeInOutStore.getState();
-    
+    const { AuthUser } = AuthStore.getState();
     this.interval = setInterval(() => {
       this.setState({ time: this.timenow(), date: this.dateNow()});
     }, 1000);
 
-    getData();
+    getData(AuthUser._id);
   }
 
   componentWillUnmount() {

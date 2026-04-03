@@ -36,7 +36,7 @@ const ApiConfig = Object.freeze({
     //timein
     TIMEIN: apiEndpoint + 'timein',
     TIMEOUT: apiEndpoint + 'timeout',
-    GETDATATIME: apiEndpoint + 'getTimeData',
+    GETDATATIME: apiEndpoint + 'getTimeData/:userId',
     GETALLTIMEDATA: apiEndpoint + 'getAllTimeData'
 })
 
