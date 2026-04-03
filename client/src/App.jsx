@@ -1,4 +1,4 @@
-import { useEffect, lazy, Suspense } from "react";
+import { useEffect, lazy, Suspense, useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Login from "./pages/AuthPage/Login.jsx";
 import AuthStore from "./context/Authstore.js";
@@ -44,6 +44,7 @@ export default function App() {
   // const setProductData = ProductStore().setProductData;
   // const addProduct = ProductStore().addNewProduct;
   // const branches = ProductStore().branches;
+  
   const {
     checkAuth,
     AuthUser,
@@ -103,6 +104,7 @@ export default function App() {
   } = TimeInOutStore();
 
   const { SERVER_ERROR, PROD_FAIL } = Strings;
+  const [currentRole, setCurrentRole] = useState("");
 
   useEffect(() => {
     checkAuth();
@@ -254,7 +256,10 @@ export default function App() {
               maxWidth
               options={["Admin", "Clerk"]}
               defaultValue="Role"
-              onChange={(value) => setInput("role", value)}
+              onChange={(value) => { 
+                setInput("role", value) 
+                setCurrentRole(value);
+              }}
               value={isUpdate ? selectedItem.role : null}
             />
             <DropDown
@@ -263,6 +268,7 @@ export default function App() {
               defaultValue="Shift"
               onChange={(value) => setInput("shift", value)}
               value={isUpdate ? selectedItem.shift : null}
+              disabled={currentRole === "Admin"}
             />
           </InputRow>
           <InputRow gap={15} titles={["Gender", "Branch"]}>
@@ -279,6 +285,7 @@ export default function App() {
               defaultValue="Branch"
               onChange={(value) => setInput("branch", value)}
               value={isUpdate ? selectedItem.branchLocation : null}
+              disabled={currentRole === "Admin"}
             />
           </InputRow>
         </InputForm>
