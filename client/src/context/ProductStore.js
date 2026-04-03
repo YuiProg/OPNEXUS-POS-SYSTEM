@@ -207,6 +207,7 @@ const ProductStore = create((set, get) => ({
   },
 
   deleteMultipleProducts: async (data) => {
+    set({addLoading: true});
     try {
       const list = data.map((d) => d.Id);
       const result = await axiosInstance.post(deleteMultipleProduct, list);
@@ -224,6 +225,8 @@ const ProductStore = create((set, get) => ({
       toast.error(error.message);
       console.log(error);
       set({ errorProduct: axiosError(error) });
+    } finally {
+      set({addLoading: false});
     }
   },
 

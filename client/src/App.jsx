@@ -297,6 +297,7 @@ export default function App() {
             ? deleteUser(selectedItem.Id)
             : deleteProduct(selectedItem.Id)
         }
+        loading={addLoading}
       />
     );
   };

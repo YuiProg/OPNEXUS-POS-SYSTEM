@@ -113,7 +113,8 @@ export class ModalYesNo extends React.Component {
         const {
             message,
             onClose,
-            onYes
+            onYes,
+            loading
         } = this.props;
 
         return (
@@ -123,7 +124,7 @@ export class ModalYesNo extends React.Component {
                     <h1 className="modal-confirm-header">{message}</h1>
                     <div className="modal-yesno-btns">
                         <Button error maxWidth text="NO" onClick={() => onClose()}/>
-                        <Button success maxWidth text="YES" onClick={() => onYes()}/>
+                        <Button success disabled={loading} maxWidth text="YES" onClick={() => onYes()}/>
                     </div>
                 </div>
             </div>
