@@ -784,7 +784,18 @@ export default function App() {
     const { singleUser } = AuthStore.getState();
     if (!singleUser) return;
 
-    const totalMonthlyHours = timeData.reduce((sum, record) => sum + record.totalHours, 0);
+    const currentMonth = new Date().getMonth();
+    const currentYear = new Date().getFullYear();
+
+    const filteredByMonth = timeData.filter((record) => {
+      const recordDate = new Date(record.date);
+      return (
+        recordDate.getMonth() === currentMonth &&
+        recordDate.getFullYear() === currentYear
+      );
+    });
+
+    const totalMonthlyHours = filteredByMonth.reduce((sum, record) => sum + record.totalHours, 0);
 
     return (
       <Modal 
@@ -792,8 +803,8 @@ export default function App() {
         subHeader={`View Time Records for ${singleUser?.username || 'test'}`} 
         onClose={() => setTimeInModal(false)}
       >
-            <h1>{singleUser.username}</h1>
-            <h2>Total Hours This Month: {totalMonthlyHours}h</h2>
+        <h1>{singleUser.username}</h1>
+        <h2>Total Hours This Month: {totalMonthlyHours}h</h2>
         <Table data={timeData}/>
       </Modal>
     );
