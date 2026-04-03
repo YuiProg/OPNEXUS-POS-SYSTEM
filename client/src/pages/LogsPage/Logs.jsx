@@ -46,7 +46,10 @@ class Logs extends React.Component {
                     </div>
                     <div className="logs-branch-dropdown">
                         <p className="logs-branch-text">Branch</p>
-                        <DropDown className="logs-branch-dd" />
+                        <DropDown 
+                        className="logs-branch-dd" 
+                        defaultValue="Branch"
+                        />
                     </div>
                 </div>
                 <div>

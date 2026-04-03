@@ -232,6 +232,7 @@ export default function App() {
           <InputRow gap={15} titles={["Phone Number", "Address", "Salary"]}>
             <InputField
               number
+              maxLength={10}
               placeholder="(+63)"
               onChange={(value) => setInput("phoneNumber", value)}
               value={isUpdate ? selectedItem.phoneNumber : null}
@@ -276,6 +277,7 @@ export default function App() {
             <DropDown
               maxWidth
               options={mainBranches}
+              defaultValue="Branch"
               onChange={(value) => setInput("branch", value)}
               value={isUpdate ? selectedItem.branchLocation : null}
             />
@@ -377,10 +379,12 @@ export default function App() {
                 maxWidth
                 options={categories}
                 onChange={(value) => setProductData("category", value)}
+                defaultValue="Category"
                 value={isUpdate ? selectedItem.category : null}
               />
               <DropDown
                 maxWidth
+                defaultValue="Branch"
                 options={mainBranches}
                 onChange={(value) => setProductData("productBranch", value)}
                 value={isUpdate ? selectedItem.productBranch : null}

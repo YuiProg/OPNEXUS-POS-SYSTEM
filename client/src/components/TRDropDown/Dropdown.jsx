@@ -39,7 +39,7 @@ class DropDown extends React.Component {
           required={isRequired}
         >
           <option value="" className="tr-options" disabled>
-            {defaultValue ? `Select ${defaultValue}` : "Select Branch..."}
+            {defaultValue ? `Select ${defaultValue}...` : "Select Branch..."}
           </option>
           {options?.map((l, i) => {
             return (

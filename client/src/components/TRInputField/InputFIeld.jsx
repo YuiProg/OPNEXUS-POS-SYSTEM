@@ -72,6 +72,7 @@ class InputField extends React.Component {
       color,
       isRequired,
       email,
+      maxLength,
     } = this.props;
 
     return (
@@ -108,6 +109,7 @@ class InputField extends React.Component {
                 value={this.state.value}
                 placeholder=" "
                 onKeyDown={(e) => this.handleEnterDown(e, onEnterDown)}
+                maxLength={maxLength}
               />
               <label className="floating-label">{placeholder}</label>
               {password &&
