@@ -121,9 +121,7 @@ const AuthStore = create((set, get) => ({
             if (logout.data.status === SUCCESS_MESS) {
                 set({AuthUser: null});
             }
-
             return true;
-            
         } catch (error) {
             toast.error(error.message);
             set({errorUser: axiosError(error)});
@@ -131,6 +129,7 @@ const AuthStore = create((set, get) => ({
         } finally {
             set({AuthLoading: false});
             get().disconnectSocket();
+            get().checkAuth();
         }
     },
 
