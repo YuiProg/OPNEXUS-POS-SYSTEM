@@ -99,7 +99,6 @@ export default function App() {
     branches,
   } = BranchStore();
   const {
-    getData,
     timeData
   } = TimeInOutStore();
 
@@ -782,13 +781,23 @@ export default function App() {
   }
 
   const viewTimeRecordModal = () => {
+    const { singleUser } = AuthStore.getState();
+    if (!singleUser) return;
+
+    const totalMonthlyHours = timeData.reduce((sum, record) => sum + record.totalHours, 0);
+
     return (
-      <Modal onClose={() => setTimeInModal(false)}>
-        
+      <Modal 
+        header="View Time In / Out Logs" 
+        subHeader={`View Time Records for ${singleUser?.username || 'test'}`} 
+        onClose={() => setTimeInModal(false)}
+      >
+            <h1>{singleUser.username}</h1>
+            <h2>Total Hours This Month: {totalMonthlyHours}h</h2>
+        <Table data={timeData}/>
       </Modal>
     );
   }
-
   // eslint-disable-next-line no-unused-vars
   const showToastError = (type) => {
     switch (type) {

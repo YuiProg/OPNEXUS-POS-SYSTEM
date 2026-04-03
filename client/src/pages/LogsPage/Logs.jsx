@@ -4,6 +4,8 @@ import DropDown from "../../components/TRDropDown/Dropdown";
 import { Table } from "../../components/TRTable/TrTable";
 import TimeInOutStore from "../../context/TimeinOut";
 import ModalStore from "../../context/ModalStore";
+import AuthStore from "../../context/Authstore";
+import toast from "react-hot-toast";
 
 class Logs extends React.Component {
     constructor (props) {
@@ -30,12 +32,35 @@ class Logs extends React.Component {
 
     showViewModal = (data) => {
         const { setTimeInModal, setSelectedItem } = ModalStore.getState();
-        setTimeInModal(true);
-        setSelectedItem(data);
+        const { getSingleUser } = AuthStore.getState();
+        const { getData } = TimeInOutStore.getState();
+        try {
+            setTimeInModal(true);
+            setSelectedItem(data);
+            getSingleUser(data.userId);   
+            getData(data.userId);
+        } catch (error) {
+            console.log(error.message);
+            toast.error(error.message);
+        }
     }
 
     render () { 
         const { timeInLoading } = TimeInOutStore.getState();
+
+        const uniqueUsers = Object.values(
+            this.state.timeInData.reduce((acc, record) => {
+                if (!acc[record.userId]) {
+                acc[record.userId] = {
+                    employeeName: record.employeeName,
+                    userId: record.userId,
+                    totalHours: 0,  // start at 0, accumulate below
+                };
+                }
+                acc[record.userId].totalHours += record.totalHours;  // sum all sessions
+                return acc;
+            }, {})
+        );
         return (
             <>
             <div className="logs-container">
@@ -65,7 +90,7 @@ class Logs extends React.Component {
                         ) 
                         : this.state.selectedTab === 'time' 
                         ? (
-                            <Table data={this.state.timeInData} isLoading={timeInLoading} onRowSelect={(e) => this.showViewModal(e)}/>
+                            <Table data={uniqueUsers} isLoading={timeInLoading} onRowSelect={(e) => this.showViewModal(e)}/>
                         ) 
                         : this.state.selectedTab === 'transact' 
                         ? (
