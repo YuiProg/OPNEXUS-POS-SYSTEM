@@ -806,12 +806,14 @@ export default function App() {
 
     return (
       <Modal 
-        header="View Time In / Out Logs" 
-        subHeader={`View Time Records for ${singleUser?.username || 'test'}`} 
+        header="Time In / Out Logs" 
+        subHeader={`Time Records for ${singleUser?.username || 'test'}`} 
         onClose={() => setTimeInModal(false)}
       >
-        <h1>{singleUser.username}</h1>
-        <h2>Total Hours This Month: {totalMonthlyHours}h</h2>
+        <div className="time-modal-user-details">
+          <h1 className="time-modal-name">{singleUser.username}</h1>
+          <h2 className="time-modal-totaltime">Total Hours This Month: {totalMonthlyHours}h</h2>
+        </div>
         <Table data={timeData}/>
       </Modal>
     );
