@@ -818,7 +818,7 @@ export default function App() {
     <>
       {returnModals()}
       <Toaster position="bottom-right"/>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Loading/>}>
         <Routes>
           <Route
             path="/"

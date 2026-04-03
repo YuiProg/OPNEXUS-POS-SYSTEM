@@ -13,7 +13,8 @@ class TimeInOut extends React.Component {
     super(props);
     this.state = {
       time: this.timenow(),
-      date: this.dateNow()
+      date: this.dateNow(),
+      clickTime: false
     };
   }
 
@@ -53,6 +54,19 @@ class TimeInOut extends React.Component {
     const day = date.getDate();
 
     return `${dayName} ${month} ${day} ${year}`;
+  }
+
+  timeInClick = (method) => {
+    const { timeIn, timeOut } = TimeInOutStore.getState();
+    this.setState({clickTime: true});
+    switch (method) {
+      case 'in': 
+          timeIn(this.timenow(), this.dateNow());
+        break;
+      case 'out': 
+          timeOut(this.timenow(), this.dateNow());
+        break;
+    }
   }
 
   render() {
@@ -127,7 +141,7 @@ class TimeInOut extends React.Component {
                 <p className="current-time">{this.state.time}</p>
                 <p className="current-date">{this.dateNow()}</p>
               </div>
-              {user?.timedIn ? <Button disabled={loading} maxWidth error text="CLOCK OUT" onClick={() => timeOut(this.timenow(), this.dateNow())}/> : <Button disabled={loading} maxWidth success text="CLOCK IN" onClick={() => timeIn(this.timenow(), this.dateNow())}/>}
+              {user?.timedIn ? <Button disabled={this.state.clickTime || loading} maxWidth error text="CLOCK OUT" onClick={() => timeOut(this.timenow(), this.dateNow())}/> : <Button disabled={loading} maxWidth success text="CLOCK IN" onClick={() => timeIn(this.timenow(), this.dateNow())}/>}
             </div>
           </div>
         </div>
