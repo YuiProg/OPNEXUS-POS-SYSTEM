@@ -183,7 +183,7 @@ export default function App() {
           isRequired
           onSubmit={(e) => {
             e.preventDefault();
-            isUpdate ? updateUserSelected(e) : addUser(e);
+            isUpdate ? updateUserSelected(e) : addUser(currentRole);
           }}
         >
           <InputRow gap={15} titles={["Username", "Email", "Password"]}>

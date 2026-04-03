@@ -134,12 +134,28 @@ const AuthStore = create((set, get) => ({
         }
     },
 
-    addUser: async () => {
+    addUser: async (isAdmin) => {
         const { setShowAddModal } = ModalStore.getState();
         const { getBranchByLocation } = BranchStore.getState();
         try {
             const data = get().input;
-            const payload = {
+            const payloadAdmin = {
+                username: data.username,
+                email: data.email,
+                password: data.password,
+                branchLocation: 'ADMIN',
+                shift: 'ADMIN',
+                salary: Number(data.salary),
+                phoneNumber: Number(data.phoneNumber),
+                role: data.role,
+                firstName: data.firstName,
+                middleName: data.middleName,
+                lastName: data.lastName,
+                gender: data.gender,
+                address: data.address
+            };
+
+            const payloadClerk = {
                 username: data.username,
                 email: data.email,
                 password: data.password,
@@ -155,26 +171,34 @@ const AuthStore = create((set, get) => ({
                 address: data.address
             };
 
-            //console.log(payload);
-
             //get muna yung branch check kung may laman na
-
-            const check = await getBranchByLocation(data.branch);
-            console.log(check);
-            if (check.clerkName) {
-                return toast.error('Branch already has a user!');
+            if (isAdmin !== "Admin") {
+                const check = await getBranchByLocation(data.branch);
+                if (check.clerkName) {
+                    return toast.error('Branch already has a user!');
+                }
             }
+            let user;
             
-            const newUser = await axiosInstance.post(addUser, payload);
-            const {_id, shift, salary, role, phoneNumber, branchLocation, username} = newUser.data.data;
+            if (isAdmin === "Admin") {
+                const newUserAdmin = await axiosInstance.post(addUser, payloadAdmin);
+                user = newUserAdmin
+            } else if (isAdmin === "Clerk") {
+                const newUserAdmin = await axiosInstance.post(addUser, payloadClerk);
+                user = newUserAdmin
+            }
 
-            const updateBranch = await axiosInstance.post(UPDATEBRANCH.replace(':location', data.branch), {
-                clerkName: data.username,
-                clerkId: _id,
-                role: role,
-                session: shift
-            });
-            console.log(updateBranch);
+            
+            const {_id, shift, salary, role, phoneNumber, branchLocation, username} = user.data.data;
+            if (isAdmin !== "Admin") {
+                await axiosInstance.post(UPDATEBRANCH.replace(':location', data.branch), {
+                    clerkName: data.username,
+                    clerkId: _id,
+                    role: role,
+                    session: shift
+                });
+            }
+
             const newData = {
                 Id: _id,
                 //Employee: `${firstName.toUpperCase()} ${middleName.toUpperCase()} ${lastName.toUpperCase()}`,
@@ -187,6 +211,7 @@ const AuthStore = create((set, get) => ({
                 phoneNumber: phoneNumber,
                 //address: address
             };
+            
 
             set((state) => ({users: [newData, ...state.users]}));
             toast.success('New user added');
