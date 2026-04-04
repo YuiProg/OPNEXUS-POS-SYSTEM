@@ -54,7 +54,15 @@ branchSchema.statics.getBranchByLocation = async function (location) {
 branchSchema.statics.updateBranch = async function (location, data) {
     const updatedBranch = await this.findOneAndUpdate({location}, {
         $addToSet: {
-            clerks: {Id: data.Id}
+            clerks: {
+                Id: data.Id,
+                Username: data.Username,
+                email: data.email,
+                shift: data.shift,
+                salary: data.salary,
+                role: data.role,
+                phoneNumber: data.phoneNumber
+            }
         }
     }, {new: true});
     return updatedBranch;
