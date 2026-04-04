@@ -12,6 +12,10 @@ const ModalStore = create((set) => ({
     oldBranch: null,
     viewBranch: false,
     url: "",
+    serverError: false,
+
+    //server error
+    setServerError: (val) =>  set({serverError: val}),
 
     //viewing
     viewProductModal: false,

@@ -23,27 +23,29 @@ class Button extends React.Component {
         } = this.props;
 
         return (
-            <button 
-                type={`${submit ? 'submit' : 'button'}`} 
-                style={{
-                    background: `${
-                        success ? "#22C55E" 
-                        : warning ? "#F59E0B" 
-                        : error ? "#EF4444" 
-                        : cancel && "transparent"}`,
-                    width: `${
-                        maxWidth ? "100%" 
-                        : customWidth ? customWidth 
-                        : "auto"
-                    }`,
-                    border: `${cancel ? "1px solid white" : null}`
-                }}
-                className={`TR-button ${disabled && 'tr-btn-disabled'}`}
-                onClick={() => onClick()}
-                disabled={disabled}
-            >
-                {text}
-            </button>
+            <div>
+                <button 
+                    type={`${submit ? 'submit' : 'button'}`} 
+                    style={{
+                        background: `${
+                            success ? "#22C55E" 
+                            : warning ? "#F59E0B" 
+                            : error ? "#EF4444" 
+                            : cancel && "transparent"}`,
+                        width: `${
+                            maxWidth ? "100%" 
+                            : customWidth ? customWidth 
+                            : "auto"
+                        }`,
+                        border: `${cancel ? "1px solid white" : null}`
+                    }}
+                    className={`TR-button ${disabled && 'tr-btn-disabled'}`}
+                    onClick={() => onClick()}
+                    disabled={disabled}
+                >
+                    {text}
+                </button>
+            </div>
         );
     }
 }
