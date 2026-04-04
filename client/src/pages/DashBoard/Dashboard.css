@@ -64,7 +64,7 @@ h1 {
 
 .dashboard-container__graph-container {
   display: grid;
-  grid-template-columns: 49.5% 24% 24%;
+  grid-template-columns: minmax(0, 2.07fr) minmax(0, 1fr) minmax(0, 1fr);
   gap: 20px;
   height: auto;
   width: 100%;

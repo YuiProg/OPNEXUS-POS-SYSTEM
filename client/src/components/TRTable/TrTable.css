@@ -63,7 +63,7 @@
 .table-container {
   border: 1px solid #404040;
   border-radius: 10px;
-  overflow: hidden;         /* clips thead corners and last row's bottom border */
+         /* clips thead corners and last row's bottom border */
 }
 
 /* ── Table ── */

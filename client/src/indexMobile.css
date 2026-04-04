@@ -1,0 +1,27 @@
+/* media queries never remove this */
+@media screen and (max-width: 1024px) {
+	.sidebar-list {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+	}
+    .sidebar-list .row a {
+		flex-direction: column !important;
+		padding: 20px 10px !important;
+	}
+	.sidebar-aside {
+		width: 136.938px !important;
+	}
+	#active {
+		.sb-icon {
+			border-left: unset !important;
+			padding-left: 0 !important;
+		}
+	}
+	.logo {
+		width: 75px !important;
+		height: 75px !important;
+		padding: 0 !important;
+		margin-top: 50px;
+	}
+}
