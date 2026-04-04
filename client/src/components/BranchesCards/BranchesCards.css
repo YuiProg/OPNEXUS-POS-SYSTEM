@@ -3,6 +3,7 @@
     background-color: #242426;
     border-radius: 16px;
     position: relative;
+    transition: transform 0.1s ease-in-out, border 0.1s ease-in-out;
 }
 
 .branch-card-details {
@@ -63,4 +64,10 @@
 
 .branch-card-container.offline {
     border: 1px solid #FFFFFF;
+}
+
+.branch-card-container:hover {
+    transform: scale(1.02) ;
+    border: 2px solid;
+    cursor: pointer;
 }
