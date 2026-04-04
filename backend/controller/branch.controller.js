@@ -28,11 +28,10 @@ export const addBranches = async (req, res) => {
         const clerks = data.clerks;
         
         for (let i = 0; i < clerks.length; i++) {
-            await User.updateUser(clerks[i].Id, {branchLocation: data.location});
-
-            if (clerks[i].branchLocation != null) {
+            if (clerks[i].branchLocation != "N/A") {
                 return ApiResponseModel(res, ERROR, `${clerks[i].Username} already has a branch!`);
             }
+            await User.updateUser(clerks[i].Id, {branchLocation: data.location});
         }
 
         //console.log(payload);
