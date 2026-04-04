@@ -61,7 +61,7 @@ export const clockOut = async (req, res) => {
 }
 
 export const getTimeData = async (req, res) => {
-    const {userId} = req.user;
+    const {userId} = req.params;
     try {
         const data = await TimeinOut.getData(userId);
         

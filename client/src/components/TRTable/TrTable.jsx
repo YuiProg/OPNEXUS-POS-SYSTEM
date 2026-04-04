@@ -31,7 +31,9 @@ export class Table extends React.Component {
     };
   }
 
-  rowsPerPage = 10;
+  get rowsPerPage() {
+    return this.props.limit || 10;
+  }
 
   componentDidUpdate(prevProps) {
     if (prevProps.search !== this.props.search) {
@@ -117,7 +119,7 @@ export class Table extends React.Component {
   };
 
   render() {
-    const { data, hasSelect, hasAction, onDelete, onEdit, isDetailed, search, onView, isLoading } =
+    const { data, hasSelect, hasAction, onDelete, onEdit, isDetailed, search, onView, isLoading, onRowSelect } =
       this.props;
     const { selectAll, selected, currentPage, sortKey, sortDir } = this.state;
 
@@ -244,6 +246,7 @@ export class Table extends React.Component {
                   CBD={(e) => onDelete(e)}
                   CBE={(e) => onEdit(e)}
                   onView={(e) => onView(e)}
+                  rowCB={(e) => onRowSelect(e)}
                 />
               ) : (
                 <TableNoData colSpan={colCount} />
@@ -379,7 +382,7 @@ export class TableData extends React.Component {
   };
 
   render() {
-    const { data, hasSelect, selected, toggleRow, hasAction, CBD, CBE, onView } =
+    const { data, hasSelect, selected, toggleRow, hasAction, CBD, CBE, onView, rowCB } =
       this.props;
 
     return (
@@ -392,6 +395,7 @@ export class TableData extends React.Component {
                 : "table-row"
             }
             key={rowIndex}
+            onClick={() => rowCB(row)}
           >
             {hasSelect ? (
               <td className="table-td table-td--check">

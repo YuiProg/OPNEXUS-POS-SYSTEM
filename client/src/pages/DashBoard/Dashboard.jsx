@@ -52,6 +52,7 @@ class Dashboard extends React.Component {
           <div className="db-branch-dropdown">
             <p className="db-branch-text">Branch</p>
             <DropDown 
+              defaultValue="Branch"
               className="db-branch-dd"
               options={["longos", "bulacan", "hagonoy"]} 
             />

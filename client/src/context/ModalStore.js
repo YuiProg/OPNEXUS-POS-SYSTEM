@@ -8,6 +8,8 @@ const ModalStore = create((set) => ({
     showAddModal: false,
     selectedItems: [],
     selectedItem: null,
+    timeInModal: false,
+    oldBranch: null,
     url: "",
 
     //viewing
@@ -24,9 +26,14 @@ const ModalStore = create((set) => ({
     editUserModal: false,
     setEditUserModal: (val) => set({editUserModal: val}),
 
+    //view time in and out
+    setTimeInModal: (val) =>set({timeInModal: val}),
+
     //update view item
     updatedItem: null,
     setUpdatedItem: (item) => set({updatedItem: item}),
+
+    setOldBranch: (data) => set({oldBranch: data}),
 
     setYesNoModal: (val) => set({yesNoModal: val}),
     setSelectedItem: (item) => set({selectedItem: item}),

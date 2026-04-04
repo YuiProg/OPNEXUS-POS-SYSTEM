@@ -20,7 +20,7 @@ class DropDown extends React.Component {
   }
 
   render() {
-    const { options, defaultValue, onChange, maxWidth, customWidth, isRequired } =
+    const { options, defaultValue, onChange, maxWidth, customWidth, isRequired, disabled } =
       this.props;
 
     return (
@@ -37,9 +37,10 @@ class DropDown extends React.Component {
             onChange(e.target.value);
           }}
           required={isRequired}
+          disabled={disabled}
         >
           <option value="" className="tr-options" disabled>
-            {defaultValue ? `Select ${defaultValue}` : "Select Branch..."}
+            {defaultValue ? `Select ${defaultValue}...` : "Select Branch..."}
           </option>
           {options?.map((l, i) => {
             return (

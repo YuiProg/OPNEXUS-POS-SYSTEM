@@ -29,10 +29,10 @@ const TimeInOutStore = create((set) => ({
     timeInLoading: false,
     loading: false,
 
-    getData: async () => {
+    getData: async (userid) => {
         set({timeInLoading: true});
         try {
-            const response = await axiosInstance.get(GETDATATIME);
+            const response = await axiosInstance.get(GETDATATIME.replace(':userId', userid));
             const {data} = response.data;
 
             /* eslint-disable no-unused-vars */

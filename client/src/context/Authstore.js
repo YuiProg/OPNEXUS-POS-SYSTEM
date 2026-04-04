@@ -53,6 +53,7 @@ const AuthStore = create((set, get) => ({
     onlineUsers: [],
     fetchLoading: false,
     recentActivity: null,
+    singleUser: null,
 
     setInput: (name, value) => {
         const inputs = get().input;
@@ -133,16 +134,32 @@ const AuthStore = create((set, get) => ({
         }
     },
 
-    addUser: async () => {
+    addUser: async (isAdmin) => {
         const { setShowAddModal } = ModalStore.getState();
-        const { getBranchByLocation } = BranchStore.getState();
+        //const { getBranchByLocation } = BranchStore.getState();
         try {
             const data = get().input;
-            const payload = {
+            const payloadAdmin = {
                 username: data.username,
                 email: data.email,
                 password: data.password,
-                branchLocation: data.branch,
+                //branchLocation: 'ADMIN',
+                shift: 'ADMIN',
+                salary: Number(data.salary),
+                phoneNumber: Number(data.phoneNumber),
+                role: data.role,
+                firstName: data.firstName,
+                middleName: data.middleName,
+                lastName: data.lastName,
+                gender: data.gender,
+                address: data.address
+            };
+
+            const payloadClerk = {
+                username: data.username,
+                email: data.email,
+                password: data.password,
+                //branchLocation: data.branch,
                 shift: data.shift,
                 salary: Number(data.salary),
                 phoneNumber: Number(data.phoneNumber),
@@ -154,38 +171,47 @@ const AuthStore = create((set, get) => ({
                 address: data.address
             };
 
-            //console.log(payload);
-
             //get muna yung branch check kung may laman na
-
-            const check = await getBranchByLocation(data.branch);
-            console.log(check);
-            if (check.clerkName) {
-                return toast.error('Branch already has a user!');
-            }
+            // if (isAdmin !== "Admin") {
+            //     const check = await getBranchByLocation(data.branch);
+            //     if (check.clerkName) {
+            //         return toast.error('Branch already has a user!');
+            //     }
+            // }
+            let user;
             
-            const newUser = await axiosInstance.post(addUser, payload);
-            const {_id, shift, salary, role, phoneNumber, branchLocation, username} = newUser.data.data;
+            if (isAdmin === "Admin") {
+                const newUserAdmin = await axiosInstance.post(addUser, payloadAdmin);
+                user = newUserAdmin
+            } else if (isAdmin === "Clerk") {
+                const newUserAdmin = await axiosInstance.post(addUser, payloadClerk);
+                user = newUserAdmin
+            }
 
-            const updateBranch = await axiosInstance.post(UPDATEBRANCH.replace(':location', data.branch), {
-                clerkName: data.username,
-                clerkId: _id,
-                role: role,
-                session: shift
-            });
-            console.log(updateBranch);
+            
+            const {_id, shift, salary, role, phoneNumber, branchLocation, username} = user.data.data;
+            // if (isAdmin !== "Admin") {
+            //     await axiosInstance.post(UPDATEBRANCH.replace(':location', data.branch), {
+            //         clerkName: data.username,
+            //         clerkId: _id,
+            //         role: role,
+            //         session: shift
+            //     });
+            // }
+
             const newData = {
                 Id: _id,
                 //Employee: `${firstName.toUpperCase()} ${middleName.toUpperCase()} ${lastName.toUpperCase()}`,
                 username,
                 Email: data.email,
-                branchlocation: branchLocation,
+                branchlocation: branchLocation || 'N/A',
                 shift: shift,
                 salary: salary,
                 role: role,
                 phoneNumber: phoneNumber,
                 //address: address
             };
+            
 
             set((state) => ({users: [newData, ...state.users]}));
             toast.success('New user added');
@@ -205,12 +231,13 @@ const AuthStore = create((set, get) => ({
             const users = await axiosInstance.get(fetchUsers);
             const data = users.data.data;
             const userId = get().AuthUser._id;
-            
+            /* eslint-disable no-unused-vars */
             const cleanedData = data
             .filter((user) => user._id !== userId)
-            // eslint-disable-next-line no-unused-vars
-            .map(({Employee, username, timedIn, time, createdAt, createdById, updatedAt, __v, firstName, _id, middleName, gender, lastName, address, ...rest }) => rest);
-            //console.log(cleanedData);
+            .map(({ Employee, username, timedIn, time, createdAt, createdById, updatedAt, __v, firstName, _id, middleName, gender, lastName, address, ...rest }) => ({
+                ...rest,
+                branchLocation: rest.branchLocation ?? "N/A",
+            }));
             set({users: cleanedData});
         } catch (error) {
             //toast.error(error.message);
@@ -223,7 +250,7 @@ const AuthStore = create((set, get) => ({
     updateUser: async () => {
         const { getBranchByLocation } = BranchStore.getState();
         try {
-            const { selectedItem, setUpdatedItem, setEditUserModal, setChangesModal } = ModalStore.getState();
+            const { selectedItem, setUpdatedItem, setEditUserModal, setChangesModal, setOldBranch } = ModalStore.getState();
             const {
                 username, 
                 email,  
@@ -253,37 +280,38 @@ const AuthStore = create((set, get) => ({
                 salary: salary || selectedItem.salary,
                 branchLocation: branch || selectedItem.branchLocation
             }
-
-            //console.log(branch);
-            if (branch) {
-                const check = await getBranchByLocation(branch);
-                console.log(check);
-                if (check.clerkName) {
-                    return toast.error('Branch already has a user!');
-                }
-
-                console.log(`new branch ${branch} old branch ${selectedItem.branchLocation}`);
-                const defaultOldBranch = await axiosInstance.post(UPDATEBRANCH.replace(':location', selectedItem.branchLocation), {
-                    clerkName: null,
-                    clerkId: null,
-                    role: null,
-                    session: null
-                });
-                const updateOldBranch = await axiosInstance.post(UPDATEBRANCH.replace(':location', branch), {
-                    clerkName: username || selectedItem.username,
-                    clerkId: selectedItem._id,
-                    role: role || selectedItem.role,
-                    session: shift || selectedItem.shift,
-                })
-                console.log(updateOldBranch);
-                console.log(defaultOldBranch);
-            }
             
+            const check = await getBranchByLocation(branch || selectedItem.branchLocation);
+            //console.log(check.clerks.some(d => d.Id === selectedItem._id));
+            if (check.clerks.some(d => d.Id === selectedItem._id)) return toast.error(`${selectedItem.username} is already in this branch!`);
+            
+            
+
+            //update the branch here
+
+            if (branch) {
+                setOldBranch(selectedItem.branchLocation);
+                const updateBranch = await axiosInstance.post(UPDATEBRANCH.replace(':location', branch), {
+                    Id: selectedItem._id,
+                    Username: username || selectedItem.username,
+                    email: email || selectedItem.email,
+                    shift: shift || selectedItem.shift,
+                    salary: salary || selectedItem.salary,
+                    role: role || selectedItem.role,
+                    phoneNumber: phoneNumber || selectedItem.phoneNumber
+                });
+                console.log(updateBranch);
+            } else {
+                return;
+            }
+
             //console.log(updateOldBranch.data);
             
             const newUser = await axiosInstance.post(UPDATE_USER.replace(':id', selectedItem._id), payload);
+            //console.log(newUser.data.data['branchLocation'], selectedItem.branchLocation);
             console.log(newUser.data);
-            setUpdatedItem(newUser.data);
+            setUpdatedItem(newUser.data);  
+
             setEditUserModal(false);
             setChangesModal(true);
             toast.success('User updated');
@@ -298,10 +326,13 @@ const AuthStore = create((set, get) => ({
     getSingleUser: async (id) => {
         try {
             const user = await axiosInstance.get(GET_SINGLE_USER.replace(':id', id));
+            set({singleUser: user.data.data});
             return user.data;
         } catch (error) {
-            toast.error(error.message);
-            set({errorUser: axiosError(error)});
+            if (axiosError(error)) {
+                toast.error(error.response.data.status);
+                set({errorUser: axiosError(error)});
+            }
         }
     },
 

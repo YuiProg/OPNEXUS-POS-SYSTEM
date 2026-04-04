@@ -13,13 +13,8 @@ const branchSchema = new mongoose.Schema({
         type: String,
         default: () => `BR-${nanoid()}`
     },
-    clerkName: {
-        type: String,
-        required: false,
-    },
-    clerkId: {
-        type: String,
-        required: false
+    clerks: {
+        type: Array,
     },
     location: {
         type: String,
@@ -57,8 +52,20 @@ branchSchema.statics.getBranchByLocation = async function (location) {
 }
 
 branchSchema.statics.updateBranch = async function (location, data) {
-    const updatedBranch = await this.findOneAndUpdate({location}, data, {new: true});
+    const updatedBranch = await this.findOneAndUpdate({location}, {
+        $addToSet: {
+            clerks: data
+        }
+    }, {new: true});
     return updatedBranch;
+}
+
+branchSchema.statics.removeUserFromOldBranch = async function (location, data) {
+    await this.findOneAndUpdate({location}, {
+        $pull: {
+            clerks: data
+        }
+    });
 }
 
 branchSchema.statics.setActive = async function (location) {

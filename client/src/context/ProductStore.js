@@ -24,6 +24,7 @@ const ProductStore = create((set, get) => ({
   category: "",
   image: null,
   productBranch: "",
+  productsUncleaned: [],
   products: [],
   branches: [
     "VAPORYA X VAPESTA",
@@ -107,6 +108,7 @@ const ProductStore = create((set, get) => ({
     }
   },
 
+  //todo selected branch
   fetchProducts: async () => {
     set({fetchLoading: true});
     try {
@@ -120,6 +122,7 @@ const ProductStore = create((set, get) => ({
       //console.log(products.data.data);
       const data = products.data.data;
       console.log(data);
+      set({productsUncleaned: data});
 
       //PANG REMOVE NG UNNECESSARY DATA SA RESPONSE, MAP PARA MA LOOP SA BAWAT ITEM SA ARRAY
       /* eslint-disable no-unused-vars */

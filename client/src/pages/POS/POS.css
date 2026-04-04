@@ -1,0 +1,19 @@
+body {
+  background: #111111;
+}
+
+h1 {
+  margin: 0;
+}
+
+.pos-container {
+  background: #111111;
+  color: #fff;
+  padding: 0;
+  width: auto;
+  height: 100vh;
+  padding: 16px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}

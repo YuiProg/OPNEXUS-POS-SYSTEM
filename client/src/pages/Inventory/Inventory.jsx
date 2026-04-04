@@ -121,7 +121,10 @@ class Inventory extends React.Component {
             </div>
             <div className="iv-branch-dropdown">
               <p className="iv-branch-text">Branch</p>
-              <DropDown className="iv-branch-dd" />
+              <DropDown 
+                className="iv-branch-dd" 
+                defaultValue="Branch"
+              />
             </div>
           </div>
           <div>

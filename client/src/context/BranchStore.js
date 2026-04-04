@@ -19,6 +19,7 @@ const BranchStore = create((set, get) => ({
         clerk: null
     },
     selectedBranch: "Branch",
+    selectedUsersToAdd: [],
 
     setBranchInput: (name, val) => {
         set((state) => ({
@@ -26,17 +27,23 @@ const BranchStore = create((set, get) => ({
         }));
     },
 
+    setSelectedUsers: (updater) => set((state) => ({
+        selectedUsersToAdd: typeof updater === 'function' 
+            ? updater(state.selectedUsersToAdd) 
+            : updater
+    })),
+
     setShowModal: (val) => set({showModalBranch: val}),
 
-    newBranch: async () => {
+    newBranch: async (selectedUsers) => {
         try {
             const data = get().input;
             console.log(data);
-            const newBranch = await axiosInstance.post(ADDBRANCH, {location: data.location});
+            const newBranch = await axiosInstance.post(ADDBRANCH, {location: data.location, clerks: selectedUsers});
             const newBranchData = newBranch.data.data;
-            //console.log(newBranchData);
+
             const newData = {
-                clerkname: newBranchData.clerkName,
+                clerks: selectedUsers,
                 location: newBranchData.location,
                 role: newBranchData.role,
                 session: newBranchData.session,
