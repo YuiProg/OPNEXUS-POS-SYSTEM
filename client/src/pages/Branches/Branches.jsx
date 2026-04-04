@@ -61,8 +61,15 @@ class Branches extends React.Component {
         });
     };
 
+    viewModal = () => {
+        const { setShowModal, setSelectedUsers } = BranchStore.getState();
+        const { fetchUsers } = AuthStore.getState();
+        fetchUsers();
+        setSelectedUsers([]);
+        setShowModal(true);
+    }
+
     render() {
-        const { setShowModal } = BranchStore.getState();
         const filteredBranches = this.getFilteredBranches();
 
         return (
@@ -85,7 +92,7 @@ class Branches extends React.Component {
                         <Button
                             error
                             text="NEW BRANCH"
-                            onClick={() => setShowModal(true)}
+                            onClick={() => this.viewModal()}
                         />
                     </div>
                 </div>

@@ -79,7 +79,8 @@ export default function App() {
     editUserModal,
     setEditUserModal,
     timeInModal,
-    setTimeInModal
+    setTimeInModal,
+    viewBranch
   } = ModalStore();
   const {
     setProductData,
@@ -99,7 +100,7 @@ export default function App() {
     newBranch,
     branches,
     selectedUsersToAdd, 
-    setSelectedUsers 
+    setSelectedUsers,
   } = BranchStore();
   const {
     timeData
@@ -798,6 +799,18 @@ export default function App() {
     );
   }
 
+  const viewBranchClerks = () => {
+    const { selectedBranchView } = BranchStore.getState();
+    const { setViewBranch } = ModalStore.getState();
+    const clerks = selectedBranchView.clerks;
+    //console.log(clerks);
+    return (
+      <Modal header="View branch details" subHeader="View branch details and clerks" onClose={() => setViewBranch(false)}>
+        <Table data={clerks}/>
+      </Modal>
+    );
+  }
+
   const viewTimeRecordModal = () => {
     const { singleUser } = AuthStore.getState();
     if (!singleUser) return;
@@ -870,6 +883,7 @@ export default function App() {
         {editUserModal && showUserModal(true)}
         {showModalBranch && AddBranchModal()}
         {timeInModal && viewTimeRecordModal()}
+        {viewBranch && viewBranchClerks()}
       </>
     );
   };
