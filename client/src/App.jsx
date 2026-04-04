@@ -22,7 +22,7 @@ import Toast from "./toast/Toast.jsx";
 import Strings from "./strings/strings-codes.js";
 import Branches from "./pages/Branches/Branches.jsx";
 import { Table } from "./components/TRTable/TrTable.jsx";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import Button from "./components/TRButton/Button.jsx";
 import BranchStore from "./context/BranchStore.js";
 import TimeInOutStore from "./context/TimeinOut.js";
@@ -98,6 +98,8 @@ export default function App() {
     setBranchInput,
     newBranch,
     branches,
+    selectedUsersToAdd, 
+    setSelectedUsers 
   } = BranchStore();
   const {
     timeData
@@ -140,7 +142,7 @@ export default function App() {
 
   const addBranch = (e) => {
     e.preventDefault();
-    newBranch();
+    newBranch(selectedUsersToAdd);
   }
 
   const showDeleteConfirmModal = () => {
@@ -251,7 +253,7 @@ export default function App() {
               value={isUpdate ? selectedItem.salary : null}
             />
           </InputRow>
-          <InputRow gap={15} titles={["Role", "Shift"]}>
+          <InputRow gap={15} titles={["Role", "Shift", "Gender"]}>
             <DropDown
               maxWidth
               options={["Admin", "Clerk"]}
@@ -270,8 +272,6 @@ export default function App() {
               value={isUpdate ? selectedItem.shift : null}
               disabled={currentRole === "Admin"}
             />
-          </InputRow>
-          <InputRow gap={15} titles={["Gender", "Branch"]}>
             <DropDown
               maxWidth
               options={["Male", "Female"]}
@@ -279,15 +279,19 @@ export default function App() {
               onChange={(value) => setInput("gender", value)}
               value={isUpdate ? selectedItem.gender : null}
             />
-            <DropDown
-              maxWidth
-              options={mainBranches}
-              defaultValue="Branch"
-              onChange={(value) => setInput("branch", value)}
-              value={isUpdate ? selectedItem.branchLocation : null}
-              disabled={currentRole === "Admin"}
-            />
           </InputRow>
+          {isUpdate && (
+            <InputRow gap={15} titles={["Gender", "Branch"]}>
+              <DropDown
+                maxWidth
+                options={mainBranches}
+                defaultValue="Branch"
+                onChange={(value) => setInput("branch", value)}
+                value={isUpdate ? selectedItem.branchLocation : null}
+                disabled={currentRole === "Admin"}
+              />
+            </InputRow>
+          )}
         </InputForm>
       </Modal>
     );
@@ -409,7 +413,7 @@ export default function App() {
   };
 
   const viewUserChangesModal = () => {
-    const { updatedItem } = ModalStore.getState();
+    const { updatedItem, oldBranch } = ModalStore.getState();
     const { data, oldModel } = updatedItem;
 
     return (
@@ -501,7 +505,7 @@ export default function App() {
               <InputField
                 text
                 placeholder="Branch"
-                value={oldModel.branchLocation}
+                value={oldBranch}
                 disabled
               />
             </InputRow>
@@ -513,7 +517,7 @@ export default function App() {
                 text
                 placeholder="Username"
                 value={data.username}
-                color={oldModel.username !== data.username && "#F59E0B"}
+                color={oldModel.username !== data.username && "#22C55E"}
                 disabled
               />
               <InputField
@@ -521,7 +525,7 @@ export default function App() {
                 placeholder="Email"
                 value={data.email}
                 disabled
-                color={oldModel.email !== data.email && "#F59E0B"}
+                color={oldModel.email !== data.email && "#22C55E"}
               />
             </InputRow>
             <InputRow
@@ -533,21 +537,21 @@ export default function App() {
                 placeholder="First Name"
                 value={data.firstName}
                 disabled
-                color={oldModel.firstName !== data.firstName && "#F59E0B"}
+                color={oldModel.firstName !== data.firstName && "#22C55E"}
               />
               <InputField
                 text
                 placeholder="Middle Name"
                 value={data.middleName}
                 disabled
-                color={oldModel.middleName !== data.middleName && "#F59E0B"}
+                color={oldModel.middleName !== data.middleName && "#22C55E"}
               />
               <InputField
                 text
                 placeholder="Last Name"
                 value={data.lastName}
                 disabled
-                color={oldModel.lastName !== data.lastName && "#F59E0B"}
+                color={oldModel.lastName !== data.lastName && "#22C55E"}
               />
             </InputRow>
             <InputRow gap={15} titles={["Phone Number", "Address", "Salary"]}>
@@ -556,21 +560,21 @@ export default function App() {
                 placeholder="First Name"
                 value={data.phoneNumber}
                 disabled
-                color={oldModel.phoneNumber !== data.phoneNumber && "#F59E0B"}
+                color={oldModel.phoneNumber !== data.phoneNumber && "#22C55E"}
               />
               <InputField
                 text
                 placeholder="Middle Name"
                 value={data.address}
                 disabled
-                color={oldModel.address !== data.address && "#F59E0B"}
+                color={oldModel.address !== data.address && "#22C55E"}
               />
               <InputField
                 text
                 placeholder="Last Name"
                 value={data.salary}
                 disabled
-                color={oldModel.salary !== data.salary && "#F59E0B"}
+                color={oldModel.salary !== data.salary && "#22C55E"}
               />
             </InputRow>
             <InputRow gap={15} titles={["Role", "Shift"]}>
@@ -579,14 +583,14 @@ export default function App() {
                 placeholder="Role"
                 value={data.role}
                 disabled
-                color={oldModel.role !== data.role && "#F59E0B"}
+                color={oldModel.role !== data.role && "#22C55E"}
               />
               <InputField
                 text
                 placeholder="Shift"
                 value={data.shift}
                 disabled
-                color={oldModel.shift !== data.shift && "#F59E0B"}
+                color={oldModel.shift !== data.shift && "#22C55E"}
               />
             </InputRow>
             <InputRow gap={15} titles={["Gender", "Branch"]}>
@@ -595,7 +599,7 @@ export default function App() {
                 placeholder="Gender"
                 value={data.gender}
                 disabled
-                color={oldModel.gender !== data.gender && "#F59E0B"}
+                color={oldModel.gender !== data.gender && "#22C55E"}
               />
               <InputField
                 text
@@ -603,8 +607,9 @@ export default function App() {
                 value={data.branchLocation}
                 disabled
                 color={
-                  oldModel.branchLocation !== data.branchLocation && "#F59E0B"
+                  oldBranch !== data.branchLocation && "#22C55E"
                 }
+                textColor="black"
               />
             </InputRow>
           </InputForm>
@@ -701,7 +706,7 @@ export default function App() {
               <InputField
                 text
                 placeholder="Product Name"
-                color={oldData.productName !== data.productName && "#F59E0B"}
+                color={oldData.productName !== data.productName && "#22C55E"}
                 disabled
                 value={data.productName}
               />
@@ -710,14 +715,14 @@ export default function App() {
               <InputField
                 number
                 placeholder="Quantity"
-                color={oldData.quantity !== data.quantity && "#F59E0B"}
+                color={oldData.quantity !== data.quantity && "#22C55E"}
                 disabled
                 value={data.quantity}
               />
               <InputField
                 number
                 placeholder="Price"
-                color={oldData.price !== data.price && "#F59E0B"}
+                color={oldData.price !== data.price && "#22C55E"}
                 disabled
                 value={data.price}
               />
@@ -726,7 +731,7 @@ export default function App() {
               <InputField
                 text
                 placeholder="Category"
-                color={oldData.category !== data.category && "#F59E0B"}
+                color={oldData.category !== data.category && "#22C55E"}
                 disabled
                 value={data.category}
               />
@@ -734,7 +739,7 @@ export default function App() {
                 text
                 placeholder="Branch"
                 color={
-                  oldData.productBranch !== data.productBranch && "#F59E0B"
+                  oldData.productBranch !== data.productBranch && "#22C55E"
                 }
                 disabled
                 value={data.productBranch}
@@ -767,11 +772,18 @@ export default function App() {
     );
   };
 
-  const AddBranchModal = () => {
-    // const users2 = users.map(data=>data.username);
-    // console.log(users2);
-    //const clerks = users.filter(d => d.role.toLowerCase() === 'clerk')
-                        //.map((d => d.username));
+  const AddBranchModal = () => { 
+    const { users } = AuthStore.getState();
+
+    const addToSelected = (data) => {
+      const alreadyAdded = selectedUsersToAdd.some(d => d.Id === data.Id);
+      if (alreadyAdded) return toast.error('Already added this user');
+      setSelectedUsers(prev => [...prev, data]);
+    };
+
+    const removeFromSelected = (data) => {
+      setSelectedUsers(prev => prev.filter(d => d.Id !== data.Id));
+    };
 
     return (
       <Modal header="Add branches" subHeader="Add branches to your liking" onClose={() => setShowModal(false)}>
@@ -779,9 +791,8 @@ export default function App() {
           <InputRow titles={['Set location']}>
             <InputField text placeholder="Set Branch Location" onChange={value => setBranchInput('location', value)}/>
           </InputRow>
-          {/* <InputRow titles={['Assign user']}>
-            <DropDown options={clerks} defaultValue="user" onChange={value => setBranchInput('clerk', value)}/>
-          </InputRow> */}
+          <Table data={selectedUsersToAdd || []} limit={4} onRowSelect={(e) => removeFromSelected(e)}/>
+          <Table data={users} limit={4} onRowSelect={(e) => addToSelected(e)}/>
         </InputForm>
       </Modal>
     );

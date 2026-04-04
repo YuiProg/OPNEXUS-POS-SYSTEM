@@ -73,6 +73,7 @@ class InputField extends React.Component {
       isRequired,
       email,
       maxLength,
+      textColor
     } = this.props;
 
     return (
@@ -88,7 +89,7 @@ class InputField extends React.Component {
               <input
                 style={
                   disabled
-                    ? { backgroundColor: color, cursor: "not-allowed" }
+                    ? { backgroundColor: color, color: textColor || 'white', cursor: "not-allowed" }
                     : { backgroundColor: color }
                 }
                 type={

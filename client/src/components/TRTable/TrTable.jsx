@@ -31,7 +31,9 @@ export class Table extends React.Component {
     };
   }
 
-  rowsPerPage = 10;
+  get rowsPerPage() {
+    return this.props.limit || 10;
+  }
 
   componentDidUpdate(prevProps) {
     if (prevProps.search !== this.props.search) {

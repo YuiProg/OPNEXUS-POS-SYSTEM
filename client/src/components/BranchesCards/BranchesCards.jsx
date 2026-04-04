@@ -19,7 +19,6 @@ class BranchesCards extends React.Component {
 
         
         const {
-            // eslint-disable-next-line no-unused-vars
             data
         } = this.props;
         console.log(data);
@@ -32,13 +31,12 @@ class BranchesCards extends React.Component {
                             <h1 className="branch-card-header">{data.location}</h1>
                             <div className="branch-card-button-items">
                                 <div>
-                                    <p className="branch-card-clerk">Clerk</p>
-                                    <h3 className="branch-card-clerk-header">{data.clerkName}</h3>
+                                    <p className="branch-card-clerk">Clerks count: {data.clerks.length}</p>
                                 </div>
-                                <div>
+                                {/* <div>
                                     <p className="branch-card-clerk">Session</p>
                                     <h3 className="branch-card-clerk-header">{data.session}</h3>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>

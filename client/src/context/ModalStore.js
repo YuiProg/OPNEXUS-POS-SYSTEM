@@ -9,6 +9,7 @@ const ModalStore = create((set) => ({
     selectedItems: [],
     selectedItem: null,
     timeInModal: false,
+    oldBranch: null,
     url: "",
 
     //viewing
@@ -31,6 +32,8 @@ const ModalStore = create((set) => ({
     //update view item
     updatedItem: null,
     setUpdatedItem: (item) => set({updatedItem: item}),
+
+    setOldBranch: (data) => set({oldBranch: data}),
 
     setYesNoModal: (val) => set({yesNoModal: val}),
     setSelectedItem: (item) => set({selectedItem: item}),
