@@ -1,0 +1,93 @@
+body {
+  background: #111111;
+}
+
+.error-container {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.error-container .error-text {
+  font-size: 24px;
+  font-weight: 200;
+  display: flex;
+  justify-content: center;
+  color: #fff;
+}
+
+.loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.loaderMiniContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 130px;
+  height: fit-content;
+}
+.barContainer {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 10px;
+  background-position: left;
+}
+.bar {
+  width: 100%;
+  height: 8px;
+  background: linear-gradient(
+    to right,
+    #C4161C,
+    #F59E0B,
+    #C4161C
+  );
+  background-size: 200% 100%;
+  border-radius: 10px;
+  animation: bar ease-in-out 3s infinite alternate-reverse;
+}
+@keyframes bar {
+  0% {
+    background-position: left;
+  }
+  100% {
+    background-position: right;
+  }
+}
+.bar2 {
+  width: 50%;
+}
+.svgIcon {
+  position: absolute;
+  left: -25px;
+  margin-top: 18px;
+  z-index: 2;
+  width: 70%;
+  animation: search ease-in-out 3s infinite alternate-reverse;
+}
+@keyframes search {
+  0% {
+    transform: translateX(0%) rotate(70deg);
+  }
+
+  100% {
+    transform: translateX(100px) rotate(10deg);
+  }
+}
+.svgIcon circle,
+line {
+  stroke: #C4161C;
+}
+.svgIcon circle {
+  fill: rgba(98, 65, 142, 0.238);
+}
