@@ -27,6 +27,8 @@ import Button from "./components/TRButton/Button.jsx";
 import BranchStore from "./context/BranchStore.js";
 import TimeInOutStore from "./context/TimeinOut.js";
 
+
+const ServerError = lazy(() => import("./components/ErrorPages/ServerError/ServerError.jsx"));
 const Logs = lazy(() => import("./pages/LogsPage/Logs.jsx"));
 const Inventory = lazy(() => import("./pages/Inventory/Inventory.jsx"));
 const Dashboard = lazy(() => import("./pages/DashBoard/Dashboard.jsx"));
@@ -80,7 +82,7 @@ export default function App() {
     setEditUserModal,
     timeInModal,
     setTimeInModal,
-    viewBranch
+    viewBranch,
   } = ModalStore();
   const {
     setProductData,
@@ -121,7 +123,8 @@ export default function App() {
       <div>
         <Loading />
       </div>
-    );
+  );
+
 
   const defaultRoute =
     AuthUser?.role.toLowerCase() === "clerk" ? "/timeinout" : "/dashboard";
@@ -997,7 +1000,10 @@ export default function App() {
               </Sidebar>
             )}
           />
+          {/* NO URL */}
           <Route path="*" element={<Navigate to="/" replace />} />
+
+          <Route path="/servererror" element={<ServerError/>}/>
         </Routes>
       </Suspense>
     </>

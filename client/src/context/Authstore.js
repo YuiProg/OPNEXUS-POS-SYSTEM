@@ -114,6 +114,7 @@ const AuthStore = create((set, get) => ({
     },
     
     logoutUser: async () => {
+        const { setServerError } = ModalStore.getState();
         try {
             set({AuthLoading: true});
             
@@ -126,6 +127,7 @@ const AuthStore = create((set, get) => ({
         } catch (error) {
             toast.error(error.message);
             set({errorUser: axiosError(error)});
+            setServerError(true);
             return false;
         } finally {
             set({AuthLoading: false});
@@ -135,7 +137,7 @@ const AuthStore = create((set, get) => ({
     },
 
     addUser: async (isAdmin) => {
-        const { setShowAddModal } = ModalStore.getState();
+        const { setShowAddModal, setServerError } = ModalStore.getState();
         //const { getBranchByLocation } = BranchStore.getState();
         try {
             const data = get().input;
@@ -222,11 +224,13 @@ const AuthStore = create((set, get) => ({
         } catch (error) {
             toast.error(error.message);
             set({errorUser: axiosError(error)});
+            setServerError(true);
         }
     },
 
     fetchUsers: async () => {
         set({fetchLoading: true});
+        const { setServerError } = ModalStore.getState();
         try {
             const users = await axiosInstance.get(fetchUsers);
             const data = users.data.data;
@@ -241,6 +245,7 @@ const AuthStore = create((set, get) => ({
             set({users: cleanedData});
         } catch (error) {
             //toast.error(error.message);
+            setServerError(true);
             set({errorUser: axiosError(error)});
         } finally {
             set({fetchLoading: false});
@@ -249,6 +254,7 @@ const AuthStore = create((set, get) => ({
 
     updateUser: async () => {
         const { getBranchByLocation } = BranchStore.getState();
+        const { setServerError } = ModalStore.getState();
         try {
             const { selectedItem, setUpdatedItem, setEditUserModal, setChangesModal, setOldBranch } = ModalStore.getState();
             const {
@@ -320,6 +326,7 @@ const AuthStore = create((set, get) => ({
         } catch (error) {
             toast.error(error.message);
             set({errorUser: axiosError(error)});
+            setServerError(true);
         }
     },
 
@@ -337,7 +344,7 @@ const AuthStore = create((set, get) => ({
     },
 
     deleteMultipleUsers: async (data) => {
-        // eslint-disable-next-line no-unused-vars
+        const { setServerError } = ModalStore.getState();
         const ids = data.map((i, _) => i.Id);
         try {
             const res = await axiosInstance.post(deleteMultipleUsers, ids);
@@ -352,6 +359,7 @@ const AuthStore = create((set, get) => ({
         } catch (error) {
             toast.error(error.message);
             set({errorUser: axiosError(error)});
+            setServerError(true);
         }
     },
 

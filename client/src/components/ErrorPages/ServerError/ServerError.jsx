@@ -1,7 +1,19 @@
 import React from 'react';
 import './ServerError.css';
+import { useEffect } from 'react';
+import ModalStore from '../../../context/ModalStore';
+import { useNavigate } from 'react-router-dom';
 
 const ServerError = () => {
+const navigate = useNavigate();
+const { serverError } = ModalStore();
+
+  useEffect(() => {
+    if (!serverError) {
+      navigate("/dashboard");
+    }
+  },[navigate, serverError]);
+
   return (
     <div className="error-container">
       <div className="error-content">

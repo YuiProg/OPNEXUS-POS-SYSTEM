@@ -5,7 +5,6 @@ import ApiConfig from "../Api/ApiConfig";
 import axiosError from "../helpers/axiosError";
 import ModalStore from "./ModalStore";
 import toast from "react-hot-toast";
-import Modal from "@mui/material/Modal";
 
 const {
   addProduct,
@@ -101,6 +100,7 @@ const ProductStore = create((set, get) => ({
     } catch (error) {
       toast.error(error.message);
       set({ errorProduct: axiosError(error) });
+      window.location.href = "/servererror"
     } finally {
       set({ addLoading: false });
       set({ image: null });
@@ -111,6 +111,7 @@ const ProductStore = create((set, get) => ({
   //todo selected branch
   fetchProducts: async () => {
     set({fetchLoading: true});
+    const { setServerError } = ModalStore.getState();
     try {
       const { selectedBranch } = AuthStore.getState();
       console.log(selectedBranch);
@@ -145,9 +146,11 @@ const ProductStore = create((set, get) => ({
       set({ products: cleanedData });
       console.log(cleanedData);
     } catch (error) {
+      setServerError(true);
       toast.error(error.message);
       console.log(error);
       set({ errorProduct: axiosError(error) });
+      window.location.href = "/servererror"
     } finally {
       set({fetchLoading: false});
     }
@@ -165,6 +168,7 @@ const ProductStore = create((set, get) => ({
       toast.error(error.message);
       console.log(error);
       set({ errorProduct: axiosError(error) });
+      window.location.href = "/servererror"
     } finally {
       set({ addLoading: false });
     }
@@ -203,6 +207,7 @@ const ProductStore = create((set, get) => ({
       toast.error(error.message);
       console.log(error);
       set({ errorProduct: axiosError(error) });
+      window.location.href = "/servererror"
     } finally {
       get().fetchProducts();
       set({ image: null });
@@ -228,6 +233,7 @@ const ProductStore = create((set, get) => ({
       toast.error(error.message);
       console.log(error);
       set({ errorProduct: axiosError(error) });
+      window.location.href = "/servererror"
     } finally {
       set({addLoading: false});
     }
@@ -252,6 +258,7 @@ const ProductStore = create((set, get) => ({
       toast.error(error.message);
       console.log(error);
       set({ errorProduct: axiosError(error) });
+      window.location.href = "/servererror"
     } finally {
       setYesNoModal(false);
     }
