@@ -26,12 +26,15 @@ export const addBranches = async (req, res) => {
         //update clerk's branches
 
         const clerks = data.clerks;
-        
+        console.log(clerks);
         for (let i = 0; i < clerks.length; i++) {
-            await User.updateUser(clerks[i].Id, {branchLocation: data.location});
-
-            if (clerks[i].branchLocation != null) {
+            if (clerks[i].branchLocation != "N/A") {
                 return ApiResponseModel(res, ERROR, `${clerks[i].Username} already has a branch!`);
+            }
+            try {
+                await User.updateUser(clerks[i].Id, {branchLocation: data.location});   
+            } catch (error) {
+                ApiResponseModel(res, ERROR, error.message);
             }
         }
 
@@ -48,10 +51,18 @@ export const updateBranch = async (req, res) => {
         const { location } = req.params;
         const data = req.body;
         const user = await User.getSingleUser(data.Id);
-        if (user.branchLocation !== null) {
-            await Branch.removeUserFromOldBranch(user.branchLocation, data);
+        console.log(user.branchLocation);
+        if (user.branchLocation !== "N/A") {
+            try {
+                console.log(data);
+                console.log(user.branchLocation);
+                await Branch.removeUserFromOldBranch(user.branchLocation, data);
+            } catch (error) {
+                return ApiResponseModel(res, ERROR, error.message);
+            }
+            
         }
-         const updateUser = await User.updateUser(data.Id, {branchLocation: location});
+         const updateUser = await User.updateUser(user._id, {branchLocation: location});
         //console.log(user)
         const updatedBranch = await Branch.updateBranch(location, data);
         ApiResponseModel(res, SUCCESS, GET_BRANCH, {updatedBranch, updateUser});

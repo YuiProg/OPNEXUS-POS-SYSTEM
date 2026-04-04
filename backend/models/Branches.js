@@ -54,7 +54,7 @@ branchSchema.statics.getBranchByLocation = async function (location) {
 branchSchema.statics.updateBranch = async function (location, data) {
     const updatedBranch = await this.findOneAndUpdate({location}, {
         $addToSet: {
-            clerks: data
+            clerks: {Id: data.Id}
         }
     }, {new: true});
     return updatedBranch;
@@ -63,7 +63,7 @@ branchSchema.statics.updateBranch = async function (location, data) {
 branchSchema.statics.removeUserFromOldBranch = async function (location, data) {
     await this.findOneAndUpdate({location}, {
         $pull: {
-            clerks: data
+            clerks: {Id: data.Id}
         }
     });
 }

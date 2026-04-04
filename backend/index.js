@@ -54,12 +54,12 @@ app.get('/test', (req, res) => {
 
 // --- RENDER PRODUCTION LOGIC ---
 if (process.env.NODE_ENV === 'production') {
-    // Note the '..' - this jumps out of /backend to find /client
     const clientDistPath = path.join(__dirname, 'client', 'dist');
     
     app.use(express.static(clientDistPath));
 
-    app.get('/*', (req, res) => {
+    // Change '/:any*' to this Regex:
+    app.get(/^(?!\/api).+/, (req, res) => {
         res.sendFile(path.resolve(clientDistPath, 'index.html'));
     });
 }

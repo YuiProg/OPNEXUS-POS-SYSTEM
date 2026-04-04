@@ -20,6 +20,9 @@ const BranchStore = create((set, get) => ({
     },
     selectedBranch: "Branch",
     selectedUsersToAdd: [],
+    selectedBranchView: null,
+
+    setSelectedBranchView: (data) => set({selectedBranchView: data}),
 
     setBranchInput: (name, val) => {
         set((state) => ({

@@ -10,11 +10,13 @@ const ModalStore = create((set) => ({
     selectedItem: null,
     timeInModal: false,
     oldBranch: null,
+    viewBranch: false,
     url: "",
 
     //viewing
     viewProductModal: false,
     setViewProductModal: (val) => set({viewProductModal: val}),
+    setViewBranch: (val) => set({viewBranch: val}),
     //view update changes
     changesModal: false,
     setChangesModal: (val) => set({changesModal: val}),
