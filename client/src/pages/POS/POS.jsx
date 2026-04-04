@@ -10,8 +10,9 @@ class POS extends React.Component {
     }
 
     componentDidMount() {
-        const { fetchProducts } = ProductStore.getState();
+        const { fetchProducts, subscribeToProducts } = ProductStore.getState();
         fetchProducts();
+        subscribeToProducts();
     }
 
     render () {
