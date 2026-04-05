@@ -26,6 +26,7 @@ import toast, { Toaster } from "react-hot-toast";
 import Button from "./components/TRButton/Button.jsx";
 import BranchStore from "./context/BranchStore.js";
 import TimeInOutStore from "./context/TimeinOut.js";
+import URLError from "./components/ErrorPages/URLError/URLError.jsx";
 
 
 const ServerError = lazy(() => import("./components/ErrorPages/ServerError/ServerError.jsx"));
@@ -83,6 +84,7 @@ export default function App() {
     timeInModal,
     setTimeInModal,
     viewBranch,
+    setSelectedItem
   } = ModalStore();
   const {
     setProductData,
@@ -103,6 +105,9 @@ export default function App() {
     branches,
     selectedUsersToAdd, 
     setSelectedUsers,
+    removeUserFromBranch,
+    confirmDelete,
+    setConfirmDelete
   } = BranchStore();
   const {
     timeData
@@ -173,6 +178,7 @@ export default function App() {
   const showUserModal = (isUpdate) => {
     const mainBranches = branches?.map(d => d.location);
     //console.log(mainBranches);
+    console.log(selectedItem);
     return (
       <Modal
         onClose={() => setShowAddModal(false) || setEditUserModal(false)}
@@ -285,13 +291,13 @@ export default function App() {
             />
           </InputRow>
           {isUpdate && (
-            <InputRow gap={15} titles={["Gender", "Branch"]}>
+            <InputRow gap={15} titles={["Branch"]}>
               <DropDown
                 maxWidth
                 options={mainBranches}
                 defaultValue="Branch"
                 onChange={(value) => setInput("branch", value)}
-                value={isUpdate ? selectedItem.branchLocation : null}
+                value={isUpdate ? selectedItem.branchLocation : 'N/A'}
                 disabled={currentRole === "Admin"}
               />
             </InputRow>
@@ -311,9 +317,10 @@ export default function App() {
   };
 
   const showYesNoModal = () => {
+    console.log(selectedItem);
     return (
       <ModalYesNo
-        message={`Are you sure you want to delete ${url === "staff" ? selectedItem.Employee : selectedItem.Name}?`}
+        message={`Are you sure you want to delete ${url === "staff" ? selectedItem.Username : selectedItem.Username}?`}
         onClose={() => setYesNoModal(false)}
         onYes={() =>
           url === "staff"
@@ -802,16 +809,39 @@ export default function App() {
     );
   }
 
-  const viewBranchClerks = () => {
-    const { selectedBranchView } = BranchStore.getState();
-    const { setViewBranch } = ModalStore.getState();
-    const clerks = selectedBranchView.clerks;
-    //console.log(clerks);
-    return (
-      <Modal header="View branch details" subHeader="View branch details and clerks" onClose={() => setViewBranch(false)}>
-        <Table data={clerks}/>
-      </Modal>
+  const confirmDeleteUserFromBranch = () => {
+    return(
+      <ModalYesNo
+        message={`Are you sure you want to remove ${selectedItem.Username} from this branch?`}
+        onClose={() => setConfirmDelete(false)}
+        onYes={() => removeUserFromBranch(selectedItem)}
+      />
     );
+  }
+
+  const yesNoModalBranchDeleteUser = (data) => {
+    setConfirmDelete(true);
+    setSelectedItem(data);
+  }
+
+  const viewBranchClerks = () => {
+      const { selectedBranchView } = BranchStore.getState();
+      const { setViewBranch } = ModalStore.getState();
+      const clerks = selectedBranchView.clerks;
+      
+      /* eslint-disable-next-line no-unused-vars*/
+      const filteredClerks = clerks.map(({ branchLocation, ...rest }) => rest);
+      
+      return (
+        <Modal header="View branch details" subHeader="View branch details and clerks" onClose={() => setViewBranch(false)}>
+          <Table 
+            data={filteredClerks} 
+            hasAction
+            onEdit={() => toast.error('Cant edit users')}
+            onDelete={(e) => yesNoModalBranchDeleteUser(e)}
+          />
+        </Modal>
+      );
   }
 
   const viewTimeRecordModal = () => {
@@ -887,6 +917,7 @@ export default function App() {
         {showModalBranch && AddBranchModal()}
         {timeInModal && viewTimeRecordModal()}
         {viewBranch && viewBranchClerks()}
+        {confirmDelete && confirmDeleteUserFromBranch()}
       </>
     );
   };
@@ -1000,9 +1031,8 @@ export default function App() {
               </Sidebar>
             )}
           />
-          {/* NO URL */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-
+          {/* NO URL AND ERROR */}
+          <Route path="*" element={<URLError/>} />
           <Route path="/servererror" element={<ServerError/>}/>
         </Routes>
       </Suspense>

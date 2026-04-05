@@ -71,9 +71,9 @@ const TimeInOutStore = create((set) => ({
             // }
 
             //localStorage.setItem('timein', JSON.stringify(json));
-            console.log(time);
+            console.log(AuthUser);
             const timein = await axiosInstance.post(TIMEIN, {time});
-            const activeBranch = await axiosInstance.post(SETBRANCHACTIVE.replace(':location', AuthUser.branchLocation));
+            const activeBranch = await axiosInstance.post(SETBRANCHACTIVE.replace(':location', AuthUser.branchLocation), AuthUser);
             await checkAuth();
             console.log(activeBranch.data);
             console.log(timein.data);
@@ -104,7 +104,7 @@ const TimeInOutStore = create((set) => ({
                 clockOut: time
             };
             const timeout = await axiosInstance.post(TIMEOUT, payload);
-            const activeBranch = await axiosInstance.post(SETBRANCHOFFLINE.replace(':location', AuthUser.branchLocation));
+            const activeBranch = await axiosInstance.post(SETBRANCHOFFLINE.replace(':location', AuthUser.branchLocation), AuthUser);
             console.log(activeBranch);
             await checkAuth();
             const {data} = timeout.data;

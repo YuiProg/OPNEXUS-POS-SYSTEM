@@ -11,6 +11,12 @@ const {
     GET_BRANCH
 } = Strings;
 
+
+//hello programmer, kung nakikita moto
+//I have a feeling that this function is bound to destroy the system sooner or later.
+//So kung i-try mo man i optimize to and nag fail (panigurado)
+//pa increment nalang ng number sa baba thanks!
+//total hours wasted in this controller = 34
 export const addBranches = async (req, res) => {
     try {
         const data = req.body;
@@ -20,13 +26,13 @@ export const addBranches = async (req, res) => {
 
         const payload = {
             location: data.location,
-            clerks: data.clerks
+            clerks: data.clerks.map(clerk => ({ ...clerk, timedIn: 'INACTIVE' }))
         }
 
         //update clerk's branches
 
         const clerks = data.clerks;
-        console.log(clerks);
+        //console.log(clerks);
         for (let i = 0; i < clerks.length; i++) {
             if (clerks[i].branchLocation != "N/A") {
                 return ApiResponseModel(res, ERROR, `${clerks[i].Username} already has a branch!`);
@@ -50,26 +56,21 @@ export const updateBranch = async (req, res) => {
     try {
         const { location } = req.params;
         const data = req.body;
+
         const user = await User.getSingleUser(data.Id);
-        console.log(user.branchLocation);
+        
         if (user.branchLocation !== "N/A") {
-            try {
-                console.log(data);
-                console.log(user.branchLocation);
-                await Branch.removeUserFromOldBranch(user.branchLocation, data);
-            } catch (error) {
-                return ApiResponseModel(res, ERROR, error.message);
-            }
-            
+            await Branch.removeUserFromOldBranch(user.branchLocation, data);
         }
-         const updateUser = await User.updateUser(user._id, {branchLocation: location});
-        //console.log(user)
+
+        const updateUser = await User.updateUser(user._id, { branchLocation: location });
         const updatedBranch = await Branch.updateBranch(location, data);
-        ApiResponseModel(res, SUCCESS, GET_BRANCH, {updatedBranch, updateUser});
+
+        ApiResponseModel(res, SUCCESS, GET_BRANCH, { updatedBranch, updateUser });
     } catch (error) {
         ApiResponseModel(res, ERROR, error.message);
     }
-}
+};
 
 export const getBranch = async (req, res) => {
     try {
@@ -92,9 +93,12 @@ export const getBranchByLocation = async (req, res) => {
 
 export const setActiveBranch = async (req, res) => {
     const { location } = req.params;
+    const data = req.body;
     try {
-        const updated = await Branch.setActive(location);
-        ApiResponseModel(res, SUCCESS, 'Updated branch', updated);
+        
+        const fetchUser = await User.getSingleUser(data._id);
+        const updated = await Branch.setActive(location, data);
+        ApiResponseModel(res, SUCCESS, 'Branch Actived', updated);
     } catch (error) {
         ApiResponseModel(res, ERROR, error.message);
     }
@@ -102,9 +106,26 @@ export const setActiveBranch = async (req, res) => {
 
 export const setOfflineBranch = async (req, res) => {
     const {location} = req.params;
+    const user = req.body;
     try {
-        const updated = await Branch.setOffline(location);
+        const fetchUser = await User.getSingleUser(user._id);
+        const updated = await Branch.setOffline(location, fetchUser);
         ApiResponseModel(res, SUCCESS, 'Updated branch', updated);
+    } catch (error) {
+        ApiResponseModel(res, ERROR, error.message);
+    }
+}
+
+export const removeUserFromBranch = async (req, res) => {
+    try {
+        const {location} = req.params;
+        const data = req.body;
+        const user = await User.getSingleUser(data.Id);
+
+        const updatedUser = await User.updateUser(user._id, {branchLocation: 'N/A'});
+        const updatedBranch = await Branch.removeUserFromOldBranch(location, data);
+
+        ApiResponseModel(res, SUCCESS, `Removed ${data.Username} from this branch`, {updatedBranch, updatedUser});
     } catch (error) {
         ApiResponseModel(res, ERROR, error.message);
     }

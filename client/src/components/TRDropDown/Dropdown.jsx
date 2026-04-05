@@ -7,14 +7,14 @@ class DropDown extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: this.props.value ? this.props.value : ""
+      value: (this.props.value && this.props.value !== "N/A") ? this.props.value : ""
     };
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.value !== this.props.value && this.props.value !== undefined) {
       this.setState({
-        value: this.props.value
+        value: this.props.value === "N/A" ? "" : this.props.value
       });
     }
   }

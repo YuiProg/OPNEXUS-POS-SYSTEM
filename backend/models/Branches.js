@@ -61,7 +61,8 @@ branchSchema.statics.updateBranch = async function (location, data) {
                 shift: data.shift,
                 salary: data.salary,
                 role: data.role,
-                phoneNumber: data.phoneNumber
+                phoneNumber: data.phoneNumber,
+                timedIn: 'INACTIVE'
             }
         }
     }, {new: true});
@@ -76,15 +77,41 @@ branchSchema.statics.removeUserFromOldBranch = async function (location, data) {
     });
 }
 
-branchSchema.statics.setActive = async function (location) {
-    const res = await this.findOneAndUpdate({location}, {active: true}, {new: true});
+branchSchema.statics.setActive = async function (location, data) {
+    const res = await this.findOneAndUpdate(
+        { 
+            location: location,
+            "clerks.Id": data._id  
+        },
+        { 
+            $set: { 
+                "clerks.$.timedIn": 'ACTIVE'
+            } 
+        },
+        { new: true }
+    );
     return res;
 }
 
-branchSchema.statics.setOffline = async function (location) {
-    const res = await this.findOneAndUpdate({location}, {active: false}, {new: false});
+branchSchema.statics.setOffline = async function (location, data) {
+    const res = await this.findOneAndUpdate(
+        { 
+            location: location,
+            "clerks.Id": data._id
+        },
+        { 
+            $set: { 
+                "clerks.$.timedIn": 'INACTIVE'
+            } 
+        },
+        { new: true }
+    );
     return res;
 }
+
+// branchSchema.statics.removeUserFromBranch = async function (location, data) {
+
+// }
 
 
 const Branch = mongoose.model('branch', branchSchema);
