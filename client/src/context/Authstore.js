@@ -238,7 +238,22 @@ const AuthStore = create((set, get) => ({
             /* eslint-disable no-unused-vars */
             const cleanedData = data
             .filter((user) => user._id !== userId)
-            .map(({ Employee, username, timedIn, time, createdAt, createdById, updatedAt, __v, firstName, _id, middleName, gender, lastName, address, ...rest }) => ({
+            .map(({ 
+                Employee, 
+                username, 
+                timedIn, 
+                time, 
+                createdAt, 
+                createdById, 
+                updatedAt, 
+                __v, 
+                firstName, 
+                _id, 
+                middleName, 
+                gender, 
+                lastName, 
+                address, 
+                ...rest }) => ({
                 ...rest,
                 branchLocation: rest.branchLocation ?? "N/A",
             }));
@@ -374,8 +389,11 @@ const AuthStore = create((set, get) => ({
                 toast.success('User deleted');
             }
         } catch (error) {
-            toast.error(error.message);
-            set({errorUser: axiosError(error)});
+            if (axiosError(error)) {
+                toast.error(error.response.data.status);
+                set({errorUser: axiosError(error)});
+            }
+
         } finally {
             setYesNoModal(false);
         }

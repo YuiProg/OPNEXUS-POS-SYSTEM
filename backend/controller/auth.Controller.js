@@ -1,5 +1,6 @@
 import generateToken from "../lib/generateToken.js";
 import ApiResponseModel from "../models/ApiResponseModel.js";
+import Branch from "../models/Branches.js";
 import User from "../models/UserModel.js";
 import Strings from "../strings/strings-codes.js";
 
@@ -109,6 +110,14 @@ export const deleteMultiple = async (req, res) => {
 export const deleteSingle = async (req, res) => {
     try {
         const { id } = req.body;
+        const user = await User.getSingleUser(id);
+        if (user.timedIn) {
+            return ApiResponseModel(res, ERROR, 'User is currently timed in!');
+        }
+        //console.log(user.Id);
+        if (user.branchLocation !== 'N/A') {
+            await Branch.removeUserFromOldBranch(user.branchLocation, {Id: user._id});
+        }
         const result = await User.deleteSingleUser(id);
         ApiResponseModel(res, SUCCESS, SUCCESS_MESS, result);
     } catch (error) {

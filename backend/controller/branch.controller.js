@@ -122,6 +122,9 @@ export const removeUserFromBranch = async (req, res) => {
         const data = req.body;
         const user = await User.getSingleUser(data.Id);
 
+        if (user.timedIn) {
+            return ApiResponseModel(res, ERROR, 'User is currently timed in!');
+        }
         const updatedUser = await User.updateUser(user._id, {branchLocation: 'N/A'});
         const updatedBranch = await Branch.removeUserFromOldBranch(location, data);
 

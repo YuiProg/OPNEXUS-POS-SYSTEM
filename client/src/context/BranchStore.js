@@ -95,6 +95,9 @@ const BranchStore = create((set, get) => ({
             const res = await axiosInstance.post(REMOVEUSERFROMBRANCH.replace(':location', get().selectedBranchView.location), data);
             toast.success(res.data.status);
         } catch (error) {
+            if (axiosError(error)) {
+                toast.error(error.response.data.status);
+            }
             console.log(error.message);
         } finally {
             await fetchUsers();
