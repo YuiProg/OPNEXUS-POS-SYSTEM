@@ -3,11 +3,13 @@ import ApiConfig from "../Api/ApiConfig";
 import toast from "react-hot-toast";
 import axiosError from "../helpers/axiosError";
 import axiosInstance from "../helpers/axiosInstance";
+import AuthStore from "./Authstore";
 
 const {
     ADDBRANCH,
     GETBRANCHES,
-    GETBRANCHBYLOCATION
+    GETBRANCHBYLOCATION,
+    REMOVEUSERFROMBRANCH
 } = ApiConfig;
 
 const BranchStore = create((set, get) => ({
@@ -21,6 +23,9 @@ const BranchStore = create((set, get) => ({
     selectedBranch: "Branch",
     selectedUsersToAdd: [],
     selectedBranchView: null,
+    confirmDelete: false,
+
+    setConfirmDelete: (val) => set({confirmDelete: val}),
 
     setSelectedBranchView: (data) => set({selectedBranchView: data}),
 
@@ -81,6 +86,28 @@ const BranchStore = create((set, get) => ({
             return data;
         } catch (error) {
             console.log(error.message);
+        }
+    },
+
+    removeUserFromBranch: async (data) => {
+        const { fetchUsers } = AuthStore.getState();
+        try {
+            const res = await axiosInstance.post(REMOVEUSERFROMBRANCH.replace(':location', get().selectedBranchView.location), data);
+            toast.success(res.data.status);
+        } catch (error) {
+            console.log(error.message);
+        } finally {
+            await fetchUsers();
+            await get().getBranch();
+            
+            // update selectedBranchView to remove the deleted clerk
+            const updatedBranches = get().branches;
+            const updatedBranch = updatedBranches.find(b => b.location === get().selectedBranchView.location);
+            if (updatedBranch) {
+                set({ selectedBranchView: updatedBranch, confirmDelete: false });
+            } else {
+                set({ confirmDelete: false });
+            }
         }
     }
 }));
