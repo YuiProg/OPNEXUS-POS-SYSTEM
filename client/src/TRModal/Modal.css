@@ -85,7 +85,12 @@
 
 .modal-yesno-btns {
     display: flex;
+    justify-content: center;
     gap: 20px;
+}
+
+.modal-yesno-btns .TR-button {
+    width: 100px !important;
 }
 
 .modal-check-error {
@@ -149,9 +154,23 @@
     padding: 10px;
 }
 
+.modal-confirm-texts {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
 .modal-confirm-header {
     font-weight: 200;
     text-align: center;
+    margin: 0;
+}
+
+.modal-confirm-subheader {
+    font-weight: 200;
+    color: #686869;
+    text-align: center;
+    margin: 0;
 }
 
 .modal-child {
