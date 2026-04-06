@@ -62,6 +62,11 @@ const TimeInOutStore = create((set) => ({
             console.log(AuthUser.branchLocation);
             set({timeInHour: time});
             set({timedIn: true});
+            console.log(AuthUser);
+
+            if (AuthUser.branchLocation === 'N/A') {
+                return toast.error('You are not currently in a branch! Contact management.');
+            }
             //const fullName = `${AuthUser.firstName} ${AuthUser.middleName} ${AuthUser.lastName}`;
 
             // const json = {

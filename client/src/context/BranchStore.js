@@ -123,8 +123,12 @@ const BranchStore = create((set, get) => ({
         const { setServerError, setViewBranch, isScreenLoading } = ModalStore.getState();
         try {
             isScreenLoading(true);
+            const clerkIsActive = data.clerks.some(data => data.timedIn === 'ACTIVE');
+            if (clerkIsActive) {
+                return toast.error('A clerk is currently active.');
+            }
             const res = await axiosInstance.post(DELETEBRANCH.replace(':location', data.location), data);
-            console.log(res.data);
+            toast.success(res.data.status);
         } catch (error) {
             console.log(error.message);
             setServerError(true);

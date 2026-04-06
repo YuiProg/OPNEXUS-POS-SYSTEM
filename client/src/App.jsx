@@ -822,6 +822,7 @@ export default function App() {
           ? 'Are you sure you want to remove this branch?' 
           : `Are you sure you want to remove ${selectedItem.Username} from this branch?`
         }
+        message2="This action will remove assigned clerk's respective branches"
         onClose={() => setConfirmDelete(false)}
         onYes={() => deleteBranch ? deleteSelectedBranch(selectedItem) : removeUserFromBranch(selectedItem)}
       />
