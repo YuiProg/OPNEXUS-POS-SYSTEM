@@ -133,3 +133,23 @@ export const removeUserFromBranch = async (req, res) => {
         ApiResponseModel(res, ERROR, error.message);
     }
 }
+
+export const deleteBranch = async (req, res) => {
+    try {
+        const {location} = req.params;
+        const data = req.body;
+
+        const clerks = data.clerks;
+
+        for (let i = 0; i < clerks.length; i++) {
+            const user = await User.getSingleUser(clerks[i].Id);
+            await User.updateUser(user._id, {branchLocation: 'N/A'});
+        }
+
+        const removedBranch = await Branch.deleteBranch(location);
+
+        ApiResponseModel(res, SUCCESS, 'Branch removed', removedBranch);
+    } catch (error) {
+        ApiResponseModel(res, ERROR, error.message);
+    }
+}

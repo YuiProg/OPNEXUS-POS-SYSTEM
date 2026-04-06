@@ -131,6 +131,11 @@ branchSchema.statics.setOffline = async function (location, data) {
     return res;
 }
 
+branchSchema.statics.deleteBranch = async function (location) {
+    const res = await this.deleteOne({location});
+    return res;
+}
+
 // branchSchema.statics.removeUserFromBranch = async function (location, data) {
 
 // }

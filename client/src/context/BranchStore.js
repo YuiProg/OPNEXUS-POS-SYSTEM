@@ -4,12 +4,14 @@ import toast from "react-hot-toast";
 import axiosError from "../helpers/axiosError";
 import axiosInstance from "../helpers/axiosInstance";
 import AuthStore from "./Authstore";
+import ModalStore from "./ModalStore";
 
 const {
     ADDBRANCH,
     GETBRANCHES,
     GETBRANCHBYLOCATION,
-    REMOVEUSERFROMBRANCH
+    REMOVEUSERFROMBRANCH,
+    DELETEBRANCH
 } = ApiConfig;
 
 const BranchStore = create((set, get) => ({
@@ -111,6 +113,22 @@ const BranchStore = create((set, get) => ({
             } else {
                 set({ confirmDelete: false });
             }
+        }
+    },
+
+    deleteSelectedBranch: async (data) => {
+        //get the clerks array first and then remove their branch and then delete the branch : SA BACKEND DAT TO
+        const { setServerError, setViewBranch } = ModalStore.getState();
+        try {
+            const res = await axiosInstance.post(DELETEBRANCH.replace(':location', data.location), data);
+            console.log(res.data);
+        } catch (error) {
+            console.log(error.message);
+            setServerError(true);
+        } finally {
+            get().getBranch();
+            set({confirmDelete: false});
+            setViewBranch(false);
         }
     }
 }));

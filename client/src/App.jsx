@@ -106,6 +106,7 @@ export default function App() {
     selectedUsersToAdd, 
     setSelectedUsers,
     removeUserFromBranch,
+    deleteSelectedBranch,
     confirmDelete,
     setConfirmDelete
   } = BranchStore();
@@ -115,6 +116,7 @@ export default function App() {
 
   const { SERVER_ERROR, PROD_FAIL } = Strings;
   const [currentRole, setCurrentRole] = useState("");
+  const [deleteBranch, setDeleteBranch] = useState(false);
 
   useEffect(() => {
     checkAuth();
@@ -810,20 +812,26 @@ export default function App() {
     );
   }
 
-  const confirmDeleteUserFromBranch = () => {
+  const confirmDeleteUserFromBranch = (deleteBranch) => {
     return(
       <ModalYesNo
-        message={`Are you sure you want to remove ${selectedItem.Username} from this branch?`}
+        message={
+          deleteBranch 
+          ? 'Are you sure you want to remove this branch?' 
+          : `Are you sure you want to remove ${selectedItem.Username} from this branch?`
+        }
         onClose={() => setConfirmDelete(false)}
-        onYes={() => removeUserFromBranch(selectedItem)}
+        onYes={() => deleteBranch ? deleteSelectedBranch(selectedItem) : removeUserFromBranch(selectedItem)}
       />
     );
   }
 
-  const yesNoModalBranchDeleteUser = (data) => {
+  const yesNoModalBranchDeleteUser = (data, isBranchDelete) => {
     setConfirmDelete(true);
     setSelectedItem(data);
+    setDeleteBranch(isBranchDelete);
   }
+  
 
   const viewBranchClerks = () => {
       const { selectedBranchView } = BranchStore.getState();
@@ -839,8 +847,11 @@ export default function App() {
             data={filteredClerks} 
             hasAction
             onEdit={() => toast.error('Cant edit users')}
-            onDelete={(e) => yesNoModalBranchDeleteUser(e)}
+            onDelete={(e) => yesNoModalBranchDeleteUser(e, false)}
           />
+          <InputRow>
+            <Button text="DELETE BRANCH" error onClick={() => yesNoModalBranchDeleteUser(selectedBranchView, true)}/>
+          </InputRow>
         </Modal>
       );
   }
@@ -918,7 +929,7 @@ export default function App() {
         {showModalBranch && AddBranchModal()}
         {timeInModal && viewTimeRecordModal()}
         {viewBranch && viewBranchClerks()}
-        {confirmDelete && confirmDeleteUserFromBranch()}
+        {confirmDelete && confirmDeleteUserFromBranch(deleteBranch)}
       </>
     );
   };

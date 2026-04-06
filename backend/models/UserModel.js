@@ -65,7 +65,8 @@ const userSchema = new mongoose.Schema({
     },
     middleName: {
         type: String,
-        required: false
+        required: false,
+        default: ''
     },
     lastName: {
         type: String,
