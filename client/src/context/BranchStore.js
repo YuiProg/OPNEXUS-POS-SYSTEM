@@ -118,8 +118,9 @@ const BranchStore = create((set, get) => ({
 
     deleteSelectedBranch: async (data) => {
         //get the clerks array first and then remove their branch and then delete the branch : SA BACKEND DAT TO
-        const { setServerError, setViewBranch } = ModalStore.getState();
+        const { setServerError, setViewBranch, isScreenLoading } = ModalStore.getState();
         try {
+            isScreenLoading(true);
             const res = await axiosInstance.post(DELETEBRANCH.replace(':location', data.location), data);
             console.log(res.data);
         } catch (error) {
@@ -129,6 +130,7 @@ const BranchStore = create((set, get) => ({
             get().getBranch();
             set({confirmDelete: false});
             setViewBranch(false);
+            isScreenLoading(false);
         }
     }
 }));

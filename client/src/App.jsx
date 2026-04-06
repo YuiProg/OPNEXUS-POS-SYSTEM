@@ -27,6 +27,7 @@ import Button from "./components/TRButton/Button.jsx";
 import BranchStore from "./context/BranchStore.js";
 import TimeInOutStore from "./context/TimeinOut.js";
 import URLError from "./components/ErrorPages/URLError/URLError.jsx";
+import ScreenLoading from "./components/ScreenLoading/screenloading.jsx";
 
 
 const ServerError = lazy(() => import("./components/ErrorPages/ServerError/ServerError.jsx"));
@@ -84,7 +85,8 @@ export default function App() {
     timeInModal,
     setTimeInModal,
     viewBranch,
-    setSelectedItem
+    setSelectedItem,
+    screenLoading
   } = ModalStore();
   const {
     setProductData,
@@ -937,6 +939,7 @@ export default function App() {
   //ROUTING
   return (
     <>
+      {screenLoading && <ScreenLoading/>}
       {returnModals()}
       <Toaster position="bottom-right"/>
       <Suspense fallback={<Loading/>}>

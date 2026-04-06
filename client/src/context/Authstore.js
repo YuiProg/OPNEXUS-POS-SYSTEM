@@ -137,9 +137,10 @@ const AuthStore = create((set, get) => ({
     },
 
     addUser: async (isAdmin) => {
-        const { setShowAddModal, setServerError } = ModalStore.getState();
+        const { setShowAddModal, setServerError, isScreenLoading } = ModalStore.getState();
         //const { getBranchByLocation } = BranchStore.getState();
         try {
+            isScreenLoading(true);
             const data = get().input;
             const payloadAdmin = {
                 username: data.username,
@@ -225,6 +226,8 @@ const AuthStore = create((set, get) => ({
             toast.error(error.message);
             set({errorUser: axiosError(error)});
             setServerError(true);
+        } finally {
+            isScreenLoading(false);
         }
     },
 
@@ -269,7 +272,7 @@ const AuthStore = create((set, get) => ({
 
     updateUser: async () => {
         const { getBranchByLocation } = BranchStore.getState();
-        const { setServerError } = ModalStore.getState();
+        const { setServerError, isScreenLoading } = ModalStore.getState();
         try {
             const { selectedItem, setUpdatedItem, setEditUserModal, setChangesModal, setOldBranch } = ModalStore.getState();
             const {
@@ -286,7 +289,7 @@ const AuthStore = create((set, get) => ({
                 branch,
                 phoneNumber
             } = get().input;
-
+            isScreenLoading(true);
             const hasNoChanges = Object.values({
                 username, email, firstName, middleName,
                 lastName, gender, address, role, shift,
@@ -347,6 +350,8 @@ const AuthStore = create((set, get) => ({
             toast.error(error.message);
             set({errorUser: axiosError(error)});
             setServerError(true);
+        } finally {
+            isScreenLoading(false);
         }
     },
 
@@ -364,9 +369,10 @@ const AuthStore = create((set, get) => ({
     },
 
     deleteMultipleUsers: async (data) => {
-        const { setServerError } = ModalStore.getState();
+        const { setServerError, isScreenLoading } = ModalStore.getState();
         const ids = data.map((i, _) => i.Id);
         try {
+            isScreenLoading(true);
             const res = await axiosInstance.post(deleteMultipleUsers, ids);
             if (res.data.status === "Success") {
                 const { setDeleteModal, setConfirmModal } = ModalStore.getState();
@@ -380,12 +386,15 @@ const AuthStore = create((set, get) => ({
             toast.error(error.message);
             set({errorUser: axiosError(error)});
             setServerError(true);
+        } finally {
+            isScreenLoading(false);
         }
     },
 
     deleteUser : async (id) => {
-        const {setYesNoModal} = ModalStore.getState();
+        const {setYesNoModal, isScreenLoading} = ModalStore.getState();
         try {
+            isScreenLoading(true);
             const result = await axiosInstance.post(ApiConfig.deleteSingleUser, { id });
             if (result.data.status === "Success") {
                 const users = get().users;
@@ -401,6 +410,7 @@ const AuthStore = create((set, get) => ({
 
         } finally {
             setYesNoModal(false);
+            isScreenLoading(false);
         }
     },
 

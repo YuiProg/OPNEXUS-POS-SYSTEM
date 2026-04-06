@@ -13,6 +13,10 @@ const ModalStore = create((set) => ({
     viewBranch: false,
     url: "",
     serverError: false,
+    screenLoading: false,
+
+    //screen loading
+    isScreenLoading: (val) => set({screenLoading: val}),
 
     //server error
     setServerError: (val) =>  set({serverError: val}),
