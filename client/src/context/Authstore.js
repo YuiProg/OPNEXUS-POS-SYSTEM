@@ -287,6 +287,14 @@ const AuthStore = create((set, get) => ({
                 phoneNumber
             } = get().input;
 
+            const hasNoChanges = Object.values({
+                username, email, firstName, middleName,
+                lastName, gender, address, role, shift,
+                salary, branch, phoneNumber
+            }).every(val => !val || val.trim() === '');
+
+            if (hasNoChanges) return toast.error('Nothing to update!');
+
             const payload = {
                 username: username || selectedItem.username,
                 email: email || selectedItem.email,
@@ -302,16 +310,15 @@ const AuthStore = create((set, get) => ({
                 branchLocation: branch || selectedItem.branchLocation
             }
             
-            const check = await getBranchByLocation(branch || selectedItem.branchLocation);
+            await getBranchByLocation(branch || selectedItem.branchLocation);
             //console.log(check.clerks.some(d => d.Id === selectedItem._id));
-            if (check.clerks.some(d => d.Id === selectedItem._id)) return toast.error(`${selectedItem.username} is already in this branch!`);
-            
+            //if (check.clerks.some(d => d.Id === selectedItem._id)) return toast.error(`${selectedItem.username} is already in this branch!`);
+            setOldBranch(selectedItem.branchLocation);
             
 
             //update the branch here
 
             if (branch) {
-                setOldBranch(selectedItem.branchLocation);
                 const updateBranch = await axiosInstance.post(UPDATEBRANCH.replace(':location', branch), {
                     Id: selectedItem._id,
                     Username: username || selectedItem.username,
@@ -322,8 +329,6 @@ const AuthStore = create((set, get) => ({
                     phoneNumber: phoneNumber || selectedItem.phoneNumber
                 });
                 console.log(updateBranch);
-            } else {
-                return;
             }
 
             //console.log(updateOldBranch.data);
