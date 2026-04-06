@@ -21,7 +21,8 @@ const {
     deleteMultipleUsers,
     GET_SINGLE_USER,
     UPDATE_USER,
-    UPDATEBRANCH
+    UPDATEBRANCH,
+    REMOVEADMINFROMBRANCH
 } = ApiConfig;
 
 const {
@@ -271,7 +272,7 @@ const AuthStore = create((set, get) => ({
     },
 
     updateUser: async () => {
-        const { getBranchByLocation } = BranchStore.getState();
+        const { getBranchByLocation, removeUserFromBranch } = BranchStore.getState();
         const { setServerError, isScreenLoading } = ModalStore.getState();
         try {
             const { selectedItem, setUpdatedItem, setEditUserModal, setChangesModal, setOldBranch } = ModalStore.getState();
@@ -297,7 +298,7 @@ const AuthStore = create((set, get) => ({
             }).every(val => !val || val.trim() === '');
 
             if (hasNoChanges) return toast.error('Nothing to update!');
-
+            
             const payload = {
                 username: username || selectedItem.username,
                 email: email || selectedItem.email,
@@ -317,8 +318,11 @@ const AuthStore = create((set, get) => ({
             //console.log(check.clerks.some(d => d.Id === selectedItem._id));
             //if (check.clerks.some(d => d.Id === selectedItem._id)) return toast.error(`${selectedItem.username} is already in this branch!`);
             setOldBranch(selectedItem.branchLocation);
-            
-
+            if (role === 'Admin') {
+                //console.log(selectedItem);
+                payload.branchLocation = 'N/A';
+                await axiosInstance.post(REMOVEADMINFROMBRANCH.replace(':location', selectedItem.branchLocation), selectedItem);
+            }
             //update the branch here
 
             if (branch) {
@@ -347,6 +351,7 @@ const AuthStore = create((set, get) => ({
             get().fetchUsers();
             get().resetInput();
         } catch (error) {
+            console.log(error);
             toast.error(error.message);
             set({errorUser: axiosError(error)});
             setServerError(true);

@@ -33,6 +33,7 @@ const ApiConfig = Object.freeze({
     UPDATEBRANCH: apiEndpoint + 'updateBranch/:location',
     GETBRANCHBYLOCATION: apiEndpoint + 'branchLocation/:location',
     REMOVEUSERFROMBRANCH: apiEndpoint + 'removeUserBranch/:location',
+    REMOVEADMINFROMBRANCH: apiEndpoint + 'removeAdminFromBranch/:location',
     DELETEBRANCH: apiEndpoint + 'deleteBranch/:location',
 
     //timein

@@ -93,6 +93,7 @@ const BranchStore = create((set, get) => ({
 
     removeUserFromBranch: async (data) => {
         const { fetchUsers } = AuthStore.getState();
+        
         try {
             const res = await axiosInstance.post(REMOVEUSERFROMBRANCH.replace(':location', get().selectedBranchView.location), data);
             toast.success(res.data.status);
@@ -107,6 +108,7 @@ const BranchStore = create((set, get) => ({
             
             // update selectedBranchView to remove the deleted clerk
             const updatedBranches = get().branches;
+            console.log(updatedBranches);
             const updatedBranch = updatedBranches.find(b => b.location === get().selectedBranchView.location);
             if (updatedBranch) {
                 set({ selectedBranchView: updatedBranch, confirmDelete: false });
