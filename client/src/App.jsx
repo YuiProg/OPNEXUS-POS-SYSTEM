@@ -117,7 +117,7 @@ export default function App() {
   } = TimeInOutStore();
 
   const { SERVER_ERROR, PROD_FAIL } = Strings;
-  const [currentRole, setCurrentRole] = useState("");
+  //const [currentRole, setCurrentRole] = useState("");
   const [deleteBranch, setDeleteBranch] = useState(false);
 
   useEffect(() => {
@@ -199,7 +199,7 @@ export default function App() {
           isRequired
           onSubmit={(e) => {
             e.preventDefault();
-            isUpdate ? updateUserSelected(e) : addUser(currentRole);
+            isUpdate ? updateUserSelected(e) : addUser(selectedItem.role);
           }}
         >
           <InputRow gap={15} titles={["Username", "Email", "Password"]}>
@@ -274,7 +274,7 @@ export default function App() {
               defaultValue="Role"
               onChange={(value) => { 
                 setInput("role", value) 
-                setCurrentRole(value);
+                selectedItem.role = value;
               }}
               value={isUpdate ? selectedItem.role : null}
             />
@@ -284,7 +284,7 @@ export default function App() {
               defaultValue="Shift"
               onChange={(value) => setInput("shift", value)}
               value={isUpdate ? selectedItem.shift : null}
-              disabled={currentRole === "Admin"}
+              disabled={selectedItem.role === "Admin"}
             />
             <DropDown
               maxWidth
@@ -302,7 +302,7 @@ export default function App() {
                 defaultValue="Branch"
                 onChange={(value) => setInput("branch", value)}
                 value={isUpdate ? selectedItem.branchLocation : 'N/A'}
-                disabled={currentRole === "Admin"}
+                disabled={selectedItem.role === "Admin"}
               />
             </InputRow>
           )}
