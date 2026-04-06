@@ -112,6 +112,7 @@ export class ModalYesNo extends React.Component {
     render () {
         const {
             message,
+            message2,
             onClose,
             onYes,
             loading
@@ -121,10 +122,26 @@ export class ModalYesNo extends React.Component {
             <div className="modal-container-confirm">
                 <div className="modal-container__delete-clerk" onClick={(e) => e.stopPropagation()}>
                     {/* CHECK MARK */}
-                    <h1 className="modal-confirm-header">{message}</h1>
+                    <div className="modal-confirm-texts">
+                        <h1 className="modal-confirm-header">{message}</h1>
+                        <p className="modal-confirm-subheader">{message2}</p>
+                    </div>
                     <div className="modal-yesno-btns">
-                        <Button error maxWidth text="NO" onClick={() => onClose()}/>
-                        <Button success disabled={loading} maxWidth text="YES" onClick={() => onYes()}/>
+                        <Button 
+                            className="modal-btn-no"
+                            error 
+                            maxWidth 
+                            text="NO" 
+                            onClick={() => onClose()}
+                        />
+                        <Button 
+                            className="modal-btn-yes"
+                            success 
+                            disabled={loading} 
+                            maxWidth 
+                            text="YES" 
+                            onClick={() => onYes()}
+                        />
                     </div>
                 </div>
             </div>

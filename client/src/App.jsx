@@ -321,6 +321,7 @@ export default function App() {
     return (
       <ModalYesNo
         message={`Are you sure you want to delete ${url === "staff" ? selectedItem.Username : selectedItem.Username}?`}
+        message2={url === "staff" ? "This will delete the user from all branches." : "This will delete the product from all branches."}
         onClose={() => setYesNoModal(false)}
         onYes={() =>
           url === "staff"
