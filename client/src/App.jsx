@@ -27,7 +27,7 @@ import Button from "./components/TRButton/Button.jsx";
 import BranchStore from "./context/BranchStore.js";
 import TimeInOutStore from "./context/TimeinOut.js";
 import URLError from "./components/ErrorPages/URLError/URLError.jsx";
-import ScreenLoading from "./components/ScreenLoading/screenloading.jsx";
+import ScreenLoading from './components/ScreenLoading/ScreenLoading.jsx';
 
 
 const ServerError = lazy(() => import("./components/ErrorPages/ServerError/ServerError.jsx"));
