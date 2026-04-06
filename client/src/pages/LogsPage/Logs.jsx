@@ -79,10 +79,10 @@ class Logs extends React.Component {
                 </div>
                 <div>
                     {/* NAV BUTTONS */}
-                    <div>
-                        <button onClick={() => this.setState({selectedTab: 'system'})}>System Logs</button>
-                        <button onClick={() => this.setState({selectedTab: 'time'})}>In/Out Logs</button>
-                        <button onClick={() => this.setState({selectedTab: 'transact'})}>Transaction History</button>
+                    <div className="logos-container__buttons">
+                        <button className="logos-container__buttons-item" onClick={() => this.setState({selectedTab: 'system'})}>System Logs</button>
+                        <button className="logos-container__buttons-item" onClick={() => this.setState({selectedTab: 'time'})}>In/Out Logs</button>
+                        <button className="logos-container__buttons-item" onClick={() => this.setState({selectedTab: 'transact'})}>Transaction History</button>
                     </div>
                     {this.state.selectedTab === 'system' 
                         ? (
