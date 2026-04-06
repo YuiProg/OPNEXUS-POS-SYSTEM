@@ -129,14 +129,12 @@ export class ModalYesNo extends React.Component {
                     <div className="modal-yesno-btns">
                         <Button 
                             className="modal-btn-no"
-                            error 
                             maxWidth 
                             text="NO" 
                             onClick={() => onClose()}
                         />
                         <Button 
                             className="modal-btn-yes"
-                            success 
                             disabled={loading} 
                             maxWidth 
                             text="YES" 

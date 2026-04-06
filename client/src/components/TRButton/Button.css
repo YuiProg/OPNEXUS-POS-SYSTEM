@@ -15,3 +15,7 @@
     opacity: 0.5;
     cursor: not-allowed;
 }
+
+.TR-button:hover:not(.tr-btn-disabled) {
+    transform: scale(1.02);
+}

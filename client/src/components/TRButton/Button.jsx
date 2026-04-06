@@ -19,7 +19,8 @@ class Button extends React.Component {
             text,
             onClick,
             disabled,
-            cancel
+            cancel,
+            className
         } = this.props;
 
         return (
@@ -39,7 +40,7 @@ class Button extends React.Component {
                         }`,
                         border: `${cancel ? "1px solid white" : null}`
                     }}
-                    className={`TR-button ${disabled && 'tr-btn-disabled'}`}
+                    className={`TR-button ${disabled && 'tr-btn-disabled'} ${className || ''}`}
                     onClick={() => onClick()}
                     disabled={disabled}
                 >
