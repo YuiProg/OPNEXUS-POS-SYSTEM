@@ -60,7 +60,8 @@ const ProductStore = create((set, get) => ({
     const { productName, quantity, category, price, productBranch, image } =
       get();
     const { AuthUser } = AuthStore.getState();
-    const { setModal } = ModalStore.getState();
+    const { setModal, isScreenLoading } = ModalStore.getState();
+    isScreenLoading(true);
     const payload = {
       productName,
       quantity,
@@ -105,6 +106,7 @@ const ProductStore = create((set, get) => ({
       set({ addLoading: false });
       set({ image: null });
       setModal(false);
+      isScreenLoading(false);
     }
   },
 
@@ -175,15 +177,17 @@ const ProductStore = create((set, get) => ({
   },
 
   updateProduct: async () => {
+    const {
+      selectedItem,
+      setUpdatedItem,
+      setEditProductModal,
+      setChangesModal,
+      isScreenLoading
+    } = ModalStore.getState();
     try {
       const { productName, quantity, category, price, image, productBranch } =
         get();
-      const {
-        selectedItem,
-        setUpdatedItem,
-        setEditProductModal,
-        setChangesModal,
-      } = ModalStore.getState();
+      isScreenLoading(true);
       const payload = {
         productName: productName || selectedItem.productName,
         quantity: quantity || selectedItem.quantity,
@@ -211,12 +215,15 @@ const ProductStore = create((set, get) => ({
     } finally {
       get().fetchProducts();
       set({ image: null });
+      isScreenLoading(false);
     }
   },
 
   deleteMultipleProducts: async (data) => {
+    const { isScreenLoading } = ModalStore.getState();
     set({addLoading: true});
     try {
+      isScreenLoading(true);
       const list = data.map((d) => d.Id);
       const result = await axiosInstance.post(deleteMultipleProduct, list);
 
@@ -236,14 +243,16 @@ const ProductStore = create((set, get) => ({
       window.location.href = "/servererror"
     } finally {
       set({addLoading: false});
+      isScreenLoading(false);
     }
   },
 
   //UNDEFINED YUNG ID DAW PUTANGINA
   deleteProduct: async () => {
-    const { selectedItem, setYesNoModal } = ModalStore.getState();
+    const { selectedItem, setYesNoModal, isScreenLoading } = ModalStore.getState();
 
     try {
+      isScreenLoading(true);
       const result = await axiosInstance.post(deleteSingleProduct, {
         id: selectedItem.Id,
       });
@@ -261,6 +270,7 @@ const ProductStore = create((set, get) => ({
       window.location.href = "/servererror"
     } finally {
       setYesNoModal(false);
+      isScreenLoading(false);
     }
   },
 
