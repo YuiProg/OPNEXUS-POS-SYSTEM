@@ -121,7 +121,7 @@ export const removeUserFromBranch = async (req, res) => {
         const {location} = req.params;
         const data = req.body;
         const user = await User.getSingleUser(data.Id);
-
+        console.log('User data' + user);
         if (user.timedIn) {
             return ApiResponseModel(res, ERROR, 'User is currently timed in!');
         }
@@ -129,6 +129,18 @@ export const removeUserFromBranch = async (req, res) => {
         const updatedBranch = await Branch.removeUserFromOldBranch(location, data);
 
         ApiResponseModel(res, SUCCESS, `Removed ${data.Username} from this branch`, {updatedBranch, updatedUser});
+    } catch (error) {
+        ApiResponseModel(res, ERROR, error.message);
+    }
+}
+
+export const removeAdminFromBranch = async (req, res) => {
+    try {
+        const { location } = req.params;
+        const data = req.body;
+        const updatedBranch = await Branch.removeUserFromOldBranch(location, {Id: data._id});
+        const updatedUser = await User.updateUser(data._id, {branchLocation: 'N/A'});
+        ApiResponseModel(res, SUCCESS, 'Updated branch', {updatedUser, updatedBranch});
     } catch (error) {
         ApiResponseModel(res, ERROR, error.message);
     }

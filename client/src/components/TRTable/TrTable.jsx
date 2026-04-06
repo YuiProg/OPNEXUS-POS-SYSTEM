@@ -112,7 +112,7 @@ export class Table extends React.Component {
   };
 
   render() {
-    const { data, hasSelect, hasAction, onDelete, onEdit, isDetailed, search, onView, isLoading, onRowSelect } =
+    const { data, hasSelect, hasAction, onDelete, onEdit, isDetailed, search, onView, isLoading, onRowSelect, noDataMessage } =
       this.props;
     const { selectAll, selected, currentPage, sortKey, sortDir } = this.state;
 
@@ -238,7 +238,7 @@ export class Table extends React.Component {
                   rowCB={(e) => onRowSelect(e)}
                 />
               ) : (
-                <TableNoData colSpan={colCount} />
+                <TableNoData colSpan={colCount} message={noDataMessage}/>
               )}
             </tbody>
           </table>
@@ -438,12 +438,13 @@ export class TableNoData extends React.Component {
   }
 
   render() {
+    const { message } = this.props;
     return (
       <tr>
         <td colSpan={this.props.colSpan} className="table-td--nodata">
           <div className="no-data-wrapper">
             <Archive size={32} strokeWidth={1.5} className="no-data-icon" />
-            <p className="no-data-title">No data found :(</p>
+            <p className="no-data-title">{message ? message : `No data found :(`}</p>
           </div>
         </td>
       </tr>

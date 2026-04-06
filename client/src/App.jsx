@@ -807,7 +807,7 @@ export default function App() {
           <InputRow titles={['Set location']}>
             <InputField text placeholder="Set Branch Location" onChange={value => setBranchInput('location', value)}/>
           </InputRow>
-          <Table data={selectedUsersToAdd || []} limit={4} onRowSelect={(e) => removeFromSelected(e)}/>
+          <Table data={selectedUsersToAdd || []} limit={4} onRowSelect={(e) => removeFromSelected(e)} noDataMessage="Add clerks here"/>
           <Table data={users} limit={4} onRowSelect={(e) => addToSelected(e)}/>
         </InputForm>
       </Modal>
@@ -822,6 +822,7 @@ export default function App() {
           ? 'Are you sure you want to remove this branch?' 
           : `Are you sure you want to remove ${selectedItem.Username} from this branch?`
         }
+        message2="This action will remove assigned clerk's respective branches"
         onClose={() => setConfirmDelete(false)}
         onYes={() => deleteBranch ? deleteSelectedBranch(selectedItem) : removeUserFromBranch(selectedItem)}
       />
@@ -850,6 +851,7 @@ export default function App() {
             hasAction
             onEdit={() => toast.error('Cant edit users')}
             onDelete={(e) => yesNoModalBranchDeleteUser(e, false)}
+            noDataMessage="No clerks found"
           />
           <InputRow>
             <Button text="DELETE BRANCH" error onClick={() => yesNoModalBranchDeleteUser(selectedBranchView, true)}/>

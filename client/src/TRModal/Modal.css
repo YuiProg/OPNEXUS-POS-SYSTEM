@@ -89,6 +89,19 @@
     gap: 20px;
 }
 
+.modal-btn-no {
+    background-color: transparent;
+    border: 1px solid #2e2e2e;
+}
+
+.modal-btn-yes {
+    background-color: #c0392b;
+}
+
+.modal-btn-no:hover {
+    background-color: #2e2e2e;
+}
+
 .modal-yesno-btns .TR-button {
     width: 100px !important;
 }
