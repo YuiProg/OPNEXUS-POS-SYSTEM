@@ -620,7 +620,7 @@ export default function App() {
                 color={
                   oldBranch !== data.branchLocation && "#22C55E"
                 }
-                textColor="black"
+                textColor="white"
               />
             </InputRow>
           </InputForm>

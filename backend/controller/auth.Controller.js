@@ -45,6 +45,11 @@ export const updateUser = async (req, res) => {
         if (!oldModel) {
             return ApiResponseModel(res, ERROR, "User not found");
         }
+        console.log(data);
+        if (data.branchLocation !== 'N/A') {
+            const branch = await Branch.updateUserInBranch(id, data.branchLocation, data);
+            console.log(branch);
+        }
         const updated_user = await User.updateUser(id, data);
         ApiResponseModel(res, SUCCESS, SUCCESS_MESS, updated_user, oldModel);
     } catch (error) {

@@ -69,6 +69,28 @@ branchSchema.statics.updateBranch = async function (location, data) {
     return updatedBranch;
 }
 
+branchSchema.statics.updateUserInBranch = async function (userId, location, newUser) {
+    const updatedBranch = await this.findOneAndUpdate(
+        {
+            location, 
+            'clerks.Id': userId 
+        },          
+        {
+            $set: {
+                'clerks.$.Username':     newUser.username,
+                'clerks.$.email':        newUser.email,
+                'clerks.$.shift':        newUser.shift,
+                'clerks.$.salary':       newUser.salary,
+                'clerks.$.role':         newUser.role,
+                'clerks.$.phoneNumber':  newUser.phoneNumber,
+                'clerks.$.timedIn': 'INACTIVE'
+            }
+        },
+        { new: true }
+    );
+    return updatedBranch;
+}
+
 branchSchema.statics.removeUserFromOldBranch = async function (location, data) {
     await this.findOneAndUpdate({location}, {
         $pull: {
