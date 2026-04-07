@@ -7,36 +7,13 @@ class Radio extends React.Component {
 
         return (
             <div className="settings-demo">
-                {/* SHIFT TOGGLE */}
-                <div className="setting-row">
-                    <label className="setting-control">
-                        <input
-                            type="checkbox"
-                            checked={filters.shift === "night"}
-                            onChange={() => onFilterChange("shift", "night")}
-                        />
-                        <span className="switch switch--shift"></span>
-                    </label>
-
-                    <div
-                        className="setting-text"
-                        onClick={() => onFilterChange("shift", filters.shift === "night" ? "day" : "night")}
-                        style={{ cursor: "pointer" }}
-                    >
-                        <div className="setting-title">Shift</div>
-                        <div className="setting-subtitle">
-                            {filters.shift === "night" ? "Night" : "Day"}
-                        </div>
-                    </div>
-                </div>
-
                 {/* AVAILABILITY TOGGLE */}
                 <div className="setting-row">
                     <label className="setting-control">
                         <input
                             type="checkbox"
-                            checked={filters.availability === "online"}
-                            onChange={() => onFilterChange("availability", "online")}
+                            checked={filters.availability === "ACTIVE"}
+                            onChange={() => onFilterChange("availability", "ACTIVE")}
                         />
                         <span className="switch switch--availability"></span>
                     </label>
@@ -46,14 +23,14 @@ class Radio extends React.Component {
                         onClick={() =>
                             onFilterChange(
                                 "availability",
-                                filters.availability === "online" ? "offline" : "online"
+                                filters.availability === "ACTIVE" ? "INACTIVE" : "ACTIVE"
                             )
                         }
                         style={{ cursor: "pointer" }}
                     >
                         <div className="setting-title">Availability</div>
                         <div className="setting-subtitle">
-                            {filters.availability === "online" ? "Online" : "Offline"}
+                            {filters.availability === "ACTIVE" ? "Show all branches" : "Show active only"}
                         </div>
                     </div>
                 </div>

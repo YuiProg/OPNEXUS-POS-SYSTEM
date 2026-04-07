@@ -47,3 +47,25 @@ h1 {
   font-weight: 300;
   margin: 4px;
 }
+
+.logos-container__buttons-item {
+    padding: 20px 30px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    margin-bottom: -7px;
+    background: #242426;
+    color: #FFF;
+    z-index: 0;
+    position: relative;
+    border: 1px solid #fff;
+    border-bottom: 0;
+}
+.table-thead-row,
+.no-data-wrapper {
+  position: relative;
+  z-index: 1;
+}
+
+.no-data-wrapper {
+  background-color: #111111;
+}

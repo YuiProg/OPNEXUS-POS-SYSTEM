@@ -3,6 +3,7 @@ import './POS.css';
 import ProductCards from "../../components/POSComponents/ProductCards";
 import ProductStore from "../../context/ProductStore";
 import InputField from "../../components/TRInputField/InputFIeld";
+import Calculator from "../../components/Calculator/Calculator.jsx";
 
 class POS extends React.Component {
     constructor (props) {
@@ -38,6 +39,7 @@ class POS extends React.Component {
                     <ProductCards data={productsUncleaned}/>
                 </div>
                 {/* RIGHT SECTION CALCULATOR ITEMS ETC. */}
+                <Calculator />
                 <div>
 
                 </div>
