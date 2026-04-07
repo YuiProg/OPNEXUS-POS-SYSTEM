@@ -46,6 +46,11 @@ export const clockOut = async (req, res) => {
         const inTime = parseTime(timeInVal);
         const outTime = parseTime(timeOutVal);
 
+        // If outTime is earlier than inTime, the shift crossed midnight — add 1 day
+        if (outTime <= inTime) {
+            outTime.setDate(outTime.getDate() + 1);
+        }
+
         const diffMs = outTime - inTime;
         const totalHours = Math.floor(diffMs / 1000 / 60 / 60);
 

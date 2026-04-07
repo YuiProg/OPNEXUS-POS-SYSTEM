@@ -11,8 +11,7 @@ class Branches extends React.Component {
         super(props);
         this.state = {
             branches: [],
-            filters: {
-                shift: null,     
+            filters: {  
                 availability: null, 
             },
         };
@@ -45,19 +44,16 @@ class Branches extends React.Component {
 
     getFilteredBranches = () => {
         const { branches, filters } = this.state;
-        const { shift, availability } = filters;
+        const { availability } = filters;
 
         return branches.filter((branch) => {
+            if (availability === null) return true;
 
-            const branchShift = String(branch.session || "").toLowerCase();
-            const branchAvailability = String(branch.availability || "").toLowerCase();
+            const isActive = branch.clerks?.some(clerk => clerk.timedIn === "ACTIVE");
 
-            const matchShift = shift ? branchShift === shift : true;
-            const matchAvailability = availability
-                ? branchAvailability === availability
-                : true;
-
-            return matchShift && matchAvailability;
+            if (availability === "ACTIVE") return isActive;
+            if (availability === "INACTIVE") return !isActive;
+            return true;
         });
     };
 
