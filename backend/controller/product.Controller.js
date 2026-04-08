@@ -17,7 +17,6 @@ const {
 export const newProduct = async (req, res) => {
     const data = req.body;
     const user = req.user;
-    console.log(data);
     try {
         const newProduct = await Product.addProduct(data, user);
         
@@ -32,6 +31,7 @@ export const newProduct = async (req, res) => {
         ApiResponseModel(res, ERROR, error.message);
     }
 }
+
 
 export const fetchProducts = async (req, res) => {
     const {selectedBranch} = req.query;

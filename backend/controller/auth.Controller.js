@@ -13,6 +13,14 @@ const {
     USER_LOGOUT
 } = Strings;
 
+const errorHandling = (error) => {
+    if (error.code === 11000) {
+        return 'Clerk Already Exists.';
+    }
+    return error.message;
+}
+
+
 export const register = async (req, res) => {
     try {
         const data = req.body;
@@ -20,7 +28,8 @@ export const register = async (req, res) => {
         const createdUser = await User.registerUser(data);
         ApiResponseModel(res, CREATED, SUCCESS_MESS, createdUser);
     } catch (error) {
-        ApiResponseModel(res, error.message, ERROR);
+        const message = errorHandling(error);
+        ApiResponseModel(res, ERROR, message);
     }
 }
 
