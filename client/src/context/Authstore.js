@@ -224,7 +224,7 @@ const AuthStore = create((set, get) => ({
             // }
             setShowAddModal(false);
         } catch (error) {
-            toast.error(error.message);
+            toast.error(error.response.data.status);
             set({errorUser: axiosError(error)});
             setServerError(true);
         } finally {

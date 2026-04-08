@@ -39,9 +39,8 @@ class POS extends React.Component {
                     <ProductCards data={productsUncleaned}/>
                 </div>
                 {/* RIGHT SECTION CALCULATOR ITEMS ETC. */}
-                <Calculator />
                 <div>
-
+                <Calculator />
                 </div>
             </div>
         );
