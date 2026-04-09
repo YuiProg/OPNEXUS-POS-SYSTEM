@@ -78,7 +78,8 @@ export default function App() {
     editUserModal,
     setEditUserModal,
     timeInModal,
-    setTimeInModal
+    setTimeInModal,
+    setSelectedItem
   } = ModalStore();
   const {
     setProductData,
@@ -140,6 +141,11 @@ export default function App() {
   const addBranch = (e) => {
     e.preventDefault();
     newBranch();
+  }
+
+  const clearSelectedTime = () => {
+    setTimeInModal(false);
+    setSelectedItem(null);
   }
 
   const showDeleteConfirmModal = () => {
@@ -779,7 +785,7 @@ export default function App() {
 
   const viewTimeRecordModal = () => {
     return (
-      <Modal onClose={() => setTimeInModal(false)}>
+      <Modal onClose={() => clearSelectedTime()}>
         
       </Modal>
     );
