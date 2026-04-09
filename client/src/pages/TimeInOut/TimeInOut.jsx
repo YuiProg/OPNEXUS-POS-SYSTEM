@@ -8,6 +8,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import AuthStore from "../../context/Authstore";
+import ProductStore from "../../context/ProductStore";
 
 class TimeInOut extends React.Component {
   constructor(props) {
@@ -22,10 +23,11 @@ class TimeInOut extends React.Component {
   componentDidMount() {
     const { getData } = TimeInOutStore.getState();
     const { AuthUser } = AuthStore.getState();
+    const { fetchProducts } = ProductStore.getState();
     this.interval = setInterval(() => {
       this.setState({ time: this.timenow(), date: this.dateNow()});
     }, 1000);
-
+    fetchProducts();
     getData(AuthUser._id);
   }
 
@@ -72,7 +74,7 @@ class TimeInOut extends React.Component {
   }
 
   render() {
-    const { timeIn, timeOut, timeData, timeInLoading, loading } = TimeInOutStore.getState();
+    const { timeData, timeInLoading, loading } = TimeInOutStore.getState();
     const { user } = this.props;
     
     return (

@@ -127,7 +127,10 @@ class StaffManagement extends React.Component {
                     </div>
                     <div className="sm-branch-dropdown">
                         <p className="sm-branch-text">Branch</p>
-                        <DropDown className="sm-branch-dd"/>
+                        <DropDown 
+                        className="sm-branch-dd"
+                        defaultValue="Branch"
+                        />
                     </div>
                 </div>
                 <div className="sm-main-contents">

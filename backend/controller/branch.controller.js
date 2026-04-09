@@ -1,5 +1,6 @@
 import ApiResponseModel from "../models/ApiResponseModel.js";
 import Branch from "../models/Branches.js";
+import User from "../models/UserModel.js";
 import Strings from "../strings/strings-codes.js";
 
 const {
@@ -10,16 +11,39 @@ const {
     GET_BRANCH
 } = Strings;
 
+
+//hello programmer, kung nakikita moto
+//I have a feeling that this function is bound to destroy the system sooner or later.
+//So kung i-try mo man i optimize to and nag fail (panigurado)
+//pa increment nalang ng number sa baba thanks!
+//total hours wasted in this controller = 34
 export const addBranches = async (req, res) => {
     try {
         const data = req.body;
         //const {userId} = req.user;
-
+        console.log(data);
         //const fetchUser = await User.getUserByUsername(data.clerk);
 
         const payload = {
             location: data.location,
+            clerks: data.clerks.map(clerk => ({ ...clerk, timedIn: 'INACTIVE' }))
         }
+
+        //update clerk's branches
+
+        const clerks = data.clerks;
+        //console.log(clerks);
+        for (let i = 0; i < clerks.length; i++) {
+            if (clerks[i].branchLocation != "N/A") {
+                return ApiResponseModel(res, ERROR, `${clerks[i].Username} already has a branch!`);
+            }
+            try {
+                await User.updateUser(clerks[i].Id, {branchLocation: data.location});   
+            } catch (error) {
+                ApiResponseModel(res, ERROR, error.message);
+            }
+        }
+
         //console.log(payload);
         const newbranch = await Branch.addBranch(payload);
         ApiResponseModel(res, CREATED, NEW_BRANCH, newbranch);
@@ -32,13 +56,21 @@ export const updateBranch = async (req, res) => {
     try {
         const { location } = req.params;
         const data = req.body;
-        console.log(data);
+
+        const user = await User.getSingleUser(data.Id);
+        
+        if (user.branchLocation !== "N/A") {
+            await Branch.removeUserFromOldBranch(user.branchLocation, data);
+        }
+
+        const updateUser = await User.updateUser(user._id, { branchLocation: location });
         const updatedBranch = await Branch.updateBranch(location, data);
-        ApiResponseModel(res, SUCCESS, GET_BRANCH, updatedBranch);
+
+        ApiResponseModel(res, SUCCESS, GET_BRANCH, { updatedBranch, updateUser });
     } catch (error) {
         ApiResponseModel(res, ERROR, error.message);
     }
-}
+};
 
 export const getBranch = async (req, res) => {
     try {
@@ -61,9 +93,12 @@ export const getBranchByLocation = async (req, res) => {
 
 export const setActiveBranch = async (req, res) => {
     const { location } = req.params;
+    const data = req.body;
     try {
-        const updated = await Branch.setActive(location);
-        ApiResponseModel(res, SUCCESS, 'Updated branch', updated);
+        
+        const fetchUser = await User.getSingleUser(data._id);
+        const updated = await Branch.setActive(location, data);
+        ApiResponseModel(res, SUCCESS, 'Branch Actived', updated);
     } catch (error) {
         ApiResponseModel(res, ERROR, error.message);
     }
@@ -71,9 +106,61 @@ export const setActiveBranch = async (req, res) => {
 
 export const setOfflineBranch = async (req, res) => {
     const {location} = req.params;
+    const user = req.body;
     try {
-        const updated = await Branch.setOffline(location);
+        const fetchUser = await User.getSingleUser(user._id);
+        const updated = await Branch.setOffline(location, fetchUser);
         ApiResponseModel(res, SUCCESS, 'Updated branch', updated);
+    } catch (error) {
+        ApiResponseModel(res, ERROR, error.message);
+    }
+}
+
+export const removeUserFromBranch = async (req, res) => {
+    try {
+        const {location} = req.params;
+        const data = req.body;
+        const user = await User.getSingleUser(data.Id);
+        console.log('User data' + user);
+        if (user.timedIn) {
+            return ApiResponseModel(res, ERROR, 'User is currently timed in!');
+        }
+        const updatedUser = await User.updateUser(user._id, {branchLocation: 'N/A'});
+        const updatedBranch = await Branch.removeUserFromOldBranch(location, data);
+
+        ApiResponseModel(res, SUCCESS, `Removed ${data.Username} from this branch`, {updatedBranch, updatedUser});
+    } catch (error) {
+        ApiResponseModel(res, ERROR, error.message);
+    }
+}
+
+export const removeAdminFromBranch = async (req, res) => {
+    try {
+        const { location } = req.params;
+        const data = req.body;
+        const updatedBranch = await Branch.removeUserFromOldBranch(location, {Id: data._id});
+        const updatedUser = await User.updateUser(data._id, {branchLocation: 'N/A'});
+        ApiResponseModel(res, SUCCESS, 'Updated branch', {updatedUser, updatedBranch});
+    } catch (error) {
+        ApiResponseModel(res, ERROR, error.message);
+    }
+}
+
+export const deleteBranch = async (req, res) => {
+    try {
+        const {location} = req.params;
+        const data = req.body;
+
+        const clerks = data.clerks;
+
+        for (let i = 0; i < clerks.length; i++) {
+            const user = await User.getSingleUser(clerks[i].Id);
+            await User.updateUser(user._id, {branchLocation: 'N/A'});
+        }
+
+        const removedBranch = await Branch.deleteBranch(location);
+
+        ApiResponseModel(res, SUCCESS, 'Branch removed', removedBranch);
     } catch (error) {
         ApiResponseModel(res, ERROR, error.message);
     }

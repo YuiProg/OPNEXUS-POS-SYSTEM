@@ -5,7 +5,6 @@ import ApiConfig from "../Api/ApiConfig";
 import axiosError from "../helpers/axiosError";
 import ModalStore from "./ModalStore";
 import toast from "react-hot-toast";
-import Modal from "@mui/material/Modal";
 
 const {
   addProduct,
@@ -24,6 +23,7 @@ const ProductStore = create((set, get) => ({
   category: "",
   image: null,
   productBranch: "",
+  productsUncleaned: [],
   products: [],
   branches: [
     "VAPORYA X VAPESTA",
@@ -60,7 +60,8 @@ const ProductStore = create((set, get) => ({
     const { productName, quantity, category, price, productBranch, image } =
       get();
     const { AuthUser } = AuthStore.getState();
-    const { setModal } = ModalStore.getState();
+    const { setModal, isScreenLoading } = ModalStore.getState();
+    isScreenLoading(true);
     const payload = {
       productName,
       quantity,
@@ -100,15 +101,19 @@ const ProductStore = create((set, get) => ({
     } catch (error) {
       toast.error(error.message);
       set({ errorProduct: axiosError(error) });
+      window.location.href = "/servererror"
     } finally {
       set({ addLoading: false });
       set({ image: null });
       setModal(false);
+      isScreenLoading(false);
     }
   },
 
+  //todo selected branch
   fetchProducts: async () => {
     set({fetchLoading: true});
+    const { setServerError } = ModalStore.getState();
     try {
       const { selectedBranch } = AuthStore.getState();
       console.log(selectedBranch);
@@ -120,6 +125,7 @@ const ProductStore = create((set, get) => ({
       //console.log(products.data.data);
       const data = products.data.data;
       console.log(data);
+      set({productsUncleaned: data});
 
       //PANG REMOVE NG UNNECESSARY DATA SA RESPONSE, MAP PARA MA LOOP SA BAWAT ITEM SA ARRAY
       /* eslint-disable no-unused-vars */
@@ -142,9 +148,11 @@ const ProductStore = create((set, get) => ({
       set({ products: cleanedData });
       console.log(cleanedData);
     } catch (error) {
+      setServerError(true);
       toast.error(error.message);
       console.log(error);
       set({ errorProduct: axiosError(error) });
+      window.location.href = "/servererror"
     } finally {
       set({fetchLoading: false});
     }
@@ -162,21 +170,24 @@ const ProductStore = create((set, get) => ({
       toast.error(error.message);
       console.log(error);
       set({ errorProduct: axiosError(error) });
+      window.location.href = "/servererror"
     } finally {
       set({ addLoading: false });
     }
   },
 
   updateProduct: async () => {
+    const {
+      selectedItem,
+      setUpdatedItem,
+      setEditProductModal,
+      setChangesModal,
+      isScreenLoading
+    } = ModalStore.getState();
     try {
       const { productName, quantity, category, price, image, productBranch } =
         get();
-      const {
-        selectedItem,
-        setUpdatedItem,
-        setEditProductModal,
-        setChangesModal,
-      } = ModalStore.getState();
+      isScreenLoading(true);
       const payload = {
         productName: productName || selectedItem.productName,
         quantity: quantity || selectedItem.quantity,
@@ -200,15 +211,19 @@ const ProductStore = create((set, get) => ({
       toast.error(error.message);
       console.log(error);
       set({ errorProduct: axiosError(error) });
+      window.location.href = "/servererror"
     } finally {
       get().fetchProducts();
       set({ image: null });
+      isScreenLoading(false);
     }
   },
 
   deleteMultipleProducts: async (data) => {
+    const { isScreenLoading } = ModalStore.getState();
     set({addLoading: true});
     try {
+      isScreenLoading(true);
       const list = data.map((d) => d.Id);
       const result = await axiosInstance.post(deleteMultipleProduct, list);
 
@@ -225,16 +240,19 @@ const ProductStore = create((set, get) => ({
       toast.error(error.message);
       console.log(error);
       set({ errorProduct: axiosError(error) });
+      window.location.href = "/servererror"
     } finally {
       set({addLoading: false});
+      isScreenLoading(false);
     }
   },
 
   //UNDEFINED YUNG ID DAW PUTANGINA
   deleteProduct: async () => {
-    const { selectedItem, setYesNoModal } = ModalStore.getState();
+    const { selectedItem, setYesNoModal, isScreenLoading } = ModalStore.getState();
 
     try {
+      isScreenLoading(true);
       const result = await axiosInstance.post(deleteSingleProduct, {
         id: selectedItem.Id,
       });
@@ -249,8 +267,10 @@ const ProductStore = create((set, get) => ({
       toast.error(error.message);
       console.log(error);
       set({ errorProduct: axiosError(error) });
+      window.location.href = "/servererror"
     } finally {
       setYesNoModal(false);
+      isScreenLoading(false);
     }
   },
 

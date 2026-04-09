@@ -4,18 +4,16 @@ body {
 
 .sidebar-container {
   width: auto;
-  height: 100vh;
-  background: #1C1C1E;
   display: flex;
   color: #FFFFFF;
 }
 
 .sidebar-aside {
   width: auto;
-  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: #1C1C1E;
 }
 
 .sidebar-below-container {
@@ -30,6 +28,7 @@ body {
   padding: 0;
   width: 100%;
   flex: 1;
+  margin: 0;
 }
 
 .children {

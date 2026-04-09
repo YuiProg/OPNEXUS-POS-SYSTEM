@@ -32,6 +32,11 @@
   gap: 12px;
 }
 
+.table-row--active {
+  background-color: rgba(22, 163, 74, 0.445);
+  color: #22C55E;
+}
+
 /* ── Search ── */
 .table-search {
   display: flex;
@@ -63,7 +68,7 @@
 .table-container {
   border: 1px solid #404040;
   border-radius: 10px;
-  overflow: hidden;         /* clips thead corners and last row's bottom border */
+         /* clips thead corners and last row's bottom border */
 }
 
 /* ── Table ── */

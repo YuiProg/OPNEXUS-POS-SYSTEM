@@ -13,13 +13,8 @@ const branchSchema = new mongoose.Schema({
         type: String,
         default: () => `BR-${nanoid()}`
     },
-    clerkName: {
-        type: String,
-        required: false,
-    },
-    clerkId: {
-        type: String,
-        required: false
+    clerks: {
+        type: Array,
     },
     location: {
         type: String,
@@ -57,19 +52,93 @@ branchSchema.statics.getBranchByLocation = async function (location) {
 }
 
 branchSchema.statics.updateBranch = async function (location, data) {
-    const updatedBranch = await this.findOneAndUpdate({location}, data, {new: true});
+    const updatedBranch = await this.findOneAndUpdate({location}, {
+        $addToSet: {
+            clerks: {
+                Id: data.Id,
+                Username: data.Username,
+                email: data.email,
+                shift: data.shift,
+                salary: data.salary,
+                role: data.role,
+                phoneNumber: data.phoneNumber,
+                timedIn: 'INACTIVE'
+            }
+        }
+    }, {new: true});
     return updatedBranch;
 }
 
-branchSchema.statics.setActive = async function (location) {
-    const res = await this.findOneAndUpdate({location}, {active: true}, {new: true});
+branchSchema.statics.updateUserInBranch = async function (userId, location, newUser) {
+    const updatedBranch = await this.findOneAndUpdate(
+        {
+            location, 
+            'clerks.Id': userId 
+        },          
+        {
+            $set: {
+                'clerks.$.Username':     newUser.username,
+                'clerks.$.email':        newUser.email,
+                'clerks.$.shift':        newUser.shift,
+                'clerks.$.salary':       newUser.salary,
+                'clerks.$.role':         newUser.role,
+                'clerks.$.phoneNumber':  newUser.phoneNumber,
+                'clerks.$.timedIn': 'INACTIVE'
+            }
+        },
+        { new: true }
+    );
+    return updatedBranch;
+}
+
+branchSchema.statics.removeUserFromOldBranch = async function (location, data) {
+    await this.findOneAndUpdate({location}, {
+        $pull: {
+            clerks: {Id: data.Id}
+        }
+    });
+}
+
+branchSchema.statics.setActive = async function (location, data) {
+    const res = await this.findOneAndUpdate(
+        { 
+            location: location,
+            "clerks.Id": data._id  
+        },
+        { 
+            $set: { 
+                "clerks.$.timedIn": 'ACTIVE'
+            } 
+        },
+        { new: true }
+    );
     return res;
 }
 
-branchSchema.statics.setOffline = async function (location) {
-    const res = await this.findOneAndUpdate({location}, {active: false}, {new: false});
+branchSchema.statics.setOffline = async function (location, data) {
+    const res = await this.findOneAndUpdate(
+        { 
+            location: location,
+            "clerks.Id": data._id
+        },
+        { 
+            $set: { 
+                "clerks.$.timedIn": 'INACTIVE'
+            } 
+        },
+        { new: true }
+    );
     return res;
 }
+
+branchSchema.statics.deleteBranch = async function (location) {
+    const res = await this.deleteOne({location});
+    return res;
+}
+
+// branchSchema.statics.removeUserFromBranch = async function (location, data) {
+
+// }
 
 
 const Branch = mongoose.model('branch', branchSchema);

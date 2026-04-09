@@ -72,6 +72,8 @@ class InputField extends React.Component {
       color,
       isRequired,
       email,
+      maxLength,
+      textColor
     } = this.props;
 
     return (
@@ -87,7 +89,7 @@ class InputField extends React.Component {
               <input
                 style={
                   disabled
-                    ? { backgroundColor: color, cursor: "not-allowed" }
+                    ? { backgroundColor: color, color: textColor || 'white', cursor: "not-allowed" }
                     : { backgroundColor: color }
                 }
                 type={
@@ -108,6 +110,7 @@ class InputField extends React.Component {
                 value={this.state.value}
                 placeholder=" "
                 onKeyDown={(e) => this.handleEnterDown(e, onEnterDown)}
+                maxLength={maxLength}
               />
               <label className="floating-label">{placeholder}</label>
               {password &&

@@ -9,11 +9,22 @@ const ModalStore = create((set) => ({
     selectedItems: [],
     selectedItem: null,
     timeInModal: false,
+    oldBranch: null,
+    viewBranch: false,
     url: "",
+    serverError: false,
+    screenLoading: false,
+
+    //screen loading
+    isScreenLoading: (val) => set({screenLoading: val}),
+
+    //server error
+    setServerError: (val) =>  set({serverError: val}),
 
     //viewing
     viewProductModal: false,
     setViewProductModal: (val) => set({viewProductModal: val}),
+    setViewBranch: (val) => set({viewBranch: val}),
     //view update changes
     changesModal: false,
     setChangesModal: (val) => set({changesModal: val}),
@@ -31,6 +42,8 @@ const ModalStore = create((set) => ({
     //update view item
     updatedItem: null,
     setUpdatedItem: (item) => set({updatedItem: item}),
+
+    setOldBranch: (data) => set({oldBranch: data}),
 
     setYesNoModal: (val) => set({yesNoModal: val}),
     setSelectedItem: (item) => set({selectedItem: item}),

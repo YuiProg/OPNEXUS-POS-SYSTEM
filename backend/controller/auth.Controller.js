@@ -1,5 +1,6 @@
 import generateToken from "../lib/generateToken.js";
 import ApiResponseModel from "../models/ApiResponseModel.js";
+import Branch from "../models/Branches.js";
 import User from "../models/UserModel.js";
 import Strings from "../strings/strings-codes.js";
 
@@ -12,6 +13,14 @@ const {
     USER_LOGOUT
 } = Strings;
 
+const errorHandling = (error) => {
+    if (error.code === 11000) {
+        return 'Clerk Already Exists.';
+    }
+    return error.message;
+}
+
+
 export const register = async (req, res) => {
     try {
         const data = req.body;
@@ -19,7 +28,8 @@ export const register = async (req, res) => {
         const createdUser = await User.registerUser(data);
         ApiResponseModel(res, CREATED, SUCCESS_MESS, createdUser);
     } catch (error) {
-        ApiResponseModel(res, error.message, ERROR);
+        const message = errorHandling(error);
+        ApiResponseModel(res, ERROR, message);
     }
 }
 
@@ -43,6 +53,11 @@ export const updateUser = async (req, res) => {
         const oldModel = await User.getSingleUser(id);
         if (!oldModel) {
             return ApiResponseModel(res, ERROR, "User not found");
+        }
+        console.log(data);
+        if (data.branchLocation !== 'N/A') {
+            const branch = await Branch.updateUserInBranch(id, data.branchLocation, data);
+            console.log(branch);
         }
         const updated_user = await User.updateUser(id, data);
         ApiResponseModel(res, SUCCESS, SUCCESS_MESS, updated_user, oldModel);
@@ -109,6 +124,14 @@ export const deleteMultiple = async (req, res) => {
 export const deleteSingle = async (req, res) => {
     try {
         const { id } = req.body;
+        const user = await User.getSingleUser(id);
+        if (user.timedIn) {
+            return ApiResponseModel(res, ERROR, 'User is currently timed in!');
+        }
+        //console.log(user.Id);
+        if (user.branchLocation !== 'N/A') {
+            await Branch.removeUserFromOldBranch(user.branchLocation, {Id: user._id});
+        }
         const result = await User.deleteSingleUser(id);
         ApiResponseModel(res, SUCCESS, SUCCESS_MESS, result);
     } catch (error) {

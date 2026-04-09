@@ -12,10 +12,6 @@ import {
 import PropTypes from "prop-types";
 import Button from "../TRButton/Button";
 
-//NOTE: SOME CODE HAVE BEEN MODIFIED BY AI (CLAUDE)
-//NAG KANDA LETCHE LETCHE NA SIMULA NUNG NAGLAGAY PAGINATION HAHAHA
-//PERO THE REST HERE IS STILL HUMAN MADE
-//FUCK IT WE BALL
 export class Table extends React.Component {
   constructor(props) {
     super(props);
@@ -31,7 +27,9 @@ export class Table extends React.Component {
     };
   }
 
-  rowsPerPage = 10;
+  get rowsPerPage() {
+    return this.props.limit || 10;
+  }
 
   componentDidUpdate(prevProps) {
     if (prevProps.search !== this.props.search) {
@@ -85,7 +83,6 @@ export class Table extends React.Component {
     );
   }
 
-  // Cycles: none -> asc -> desc -> none
   handleSort = (key) => {
     this.setState((prev) => {
       if (prev.sortKey !== key) return { sortKey: key, sortDir: "asc", currentPage: 1 };
@@ -102,12 +99,10 @@ export class Table extends React.Component {
       const aVal = a[sortKey];
       const bVal = b[sortKey];
 
-      // Numbers
       if (!isNaN(aVal) && !isNaN(bVal)) {
         return sortDir === "asc" ? aVal - bVal : bVal - aVal;
       }
 
-      // Strings
       const aStr = String(aVal).toLowerCase();
       const bStr = String(bVal).toLowerCase();
       if (aStr < bStr) return sortDir === "asc" ? -1 : 1;
@@ -117,12 +112,9 @@ export class Table extends React.Component {
   };
 
   render() {
-    const { data, hasSelect, hasAction, onDelete, onEdit, isDetailed, search, onView, isLoading, onRowSelect } =
+    const { data, hasSelect, hasAction, onDelete, onEdit, isDetailed, search, onView, isLoading, onRowSelect, noDataMessage } =
       this.props;
     const { selectAll, selected, currentPage, sortKey, sortDir } = this.state;
-
-    //for testing wag i remove. wag rin tanggalin yung comment sasabog to
-    //console.log(this.filterByValue(data, search));
 
     const filteredData = search ? this.filterByValue(data, search) : data;
     const sortedData = this.sortData(filteredData);
@@ -148,7 +140,6 @@ export class Table extends React.Component {
     const hasData = paginatedData && paginatedData.length > 0;
     const shouldPaginate = sortedData && sortedData.length > this.rowsPerPage;
 
-    // TODO: fix this later ps. what the fuck is this shit
     let pageNumbers = [];
     for (var i = 1; i <= totalPages; i++) {
       pageNumbers.push(i);
@@ -247,7 +238,7 @@ export class Table extends React.Component {
                   rowCB={(e) => onRowSelect(e)}
                 />
               ) : (
-                <TableNoData colSpan={colCount} />
+                <TableNoData colSpan={colCount} message={noDataMessage}/>
               )}
             </tbody>
           </table>
@@ -370,8 +361,6 @@ export class TableData extends React.Component {
     super(props);
   }
 
-  //when product is complete dapat may store sa settings pede pumili kung php ba or usd
-
   formatValue = (key, value) => {
     if (key === "salary" || key === "price") {
       return `PHP ${Number(value).toLocaleString()}`;
@@ -380,60 +369,64 @@ export class TableData extends React.Component {
   };
 
   render() {
-    const { data, hasSelect, selected, toggleRow, hasAction, CBD, CBE, onView, rowCB } =
-      this.props;
+    const { data, hasSelect, selected, toggleRow, hasAction, CBD, CBE, onView, rowCB } = this.props;
 
     return (
       <>
-        {data.map((row, rowIndex) => (
-          <tr
-            className={
-              selected[rowIndex] === true
-                ? "table-row table-row--selected"
-                : "table-row"
-            }
-            key={rowIndex}
-            onClick={() => rowCB(row)}
-          >
-            {hasSelect ? (
-              <td className="table-td table-td--check">
-                <input
-                  className="table-checkbox"
-                  type="checkbox"
-                  checked={selected[rowIndex] ?? false}
-                  onChange={() => toggleRow(rowIndex)}
-                />
-              </td>
-            ) : null}
-            {Object.entries(row).map(([key, value], colIndex) => (
-              <td className="table-td" key={colIndex}>
-                {colIndex === 0 ? (
-                  <strong style={{ cursor: "pointer" }} onClick={() => onView(row)}>
-                    {value}
-                  </strong>
-                ) : (
-                  this.formatValue(key, value)
-                )}
-              </td>
-            ))}
-            {hasAction ? (
-              <td className="table-td table-td--action">
-                <button
-                  className="table-action-btn table-action-btn--edit"
-                  onClick={() => CBE(row)}
-                >
-                  <SquarePen size={20} />
-                </button>
-                <button
-                  className="table-action-btn table-action-btn--delete"
-                  onClick={() => CBD(row)}
-                >
-                  <Trash2 size={20} />
-                </button>
-              </td>
-            ) : null}
-          </tr>
-        ))}
+        {data.map((row, rowIndex) => {
+          const isActive = Object.values(row).some(value => value === "ACTIVE");
+          return (
+            <tr
+              className={
+                selected[rowIndex] === true
+                  ? "table-row table-row--selected"
+                  : isActive
+                  ? "table-row table-row--active"
+                  : "table-row"
+              }
+              key={rowIndex}
+              onClick={() => rowCB(row)}
+            >
+              {hasSelect ? (
+                <td className="table-td table-td--check">
+                  <input
+                    className="table-checkbox"
+                    type="checkbox"
+                    checked={selected[rowIndex] ?? false}
+                    onChange={() => toggleRow(rowIndex)}
+                  />
+                </td>
+              ) : null}
+              {Object.entries(row).map(([key, value], colIndex) => (
+                <td className="table-td" key={colIndex}>
+                  {colIndex === 0 ? (
+                    <strong style={{ cursor: "pointer" }} onClick={() => onView(row)}>
+                      {value}
+                    </strong>
+                  ) : (
+                    this.formatValue(key, value)
+                  )}
+                </td>
+              ))}
+              {hasAction ? (
+                <td className="table-td table-td--action">
+                  <button
+                    className="table-action-btn table-action-btn--edit"
+                    onClick={() => CBE(row)}
+                  >
+                    <SquarePen size={20} />
+                  </button>
+                  <button
+                    className="table-action-btn table-action-btn--delete"
+                    onClick={() => CBD(row)}
+                  >
+                    <Trash2 size={20} />
+                  </button>
+                </td>
+              ) : null}
+            </tr>
+          );
+        })}
       </>
     );
   }
@@ -445,12 +438,13 @@ export class TableNoData extends React.Component {
   }
 
   render() {
+    const { message } = this.props;
     return (
       <tr>
         <td colSpan={this.props.colSpan} className="table-td--nodata">
           <div className="no-data-wrapper">
             <Archive size={32} strokeWidth={1.5} className="no-data-icon" />
-            <p className="no-data-title">No data found :(</p>
+            <p className="no-data-title">{message ? message : `No data found :(`}</p>
           </div>
         </td>
       </tr>
