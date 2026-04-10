@@ -50,11 +50,12 @@ export const updateUser = async (req, res) => {
     try {
         const data = req.body;
         const {id} = req.params;
+        
         const oldModel = await User.getSingleUser(id);
         if (!oldModel) {
             return ApiResponseModel(res, ERROR, "User not found");
         }
-        console.log(data);
+        
         if (data.branchLocation !== 'N/A') {
             const branch = await Branch.updateUserInBranch(id, data.branchLocation, data);
             console.log(branch);
@@ -62,7 +63,7 @@ export const updateUser = async (req, res) => {
         const updated_user = await User.updateUser(id, data);
         ApiResponseModel(res, SUCCESS, SUCCESS_MESS, updated_user, oldModel);
     } catch (error) {
-        ApiResponseModel(res, error.message, ERROR);
+        ApiResponseModel(res, ERROR, error.message);
     }
 }
 
