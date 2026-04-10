@@ -99,7 +99,7 @@ productSchema.statics.updateProduct = async function (id, data) {
 }
 
 productSchema.statics.fetchProducts = async function (selectedBranch) {
-    if (selectedBranch !== "any") {
+    if (selectedBranch !== 'any') {
         const productByBranch = await this.find({productBranch: selectedBranch});
         return productByBranch;
     }

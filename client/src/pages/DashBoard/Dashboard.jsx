@@ -16,6 +16,7 @@ import LinesChart from "../../components/DashboardComponents/Charts/BarsChart";
 import AuthStore from "../../context/Authstore";
 import BarsChart from "../../components/DashboardComponents/Charts/BarsChart";
 import TopProducts from "../../components/DashboardComponents/TopProducts/TopProducts";
+import BranchStore from "../../context/BranchStore";
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -33,12 +34,19 @@ class Dashboard extends React.Component {
     this.setState({ toast: null });
   };
 
+  componentDidMount () {
+    const {getBranch} = BranchStore.getState();
+    getBranch();
+  }
+
   // testonchange = (test) => {
   //   console.log(test);
   // }
 
   render() {
-    const { onlineUsers, recentActivity } = AuthStore.getState();
+    const { onlineUsers, recentActivity, setSelectedBranch, selectedBranch } = AuthStore.getState();
+    const {branches} = BranchStore.getState();
+    const branchNames = branches.map(d=>d.location);
 
     const active = onlineUsers.filter((d) => d.role === "Clerk");
     return (
@@ -52,9 +60,11 @@ class Dashboard extends React.Component {
           <div className="db-branch-dropdown">
             <p className="db-branch-text">Branch</p>
             <DropDown 
-              defaultValue="Branch"
+              isHeader
+              defaultValue={selectedBranch ? selectedBranch : 'Branch'}
               className="db-branch-dd"
-              options={["longos", "bulacan", "hagonoy"]} 
+              options={branchNames} 
+              onChange={(e) => setSelectedBranch(e)}
             />
           </div>
         </div>

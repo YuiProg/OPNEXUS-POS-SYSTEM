@@ -158,6 +158,11 @@ export default function App() {
     newBranch(selectedUsersToAdd);
   }
 
+  const clearSelectedTime = () => {
+    setTimeInModal(false);
+    setSelectedItem(null);
+  }
+
   const showDeleteConfirmModal = () => {
     const tableData = {
       header: "Delete Data?",
@@ -861,33 +866,9 @@ export default function App() {
   }
 
   const viewTimeRecordModal = () => {
-    const { singleUser } = AuthStore.getState();
-    if (!singleUser) return;
-
-    const currentMonth = new Date().getMonth();
-    const currentYear = new Date().getFullYear();
-
-    const filteredByMonth = timeData.filter((record) => {
-      const recordDate = new Date(record.date);
-      return (
-        recordDate.getMonth() === currentMonth &&
-        recordDate.getFullYear() === currentYear
-      );
-    });
-
-    const totalMonthlyHours = filteredByMonth.reduce((sum, record) => sum + record.totalHours, 0);
-
     return (
-      <Modal 
-        header="Time In / Out Logs" 
-        subHeader={`Time Records for ${singleUser?.username || 'test'}`} 
-        onClose={() => setTimeInModal(false)}
-      >
-        <div className="time-modal-user-details">
-          <h1 className="time-modal-name">{singleUser.username}</h1>
-          <h2 className="time-modal-totaltime">Total Hours This Month: {totalMonthlyHours}h</h2>
-        </div>
-        <Table data={timeData}/>
+      <Modal onClose={() => setTimeInModal(false)}>
+        
       </Modal>
     );
   }

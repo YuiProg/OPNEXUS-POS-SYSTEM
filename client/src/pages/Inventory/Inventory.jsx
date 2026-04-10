@@ -94,6 +94,9 @@ class Inventory extends React.Component {
   render() {
     //const { setEditProductModal } = ModalStore.getState();
     const { fetchLoading } = ProductStore.getState();
+    const {setSelectedBranch, selectedBranch} = AuthStore.getState();
+    const { branches } = BranchStore.getState();
+    const branchNames = branches.map(d=>d.location);
     const tableData = {
       header: "ITEMS TEST",
       hasButton: this.state.isAdmin,
@@ -122,8 +125,11 @@ class Inventory extends React.Component {
             <div className="iv-branch-dropdown">
               <p className="iv-branch-text">Branch</p>
               <DropDown 
+                isHeader
                 className="iv-branch-dd" 
-                defaultValue="Branch"
+                defaultValue={selectedBranch ? selectedBranch : "Branch"}
+                onChange={(e) => setSelectedBranch(e)}
+                options={branchNames}
               />
             </div>
           </div>

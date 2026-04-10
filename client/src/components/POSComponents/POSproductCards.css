@@ -20,6 +20,12 @@
   align-items: center;
 }
 
+.out-of-stock {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
 .product-card-container__items { 
   height: 220px;
   border-radius: 4px;
