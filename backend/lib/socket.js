@@ -19,17 +19,17 @@ io.on('connection', (socket) => {
 
     if (!userId) return;
 
-    const alreadyActive = activeUsers.some((i) => i.userId === userId);
-    if (!alreadyActive) {
-        activeUsers.push({ userId, username, role });
-        io.emit('onlineUsers', activeUsers);
-    }
+    // const alreadyActive = activeUsers.some((i) => i.userId === userId);
+    // if (!alreadyActive) {
+    //     activeUsers.push({ userId, username, role });
+    //     io.emit('onlineUsers', activeUsers);
+    // }
 
-    socket.on('disconnect', () => {
-        const index = activeUsers.findIndex((i) => i.userId === userId);
-        if (index !== -1) activeUsers.splice(index, 1);
-        io.emit('onlineUsers', activeUsers);
-    });
+    // socket.on('disconnect', () => {
+    //     const index = activeUsers.findIndex((i) => i.userId === userId);
+    //     if (index !== -1) activeUsers.splice(index, 1);
+    //     io.emit('onlineUsers', activeUsers);
+    // });
 });
 
 export {io, server, app};

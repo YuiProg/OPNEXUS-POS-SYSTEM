@@ -13,11 +13,18 @@ const {
     SUCCESS_MESS
 } = Strings;
 
+const activeUsers = [];
+
 export const clockIn = async (req, res) => {
     const { userId } = req.user;
     const {time} = req.body;
     try {
         const fetchUser = await User.updateUser(userId, {timedIn: true, time});
+        const alreadyActive = activeUsers.some((i) => i._id === userId);
+        if (!alreadyActive) {
+            activeUsers.push(fetchUser);
+            io.emit('onlineUsers', activeUsers);
+        }
         io.emit("recentActivity", {message: `${fetchUser.username} just timed in!`, userId: fetchUser._id});
         console.log('\u001b[1;32mClock in success');
         ApiResponseModel(res, CREATED, TIME_IN_SUCC, fetchUser);
@@ -53,6 +60,10 @@ export const clockOut = async (req, res) => {
 
         const diffMs = outTime - inTime;
         const totalHours = Math.floor(diffMs / 1000 / 60 / 60);
+
+        const index = activeUsers.findIndex((i) => i._id === userId);
+        if (index !== -1) activeUsers.splice(index, 1);
+        io.emit('onlineUsers', activeUsers);
 
         const updateUser = await User.updateUser(userId, { timedIn: false, time: null });
         const newTime = await TimeinOut.saveOut({ ...data, totalHours }, userId);
