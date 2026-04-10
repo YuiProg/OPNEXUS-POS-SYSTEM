@@ -73,6 +73,10 @@ class StaffManagement extends React.Component {
         //const {setShowModal} = BranchStore.getState();
         const { setShowAddModal } = ModalStore.getState();
         const { onlineUsers, fetchLoading } = AuthStore.getState();
+        const {setSelectedBranch, selectedBranch} = AuthStore.getState();
+        const { branches } = BranchStore.getState();
+
+        const branchNames = branches.map(d=>d.location);
 
         const tableData = {
             header: "STAFFS",
@@ -128,8 +132,11 @@ class StaffManagement extends React.Component {
                     <div className="sm-branch-dropdown">
                         <p className="sm-branch-text">Branch</p>
                         <DropDown 
-                        className="sm-branch-dd"
-                        defaultValue="Branch"
+                            isHeader
+                            options={branchNames}
+                            onChange={(e) => setSelectedBranch(e)}    
+                            className="sm-branch-dd"
+                            defaultValue={selectedBranch ? selectedBranch : 'Branch'}
                         />
                     </div>
                 </div>

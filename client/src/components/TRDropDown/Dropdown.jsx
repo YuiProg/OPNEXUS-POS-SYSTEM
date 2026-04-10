@@ -20,7 +20,7 @@ class DropDown extends React.Component {
   }
 
   render() {
-    const { options, defaultValue, onChange, maxWidth, customWidth, isRequired, disabled } =
+    const { options, defaultValue, onChange, maxWidth, customWidth, isRequired, disabled, isHeader } =
       this.props;
 
     return (
@@ -42,6 +42,11 @@ class DropDown extends React.Component {
           <option value="" className="tr-options" disabled>
             {defaultValue ? `Select ${defaultValue}...` : "Select Branch..."}
           </option>
+          {isHeader && (
+            <option value="all" className="tr-options">
+              Select All
+            </option>
+          )}
           {options?.map((l, i) => {
             return (
               <option className="tr-options" key={i} value={l}>

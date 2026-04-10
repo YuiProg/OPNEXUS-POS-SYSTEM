@@ -96,7 +96,10 @@ export const getSingleUser = async (req, res) => {
 
 export const getUsers = async (req, res) => {
     try {
-        const users = await User.getUsers();
+        const { branch } = req.params;
+        
+
+        const users = await User.getUsers(branch === "null" ? null : req.params.branch || null);
         const usersWithFullName = users.map((user) => ({
             Id: user._id,
             Username: user.username,

@@ -33,7 +33,9 @@ const AuthStore = create((set, get) => ({
     AuthUser: null,
     AuthLoading: true,
     errorUser: null,
-    selectedBranch: 'any',
+    selectedBranch: localStorage.getItem('selectedBranch') 
+    ? JSON.parse(localStorage.getItem('selectedBranch')) 
+    : null,
     socket: null,
     input: {
         username: '',
@@ -55,6 +57,23 @@ const AuthStore = create((set, get) => ({
     fetchLoading: false,
     recentActivity: null,
     singleUser: null,
+
+    removeSelectedBranch: () => {
+        localStorage.removeItem('selectedBranch');
+        set({selectedBranch: null});
+    },
+
+    setSelectedBranch: (val) => {
+        if (val === "all") {
+            get().removeSelectedBranch();
+            window.location.reload();
+            return;
+        }
+        console.log(val);
+        localStorage.setItem('selectedBranch', JSON.stringify(val));
+        set({selectedBranch: val});
+        window.location.reload();
+    },
 
     setInput: (name, value) => {
         const inputs = get().input;
@@ -124,6 +143,10 @@ const AuthStore = create((set, get) => ({
             if (logout.data.status === SUCCESS_MESS) {
                 set({AuthUser: null});
             }
+
+            localStorage.removeItem('selectedBranch');
+            set({ AuthUser: null, selectedBranch: null });
+
             return true;
         } catch (error) {
             toast.error(error.message);
@@ -236,7 +259,7 @@ const AuthStore = create((set, get) => ({
         set({fetchLoading: true});
         const { setServerError } = ModalStore.getState();
         try {
-            const users = await axiosInstance.get(fetchUsers);
+            const users = await axiosInstance.get(fetchUsers.replace(':branch', get().selectedBranch));
             const data = users.data.data;
             const userId = get().AuthUser._id;
             /* eslint-disable no-unused-vars */

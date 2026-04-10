@@ -10,7 +10,7 @@ const ApiConfig = Object.freeze({
     registerUsers : apiEndpoint + 'register',
     updateUsers: apiEndpoint + 'updateUser',
     addUser: apiEndpoint + 'addUser',
-    fetchUsers: apiEndpoint + 'getUsers',
+    fetchUsers: apiEndpoint + 'getUsers/:branch',
     deleteMultipleUsers: apiEndpoint + 'userDeleteMultiple',
     deleteSingleUser: apiEndpoint + 'deleteSingleUser',
     GET_SINGLE_USER: apiEndpoint + 'getSingleUser/:id',

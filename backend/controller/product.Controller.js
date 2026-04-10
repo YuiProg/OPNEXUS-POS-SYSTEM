@@ -34,9 +34,11 @@ export const newProduct = async (req, res) => {
 
 
 export const fetchProducts = async (req, res) => {
+    let branch = 'any';
     const {selectedBranch} = req.query;
+
     try {
-        const products = await Product.fetchProducts(selectedBranch);
+        const products = await Product.fetchProducts(selectedBranch ? selectedBranch : branch);
         const cleanedData = products.map((data) => ({
             Id: data._id,
             Name: data.productName.toUpperCase(),

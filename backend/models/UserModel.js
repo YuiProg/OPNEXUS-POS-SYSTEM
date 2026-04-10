@@ -147,8 +147,9 @@ userSchema.statics.getUser = async function (_id) {
     return user;
 }
 
-userSchema.statics.getUsers = async function () {
-    const users = await this.find({}).sort({createdAt: -1}).select("-password");
+userSchema.statics.getUsers = async function (branch) {
+    const checkBranch = branch ? { branchLocation: branch } : {};
+    const users = await this.find(checkBranch).sort({ createdAt: -1 }).select("-password");
     return users;
 }
 
