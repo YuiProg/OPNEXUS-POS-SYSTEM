@@ -4,13 +4,35 @@ import ProductCards from "../../components/POSComponents/ProductCards";
 import ProductStore from "../../context/ProductStore";
 import InputField from "../../components/TRInputField/InputFIeld";
 import Calculator from "../../components/Calculator/Calculator.jsx";
+import AuthStore from "../../context/Authstore.js";
 
 class POS extends React.Component {
     constructor (props) {
         super(props);
+        this.state = {
+            items: []
+        }
+    }
+
+    addItemsToCart = (data) => {
+        this.setState(prev => {
+            const existing = prev.items.find(item => item._id === data._id);
+            if (existing) {
+                return {
+                    items: prev.items.map(item =>
+                        item._id === data._id
+                            ? { ...item, quantity: item.quantity + 1 }
+                            : item
+                    )
+                };
+            }
+            return { items: [...prev.items, { ...data, quantity: 1 }] };
+        });
     }
 
     componentDidMount() {
+        const {AuthUser} = AuthStore.getState();
+        console.log(AuthUser);
         const { fetchProducts, subscribeToProducts } = ProductStore.getState();
         fetchProducts();
         subscribeToProducts();
@@ -36,10 +58,15 @@ class POS extends React.Component {
                 </div>
                 {/* ETO YUNG MGA PRODUCT CARDS */}
                 <div className="pos-product-cards">
-                    <ProductCards data={productsUncleaned}/>
+                    <ProductCards 
+                        onClick={(data) => this.addItemsToCart(data)} 
+                        data={productsUncleaned}
+                        items={this.state.items}
+                    />
                 </div>
                 {/* RIGHT SECTION CALCULATOR ITEMS ETC. */}
-                <div>
+                <div className="">
+                
                 <Calculator />
                 </div>
             </div>
