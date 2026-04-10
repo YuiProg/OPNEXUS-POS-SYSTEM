@@ -101,7 +101,7 @@ class InputField extends React.Component {
                     ? "email"
                     : "text"
                 }
-                required={required || isRequired}
+                required={!!(required || isRequired)}
                 onChange={(e) => {
                   const val = this.checkNumber(e);
                   if (val !== undefined) onChange(val);

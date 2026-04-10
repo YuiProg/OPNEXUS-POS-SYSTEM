@@ -46,7 +46,10 @@ const ModalStore = create((set) => ({
     setOldBranch: (data) => set({oldBranch: data}),
 
     setYesNoModal: (val) => set({yesNoModal: val}),
-    setSelectedItem: (item) => set({selectedItem: item}),
+    setSelectedItem: (item) => {
+        set({selectedItem: null});
+        set({selectedItem: item});
+    },
     setShowAddModal: (val) => set({showAddModal: val}),
     setUrl: (url) => set({url: url}),
     setConfirmModal: (val) => set({confirmModal: val}), 

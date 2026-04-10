@@ -60,6 +60,7 @@ export default function App() {
     deleteUser,
     updateUser,
     fetchUsers,
+    input
   } = AuthStore();
   const {
     isOpen,
@@ -112,9 +113,9 @@ export default function App() {
     confirmDelete,
     setConfirmDelete
   } = BranchStore();
-  const {
-    timeData
-  } = TimeInOutStore();
+  // const {
+  //   timeData
+  // } = TimeInOutStore();
 
   const { SERVER_ERROR, PROD_FAIL } = Strings;
   //const [currentRole, setCurrentRole] = useState("");
@@ -158,10 +159,10 @@ export default function App() {
     newBranch(selectedUsersToAdd);
   }
 
-  const clearSelectedTime = () => {
-    setTimeInModal(false);
-    setSelectedItem(null);
-  }
+  // const clearSelectedTime = () => {
+  //   setTimeInModal(false);
+  //   setSelectedItem(null);
+  // }
 
   const showDeleteConfirmModal = () => {
     const tableData = {
@@ -201,7 +202,6 @@ export default function App() {
         onCancel={() => setShowAddModal(false) || setEditUserModal(false)}
       >
         <InputForm
-          isRequired
           onSubmit={(e) => {
             e.preventDefault();
             isUpdate ? updateUserSelected(e) : addUser(selectedItem.role);
@@ -213,18 +213,21 @@ export default function App() {
               placeholder="Enter Username"
               onChange={(value) => setInput("username", value)}
               value={isUpdate ? selectedItem.username : null}
+              required
             />
             <InputField
               email
               placeholder="Enter Email"
               onChange={(value) => setInput("email", value)}
               value={isUpdate ? selectedItem.email : null}
+              required
             />
             {!isUpdate && (
               <InputField
                 password
                 placeholder="Enter Password"
                 onChange={(value) => setInput("password", value)}
+                required
               />
             )}
           </InputRow>
@@ -237,6 +240,7 @@ export default function App() {
               placeholder="Enter First Name"
               onChange={(value) => setInput("firstName", value)}
               value={isUpdate ? selectedItem.firstName : null}
+              required
             />
             <InputField
               text
@@ -249,6 +253,7 @@ export default function App() {
               placeholder="Enter Last Name"
               onChange={(value) => setInput("lastName", value)}
               value={isUpdate ? selectedItem.lastName : null}
+              required
             />
           </InputRow>
           <InputRow gap={15} titles={["Phone Number", "Address", "Salary"]}>
@@ -258,18 +263,21 @@ export default function App() {
               placeholder="(+63)"
               onChange={(value) => setInput("phoneNumber", value)}
               value={isUpdate ? selectedItem.phoneNumber : null}
+              required
             />
             <InputField
               text
               placeholder="Enter Address"
               onChange={(value) => setInput("address", value)}
               value={isUpdate ? selectedItem.address : null}
+              required
             />
             <InputField
               number
               placeholder="Enter Salary"
               onChange={(value) => setInput("salary", value)}
               value={isUpdate ? selectedItem.salary : null}
+              required
             />
           </InputRow>
           <InputRow gap={15} titles={["Role", "Shift", "Gender"]}>
@@ -282,6 +290,7 @@ export default function App() {
                 selectedItem.role = value;
               }}
               value={isUpdate ? selectedItem.role : null}
+              isRequired
             />
             <DropDown
               maxWidth
@@ -289,7 +298,8 @@ export default function App() {
               defaultValue="Shift"
               onChange={(value) => setInput("shift", value)}
               value={isUpdate ? selectedItem.shift : null}
-              disabled={selectedItem.role === "Admin"}
+              disabled={selectedItem && selectedItem.role === "Admin" || input.role === "Admin"}
+              isRequired
             />
             <DropDown
               maxWidth
@@ -297,6 +307,7 @@ export default function App() {
               defaultValue="Gender"
               onChange={(value) => setInput("gender", value)}
               value={isUpdate ? selectedItem.gender : null}
+              isRequired
             />
           </InputRow>
           {isUpdate && (
@@ -308,6 +319,7 @@ export default function App() {
                 onChange={(value) => setInput("branch", value)}
                 value={isUpdate ? selectedItem.branchLocation : 'N/A'}
                 disabled={selectedItem.role === "Admin"}
+                isRequired
               />
             </InputRow>
           )}
