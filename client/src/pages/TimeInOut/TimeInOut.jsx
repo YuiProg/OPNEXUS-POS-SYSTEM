@@ -147,22 +147,24 @@ class TimeInOut extends React.Component {
                 <p className="current-time">{this.state.time}</p>
                 <p className="current-date">{this.dateNow()}</p>
               </div>
-              {user?.timedIn 
-              ? <Button 
-                  disabled={loading} 
-                  maxWidth 
-                  error 
-                  text="CLOCK OUT" 
-                  onClick={() => this.timeInClick('out')}
-                /> 
-              : <Button 
-                  disabled={loading}
-                  maxWidth 
-                  success 
-                  text="CLOCK IN" 
-                  onClick={() => this.timeInClick('in')}
-                />
-            }
+              <div className="timeinout-btns">
+                {user?.timedIn 
+                ? <Button 
+                    className="timeinout-btn-out"
+                    disabled={loading} 
+                    error 
+                    text="CLOCK OUT" 
+                    onClick={() => this.timeInClick('out')}
+                  /> 
+                : <Button 
+                    className="timeinout-btn-in"
+                    disabled={loading}
+                    success 
+                    text="CLOCK IN" 
+                    onClick={() => this.timeInClick('in')}
+                  />
+                }
+              </div>
             </div>
           </div>
         </div>

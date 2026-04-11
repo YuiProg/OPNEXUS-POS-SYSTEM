@@ -1,4 +1,4 @@
-import { Image, PhilippinePeso } from "lucide-react";
+import { PhilippinePeso, Package } from "lucide-react";
 import React from "react";
 import './POSproductCards.css';
 
@@ -26,11 +26,8 @@ class ProductCards extends React.Component {
                             >
                                 <p className="product-card-container__id">ID: {product.Id}</p>
 
-                                {product.productImage ? (
+                                {product.productImage && (
                                     <img src={product.productImage} alt="image" />
-                                ) 
-                                : (
-                                    <Image/>
                                 )}
 
                                 <div className="product-card-container__content">

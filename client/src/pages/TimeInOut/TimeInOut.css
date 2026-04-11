@@ -143,3 +143,15 @@ h1 {
   font-size: 16px;
   font-weight: 300;
 }
+
+.timeinout-btn-out {
+  width: 120px;
+}
+
+.timeinout-btn-in {
+  background: #111111;
+}
+
+.timeinout-btns .TR-button {
+  width: 150px !important;
+}

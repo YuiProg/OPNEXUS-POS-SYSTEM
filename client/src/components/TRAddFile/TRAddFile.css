@@ -3,6 +3,7 @@
     height: auto;
     border: 1px dashed;
     cursor: pointer;
+    background: #131315;
 }
 
 .tr-addfile-details {
