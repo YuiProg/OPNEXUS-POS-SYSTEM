@@ -245,7 +245,7 @@
         gap: 10px !important;
     }
 
-    .table-header {
+    .timeinout-container .table-header {
         display: none !important;
     }
 	.timeinout-timer {
