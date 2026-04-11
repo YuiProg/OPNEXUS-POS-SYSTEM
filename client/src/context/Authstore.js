@@ -162,10 +162,12 @@ const AuthStore = create((set, get) => ({
 
     addUser: async (isAdmin) => {
         const { setShowAddModal, setServerError, isScreenLoading } = ModalStore.getState();
+
         //const { getBranchByLocation } = BranchStore.getState();
         try {
             isScreenLoading(true);
             const data = get().input;
+            console.log(data);
             const payloadAdmin = {
                 username: data.username,
                 email: data.email,
@@ -207,10 +209,10 @@ const AuthStore = create((set, get) => ({
             // }
             let user;
             
-            if (isAdmin === "Admin") {
+            if (isAdmin === "Admin" || data.role) {
                 const newUserAdmin = await axiosInstance.post(addUser, payloadAdmin);
                 user = newUserAdmin
-            } else if (isAdmin === "Clerk") {
+            } else if (isAdmin === "Clerk" || data.role) {
                 const newUserAdmin = await axiosInstance.post(addUser, payloadClerk);
                 user = newUserAdmin
             }
