@@ -49,7 +49,7 @@ class Sidebar extends React.Component {
     handleLogout = () => {
         const { logoutUser } = AuthStore.getState();
         logoutUser();
-        window.location.href = "/login";
+        // window.location.href = "/login";
     }
 
     //check kung naka login paba kada click ng tabs sa sidebar

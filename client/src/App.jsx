@@ -961,7 +961,7 @@ export default function App() {
             element={
               AuthUser?.role.toLowerCase() === "clerk" ? (
                 <Navigate to="/timeinout" replace />
-              ) : (
+              ) : !AuthUser ? <Navigate to='/login' replace/> : (
                 <Sidebar user={AuthUser}>
                   <Dashboard />
                 </Sidebar>
@@ -972,6 +972,7 @@ export default function App() {
           <Route
             path="/inventory"
             element={
+              !AuthUser ? <Navigate to='/login' replace/> :
               <Sidebar user={AuthUser}>
                 <Inventory user={AuthUser} />
               </Sidebar>
@@ -983,7 +984,7 @@ export default function App() {
             element={
               AuthUser?.role.toLowerCase() === "clerk" ? (
                 <Navigate to="/timeinout" replace />
-              ) : (
+              ) : !AuthUser ? <Navigate to='/login' replace/> : (
                 <Sidebar user={AuthUser}>
                   <StaffManagement />
                 </Sidebar>
@@ -993,7 +994,7 @@ export default function App() {
 
           <Route
             path="/pos"
-            element={
+            element={!AuthUser ? <Navigate to='/login' replace/> :
               <Sidebar user={AuthUser}>
                 <POS />
               </Sidebar>
@@ -1010,7 +1011,7 @@ export default function App() {
             element={
               AuthUser?.role.toLowerCase() === "clerk" ? (
                 <Navigate to="/timeinout" replace />
-              ) : (
+              ) : !AuthUser ? <Navigate to='/login' replace/> :  (
                 <Sidebar user={AuthUser}>
                   <Branches/>
                 </Sidebar>
@@ -1023,7 +1024,7 @@ export default function App() {
             element={
               AuthUser?.role.toLowerCase() === "admin" ? (
                 <Navigate to="/dashboard" replace />
-              ) : (
+              ) : !AuthUser ? <Navigate to='/login' replace/> : (
                 <Sidebar user={AuthUser}>
                   <TimeInOut/>
                 </Sidebar>
@@ -1035,7 +1036,7 @@ export default function App() {
             path="/logs"
             element={AuthUser?.role.toLowerCase() === "clerk" ? (
               <Navigate to="/timeinout" replace/>
-            ) : (
+            ) : !AuthUser ? <Navigate to='/login' replace/> : (
               <Sidebar user={AuthUser}>
                 <Logs/>
               </Sidebar>
