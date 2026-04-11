@@ -8,6 +8,10 @@ body {
   color: #FFFFFF;
 }
 
+.sidebar-container .table-wrapper {
+  width: 100% !important;
+}
+
 .sidebar-aside {
   width: auto;
   display: flex;

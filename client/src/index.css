@@ -309,3 +309,7 @@ body,
   cursor: grab;
   scrollbar-width: thin;
 }
+
+.modal-container .table-wrapper {
+  width: 100%;
+}
