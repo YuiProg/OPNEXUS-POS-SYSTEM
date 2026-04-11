@@ -204,7 +204,7 @@ export default function App() {
         <InputForm
           onSubmit={(e) => {
             e.preventDefault();
-            isUpdate ? updateUserSelected(e) : addUser(selectedItem.role);
+            isUpdate ? updateUserSelected(e) : addUser(selectedItem?.role);
           }}
         >
           <InputRow gap={15} titles={["Username", "Email", "Password"]}>
@@ -974,7 +974,7 @@ export default function App() {
             element={
               !AuthUser ? <Navigate to='/login' replace/> :
               <Sidebar user={AuthUser}>
-                <Inventory user={AuthUser} />
+                <Inventory user={AuthUser}/>
               </Sidebar>
             }
           />

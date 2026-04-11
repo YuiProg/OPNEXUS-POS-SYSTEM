@@ -4,6 +4,7 @@
   border-radius: 12px;
   width: 100%;
   box-sizing: border-box;
+  width: 70%;
 }
 
 /* ── Header row (title + search + button) ── */

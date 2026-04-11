@@ -1,0 +1,22 @@
+import Sales from "../models/Sales.js";
+import Strings from "../strings/strings-codes.js";
+import ApiResponseModel from "../models/ApiResponseModel.js";
+import Product from "../models/Products.js";
+
+const {
+    ERROR,
+    ORDER_PROC,
+    CREATED
+} = Strings;
+
+export const createSale = async (req, res) => {
+    try {
+        const data = req.body;
+        const {items} = data;
+        const updatedStock = await Product.updateMany(items);
+        const newSale = await Sales.createSale(data);
+        ApiResponseModel(res, CREATED, ORDER_PROC, {updatedStock, newSale});
+    } catch (error) {
+        ApiResponseModel(res, ERROR, error.message);
+    }
+}

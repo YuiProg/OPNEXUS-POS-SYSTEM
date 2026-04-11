@@ -117,6 +117,18 @@ productSchema.statics.deleteMultiple = async function (list) {
     return result;
 }
 
+productSchema.statics.updateMany = async function (data) {
+    const bulkOps = data.map((data) => ({
+        updateOne: {
+            filter: { _id: data._id},
+            update: {$inc: {quantity: -data.quantity}}
+        }
+    }));
+
+    const updated = await this.bulkWrite(bulkOps);
+    return updated;
+}
+
 const Product = mongoose.model('product', productSchema);
 
 export default Product;

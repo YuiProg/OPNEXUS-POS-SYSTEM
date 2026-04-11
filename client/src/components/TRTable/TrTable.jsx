@@ -15,6 +15,8 @@ import Button from "../TRButton/Button";
 export class Table extends React.Component {
   constructor(props) {
     super(props);
+    this.tableContainerRef = React.createRef();
+
     this.state = {
       selectAll: false,
       selected: this.props.data
@@ -26,6 +28,32 @@ export class Table extends React.Component {
       sortDir: null,
     };
   }
+
+  componentDidMount() {
+    if (this.tableContainerRef.current) {
+      this.tableContainerRef.current.addEventListener("wheel", this.handleHorizontalScroll, {
+        passive: false,
+      });
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.tableContainerRef.current) {
+      this.tableContainerRef.current.removeEventListener("wheel", this.handleHorizontalScroll);
+    }
+  }
+
+  handleHorizontalScroll = (e) => {
+    const container = this.tableContainerRef.current;
+    if (!container) return;
+
+    const isHorizontallyScrollable = container.scrollWidth > container.clientWidth;
+
+    if (isHorizontallyScrollable) {
+      e.preventDefault();
+      container.scrollLeft += e.deltaY;
+    }
+  };
 
   get rowsPerPage() {
     return this.props.limit || 10;
@@ -181,7 +209,7 @@ export class Table extends React.Component {
           </div>
         ) : null}
 
-        <div className="table-container">
+        <div className="table-container" ref={this.tableContainerRef}>
           <table className="table">
             <thead className="table-thead">
               <tr className="table-thead-row">
@@ -253,6 +281,7 @@ export class Table extends React.Component {
             </span>
             <div className="pagination-controls">
               <button
+                type="button"
                 className="pagination-btn"
                 onClick={() => this.goToPage(currentPage - 1)}
                 disabled={currentPage === 1}
@@ -277,6 +306,7 @@ export class Table extends React.Component {
                     <React.Fragment key={page}>
                       <span className="pagination-dots">...</span>
                       <button
+                        type="button"
                         className={
                           currentPage === page
                             ? "pagination-page pagination-page--active"
@@ -294,6 +324,7 @@ export class Table extends React.Component {
                   return (
                     <React.Fragment key={page}>
                       <button
+                        type="button"
                         className={
                           currentPage === page
                             ? "pagination-page pagination-page--active"
@@ -311,6 +342,7 @@ export class Table extends React.Component {
                 if (showPage) {
                   return (
                     <button
+                      type="button"
                       key={page}
                       className={
                         currentPage === page
@@ -327,6 +359,7 @@ export class Table extends React.Component {
               })}
 
               <button
+                type="button"
                 className="pagination-btn"
                 onClick={() => this.goToPage(currentPage + 1)}
                 disabled={currentPage === totalPages}
@@ -411,14 +444,16 @@ export class TableData extends React.Component {
               {hasAction ? (
                 <td className="table-td table-td--action">
                   <button
+                    type="button"
                     className="table-action-btn table-action-btn--edit"
-                    onClick={() => CBE(row)}
+                    onClick={(e) => { e.stopPropagation(); CBE(row); }}
                   >
                     <SquarePen size={20} />
                   </button>
                   <button
+                    type="button"
                     className="table-action-btn table-action-btn--delete"
-                    onClick={() => CBD(row)}
+                    onClick={(e) => { e.stopPropagation(); CBD(row); }}
                   >
                     <Trash2 size={20} />
                   </button>

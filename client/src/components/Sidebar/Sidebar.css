@@ -8,6 +8,10 @@ body {
   color: #FFFFFF;
 }
 
+.sidebar-container .table-wrapper {
+  width: 100% !important;
+}
+
 .sidebar-aside {
   width: auto;
   display: flex;
@@ -81,8 +85,8 @@ body {
 }
 
 .logo {
-  width: 250px;
-  height: 250px;
+  width: 235px;
+  height: auto;
   position: relative;
   padding: 14px;
   object-fit: cover;
@@ -151,7 +155,6 @@ body {
   align-items: center;
   color: #fff;
   font-size: 10px;
-  width: 66px;
   height: 30px;
   background: rgb(164, 0, 0);
   flex: none;

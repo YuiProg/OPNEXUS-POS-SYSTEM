@@ -111,15 +111,16 @@ const ProductStore = create((set, get) => ({
   },
 
   //todo selected branch
-  fetchProducts: async () => {
+  fetchProducts: async (isClerk, clerkBranch) => {
     set({fetchLoading: true});
     const { setServerError } = ModalStore.getState();
     try {
       const { selectedBranch } = AuthStore.getState();
-      console.log(selectedBranch);
+      
+      
       const products = await axiosInstance.get(fetchProduct, {
         params: {
-          selectedBranch: selectedBranch,
+          selectedBranch: isClerk ? clerkBranch : selectedBranch,
         },
       });
       //console.log(products.data.data);
