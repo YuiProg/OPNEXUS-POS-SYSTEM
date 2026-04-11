@@ -20,6 +20,10 @@ h1 {
   position: relative;
 }
 
+.sm-container .table-wrapper {
+  width: 100% !important;
+}
+
 .sm-header {
   display: flex;
   flex-direction: row;

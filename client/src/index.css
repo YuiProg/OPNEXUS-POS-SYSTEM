@@ -294,3 +294,18 @@ body,
 .table-container::-webkit-scrollbar {
   height: 1px; /* horizontal scrollbar thickness */
 }
+
+/* app */
+.css-12352r1-MuiDateCalendar-root {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.css-1deag3q-MuiDayCalendar-slideTransition {
+  min-height: 100% !important;
+}
+
+.table-container {
+  cursor: grab;
+  scrollbar-width: thin;
+}

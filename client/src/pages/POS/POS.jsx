@@ -120,47 +120,49 @@ class POS extends React.Component {
                             </button>
                         </div>
 
-                        <div className="pos-container__cart-items">
-                            {items.length === 0 ? (
-                                <div className="pos-container__cart-empty">
-                                    No items in cart.
-                                </div>
-                            ) : (
-                                items.map((item) => (
-                                    <div className="pos-container__cart-item" key={item._id}>
-                                        <div className="pos-container__cart-item-details">
-                                            <h4>{item?.productName || item?.name}</h4>
-                                            <p>
-                                                PHP{" "}
-                                                {item?.sellingPrice ||
-                                                    item?.price ||
-                                                    item?.originalPrice ||
-                                                    0}
-                                            </p>
-                                        </div>
-
-                                        <div className="pos-container__cart-item-actions">
-                                            <span>-</span>
-                                            <span>{item.quantity}</span>
-                                            <span>+</span>
-                                            <button type="button">Remove</button>
-                                        </div>
+                        <div className="pos-container__cart-body">
+                            <div className="pos-container__cart-items">
+                                {items.length === 0 ? (
+                                    <div className="pos-container__cart-empty">
+                                        No items in cart.
                                     </div>
-                                ))
-                            )}
-                        </div>
+                                ) : (
+                                    items.map((item) => (
+                                        <div className="pos-container__cart-item" key={item._id}>
+                                            <div className="pos-container__cart-item-details">
+                                                <h4>{item?.productName || item?.name}</h4>
+                                                <p>
+                                                    PHP{" "}
+                                                    {item?.sellingPrice ||
+                                                        item?.price ||
+                                                        item?.originalPrice ||
+                                                        0}
+                                                </p>
+                                            </div>
 
-                        <div className="pos-container__cart-totalization">
-                            <Calculator />
+                                            <div className="pos-container__cart-item-actions">
+                                                <span>-</span>
+                                                <span>{item.quantity}</span>
+                                                <span>+</span>
+                                                <button type="button">Remove</button>
+                                            </div>
+                                        </div>
+                                    ))
+                                )}
+                            </div>
 
-                            <div className="pos-container__cart-totalization-subtotal">
-                                <p>Subtotal</p>
-                                <p>Discount</p>
-                                <p>Tax</p>
+                            <div className="pos-container__cart-totalization">
+                                <Calculator />
 
-                                <div className="pos-container__cart-totalization-total">
-                                    <p>PHP</p>
-                                    <p>950.00</p>
+                                <div className="pos-container__cart-totalization-subtotal">
+                                    <p>Subtotal</p>
+                                    <p>Discount</p>
+                                    <p>Tax</p>
+
+                                    <div className="pos-container__cart-totalization-total">
+                                        <p>PHP</p>
+                                        <p>950.00</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -15,6 +15,8 @@ import Button from "../TRButton/Button";
 export class Table extends React.Component {
   constructor(props) {
     super(props);
+    this.tableContainerRef = React.createRef();
+
     this.state = {
       selectAll: false,
       selected: this.props.data
@@ -26,6 +28,32 @@ export class Table extends React.Component {
       sortDir: null,
     };
   }
+
+  componentDidMount() {
+    if (this.tableContainerRef.current) {
+      this.tableContainerRef.current.addEventListener("wheel", this.handleHorizontalScroll, {
+        passive: false,
+      });
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.tableContainerRef.current) {
+      this.tableContainerRef.current.removeEventListener("wheel", this.handleHorizontalScroll);
+    }
+  }
+
+  handleHorizontalScroll = (e) => {
+    const container = this.tableContainerRef.current;
+    if (!container) return;
+
+    const isHorizontallyScrollable = container.scrollWidth > container.clientWidth;
+
+    if (isHorizontallyScrollable) {
+      e.preventDefault();
+      container.scrollLeft += e.deltaY;
+    }
+  };
 
   get rowsPerPage() {
     return this.props.limit || 10;
@@ -181,7 +209,7 @@ export class Table extends React.Component {
           </div>
         ) : null}
 
-        <div className="table-container">
+        <div className="table-container" ref={this.tableContainerRef}>
           <table className="table">
             <thead className="table-thead">
               <tr className="table-thead-row">
