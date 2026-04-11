@@ -5,13 +5,15 @@ import ProductStore from "../../context/ProductStore";
 import InputField from "../../components/TRInputField/InputFIeld";
 import Calculator from "../../components/Calculator/Calculator.jsx";
 import AuthStore from "../../context/Authstore.js";
+import Button from "../../components/TRButton/Button.jsx";
 
 class POS extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            items: [], // eto yung items sa cart
-            isCartOpen: true
+            items: [],
+            isCartOpen: true,
+            amountPaid: 0
         };
     }
 
@@ -35,7 +37,34 @@ class POS extends React.Component {
                 isCartOpen: true
             };
         });
-        
+    };
+
+    increaseQuantity = (id) => {
+        this.setState((prev) => ({
+            items: prev.items.map((item) =>
+                item._id === id ? { ...item, quantity: item.quantity + 1 } : item
+            )
+        }));
+    };
+
+    decreaseQuantity = (id) => {
+        this.setState((prev) => {
+            const item = prev.items.find((i) => i._id === id);
+            if (item.quantity === 1) {
+                return { items: prev.items.filter((i) => i._id !== id) };
+            }
+            return {
+                items: prev.items.map((i) =>
+                    i._id === id ? { ...i, quantity: i.quantity - 1 } : i
+                )
+            };
+        });
+    };
+
+    removeItem = (id) => {
+        this.setState((prev) => ({
+            items: prev.items.filter((item) => item._id !== id)
+        }));
     };
 
     toggleCart = () => {
@@ -45,10 +74,14 @@ class POS extends React.Component {
     };
 
     clearCart = () => {
-        this.setState({
-            items: []
-        });
+        this.setState({ items: [], amountPaid: 0 });
     };
+
+    processOrder = () => {
+        const { AuthUser } = AuthStore.getState();
+        const { items } = this.state;
+        console.log(items);
+    }
 
     componentDidMount() {
         const { AuthUser } = AuthStore.getState();
@@ -58,11 +91,17 @@ class POS extends React.Component {
         subscribeToProducts();
     }
 
+    getItemPrice = (item) => {
+        return Number(item?.sellingPrice || item?.price || item?.originalPrice || 0);
+    };
+
     render() {
         const { productsUncleaned } = ProductStore.getState();
-        const { items, isCartOpen } = this.state;
+        const { items, isCartOpen, amountPaid } = this.state;
 
         const totalCartQuantity = items.reduce((acc, item) => acc + item.quantity, 0);
+        const subtotal = items.reduce((acc, item) => acc + this.getItemPrice(item) * item.quantity, 0);
+        const change = amountPaid - subtotal;
 
         return (
             <div className={`pos-container ${isCartOpen ? "cart-open" : "cart-closed"}`}>
@@ -131,20 +170,29 @@ class POS extends React.Component {
                                         <div className="pos-container__cart-item" key={item._id}>
                                             <div className="pos-container__cart-item-details">
                                                 <h4>{item?.productName || item?.name}</h4>
-                                                <p>
-                                                    PHP{" "}
-                                                    {item?.sellingPrice ||
-                                                        item?.price ||
-                                                        item?.originalPrice ||
-                                                        0}
-                                                </p>
+                                                <p>PHP {this.getItemPrice(item).toLocaleString()}</p>
                                             </div>
 
                                             <div className="pos-container__cart-item-actions">
-                                                <span>-</span>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => this.decreaseQuantity(item._id)}
+                                                >
+                                                    -
+                                                </button>
                                                 <span>{item.quantity}</span>
-                                                <span>+</span>
-                                                <button type="button">Remove</button>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => this.increaseQuantity(item._id)}
+                                                >
+                                                    +
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => this.removeItem(item._id)}
+                                                >
+                                                    Remove
+                                                </button>
                                             </div>
                                         </div>
                                     ))
@@ -152,18 +200,36 @@ class POS extends React.Component {
                             </div>
 
                             <div className="pos-container__cart-totalization">
-                                <Calculator />
+                                <Calculator onChange={(value) => this.setState({ amountPaid: value })} />
 
                                 <div className="pos-container__cart-totalization-subtotal">
-                                    <p>Subtotal</p>
-                                    <p>Discount</p>
-                                    <p>Tax</p>
+                                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                                        <p>Subtotal</p>
+                                        <p>PHP {subtotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                                    </div>
+                                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                                        <p>Amount Paid</p>
+                                        <p>PHP {amountPaid.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                                    </div>
+                                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                                        <p>Change</p>
+                                        <p style={{ color: change < 0 ? "#d14a4a" : "#4caf50" }}>
+                                            PHP {change.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                        </p>
+                                    </div>
 
                                     <div className="pos-container__cart-totalization-total">
-                                        <p>PHP</p>
-                                        <p>950.00</p>
+                                        <p>Total</p>
+                                        <p>PHP {subtotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                                     </div>
                                 </div>
+                                <Button
+                                    text="Process Order"
+                                    maxWidth
+                                    success
+                                    disabled={items.length === 0 || change < 0}
+                                    onClick={() => this.processOrder()}
+                                />
                             </div>
                         </div>
                     </div>
