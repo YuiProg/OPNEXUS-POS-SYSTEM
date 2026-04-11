@@ -30,7 +30,7 @@ class DropDown extends React.Component {
           value={this.state.value}
           className="tr-dropdown"
           style={{
-            width: maxWidth ? "100%" : customWidth ? customWidth : "328px",
+            width: maxWidth ? "100%" : customWidth ? customWidth : "100%",
           }}
           onChange={(e) => {
             this.setState({ value: e.target.value });

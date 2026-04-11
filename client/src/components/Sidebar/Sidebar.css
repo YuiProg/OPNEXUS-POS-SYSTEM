@@ -81,8 +81,8 @@ body {
 }
 
 .logo {
-  width: 250px;
-  height: 250px;
+  width: 235px;
+  height: auto;
   position: relative;
   padding: 14px;
   object-fit: cover;

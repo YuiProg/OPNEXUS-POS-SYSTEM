@@ -25,3 +25,145 @@
 		margin-top: 50px;
 	}
 }
+
+/* admin dashboard */
+@media (max-width: 920px) {
+  .dashboard-container {
+    padding: 12px !important;
+    gap: 12px !important;
+  }
+
+  .db-top-contents {
+    align-items: flex-start !important;
+  }
+
+  .db-header {
+    flex-direction: column !important;
+    gap: 2px !important;
+  }
+
+  .db-header .db-sentence {
+    margin: 0 !important;
+  }
+
+  .top-three-contents {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 12px !important;
+  }
+
+  .top-three-contents > :nth-child(3) {
+    grid-column: 1 / -1 !important;
+  }
+
+  .dashboard-container__graph-container {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 12px !important;
+  }
+
+  .dashboard-container__graph-container > :first-child {
+    grid-column: 1 / -1 !important;
+  }
+
+  .todays-sales__top-products {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  .sales-summary-cards,
+  .todays-sales-cards,
+  .today-sales-cards {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  .dashboard-container * {
+    box-sizing: border-box !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .db-top-contents {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  .top-three-contents {
+    grid-template-columns: 1fr !important;
+  }
+
+  .top-three-contents > :nth-child(3) {
+    grid-column: auto !important;
+  }
+
+  .dashboard-container__graph-container {
+    grid-template-columns: 1fr !important;
+  }
+
+  .dashboard-container__graph-container > :first-child {
+    grid-column: auto !important;
+  }
+
+  .sales-summary-cards,
+  .todays-sales-cards,
+  .today-sales-cards {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* admin inventory */
+@media screen and (max-width: 920px) {
+	.iv-header {
+		flex-direction: column !important;
+		gap: 8px !important;
+	}
+	.iv-header .iv-sentence {
+		margin: 0 !important;
+		padding: 0 !important;
+	}
+	.iv-branch-dropdown {
+		width: 60%;
+	}
+	.tr-dropdown-wrapper {
+		width: 100%;
+	}
+}
+
+/* admin staff management */
+@media screen and (max-width: 920px) {
+	.sm-main-contents {
+		flex-direction: column !important;
+	}
+	.sm-table {
+		width: 100% !important;
+	}
+	.sm-active-staffs {
+		width: 100% !important;
+	}
+	.sm-main-contents {
+		gap: 12px !important;
+		overflow-y: auto !important;
+		overflow-x: hidden !important;
+	}
+	.sm-container {
+		padding-bottom: 0 !important;
+	}
+}
+
+/* admin branches */
+@media screen and (max-width: 920px) {
+	.branches-cards-container {
+		gap: 20px !important;
+	}
+	.settings-demo {
+		padding: 20px 10px 10px 10px !important;
+	}
+	.bm-header {
+		flex-direction: column !important;
+		gap: 4px !important;
+	}
+	.bm-header .bm-sentence{
+		margin: 0 !important;
+		padding: 0 !important;
+	}
+}
