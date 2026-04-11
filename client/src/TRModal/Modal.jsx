@@ -80,7 +80,12 @@ export class ModalConfim extends React.Component {
                             <Check size={80}/>
                         </div>
                         <h1 className="modal-confirm-header">{message}</h1>
-                        <Button success maxWidth text="OKAY" onClick={() => onClose()}/>
+                        <Button 
+                            success 
+                            customWidth="150px" 
+                            text="OKAY" 
+                            onClick={() => onClose()}
+                        />
                     </div>
                 </div>
             </div>

@@ -109,9 +109,27 @@ class Login extends React.Component {
                         </img>
                         <p className="login-container__mobile-heading"> Vaporya POS System </p>    
                         <form onSubmit={(e) => this.handleLogin(e)}>
-                            <InputField email required onChange={(e) => this.setState({email: e})} placeholder={em} onEnterDown={() => {}}/>
-                            <InputField required password onChange={(e) => this.setState({password: e})} placeholder={pw} onEnterDown={() => {}}/>
-                            <Button error text={loading ? 'Logging in…' : 'Login'} submit disabled={loading}/>
+                            <InputField 
+                                email 
+                                required 
+                                onChange={(e) => this.setState({email: e})} 
+                                placeholder={em} 
+                                onEnterDown={() => {}}
+                            />
+                            <InputField 
+                                required 
+                                password 
+                                onChange={(e) => this.setState({password: e})} 
+                                placeholder={pw} 
+                                onEnterDown={() => {}}
+                            />
+                            <Button 
+                                error 
+                                maxWidth
+                                text={loading ? 'Logging in…' : 'Login'} 
+                                submit 
+                                disabled={loading}
+                            />
                         </form>
                         <p className="login-container__credentials-footer">
                             All Rights Reserved.

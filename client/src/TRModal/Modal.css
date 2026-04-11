@@ -211,12 +211,19 @@
     gap: 5px;
 }
 
+.tr-addfile-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
 .tr-addfile-container:has(img) .tr-addfile-details {
-    padding: 0 !important;
+    width: 50% !important;
+    background: #131315;
 }
 
 .modal-child:has(.tr-addfile-container img) {
-    height: 60% !important;
     overflow-y: auto;
     width: 60% !important;
 }
