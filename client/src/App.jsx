@@ -974,7 +974,7 @@ export default function App() {
             element={
               !AuthUser ? <Navigate to='/login' replace/> :
               <Sidebar user={AuthUser}>
-                <Inventory user={AuthUser} />
+                <Inventory user={AuthUser}/>
               </Sidebar>
             }
           />

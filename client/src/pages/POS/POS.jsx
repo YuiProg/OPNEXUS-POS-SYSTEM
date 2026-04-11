@@ -10,8 +10,8 @@ class POS extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            items: [],
-            isCartOpen: false
+            items: [], // eto yung items sa cart
+            isCartOpen: true
         };
     }
 
@@ -35,6 +35,7 @@ class POS extends React.Component {
                 isCartOpen: true
             };
         });
+        
     };
 
     toggleCart = () => {

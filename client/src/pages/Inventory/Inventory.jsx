@@ -32,10 +32,15 @@ class Inventory extends React.Component {
 
   componentDidMount() {
     const { fetchProducts, subscribeToProducts } = ProductStore.getState();
+    const { user } = this.props;
     const { getBranch } = BranchStore.getState();
     this.checkRole();
     getBranch();
-    fetchProducts();
+    if (user.role === 'Clerk') {
+      fetchProducts(true, user.branchLocation);
+    } else {
+      fetchProducts(false, user.branchLocation);
+    }
     subscribeToProducts();
     
     this.unsubscribe = ProductStore.subscribe((state) => {
@@ -93,6 +98,7 @@ class Inventory extends React.Component {
 
   render() {
     //const { setEditProductModal } = ModalStore.getState();
+    const { user } = this.props;
     const { fetchLoading } = ProductStore.getState();
     const {setSelectedBranch, selectedBranch} = AuthStore.getState();
     const { branches } = BranchStore.getState();
@@ -123,6 +129,8 @@ class Inventory extends React.Component {
               <p className="iv-sentence">Manage stock, items, and quantities.</p>
             </div>
             <div className="iv-branch-dropdown">
+              {user.role !== 'Clerk' && (
+              <>
               <p className="iv-branch-text">Branch</p>
               <DropDown 
                 isHeader
@@ -131,6 +139,8 @@ class Inventory extends React.Component {
                 onChange={(e) => setSelectedBranch(e)}
                 options={branchNames}
               />
+              </>
+              )}
             </div>
           </div>
           <div>
