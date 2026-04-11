@@ -50,6 +50,9 @@ const Strings = Object.freeze({
     UPDATE_PRODUCT: 'Product updated.',
     UPDATE_BRANCH: 'Branch updated.',
 
+    //SALES
+    ORDER_PROC: 'Order Successfull',
+
     //credy
     usnm: 'username',
     pw: 'password',

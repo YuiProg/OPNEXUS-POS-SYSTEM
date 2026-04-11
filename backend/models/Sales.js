@@ -13,10 +13,6 @@ const salesSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    amountChange: {
-        type: Number,
-        required: String
-    },
     itemSold: {
         type: Number,
         required: true,
@@ -35,11 +31,19 @@ const salesSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    tota: {
+    total: {
         type: Number,
         required: true
+    },
+    change: {
+        type: Number,
     }
 });
+
+salesSchema.statics.createSale = async function (data) {
+    const newSale = await this.create(data);
+    return newSale;
+}
 
 const Sales = mongoose.model('sales', salesSchema);
 

@@ -10,6 +10,7 @@ import authRoutes from './routes/auth.routes.js';
 import productRoutes from './routes/product.routes.js';
 import branchRoutes from './routes/branch.routes.js';
 import timeinRoutes from './routes/timeinout.routes.js';
+import salesRoutes from './routes/sales.routes.js';
 import { app, server } from './lib/socket.js';
 
 dotenv.config();
@@ -46,6 +47,7 @@ app.use('/api', authRoutes);
 app.use('/api', productRoutes);
 app.use('/api', branchRoutes);
 app.use('/api', timeinRoutes);
+app.use('/api', salesRoutes);
 
 // Test route
 app.get('/test', (req, res) => {

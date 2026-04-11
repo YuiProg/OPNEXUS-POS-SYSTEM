@@ -6,6 +6,7 @@ import InputField from "../../components/TRInputField/InputFIeld";
 import Calculator from "../../components/Calculator/Calculator.jsx";
 import AuthStore from "../../context/Authstore.js";
 import Button from "../../components/TRButton/Button.jsx";
+import SalesStore from "../../context/SalesStore.js";
 
 class POS extends React.Component {
     constructor(props) {
@@ -78,9 +79,14 @@ class POS extends React.Component {
     };
 
     processOrder = () => {
-        const { AuthUser } = AuthStore.getState();
-        const { items } = this.state;
-        console.log(items);
+        const {processOrder} = SalesStore.getState();
+        const { items, amountPaid } = this.state;
+        const subtotal = items.reduce((acc, item) => acc + this.getItemPrice(item) * item.quantity, 0);
+        const change = amountPaid - subtotal;
+        processOrder({subtotal, change, items, amountPaid});
+        this.setState({items: []});
+        this.setState({amountPaid: 0});
+
     }
 
     componentDidMount() {
@@ -98,6 +104,7 @@ class POS extends React.Component {
     render() {
         const { productsUncleaned } = ProductStore.getState();
         const { items, isCartOpen, amountPaid } = this.state;
+        const {saleLoading} = SalesStore.getState();
 
         const totalCartQuantity = items.reduce((acc, item) => acc + item.quantity, 0);
         const subtotal = items.reduce((acc, item) => acc + this.getItemPrice(item) * item.quantity, 0);
@@ -227,7 +234,7 @@ class POS extends React.Component {
                                     text="Process Order"
                                     maxWidth
                                     success
-                                    disabled={items.length === 0 || change < 0}
+                                    disabled={items.length === 0 || change < 0 || saleLoading}
                                     onClick={() => this.processOrder()}
                                 />
                             </div>

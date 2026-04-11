@@ -26,8 +26,12 @@ class ProductCards extends React.Component {
                             >
                                 <p className="product-card-container__id">ID: {product.Id}</p>
 
-                                {product.productImage && (
-                                    <img src={product.productImage} alt="image" />
+                                {product.productImage ? (
+                                    <img src={product.productImage} alt={product.productName} />
+                                ) : (
+                                    <div className="product-card-container__placeholder">
+                                        <Package size={64} />
+                                    </div>
                                 )}
 
                                 <div className="product-card-container__content">
