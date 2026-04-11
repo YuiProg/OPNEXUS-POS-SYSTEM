@@ -138,11 +138,9 @@ const AuthStore = create((set, get) => ({
         try {
             set({AuthLoading: true});
             
-            const logout = await axiosInstance.post(logoutUsers);
+            await axiosInstance.post(logoutUsers);
             
-            if (logout.data.status === SUCCESS_MESS) {
-                set({AuthUser: null});
-            }
+            set({AuthUser: null});
 
             localStorage.removeItem('selectedBranch');
             set({ AuthUser: null, selectedBranch: null });
