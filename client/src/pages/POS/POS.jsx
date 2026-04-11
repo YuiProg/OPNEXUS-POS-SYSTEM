@@ -84,8 +84,7 @@ class POS extends React.Component {
         const subtotal = items.reduce((acc, item) => acc + this.getItemPrice(item) * item.quantity, 0);
         const change = amountPaid - subtotal;
         processOrder({subtotal, change, items, amountPaid});
-        this.setState({items: []});
-        this.setState({amountPaid: 0});
+        this.clearCart();
 
     }
 
