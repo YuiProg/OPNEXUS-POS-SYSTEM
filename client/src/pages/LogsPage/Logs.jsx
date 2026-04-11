@@ -69,7 +69,7 @@ class Logs extends React.Component {
                         <h1 className="logs-bigtitle">Activity Logs</h1>
                         <p className="logs-sentence">Track system actions and history.</p>
                     </div>
-                    <div className="logs-branch-dropdown">
+                    <div className="logs-branch-dropdown">  
                         <p className="logs-branch-text">Branch</p>
                         <DropDown 
                         className="logs-branch-dd" 
@@ -79,10 +79,10 @@ class Logs extends React.Component {
                 </div>
                 <div>
                     {/* NAV BUTTONS */}
-                    <div className="logos-container__buttons">
-                        <button className="logos-container__buttons-item" onClick={() => this.setState({selectedTab: 'system'})}>System Logs</button>
-                        <button className="logos-container__buttons-item" onClick={() => this.setState({selectedTab: 'time'})}>In/Out Logs</button>
-                        <button className="logos-container__buttons-item" onClick={() => this.setState({selectedTab: 'transact'})}>Transaction History</button>
+                    <div className={`logos-container__buttons`}>
+                        <button className={`logos-container__buttons-item ${this.state.selectedTab === 'system' ? 'active' : null}`} onClick={() => this.setState({selectedTab: 'system'})}>System Logs</button>
+                        <button className={`logos-container__buttons-item ${this.state.selectedTab === 'time' ? 'active' : null}`} onClick={() => this.setState({selectedTab: 'time'})}>In/Out Logs</button>
+                        <button className={`logos-container__buttons-item ${this.state.selectedTab === 'transact' ? 'active' : null}`} onClick={() => this.setState({selectedTab: 'transact'})}>Transaction History</button>
                     </div>
                     {this.state.selectedTab === 'system' 
                         ? (
