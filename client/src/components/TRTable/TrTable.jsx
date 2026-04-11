@@ -253,6 +253,7 @@ export class Table extends React.Component {
             </span>
             <div className="pagination-controls">
               <button
+                type="button"
                 className="pagination-btn"
                 onClick={() => this.goToPage(currentPage - 1)}
                 disabled={currentPage === 1}
@@ -277,6 +278,7 @@ export class Table extends React.Component {
                     <React.Fragment key={page}>
                       <span className="pagination-dots">...</span>
                       <button
+                        type="button"
                         className={
                           currentPage === page
                             ? "pagination-page pagination-page--active"
@@ -294,6 +296,7 @@ export class Table extends React.Component {
                   return (
                     <React.Fragment key={page}>
                       <button
+                        type="button"
                         className={
                           currentPage === page
                             ? "pagination-page pagination-page--active"
@@ -311,6 +314,7 @@ export class Table extends React.Component {
                 if (showPage) {
                   return (
                     <button
+                      type="button"
                       key={page}
                       className={
                         currentPage === page
@@ -327,6 +331,7 @@ export class Table extends React.Component {
               })}
 
               <button
+                type="button"
                 className="pagination-btn"
                 onClick={() => this.goToPage(currentPage + 1)}
                 disabled={currentPage === totalPages}
@@ -411,14 +416,16 @@ export class TableData extends React.Component {
               {hasAction ? (
                 <td className="table-td table-td--action">
                   <button
+                    type="button"
                     className="table-action-btn table-action-btn--edit"
-                    onClick={() => CBE(row)}
+                    onClick={(e) => { e.stopPropagation(); CBE(row); }}
                   >
                     <SquarePen size={20} />
                   </button>
                   <button
+                    type="button"
                     className="table-action-btn table-action-btn--delete"
-                    onClick={() => CBD(row)}
+                    onClick={(e) => { e.stopPropagation(); CBD(row); }}
                   >
                     <Trash2 size={20} />
                   </button>
