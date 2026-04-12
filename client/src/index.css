@@ -313,3 +313,11 @@ body,
 .modal-container .table-wrapper {
   width: 100%;
 }
+
+/* added global styles */
+.iv-branch-dropdown,
+.sm-branch-dropdown,
+.db-branch-dropdown,
+.logs-branch-dropdown {
+  width: 30%;
+}
