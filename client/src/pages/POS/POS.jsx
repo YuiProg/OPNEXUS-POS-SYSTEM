@@ -216,7 +216,17 @@ class POS extends React.Component {
 
                             <div className="pos-container__cart-totalization">
                                 <Calculator ref={this.calculatorRef} onChange={(value) => this.setState({ amountPaid: value })} />
-
+                                <div className="vip-container">
+                                    <h2 className="vip-text">VIP</h2>
+                                    <label class="switch">
+                                        <input type="checkbox" />
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                                <div className="vip-details">
+                                    <InputField number placeholder="ID Number" />
+                                    <InputField number placeholder="Discount" />
+                                </div>
                                 <div className="pos-container__cart-totalization-subtotal">
                                     <div style={{ display: "flex", justifyContent: "space-between" }}>
                                         <p>Subtotal</p>
