@@ -32,3 +32,13 @@ export const getSales = async (req, res) => {
         ApiResponseModel(res, ERROR, error.message);
     }
 }
+
+export const fetchSingleSale = async (req, res) => {
+    try {
+        const {id} = req.params;
+        const record = await Sales.getSingle(id);
+        ApiResponseModel(res, CREATED, GETSALES, record);
+    } catch (error) {
+        ApiResponseModel(res, ERROR, error.message);
+    }
+}

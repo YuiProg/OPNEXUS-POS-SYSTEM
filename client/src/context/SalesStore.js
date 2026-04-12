@@ -15,6 +15,9 @@ const SalesStore = create((set) => ({
     salesForTable: [],
     saleLoading: false,
     cleanedData: [],
+    salesModal: false,
+
+    setSalesModal: (val) => set({sales: val}),
 
     processOrder: async (data) => {
         set({saleLoading: true});
@@ -58,6 +61,10 @@ const SalesStore = create((set) => ({
         }
     },
 
+    fetchSingleSale: async (id) => {
+        
+    },
+
     getSales: async () => {
         const {selectedBranch} = AuthStore.getState();
         set({saleLoading: true});
@@ -75,7 +82,7 @@ const SalesStore = create((set) => ({
                 paid: rest.amountPaid,
                 total: rest.total
             }));
-            console.log(cleanedData);
+
             set({salesForTable: cleanedData});
         } catch (error) {
             console.log(error);

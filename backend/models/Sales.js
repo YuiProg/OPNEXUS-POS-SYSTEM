@@ -39,7 +39,7 @@ const salesSchema = new mongoose.Schema({
         required: true,
         default: []
     },
-    discount: {
+    vip: {
         type: String,
         default: 'No'
     },
@@ -68,6 +68,11 @@ salesSchema.statics.getSales = async function (branch) {
     const hasBranch = branch && branch !== "null" ? { branchLocation: branch } : {};
     const sales = await this.find(hasBranch);
     return sales;
+}
+
+salesSchema.statics.getSingle = async function (id) {
+    const record = await this.find({_id: id});
+    return record;
 }
 
 const Sales = mongoose.model('sales', salesSchema);

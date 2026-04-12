@@ -28,6 +28,7 @@ import BranchStore from "./context/BranchStore.js";
 import TimeInOutStore from "./context/TimeinOut.js";
 import URLError from "./components/ErrorPages/URLError/URLError.jsx";
 import ScreenLoading from './components/ScreenLoading/ScreenLoading.jsx';
+import SalesStore from "./context/SalesStore.js";
 
 
 const ServerError = lazy(() => import("./components/ErrorPages/ServerError/ServerError.jsx"));
@@ -116,6 +117,10 @@ export default function App() {
   const {
     timeData
   } = TimeInOutStore();
+  const {
+    salesModal,
+    setSalesModal
+  } = SalesStore();
 
   const { SERVER_ERROR, PROD_FAIL } = Strings;
   //const [currentRole, setCurrentRole] = useState("");
@@ -877,19 +882,29 @@ export default function App() {
       );
   }
 
-const viewTimeRecordModal = () => {
-    const totalHours = timeData.reduce((acc, record) => acc + (record.totalHours || 0), 0);
+  const viewSalesRecordModal = () => {
+    
+    return(
+      <Modal header="View Transaction Record" onClose={() => setSalesModal(false)}>
 
-    return (
-        <Modal
-            onClose={() => setTimeInModal(false)}
-            header={`${selectedItem.employeeName}'s time logs.`}
-            subHeader={`Total hours: ${totalHours}`}
-        >
-            <Table data={timeData}/>
-        </Modal>
+      </Modal>
     );
-}
+  }
+  
+
+  const viewTimeRecordModal = () => {
+      const totalHours = timeData.reduce((acc, record) => acc + (record.totalHours || 0), 0);
+
+      return (
+          <Modal
+              onClose={() => setTimeInModal(false)}
+              header={`${selectedItem.employeeName}'s time logs.`}
+              subHeader={`Total hours: ${totalHours}`}
+          >
+              <Table data={timeData}/>
+          </Modal>
+      );
+  }
   // eslint-disable-next-line no-unused-vars
   const showToastError = (type) => {
     switch (type) {
@@ -933,6 +948,7 @@ const viewTimeRecordModal = () => {
         {timeInModal && viewTimeRecordModal()}
         {viewBranch && viewBranchClerks()}
         {confirmDelete && confirmDeleteUserFromBranch(deleteBranch)}
+        {salesModal && viewSalesRecordModal()}
       </>
     );
   };
