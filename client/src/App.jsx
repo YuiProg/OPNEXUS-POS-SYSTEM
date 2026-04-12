@@ -38,7 +38,7 @@ const Dashboard = lazy(() => import("./pages/DashBoard/Dashboard.jsx"));
 const StaffManagement = lazy(
   () => import("./pages/StaffManagement/StaffManagement.jsx"),
 );
-
+/* eslint-disable no-unused-vars */
 export default function App() {
   //store instantiate wag burahin baka gamitin sa susunod
   // const checkAuth = AuthStore(state => state.checkAuth);
@@ -119,7 +119,10 @@ export default function App() {
   } = TimeInOutStore();
   const {
     salesModal,
-    setSalesModal
+    setSalesModal,
+    singleData,
+    singleDataUnCleaned,
+    loading
   } = SalesStore();
 
   const { SERVER_ERROR, PROD_FAIL } = Strings;
@@ -863,7 +866,6 @@ export default function App() {
       const { setViewBranch } = ModalStore.getState();
       const clerks = selectedBranchView.clerks;
       
-      /* eslint-disable-next-line no-unused-vars*/
       const filteredClerks = clerks.map(({ branchLocation, ...rest }) => rest);
       
       return (
@@ -883,18 +885,34 @@ export default function App() {
   }
 
   const viewSalesRecordModal = () => {
-    
-    return(
-      <Modal header="View Transaction Record" onClose={() => setSalesModal(false)}>
+    if (!singleDataUnCleaned) return null;
 
-      </Modal>
+    const { amountPaid, branchLocation, clerkName, dateTime, itemSold, total, change } = singleDataUnCleaned;
+    return (
+        <Modal header="View Transaction Record" onClose={() => setSalesModal(false)}>
+            <InputForm noBtn>
+                <InputRow titles={['Amount Paid', 'Clerk', 'Date Processed']} gap={15}>
+                    <InputField text placeholder="Amount Paid" value={Number(amountPaid).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} disabled/>
+                    <InputField text placeholder="Clerk" value={clerkName} disabled/>
+                    <InputField text placeholder="Date Processed" value={dateTime} disabled/>
+                </InputRow>
+                <InputRow titles={['Total', 'Change', 'Items Sold', 'Branch']} gap={15}>
+                    <InputField text placeholder="Total" value={Number(total).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} disabled/>
+                    <InputField text placeholder="Change" value={Number(change).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} disabled/>
+                    <InputField text placeholder="Items Sold" value={itemSold} disabled/>
+                    <InputField text placeholder="Branch" value={branchLocation} disabled/>
+                </InputRow>
+                <InputRow>
+                    <Table data={singleData || []} isLoading={loading}/>
+                </InputRow>
+            </InputForm>
+        </Modal>
     );
   }
   
 
   const viewTimeRecordModal = () => {
       const totalHours = timeData.reduce((acc, record) => acc + (record.totalHours || 0), 0);
-
       return (
           <Modal
               onClose={() => setTimeInModal(false)}
@@ -905,7 +923,7 @@ export default function App() {
           </Modal>
       );
   }
-  // eslint-disable-next-line no-unused-vars
+
   const showToastError = (type) => {
     switch (type) {
       case "product":

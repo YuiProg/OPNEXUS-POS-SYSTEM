@@ -53,9 +53,10 @@ class Logs extends React.Component {
 
     showViewTransactModal = (data) => {
         const { setSelectedItem } = ModalStore.getState();
-        const { setSalesModal } = SalesStore.getState();
+        const { setSalesModal, fetchSingleSale } = SalesStore.getState();
         setSalesModal(true);
         setSelectedItem(data);
+        fetchSingleSale(data.saleId);
     }
 
     render () { 
@@ -114,7 +115,7 @@ class Logs extends React.Component {
                         ) 
                         : this.state.selectedTab === 'transact' 
                         ? (
-                            <Table data={salesForTable} onRowSelect={e => console.log(e)}/>
+                            <Table data={salesForTable} onRowSelect={(e) => this.showViewTransactModal(e)}/>
                         ) 
                         : null}
                 </div>

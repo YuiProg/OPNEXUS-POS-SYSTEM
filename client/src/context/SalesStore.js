@@ -8,7 +8,8 @@ import BranchStore from "./BranchStore";
 
 const {
     NEWSALE,
-    GETSALES
+    GETSALES,
+    GETSINGLERECORD
 } = ApiConfig;
 /* eslint-disable no-unused-vars */
 const SalesStore = create((set) => ({
@@ -16,8 +17,11 @@ const SalesStore = create((set) => ({
     saleLoading: false,
     cleanedData: [],
     salesModal: false,
+    singleData: null,
+    singleDataUnCleaned: null,
+    loading: false,
 
-    setSalesModal: (val) => set({sales: val}),
+    setSalesModal: (val) => set({salesModal: val}),
 
     processOrder: async (data) => {
         set({saleLoading: true});
@@ -63,7 +67,39 @@ const SalesStore = create((set) => ({
     },
 
     fetchSingleSale: async (id) => {
+        set({ loading: true });
+        try {
+            const result = await axiosInstance.get(GETSINGLERECORD.replace(':id', id));
+            const record = result.data.data[0];
+            const items = record?.items;
 
+            if (!items || items.length === 0) {
+                set({ singleData: [], singleDataUnCleaned: record });
+                return;
+            }
+
+            const cleanedItems = items.map(({
+                _id,
+                Creator,
+                createdById,
+                creatorName,
+                productImage,
+                productImageId,
+                productName,
+                updatedAt,
+                __v,
+                createdAt,
+                productBranch,
+                ...rest
+            }) => rest);
+
+            set({ singleData: cleanedItems });
+            set({ singleDataUnCleaned: record }); 
+        } catch (error) {
+            console.log(error);
+        } finally {
+            set({ loading: false });
+        }
     },
 
     getSales: async () => {
@@ -78,7 +114,7 @@ const SalesStore = create((set) => ({
                 clerkName: rest.clerkName,
                 dateAndTime: rest.dateTime,
                 branchLocation: rest.branchLocation,
-                discount: rest.discount,
+                vip: rest.vip,
                 itemSold: rest.itemSold,
                 paid: rest.amountPaid,
                 total: rest.total
