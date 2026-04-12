@@ -44,6 +44,8 @@ const ApiConfig = Object.freeze({
 
     //SALES
     NEWSALE: apiEndpoint + 'procOrder',
+    GETSALES: apiEndpoint + 'getSales/:branch',
+    GETSINGLERECORD: apiEndpoint + 'getSingleRecordSale/:id'
 })
 
 export default ApiConfig;

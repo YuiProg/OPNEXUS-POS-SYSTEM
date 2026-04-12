@@ -395,11 +395,12 @@ export class TableData extends React.Component {
   }
 
   formatValue = (key, value) => {
-    if (key === "salary" || key === "price") {
-      return `PHP ${Number(value).toLocaleString()}`;
+    const phpKeys = ["salary", "price", "paid", "total", "amountPaid", "subtotal", "change"];
+    if (phpKeys.includes(key)) {
+        return `PHP ${Number(value).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
     }
     return value;
-  };
+};
 
   render() {
     const { data, hasSelect, selected, toggleRow, hasAction, CBD, CBE, onView, rowCB } = this.props;

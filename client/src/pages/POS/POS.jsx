@@ -94,7 +94,7 @@ class POS extends React.Component {
         const { AuthUser } = AuthStore.getState();
         console.log(AuthUser);
         const { fetchProducts, subscribeToProducts } = ProductStore.getState();
-        fetchProducts();
+        fetchProducts(true, AuthUser.branchLocation);
         subscribeToProducts();
     }
 

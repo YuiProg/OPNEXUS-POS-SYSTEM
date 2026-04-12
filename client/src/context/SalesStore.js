@@ -4,14 +4,24 @@ import ApiConfig from "../Api/ApiConfig";
 import axiosInstance from "../helpers/axiosInstance";
 import toast from "react-hot-toast";
 import ProductStore from "./ProductStore";
+import BranchStore from "./BranchStore";
 
 const {
-    NEWSALE
+    NEWSALE,
+    GETSALES,
+    GETSINGLERECORD
 } = ApiConfig;
-
+/* eslint-disable no-unused-vars */
 const SalesStore = create((set) => ({
-    sales: [],
+    salesForTable: [],
     saleLoading: false,
+    cleanedData: [],
+    salesModal: false,
+    singleData: null,
+    singleDataUnCleaned: null,
+    loading: false,
+
+    setSalesModal: (val) => set({salesModal: val}),
 
     processOrder: async (data) => {
         set({saleLoading: true});
@@ -19,6 +29,7 @@ const SalesStore = create((set) => ({
         const { fetchProducts } = ProductStore.getState();
         const {subtotal, change, items, amountPaid} = data;
         const now = new Date();
+        const totalCartQuantity = items.reduce((acc, item) => acc + item.quantity, 0);
         const dateTime = now.toLocaleString("en-US", {
             month: "2-digit",
             day: "2-digit",
@@ -32,10 +43,11 @@ const SalesStore = create((set) => ({
             clerkName: AuthUser.username,
             clerkId: AuthUser._id,
             amountPaid: amountPaid,
-            itemSold: items.length,
+            itemSold: totalCartQuantity,
             items: items,
             dateTime: dateTime,  
             total: subtotal,
+            branchLocation: AuthUser.branchLocation,
             change
         };
 
@@ -50,7 +62,69 @@ const SalesStore = create((set) => ({
             console.log(error);
         } finally {
             set({saleLoading: false});
-            await fetchProducts();
+            await fetchProducts(true, AuthUser.branchLocation);
+        }
+    },
+
+    fetchSingleSale: async (id) => {
+        set({ loading: true });
+        try {
+            const result = await axiosInstance.get(GETSINGLERECORD.replace(':id', id));
+            const record = result.data.data[0];
+            const items = record?.items;
+
+            if (!items || items.length === 0) {
+                set({ singleData: [], singleDataUnCleaned: record });
+                return;
+            }
+
+            const cleanedItems = items.map(({
+                _id,
+                Creator,
+                createdById,
+                creatorName,
+                productImage,
+                productImageId,
+                productName,
+                updatedAt,
+                __v,
+                createdAt,
+                productBranch,
+                ...rest
+            }) => rest);
+
+            set({ singleData: cleanedItems });
+            set({ singleDataUnCleaned: record }); 
+        } catch (error) {
+            console.log(error);
+        } finally {
+            set({ loading: false });
+        }
+    },
+
+    getSales: async () => {
+        const {selectedBranch} = AuthStore.getState();
+        set({saleLoading: true});
+        try {
+            const sales = await axiosInstance.get(GETSALES.replace(':branch', selectedBranch));
+            const data = sales.data.data;
+
+            const cleanedData = data.map(({ items, clerkId, __v, ...rest }) => ({
+                saleId: rest._id,
+                clerkName: rest.clerkName,
+                dateAndTime: rest.dateTime,
+                branchLocation: rest.branchLocation,
+                vip: rest.vip,
+                itemSold: rest.itemSold,
+                paid: rest.amountPaid,
+                total: rest.total
+            }));
+
+            set({salesForTable: cleanedData});
+        } catch (error) {
+            console.log(error);
+        } finally {
+            set({saleLoading: false});
         }
     }
 }));

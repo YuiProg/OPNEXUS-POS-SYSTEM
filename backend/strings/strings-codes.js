@@ -52,6 +52,7 @@ const Strings = Object.freeze({
 
     //SALES
     ORDER_PROC: 'Order Successfull',
+    GETSALES: 'Sales fetched',
 
     //credy
     usnm: 'username',
