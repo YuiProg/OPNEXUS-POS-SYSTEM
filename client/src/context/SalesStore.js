@@ -25,6 +25,7 @@ const SalesStore = create((set) => ({
         const { fetchProducts } = ProductStore.getState();
         const {subtotal, change, items, amountPaid} = data;
         const now = new Date();
+        const totalCartQuantity = items.reduce((acc, item) => acc + item.quantity, 0);
         const dateTime = now.toLocaleString("en-US", {
             month: "2-digit",
             day: "2-digit",
@@ -38,7 +39,7 @@ const SalesStore = create((set) => ({
             clerkName: AuthUser.username,
             clerkId: AuthUser._id,
             amountPaid: amountPaid,
-            itemSold: items.length,
+            itemSold: totalCartQuantity,
             items: items,
             dateTime: dateTime,  
             total: subtotal,
@@ -62,7 +63,7 @@ const SalesStore = create((set) => ({
     },
 
     fetchSingleSale: async (id) => {
-        
+
     },
 
     getSales: async () => {
