@@ -6,7 +6,8 @@ import Product from "../models/Products.js";
 const {
     ERROR,
     ORDER_PROC,
-    CREATED
+    CREATED,
+    GETSALES
 } = Strings;
 
 export const createSale = async (req, res) => {
@@ -16,6 +17,17 @@ export const createSale = async (req, res) => {
         const updatedStock = await Product.updateMany(items);
         const newSale = await Sales.createSale(data);
         ApiResponseModel(res, CREATED, ORDER_PROC, {updatedStock, newSale});
+    } catch (error) {
+        ApiResponseModel(res, ERROR, error.message);
+    }
+}
+
+export const getSales = async (req, res) => {
+    try {
+        const {branch} = req.params;
+        console.log(branch);
+        const sales = await Sales.getSales(branch);
+        ApiResponseModel(res, CREATED, GETSALES, sales);
     } catch (error) {
         ApiResponseModel(res, ERROR, error.message);
     }

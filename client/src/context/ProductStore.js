@@ -1,3 +1,4 @@
+
 import { create } from "zustand";
 import AuthStore from "./Authstore";
 import axiosInstance from "../helpers/axiosInstance";
@@ -116,7 +117,6 @@ const ProductStore = create((set, get) => ({
     const { setServerError } = ModalStore.getState();
     try {
       const { selectedBranch } = AuthStore.getState();
-      
       
       const products = await axiosInstance.get(fetchProduct, {
         params: {

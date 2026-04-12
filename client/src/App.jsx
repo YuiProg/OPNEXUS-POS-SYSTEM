@@ -113,9 +113,9 @@ export default function App() {
     confirmDelete,
     setConfirmDelete
   } = BranchStore();
-  // const {
-  //   timeData
-  // } = TimeInOutStore();
+  const {
+    timeData
+  } = TimeInOutStore();
 
   const { SERVER_ERROR, PROD_FAIL } = Strings;
   //const [currentRole, setCurrentRole] = useState("");
@@ -877,13 +877,19 @@ export default function App() {
       );
   }
 
-  const viewTimeRecordModal = () => {
+const viewTimeRecordModal = () => {
+    const totalHours = timeData.reduce((acc, record) => acc + (record.totalHours || 0), 0);
+
     return (
-      <Modal onClose={() => setTimeInModal(false)}>
-        
-      </Modal>
+        <Modal
+            onClose={() => setTimeInModal(false)}
+            header={`${selectedItem.employeeName}'s time logs.`}
+            subHeader={`Total hours: ${totalHours}`}
+        >
+            <Table data={timeData}/>
+        </Modal>
     );
-  }
+}
   // eslint-disable-next-line no-unused-vars
   const showToastError = (type) => {
     switch (type) {

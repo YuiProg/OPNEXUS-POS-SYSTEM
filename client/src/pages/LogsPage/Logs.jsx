@@ -6,6 +6,8 @@ import TimeInOutStore from "../../context/TimeinOut";
 import ModalStore from "../../context/ModalStore";
 import AuthStore from "../../context/Authstore";
 import toast from "react-hot-toast";
+import BranchStore from "../../context/BranchStore";
+import SalesStore from "../../context/SalesStore";
 
 class Logs extends React.Component {
     constructor (props) {
@@ -17,8 +19,12 @@ class Logs extends React.Component {
     }
 
     componentDidMount() {
+        const { getBranch } = BranchStore.getState();
         const { getAllData } = TimeInOutStore.getState();
+        const { getSales } = SalesStore.getState();
+        getSales();
         getAllData();
+        getBranch();
 
         this.unsubscribe = TimeInOutStore.subscribe((state) => {
             //console.log(state.allTimeData);
@@ -47,6 +53,10 @@ class Logs extends React.Component {
 
     render () { 
         const { timeInLoading } = TimeInOutStore.getState();
+        const { branches } = BranchStore.getState();
+        const { setSelectedBranch, selectedBranch } = AuthStore.getState();
+        const {salesForTable} = SalesStore.getState();
+        const branchNames = branches.map(d=>d.location);
 
         const uniqueUsers = Object.values(
             this.state.timeInData.reduce((acc, record) => {
@@ -71,9 +81,12 @@ class Logs extends React.Component {
                     </div>
                     <div className="logs-branch-dropdown">  
                         <p className="logs-branch-text">Branch</p>
-                        <DropDown 
-                        className="logs-branch-dd" 
-                        defaultValue="Branch"
+                        <DropDown
+                            isHeader 
+                            className="logs-branch-dd" 
+                            defaultValue={selectedBranch ? selectedBranch : "Branch"}
+                            onChange={(e) => setSelectedBranch(e)}
+                            options={branchNames}
                         />
                     </div>
                 </div>
@@ -94,7 +107,7 @@ class Logs extends React.Component {
                         ) 
                         : this.state.selectedTab === 'transact' 
                         ? (
-                            <Table data={[]}/>
+                            <Table data={salesForTable}/>
                         ) 
                         : null}
                 </div>
