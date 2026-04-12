@@ -30,6 +30,27 @@
     gap: 15px;
 }
 
+.branch-cards-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 24px;
+    width: 100%;
+}
+
+.branch-cards-spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid #2e2e2e;
+    border-top-color: #c0392b;
+    border-radius: 50%;
+    animation: branch-spinner-rotate 0.8s linear infinite;
+}
+
+@keyframes branch-spinner-rotate {
+    to { transform: rotate(360deg); }
+}
+
 .branch-card-clerk {
     margin: 0px;
     font-size: small;
