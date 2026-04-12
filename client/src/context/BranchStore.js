@@ -26,6 +26,7 @@ const BranchStore = create((set, get) => ({
     selectedUsersToAdd: [],
     selectedBranchView: null,
     confirmDelete: false,
+    loading: false,
 
     setConfirmDelete: (val) => set({confirmDelete: val}),
 
@@ -71,6 +72,7 @@ const BranchStore = create((set, get) => ({
     },
 
     getBranch: async () => {
+        set({loading: true});
         try {
             const branches = await axiosInstance.get(GETBRANCHES);
             const data = branches.data.data;
@@ -78,6 +80,8 @@ const BranchStore = create((set, get) => ({
         } catch (error) {
             //toast.error(error.message);
             console.log(error.message);
+        } finally {
+            set({loading: false});
         }
     },
 

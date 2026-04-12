@@ -17,7 +17,16 @@ class BranchesCards extends React.Component {
 
     render () {
         const { data } = this.props;
-        
+        const { loading } = BranchStore.getState();
+
+        if (loading) {
+            return (
+                <div className="branch-cards-loading">
+                    <div className="branch-cards-spinner" />
+                </div>
+            );
+        }
+
         return (
             <>
             {data?.map((data, i) => {
