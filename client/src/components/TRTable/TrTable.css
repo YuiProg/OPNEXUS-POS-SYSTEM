@@ -10,7 +10,7 @@
 /* ── Header row (title + search + button) ── */
 .table-header {
   border: 1px solid #404040;
-  border-radius: 10px;
+  border-radius: 5px;
   padding: 10px;
   display: flex;
   align-items: center;
@@ -50,7 +50,7 @@
   color: #fff;
   border: none;
   padding: 10px 20px;
-  border-radius: 8px;
+  border-radius: 5px;
   font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
@@ -68,7 +68,7 @@
 /* ── Table container — border + radius live here, not on <table> ── */
 .table-container {
   border: 1px solid #404040;
-  border-radius: 10px;
+  border-radius: 5px;
          /* clips thead corners and last row's bottom border */
 }
 

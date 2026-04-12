@@ -14,8 +14,10 @@ class POS extends React.Component {
         this.state = {
             items: [],
             isCartOpen: true,
-            amountPaid: 0
+            amountPaid: 0,
+            search: "" 
         };
+        this.calculatorRef = React.createRef();
     }
 
     addItemsToCart = (data) => {
@@ -85,7 +87,7 @@ class POS extends React.Component {
         const change = amountPaid - subtotal;
         processOrder({subtotal, change, items, amountPaid});
         this.clearCart();
-
+        this.calculatorRef.current?.reset();
     }
 
     componentDidMount() {
@@ -102,19 +104,26 @@ class POS extends React.Component {
 
     render() {
         const { productsUncleaned } = ProductStore.getState();
-        const { items, isCartOpen, amountPaid } = this.state;
+        const { items, isCartOpen, amountPaid, search } = this.state;
         const {saleLoading} = SalesStore.getState();
 
         const totalCartQuantity = items.reduce((acc, item) => acc + item.quantity, 0);
         const subtotal = items.reduce((acc, item) => acc + this.getItemPrice(item) * item.quantity, 0);
         const change = amountPaid - subtotal;
 
+        const filteredProducts = search
+            ? productsUncleaned.filter((p) =>
+                (p.productName || p.name || "").toLowerCase().includes(search.toLowerCase()) ||
+                (p.category || "").toLowerCase().includes(search.toLowerCase())
+            )
+            : productsUncleaned;
+
         return (
             <div className={`pos-container ${isCartOpen ? "cart-open" : "cart-closed"}`}>
                 <div className="pos-container__filter-cards">
                     <div className="pos-container__filter-cart">
                         <div className="pos-container__search">
-                            <InputField text placeholder="Search products..." />
+                            <InputField text placeholder="Search products..." onChange={(value) => this.setState({search: value})}/>
                         </div>
 
                         <button
@@ -146,7 +155,7 @@ class POS extends React.Component {
                     <div className="pos-product-cards">
                         <ProductCards
                             onClick={(data) => this.addItemsToCart(data)}
-                            data={productsUncleaned}
+                            data={filteredProducts}
                             items={items}
                         />
                     </div>
@@ -206,7 +215,7 @@ class POS extends React.Component {
                             </div>
 
                             <div className="pos-container__cart-totalization">
-                                <Calculator onChange={(value) => this.setState({ amountPaid: value })} />
+                                <Calculator ref={this.calculatorRef} onChange={(value) => this.setState({ amountPaid: value })} />
 
                                 <div className="pos-container__cart-totalization-subtotal">
                                     <div style={{ display: "flex", justifyContent: "space-between" }}>

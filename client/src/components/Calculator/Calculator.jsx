@@ -1,8 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useImperativeHandle, forwardRef } from 'react'
 import './Calculator.css'
 
-const Calculator = ({ onChange }) => {
+const Calculator = forwardRef(({ onChange }, ref) => {
   const [display, setDisplay] = useState('0')
+
+  useImperativeHandle(ref, () => ({
+    reset: () => {
+      setDisplay('0')
+      onChange?.(0)
+    }
+  }))
 
   const handleNumber = (num) => {
     const newDisplay = display === '0' ? String(num) : display + num
@@ -67,6 +74,6 @@ const Calculator = ({ onChange }) => {
       </div>
     </div>
   );
-}
+})
 
 export default Calculator;
