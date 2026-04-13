@@ -48,9 +48,10 @@ class InputField extends React.Component {
   };
 
   handleSearch = (e) => {
-    const value = e.target.value;
-    this.setState({ searchValue: value });
-    return value;
+      const value = e.target.value;
+      this.setState({ searchValue: value });
+      if (this.props.onChange) this.props.onChange(value);
+      return value;
   };
 
   handleEnterDown = (e, CB) => {

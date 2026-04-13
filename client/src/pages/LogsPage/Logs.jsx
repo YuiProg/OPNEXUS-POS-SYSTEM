@@ -8,13 +8,15 @@ import AuthStore from "../../context/Authstore";
 import toast from "react-hot-toast";
 import BranchStore from "../../context/BranchStore";
 import SalesStore from "../../context/SalesStore";
+import InputField from "../../components/TRInputField/InputFIeld";
 
 class Logs extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
             selectedTab: 'system',
-            timeInData: []
+            timeInData: [],
+            search: ''
         }
     }
 
@@ -27,7 +29,6 @@ class Logs extends React.Component {
         getBranch();
 
         this.unsubscribe = TimeInOutStore.subscribe((state) => {
-            //console.log(state.allTimeData);
             this.setState({timeInData: state.allTimeData});
         });
     }
@@ -59,26 +60,40 @@ class Logs extends React.Component {
         fetchSingleSale(data.saleId);
     }
 
+    filterData = (data) => {
+        const { search } = this.state;
+        if (!search) return data;
+        return data.filter((item) =>
+            Object.values(item).some((val) =>
+                String(val).toLowerCase().includes(search.toLowerCase())
+            )
+        );
+    }
+
     render () { 
         const { timeInLoading } = TimeInOutStore.getState();
         const { branches } = BranchStore.getState();
         const { setSelectedBranch, selectedBranch } = AuthStore.getState();
-        const {salesForTable} = SalesStore.getState();
-        const branchNames = branches.map(d=>d.location);
+        const { salesForTable } = SalesStore.getState();
+        const branchNames = branches.map(d => d.location);
 
         const uniqueUsers = Object.values(
             this.state.timeInData.reduce((acc, record) => {
                 if (!acc[record.userId]) {
-                acc[record.userId] = {
-                    employeeName: record.employeeName,
-                    userId: record.userId,
-                    totalHours: 0,  // start at 0, accumulate below
-                };
+                    acc[record.userId] = {
+                        employeeName: record.employeeName,
+                        userId: record.userId,
+                        totalHours: 0,
+                    };
                 }
-                acc[record.userId].totalHours += record.totalHours;  // sum all sessions
+                acc[record.userId].totalHours += record.totalHours;
                 return acc;
             }, {})
         );
+
+        const filteredUniqueUsers = this.filterData(uniqueUsers);
+        const filteredSales = this.filterData(salesForTable);
+
         return (
             <>
             <div className="logs-container">
@@ -99,7 +114,11 @@ class Logs extends React.Component {
                     </div>
                 </div>
                 <div>
-                    {/* NAV BUTTONS */}
+                    <InputField
+                        isSearch
+                        placeholder="Search"
+                        onChange={(value) => this.setState({ search: value, })}
+                    />
                     <div className={`logos-container__buttons`}>
                         <button className={`logos-container__buttons-item ${this.state.selectedTab === 'system' ? 'active' : null}`} onClick={() => this.setState({selectedTab: 'system'})}>System Logs</button>
                         <button className={`logos-container__buttons-item ${this.state.selectedTab === 'time' ? 'active' : null}`} onClick={() => this.setState({selectedTab: 'time'})}>In/Out Logs</button>
@@ -111,11 +130,11 @@ class Logs extends React.Component {
                         ) 
                         : this.state.selectedTab === 'time' 
                         ? (
-                            <Table data={uniqueUsers} isLoading={timeInLoading} onRowSelect={(e) => this.showViewModal(e)}/>
+                            <Table data={filteredUniqueUsers} isLoading={timeInLoading} onRowSelect={(e) => this.showViewModal(e)}/>
                         ) 
                         : this.state.selectedTab === 'transact' 
                         ? (
-                            <Table data={salesForTable} onRowSelect={(e) => this.showViewTransactModal(e)}/>
+                            <Table data={filteredSales} onRowSelect={(e) => this.showViewTransactModal(e)}/>
                         ) 
                         : null}
                 </div>

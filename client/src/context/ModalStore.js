@@ -14,6 +14,9 @@ const ModalStore = create((set) => ({
     url: "",
     serverError: false,
     screenLoading: false,
+    transactConfirmModal: false,
+
+    setTransactConfirmModal: (val) => set({transactConfirmModal: val}),
 
     //screen loading
     isScreenLoading: (val) => set({screenLoading: val}),
