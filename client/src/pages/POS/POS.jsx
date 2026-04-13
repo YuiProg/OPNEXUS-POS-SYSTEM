@@ -15,7 +15,8 @@ class POS extends React.Component {
             items: [],
             isCartOpen: true,
             amountPaid: 0,
-            search: "" 
+            search: "", 
+            vipActive: false
         };
         this.calculatorRef = React.createRef();
     }
@@ -100,6 +101,12 @@ class POS extends React.Component {
 
     getItemPrice = (item) => {
         return Number(item?.sellingPrice || item?.price || item?.originalPrice || 0);
+    };
+
+    toggleVIP = () => {
+        this.setState((prev) => ({
+            vipActive: !prev.vipActive
+        }));
     };
 
     render() {
@@ -219,14 +226,20 @@ class POS extends React.Component {
                                 <div className="vip-container">
                                     <h2 className="vip-text">VIP</h2>
                                     <label class="switch">
-                                        <input type="checkbox" />
+                                        <input 
+                                            type="checkbox" 
+                                            checked={this.state.vipActive} 
+                                            onChange={this.toggleVIP} 
+                                        />
                                         <span class="slider"></span>
                                     </label>
                                 </div>
-                                <div className="vip-details">
-                                    <InputField number placeholder="ID Number" />
-                                    <InputField number placeholder="Discount" />
-                                </div>
+                                {this.state.vipActive && (
+                                    <div className="vip-details">
+                                        <InputField number placeholder="ID Number" />
+                                        <InputField number placeholder="Discount" />
+                                    </div>
+                                )}
                                 <div className="pos-container__cart-totalization-subtotal">
                                     <div style={{ display: "flex", justifyContent: "space-between" }}>
                                         <p>Subtotal</p>
