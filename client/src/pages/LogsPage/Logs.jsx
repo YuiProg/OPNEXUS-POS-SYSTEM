@@ -113,30 +113,33 @@ class Logs extends React.Component {
                         />
                     </div>
                 </div>
-                <div>
+                <div className="logs-main-contents">
                     <InputField
                         isSearch
                         placeholder="Search"
                         onChange={(value) => this.setState({ search: value, })}
                     />
-                    <div className={`logos-container__buttons`}>
-                        <button className={`logos-container__buttons-item ${this.state.selectedTab === 'system' ? 'active' : null}`} onClick={() => this.setState({selectedTab: 'system'})}>System Logs</button>
-                        <button className={`logos-container__buttons-item ${this.state.selectedTab === 'time' ? 'active' : null}`} onClick={() => this.setState({selectedTab: 'time'})}>In/Out Logs</button>
-                        <button className={`logos-container__buttons-item ${this.state.selectedTab === 'transact' ? 'active' : null}`} onClick={() => this.setState({selectedTab: 'transact'})}>Transaction History</button>
+                    <div className="logs-table">
+                        <div className={`logos-container__buttons`}>
+                            <button className={`logos-container__buttons-item ${this.state.selectedTab === 'system' ? 'active' : null}`} onClick={() => this.setState({selectedTab: 'system'})}>System Logs</button>
+                            <button className={`logos-container__buttons-item ${this.state.selectedTab === 'time' ? 'active' : null}`} onClick={() => this.setState({selectedTab: 'time'})}>In/Out Logs</button>
+                            <button className={`logos-container__buttons-item ${this.state.selectedTab === 'transact' ? 'active' : null}`} onClick={() => this.setState({selectedTab: 'transact'})}>Transaction History</button>
+                        </div>
+                        {this.state.selectedTab === 'system' 
+                            ? (
+                                <Table data={[]}/>
+                            ) 
+                            : this.state.selectedTab === 'time' 
+                            ? (
+                                <Table data={filteredUniqueUsers} isLoading={timeInLoading} onRowSelect={(e) => this.showViewModal(e)}/>
+                            ) 
+                            : this.state.selectedTab === 'transact' 
+                            ? (
+                                <Table data={filteredSales} onRowSelect={(e) => this.showViewTransactModal(e)}/>
+                            ) 
+                            : null
+                        }
                     </div>
-                    {this.state.selectedTab === 'system' 
-                        ? (
-                            <Table data={[]}/>
-                        ) 
-                        : this.state.selectedTab === 'time' 
-                        ? (
-                            <Table data={filteredUniqueUsers} isLoading={timeInLoading} onRowSelect={(e) => this.showViewModal(e)}/>
-                        ) 
-                        : this.state.selectedTab === 'transact' 
-                        ? (
-                            <Table data={filteredSales} onRowSelect={(e) => this.showViewTransactModal(e)}/>
-                        ) 
-                        : null}
                 </div>
             </div>
             </>

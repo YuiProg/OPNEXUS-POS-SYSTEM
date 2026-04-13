@@ -48,6 +48,16 @@ h1 {
   margin: 4px;
 }
 
+.logs-main-contents {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.logs-main-contents .input-wrapper {
+  width: 443px;
+}
+
 .logos-container__buttons-item {
     padding: 20px 30px;
     border-top-left-radius: 8px;
