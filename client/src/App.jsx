@@ -27,11 +27,12 @@ import Button from "./components/TRButton/Button.jsx";
 import BranchStore from "./context/BranchStore.js";
 import TimeInOutStore from "./context/TimeinOut.js";
 import URLError from "./components/ErrorPages/URLError/URLError.jsx";
-import ScreenLoading from './components/ScreenLoading/ScreenLoading.jsx';
+import ScreenLoading from "./components/ScreenLoading/ScreenLoading.jsx";
 import SalesStore from "./context/SalesStore.js";
 
-
-const ServerError = lazy(() => import("./components/ErrorPages/ServerError/ServerError.jsx"));
+const ServerError = lazy(
+  () => import("./components/ErrorPages/ServerError/ServerError.jsx"),
+);
 const Logs = lazy(() => import("./pages/LogsPage/Logs.jsx"));
 const Inventory = lazy(() => import("./pages/Inventory/Inventory.jsx"));
 const Dashboard = lazy(() => import("./pages/DashBoard/Dashboard.jsx"));
@@ -49,7 +50,7 @@ export default function App() {
   // const setProductData = ProductStore().setProductData;
   // const addProduct = ProductStore().addNewProduct;
   // const branches = ProductStore().branches;
-  
+
   const {
     checkAuth,
     AuthUser,
@@ -61,7 +62,7 @@ export default function App() {
     deleteUser,
     updateUser,
     fetchUsers,
-    input
+    input,
   } = AuthStore();
   const {
     isOpen,
@@ -88,7 +89,9 @@ export default function App() {
     setTimeInModal,
     viewBranch,
     setSelectedItem,
-    screenLoading
+    screenLoading,
+    setTransactConfirmModal,
+    transactConfirmModal
   } = ModalStore();
   const {
     setProductData,
@@ -101,28 +104,27 @@ export default function App() {
     deleteProduct,
     updateProduct,
   } = ProductStore();
-  const { 
-    showModalBranch, 
+  const {
+    showModalBranch,
     setShowModal,
     setBranchInput,
     newBranch,
     branches,
-    selectedUsersToAdd, 
+    selectedUsersToAdd,
     setSelectedUsers,
     removeUserFromBranch,
     deleteSelectedBranch,
     confirmDelete,
-    setConfirmDelete
+    setConfirmDelete,
   } = BranchStore();
-  const {
-    timeData
-  } = TimeInOutStore();
+  const { timeData } = TimeInOutStore();
   const {
     salesModal,
     setSalesModal,
     singleData,
     singleDataUnCleaned,
-    loading
+    loading,
+    transactRefNo
   } = SalesStore();
 
   const { SERVER_ERROR, PROD_FAIL } = Strings;
@@ -141,8 +143,7 @@ export default function App() {
       <div>
         <Loading />
       </div>
-  );
-
+    );
 
   const defaultRoute =
     AuthUser?.role.toLowerCase() === "clerk" ? "/timeinout" : "/dashboard";
@@ -165,7 +166,7 @@ export default function App() {
   const addBranch = (e) => {
     e.preventDefault();
     newBranch(selectedUsersToAdd);
-  }
+  };
 
   // const clearSelectedTime = () => {
   //   setTimeInModal(false);
@@ -194,7 +195,7 @@ export default function App() {
 
   //add user modal to hindi branch
   const showUserModal = (isUpdate) => {
-    const mainBranches = branches?.map(d => d.location);
+    const mainBranches = branches?.map((d) => d.location);
     //console.log(mainBranches);
     console.log(selectedItem);
     return (
@@ -293,8 +294,8 @@ export default function App() {
               maxWidth
               options={["Admin", "Clerk"]}
               defaultValue="Role"
-              onChange={(value) => { 
-                setInput("role", value) 
+              onChange={(value) => {
+                setInput("role", value);
                 selectedItem.role = value;
               }}
               value={isUpdate ? selectedItem.role : null}
@@ -306,7 +307,10 @@ export default function App() {
               defaultValue="Shift"
               onChange={(value) => setInput("shift", value)}
               value={isUpdate ? selectedItem.shift : null}
-              disabled={selectedItem && selectedItem.role === "Admin" || input.role === "Admin"}
+              disabled={
+                (selectedItem && selectedItem.role === "Admin") ||
+                input.role === "Admin"
+              }
               isRequired
             />
             <DropDown
@@ -325,7 +329,7 @@ export default function App() {
                 options={mainBranches}
                 defaultValue="Branch"
                 onChange={(value) => setInput("branch", value)}
-                value={isUpdate ? selectedItem.branchLocation : 'N/A'}
+                value={isUpdate ? selectedItem.branchLocation : "N/A"}
                 disabled={selectedItem.role === "Admin"}
                 isRequired
               />
@@ -345,12 +349,25 @@ export default function App() {
     );
   };
 
+  const showTransactConfirmModal = () => {
+    return (
+      <ModalConfim
+        message={`Order Successfull RefNo: ${transactRefNo}`}
+        onClose={() => setTransactConfirmModal(false)}
+      />
+    );
+  }
+
   const showYesNoModal = () => {
     console.log(selectedItem);
     return (
       <ModalYesNo
         message={`Are you sure you want to delete ${url === "staff" ? selectedItem.Username : selectedItem.Name}?`}
-        message2={url === "staff" ? "This will delete the user from all branches." : "This will delete the product from all branches."}
+        message2={
+          url === "staff"
+            ? "This will delete the user from all branches."
+            : "This will delete the product from all branches."
+        }
         onClose={() => setYesNoModal(false)}
         onYes={() =>
           url === "staff"
@@ -364,7 +381,7 @@ export default function App() {
 
   const showModalAddProduct = (isUpdate) => {
     //i request nalang yung product sa backend kesa kunin yung selecteditem store since di naman pala na store yung image link
-    const mainBranches = branches?.map(d => d.location);
+    const mainBranches = branches?.map((d) => d.location);
     if (isUpdate && addLoading) {
       return <div>LOADING...</div>;
     }
@@ -647,9 +664,7 @@ export default function App() {
                 placeholder="Branch"
                 value={data.branchLocation}
                 disabled
-                color={
-                  oldBranch !== data.branchLocation && "#22C55E"
-                }
+                color={oldBranch !== data.branchLocation && "#22C55E"}
                 textColor="white"
               />
             </InputRow>
@@ -813,116 +828,199 @@ export default function App() {
     );
   };
 
-  const AddBranchModal = () => { 
+  const AddBranchModal = () => {
     const { users } = AuthStore.getState();
 
     const addToSelected = (data) => {
-      const alreadyAdded = selectedUsersToAdd.some(d => d.Id === data.Id);
-      if (alreadyAdded) return toast.error('Already added this user');
-      setSelectedUsers(prev => [...prev, data]);
+      const alreadyAdded = selectedUsersToAdd.some((d) => d.Id === data.Id);
+      if (alreadyAdded) return toast.error("Already added this user");
+      setSelectedUsers((prev) => [...prev, data]);
     };
 
     const removeFromSelected = (data) => {
-      setSelectedUsers(prev => prev.filter(d => d.Id !== data.Id));
+      setSelectedUsers((prev) => prev.filter((d) => d.Id !== data.Id));
     };
 
     return (
-      <Modal header="Add branches" subHeader="Add branches to your liking" onClose={() => setShowModal(false)}>
+      <Modal
+        header="Add branches"
+        subHeader="Add branches to your liking"
+        onClose={() => setShowModal(false)}
+      >
         <InputForm isRequired onSubmit={(e) => addBranch(e)}>
-          <InputRow titles={['Set location']}>
-            <InputField text placeholder="Set Branch Location" onChange={value => setBranchInput('location', value)}/>
+          <InputRow titles={["Set location"]}>
+            <InputField
+              text
+              placeholder="Set Branch Location"
+              onChange={(value) => setBranchInput("location", value)}
+            />
           </InputRow>
-          <Table data={selectedUsersToAdd || []} limit={4} onRowSelect={(e) => removeFromSelected(e)} noDataMessage="Add clerks here"/>
-          <Table data={users} limit={4} onRowSelect={(e) => addToSelected(e)}/>
+          <Table
+            data={selectedUsersToAdd || []}
+            limit={4}
+            onRowSelect={(e) => removeFromSelected(e)}
+            noDataMessage="Add clerks here"
+          />
+          <Table data={users} limit={4} onRowSelect={(e) => addToSelected(e)} />
         </InputForm>
       </Modal>
     );
-  }
+  };
 
   const confirmDeleteUserFromBranch = (deleteBranch) => {
-    return(
+    return (
       <ModalYesNo
         message={
-          deleteBranch 
-          ? 'Are you sure you want to remove this branch?' 
-          : `Are you sure you want to remove ${selectedItem.Username} from this branch?`
+          deleteBranch
+            ? "Are you sure you want to remove this branch?"
+            : `Are you sure you want to remove ${selectedItem.Username} from this branch?`
         }
         message2="This action will remove assigned clerk's respective branches"
         onClose={() => setConfirmDelete(false)}
-        onYes={() => deleteBranch ? deleteSelectedBranch(selectedItem) : removeUserFromBranch(selectedItem)}
+        onYes={() =>
+          deleteBranch
+            ? deleteSelectedBranch(selectedItem)
+            : removeUserFromBranch(selectedItem)
+        }
       />
     );
-  }
+  };
 
   const yesNoModalBranchDeleteUser = (data, isBranchDelete) => {
     setConfirmDelete(true);
     setSelectedItem(data);
     setDeleteBranch(isBranchDelete);
-  }
-  
+  };
 
   const viewBranchClerks = () => {
-      const { selectedBranchView } = BranchStore.getState();
-      const { setViewBranch } = ModalStore.getState();
-      const clerks = selectedBranchView.clerks;
-      
-      const filteredClerks = clerks.map(({ branchLocation, ...rest }) => rest);
-      
-      return (
-        <Modal header="View branch details" subHeader="View branch details and clerks" onClose={() => setViewBranch(false)}>
-          <Table 
-            data={filteredClerks} 
-            hasAction
-            onEdit={() => toast.error('Cant edit users')}
-            onDelete={(e) => yesNoModalBranchDeleteUser(e, false)}
-            noDataMessage="No clerks found"
+    const { selectedBranchView } = BranchStore.getState();
+    const { setViewBranch } = ModalStore.getState();
+    const clerks = selectedBranchView.clerks;
+
+    const filteredClerks = clerks.map(({ branchLocation, ...rest }) => rest);
+
+    return (
+      <Modal
+        header="View branch details"
+        subHeader="View branch details and clerks"
+        onClose={() => setViewBranch(false)}
+      >
+        <Table
+          data={filteredClerks}
+          hasAction
+          onEdit={() => toast.error("Cant edit users")}
+          onDelete={(e) => yesNoModalBranchDeleteUser(e, false)}
+          noDataMessage="No clerks found"
+        />
+        <InputRow>
+          <Button
+            text="DELETE BRANCH"
+            error
+            onClick={() => yesNoModalBranchDeleteUser(selectedBranchView, true)}
           />
-          <InputRow>
-            <Button text="DELETE BRANCH" error onClick={() => yesNoModalBranchDeleteUser(selectedBranchView, true)}/>
-          </InputRow>
-        </Modal>
-      );
-  }
+        </InputRow>
+      </Modal>
+    );
+  };
 
   const viewSalesRecordModal = () => {
-    if (!singleDataUnCleaned) return null;
+    if (!singleDataUnCleaned && loading) return null;
+    
+    const {
+      amountPaid,
+      branchLocation,
+      clerkName,
+      dateTime,
+      itemSold,
+      total,
+      change,
+    } = singleDataUnCleaned;
 
-    const { amountPaid, branchLocation, clerkName, dateTime, itemSold, total, change } = singleDataUnCleaned;
     return (
-        <Modal header="View Transaction Record" onClose={() => setSalesModal(false)}>
-            <InputForm noBtn>
-                <InputRow titles={['Amount Paid', 'Clerk', 'Date Processed']} gap={15}>
-                    <InputField text placeholder="Amount Paid" value={Number(amountPaid).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} disabled/>
-                    <InputField text placeholder="Clerk" value={clerkName} disabled/>
-                    <InputField text placeholder="Date Processed" value={dateTime} disabled/>
-                </InputRow>
-                <InputRow titles={['Total', 'Change', 'Items Sold', 'Branch']} gap={15}>
-                    <InputField text placeholder="Total" value={Number(total).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} disabled/>
-                    <InputField text placeholder="Change" value={Number(change).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} disabled/>
-                    <InputField text placeholder="Items Sold" value={itemSold} disabled/>
-                    <InputField text placeholder="Branch" value={branchLocation} disabled/>
-                </InputRow>
-                <InputRow>
-                    <Table data={singleData || []} isLoading={loading}/>
-                </InputRow>
-            </InputForm>
-        </Modal>
+      <Modal
+        header="View Transaction Record"
+        onClose={() => setSalesModal(false)}
+      >
+        <InputForm noBtn>
+          <InputRow
+            titles={["Amount Paid", "Total", "Change", "Item/s Sold"]}
+            gap={15}
+          >
+            <InputField
+              text
+              placeholder="Amount Paid"
+              value={Number(amountPaid).toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
+              disabled
+            />
+            <InputField
+              text
+              placeholder="Total"
+              value={Number(total).toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
+              disabled
+            />
+            <InputField
+              text
+              placeholder="Change"
+              value={Number(change).toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
+              disabled
+            />
+            <InputField
+              text
+              placeholder="Items Sold"
+              value={itemSold}
+              disabled
+            />
+          </InputRow>
+          <InputRow
+            titles={["Clerk", "Branch", "Date Processed"]}
+            gap={15}
+          >
+            <InputField text placeholder="Clerk" value={clerkName} disabled />
+            <InputField
+              text
+              placeholder="Branch"
+              value={branchLocation}
+              disabled
+            />
+            <InputField
+              text
+              placeholder="Date Processed"
+              value={dateTime}
+              disabled
+            />
+          </InputRow>
+          <InputRow>
+            <Table data={singleData || []} isLoading={loading} />
+          </InputRow>
+        </InputForm>
+      </Modal>
     );
-  }
-  
+  };
 
   const viewTimeRecordModal = () => {
-      const totalHours = timeData.reduce((acc, record) => acc + (record.totalHours || 0), 0);
-      return (
-          <Modal
-              onClose={() => setTimeInModal(false)}
-              header={`${selectedItem.employeeName}'s time logs.`}
-              subHeader={`Total hours: ${totalHours}`}
-          >
-              <Table data={timeData}/>
-          </Modal>
-      );
-  }
+    const totalHours = timeData.reduce(
+      (acc, record) => acc + (record.totalHours || 0),
+      0,
+    );
+    return (
+      <Modal
+        onClose={() => setTimeInModal(false)}
+        header={`${selectedItem.employeeName}'s time logs.`}
+        subHeader={`Total hours: ${totalHours}`}
+      >
+        <Table data={timeData} />
+      </Modal>
+    );
+  };
 
   const showToastError = (type) => {
     switch (type) {
@@ -967,6 +1065,7 @@ export default function App() {
         {viewBranch && viewBranchClerks()}
         {confirmDelete && confirmDeleteUserFromBranch(deleteBranch)}
         {salesModal && viewSalesRecordModal()}
+        {transactConfirmModal && showTransactConfirmModal()}
       </>
     );
   };
@@ -974,10 +1073,10 @@ export default function App() {
   //ROUTING
   return (
     <>
-      {screenLoading && <ScreenLoading/>}
+      {screenLoading && <ScreenLoading />}
       {returnModals()}
-      <Toaster position="bottom-right"/>
-      <Suspense fallback={<Loading/>}>
+      <Toaster position="bottom-right" />
+      <Suspense fallback={<Loading />}>
         <Routes>
           <Route
             path="/"
@@ -1001,7 +1100,9 @@ export default function App() {
             element={
               AuthUser?.role.toLowerCase() === "clerk" ? (
                 <Navigate to="/timeinout" replace />
-              ) : !AuthUser ? <Navigate to='/login' replace/> : (
+              ) : !AuthUser ? (
+                <Navigate to="/login" replace />
+              ) : (
                 <Sidebar user={AuthUser}>
                   <Dashboard />
                 </Sidebar>
@@ -1012,10 +1113,13 @@ export default function App() {
           <Route
             path="/inventory"
             element={
-              !AuthUser ? <Navigate to='/login' replace/> :
-              <Sidebar user={AuthUser}>
-                <Inventory user={AuthUser}/>
-              </Sidebar>
+              !AuthUser ? (
+                <Navigate to="/login" replace />
+              ) : (
+                <Sidebar user={AuthUser}>
+                  <Inventory user={AuthUser} />
+                </Sidebar>
+              )
             }
           />
 
@@ -1024,7 +1128,9 @@ export default function App() {
             element={
               AuthUser?.role.toLowerCase() === "clerk" ? (
                 <Navigate to="/timeinout" replace />
-              ) : !AuthUser ? <Navigate to='/login' replace/> : (
+              ) : !AuthUser ? (
+                <Navigate to="/login" replace />
+              ) : (
                 <Sidebar user={AuthUser}>
                   <StaffManagement />
                 </Sidebar>
@@ -1034,10 +1140,14 @@ export default function App() {
 
           <Route
             path="/pos"
-            element={!AuthUser ? <Navigate to='/login' replace/> :
-              <Sidebar user={AuthUser}>
-                <POS />
-              </Sidebar>
+            element={
+              !AuthUser ? (
+                <Navigate to="/login" replace />
+              ) : (
+                <Sidebar user={AuthUser}>
+                  <POS />
+                </Sidebar>
+              )
             }
           />
 
@@ -1051,9 +1161,11 @@ export default function App() {
             element={
               AuthUser?.role.toLowerCase() === "clerk" ? (
                 <Navigate to="/timeinout" replace />
-              ) : !AuthUser ? <Navigate to='/login' replace/> :  (
+              ) : !AuthUser ? (
+                <Navigate to="/login" replace />
+              ) : (
                 <Sidebar user={AuthUser}>
-                  <Branches/>
+                  <Branches />
                 </Sidebar>
               )
             }
@@ -1064,9 +1176,11 @@ export default function App() {
             element={
               AuthUser?.role.toLowerCase() === "admin" ? (
                 <Navigate to="/dashboard" replace />
-              ) : !AuthUser ? <Navigate to='/login' replace/> : (
+              ) : !AuthUser ? (
+                <Navigate to="/login" replace />
+              ) : (
                 <Sidebar user={AuthUser}>
-                  <TimeInOut/>
+                  <TimeInOut />
                 </Sidebar>
               )
             }
@@ -1074,20 +1188,23 @@ export default function App() {
 
           <Route
             path="/logs"
-            element={AuthUser?.role.toLowerCase() === "clerk" ? (
-              <Navigate to="/timeinout" replace/>
-            ) : !AuthUser ? <Navigate to='/login' replace/> : (
-              <Sidebar user={AuthUser}>
-                <Logs/>
-              </Sidebar>
-            )}
+            element={
+              AuthUser?.role.toLowerCase() === "clerk" ? (
+                <Navigate to="/timeinout" replace />
+              ) : !AuthUser ? (
+                <Navigate to="/login" replace />
+              ) : (
+                <Sidebar user={AuthUser}>
+                  <Logs />
+                </Sidebar>
+              )
+            }
           />
           {/* NO URL AND ERROR */}
-          <Route path="*" element={<URLError/>} />
-          <Route path="/servererror" element={<ServerError/>}/>
+          <Route path="*" element={<URLError />} />
+          <Route path="/servererror" element={<ServerError />} />
         </Routes>
       </Suspense>
     </>
   );
 }
-

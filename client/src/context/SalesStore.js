@@ -5,6 +5,7 @@ import axiosInstance from "../helpers/axiosInstance";
 import toast from "react-hot-toast";
 import ProductStore from "./ProductStore";
 import BranchStore from "./BranchStore";
+import ModalStore from "./ModalStore";
 
 const {
     NEWSALE,
@@ -20,6 +21,7 @@ const SalesStore = create((set) => ({
     singleData: null,
     singleDataUnCleaned: null,
     loading: false,
+    transactRefNo: null,
 
     setSalesModal: (val) => set({salesModal: val}),
 
@@ -27,6 +29,7 @@ const SalesStore = create((set) => ({
         set({saleLoading: true});
         const {AuthUser} = AuthStore.getState();
         const { fetchProducts } = ProductStore.getState();
+        const {setTransactConfirmModal} = ModalStore.getState();
         const {subtotal, change, items, amountPaid} = data;
         const now = new Date();
         const totalCartQuantity = items.reduce((acc, item) => acc + item.quantity, 0);
@@ -56,8 +59,10 @@ const SalesStore = create((set) => ({
             if (!newSale) {
                 return toast.error('Order Failed.');
             }
-
+            const refNo = newSale.data.data.newSale;
+            set({transactRefNo: refNo._id});
             toast.success('Order Success.');
+            setTransactConfirmModal(true);
         } catch (error) {
             console.log(error);
         } finally {
@@ -68,6 +73,7 @@ const SalesStore = create((set) => ({
 
     fetchSingleSale: async (id) => {
         set({ loading: true });
+        set({singleDataUnCleaned: null});
         try {
             const result = await axiosInstance.get(GETSINGLERECORD.replace(':id', id));
             const record = result.data.data[0];

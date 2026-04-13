@@ -3,8 +3,8 @@ import './URLError.css'
 
 const URLError = () => {
   return (
-    <div className="error-container">
-      <div className="error-content">
+    <div className="url-error-container">
+      <div className="url-error-content">
         <div class="loader">
           <div class="loaderMiniContainer">
             <div class="barContainer">
@@ -36,7 +36,8 @@ const URLError = () => {
             </svg>
           </div>
         </div>
-        <p className="error-text">Page not found</p>
+        <p className="url-error-text">Page not found</p>
+        <a onClick={() => (window.location.href = "/login")} className="url-error-btn">Go back to Login</a>
       </div>
     </div>
   )

@@ -13,9 +13,10 @@ class POS extends React.Component {
         super(props);
         this.state = {
             items: [],
-            isCartOpen: true,
+            isCartOpen: false,
             amountPaid: 0,
-            search: "" 
+            search: "", 
+            vipActive: false
         };
         this.calculatorRef = React.createRef();
     }
@@ -88,6 +89,7 @@ class POS extends React.Component {
         processOrder({subtotal, change, items, amountPaid});
         this.clearCart();
         this.calculatorRef.current?.reset();
+        //this.setState({isCartOpen: false});
     }
 
     componentDidMount() {
@@ -100,6 +102,12 @@ class POS extends React.Component {
 
     getItemPrice = (item) => {
         return Number(item?.sellingPrice || item?.price || item?.originalPrice || 0);
+    };
+
+    toggleVIP = () => {
+        this.setState((prev) => ({
+            vipActive: !prev.vipActive
+        }));
     };
 
     render() {
@@ -216,7 +224,23 @@ class POS extends React.Component {
 
                             <div className="pos-container__cart-totalization">
                                 <Calculator ref={this.calculatorRef} onChange={(value) => this.setState({ amountPaid: value })} />
-
+                                <div className="vip-container">
+                                    <h2 className="vip-text">VIP</h2>
+                                    <label class="switch">
+                                        <input 
+                                            type="checkbox" 
+                                            checked={this.state.vipActive} 
+                                            onChange={this.toggleVIP} 
+                                        />
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                                {this.state.vipActive && (
+                                    <div className="vip-details">
+                                        <InputField number placeholder="ID Number" />
+                                        <InputField number placeholder="Discount" />
+                                    </div>
+                                )}
                                 <div className="pos-container__cart-totalization-subtotal">
                                     <div style={{ display: "flex", justifyContent: "space-between" }}>
                                         <p>Subtotal</p>
