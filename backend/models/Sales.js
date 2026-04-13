@@ -43,6 +43,10 @@ const salesSchema = new mongoose.Schema({
         type: String,
         default: 'No'
     },
+    purchasedBy: {
+        type: Object,
+        required: false
+    },
     dateTime: {
         type: String,
         required: true
