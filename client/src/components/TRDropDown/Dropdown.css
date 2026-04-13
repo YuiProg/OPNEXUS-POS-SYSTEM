@@ -36,4 +36,8 @@
 .tr-options {
     background-color: #111111;
     border: #404040;
+    color: #d0d0d0;
+    padding: 12px;
+    font-size: 14px;
+    line-height: 1.4;
 }

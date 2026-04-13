@@ -1,6 +1,6 @@
 import React from "react";
 import "./Dropdown.css";
-import { Layers } from "lucide-react";
+import { Store } from "lucide-react";
 import PropTypes from "prop-types";
 
 class DropDown extends React.Component {
@@ -25,7 +25,7 @@ class DropDown extends React.Component {
 
     return (
       <div className="tr-dropdown-wrapper">
-        <Layers className="tr-dropdown-icon" />
+        <Store className="tr-dropdown-icon" />
         <select
           value={this.state.value}
           className="tr-dropdown"
