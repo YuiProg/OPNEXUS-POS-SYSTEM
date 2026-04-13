@@ -57,7 +57,7 @@ const salesSchema = new mongoose.Schema({
     branchLocation: {
         type: String,
     }
-});
+}, {timestamps: true});
 
 salesSchema.statics.createSale = async function (data) {
     const newSale = await this.create(data);
@@ -66,12 +66,12 @@ salesSchema.statics.createSale = async function (data) {
 
 salesSchema.statics.getSales = async function (branch) {
     const hasBranch = branch && branch !== "null" ? { branchLocation: branch } : {};
-    const sales = await this.find(hasBranch);
+    const sales = await this.find(hasBranch).sort({createdAt: -1});
     return sales;
 }
 
 salesSchema.statics.getSingle = async function (id) {
-    const record = await this.find({_id: id});
+    const record = await this.find({_id: id}).sort({createdAt: -1});
     return record;
 }
 

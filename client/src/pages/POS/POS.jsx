@@ -13,7 +13,7 @@ class POS extends React.Component {
         super(props);
         this.state = {
             items: [],
-            isCartOpen: true,
+            isCartOpen: false,
             amountPaid: 0,
             search: "", 
             vipActive: false
@@ -89,6 +89,7 @@ class POS extends React.Component {
         processOrder({subtotal, change, items, amountPaid});
         this.clearCart();
         this.calculatorRef.current?.reset();
+        //this.setState({isCartOpen: false});
     }
 
     componentDidMount() {
