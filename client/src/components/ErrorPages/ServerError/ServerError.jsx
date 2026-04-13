@@ -15,8 +15,8 @@ const { serverError } = ModalStore();
   },[navigate, serverError]);
 
   return (
-    <div className="error-container">
-      <div className="error-content">
+    <div className="server-error-container">
+      <div className="server-error-content">
         <div id="ghost">
           <div id="red">
             <div id="pupil"></div>
@@ -62,7 +62,8 @@ const { serverError } = ModalStore();
           </div>
           <div id="shadow"></div>
         </div>
-        <p className="error-text">Server Error</p>
+        <p className="server-error-text">Server Error</p>
+        <a onClick={() => (window.location.href = "/login")} className="server-error-btn">Go back to Login</a>
       </div>
     </div>
   );
