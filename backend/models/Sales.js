@@ -43,6 +43,9 @@ const salesSchema = new mongoose.Schema({
         type: String,
         default: 'No'
     },
+    discountAmount: {
+        type: Number,
+    },
     purchasedBy: {
         type: Object,
         required: false

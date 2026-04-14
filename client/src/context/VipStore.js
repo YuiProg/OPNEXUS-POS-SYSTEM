@@ -23,6 +23,7 @@ const VipStore = create((set, get) => ({
     },
     vipLoading: false,
     editVipModal: false,
+    activeDiscount: null,
 
     setEditVipModal: (val) => set({editVipModal: val}),
 
@@ -71,6 +72,8 @@ const VipStore = create((set, get) => ({
         try {
             const vipData = await axiosInstance.get(USEVIPCARD.replace(':id', id));
             setSelectedItem(vipData.data.data[0]);
+            set({activeDiscount: vipData.data.data[0]});
+            return vipData.data.data[0];
         } catch (error) {
             if (axiosError(error)) {
                 toast.error(error.response.data.status);
