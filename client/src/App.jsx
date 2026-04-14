@@ -30,6 +30,7 @@ import URLError from "./components/ErrorPages/URLError/URLError.jsx";
 import ScreenLoading from "./components/ScreenLoading/ScreenLoading.jsx";
 import SalesStore from "./context/SalesStore.js";
 import VipManagement from "./pages/VIP/VipManagement.jsx";
+import addVipUser from "./pages/VIP/AddVipModal.jsx";
 
 const ServerError = lazy(
   () => import("./components/ErrorPages/ServerError/ServerError.jsx"),
@@ -92,7 +93,8 @@ export default function App() {
     setSelectedItem,
     screenLoading,
     setTransactConfirmModal,
-    transactConfirmModal
+    transactConfirmModal,
+    showVipModal
   } = ModalStore();
   const {
     setProductData,
@@ -1040,6 +1042,7 @@ export default function App() {
   //   );
   // }
 
+
   const returnModals = () => {
     const location = () => {
       if (changesModal && window.location.pathname === "/staff") {
@@ -1067,6 +1070,7 @@ export default function App() {
         {confirmDelete && confirmDeleteUserFromBranch(deleteBranch)}
         {salesModal && viewSalesRecordModal()}
         {transactConfirmModal && showTransactConfirmModal()}
+        {showVipModal && addVipUser()}
       </>
     );
   };

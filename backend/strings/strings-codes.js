@@ -54,6 +54,11 @@ const Strings = Object.freeze({
     ORDER_PROC: 'Order Successfull',
     GETSALES: 'Sales fetched',
 
+    //VIP
+    VIPADD: 'Vip successfully registered!',
+    VIPFAIL: 'Vip failed to register.',
+    VIPFOUND: 'Vip Card Activated.',
+
     //credy
     usnm: 'username',
     pw: 'password',
