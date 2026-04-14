@@ -19,6 +19,15 @@ export const addVip = async (req, res) => {
     }
 }
 
+export const getAllVip = async (req, res) => {
+    try {
+        const vips = await Vip.getAllVip();
+        ApiResponseModel(res, CREATED, VIPFOUND, vips);
+    } catch (error) {
+        ApiResponseModel(res, ERROR, error.message);
+    }
+}
+
 export const getVipById = async (req, res) => {
     try {
         const {id} = req.params;

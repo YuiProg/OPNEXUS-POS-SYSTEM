@@ -6,7 +6,8 @@ import ModalStore from "./ModalStore";
 import axiosError from "../helpers/axiosError";
 
 const {
-    ADDVIP
+    ADDVIP,
+    GETALLVIP
 } = ApiConfig;
 
 const VipStore = create((set, get) => ({
@@ -46,6 +47,7 @@ const VipStore = create((set, get) => ({
             isScreenLoading(true);
             const newVip = await axiosInstance.post(ADDVIP, input);
             toast.success(newVip.data.status);
+            set((state) => ({vips: [newVip.data.data, ...state.vips]}));
         } catch (error) {
             if (axiosError(error)) {
                 toast.error(error.response.data.status);
@@ -53,20 +55,36 @@ const VipStore = create((set, get) => ({
             console.log(error.message);
             isScreenLoading(false);
         } finally {
-            set({vipLoading: true});
+            set({vipLoading: false});
             setShowVipModal(false);
             isScreenLoading(false);
             get().resetInputs();
         }
     },
 
-    // getVips: async () => {
-    //     try {
-            
-    //     } catch (error) {
-            
-    //     }
-    // }
+    getVips: async () => {
+        set({vipLoading: true});
+        try {
+            const vips = await axiosInstance.get(GETALLVIP);
+            const data = vips.data.data;
+            const tableData = data.map((data) => ({
+                vipId: data._id,
+                name: data.firstName,
+                email: data.email,
+                contactNo: data.contactNo,
+                status: data.status,
+                points: data.points
+            }));
+            set({vips: tableData});
+        } catch (error) {
+            if (axiosError(error)) {
+                toast.error(error.response.data.status);
+            }
+            console.log(error.message);
+        } finally { 
+            set({vipLoading: false});
+        }
+    }
 }));
 
 export default VipStore;

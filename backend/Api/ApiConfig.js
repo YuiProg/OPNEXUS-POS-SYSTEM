@@ -52,6 +52,7 @@ const ApiConfig = Object.freeze({
 
     //VIP
     ADDVIP: apiEndpoint + 'addVip',
+    GETALLVIP: apiEndpoint + 'getVipList',
     DELETEVIP: apiEndpoint + 'deleteVip/:id',
     DELETEMANYVIP: apiEndpoint + 'deleteManyVip',
     DEACTIVATEVIP: apiEndpoint + 'deactivateVip/:id',

@@ -3,10 +3,14 @@ import './VipManagement.css';
 import { Table } from "../../components/TRTable/TrTable";
 import InputField from "../../components/TRInputField/InputFIeld";
 import ModalStore from "../../context/ModalStore";
+import VipStore from "../../context/VipStore";
 
 class VipManagement extends React.Component {
     constructor (props) {
         super(props);
+        this.state = {
+            vips: []
+        }
     }
 
     showVipModal = () => {
@@ -14,10 +18,21 @@ class VipManagement extends React.Component {
         setShowVipModal(true);
     }
 
+    componentDidMount () {
+        const { getVips } = VipStore.getState();
+        getVips();
+
+        this.unsubscribe = VipStore.subscribe(state => {
+            const vips = state.vips;
+            this.setState({vips});
+        });
+    }
+
     render () {
-        const sampledata = [
-            {vipId: '23', name: 'terk', email: 'email@gmail.com ', dateAdded: '23/23/23', status: 'ACTIVE', points: 234}
-        ];
+        // const sampledata = [
+        //     {vipId: '23', name: 'terk', email: 'email@gmail.com ', dateAdded: '23/23/23', status: 'ACTIVE', points: 234}
+        // ];
+        const { vipLoading } = VipStore.getState();
 
         const tableDetail = {
             header: 'VIP DETAILS',
@@ -32,7 +47,8 @@ class VipManagement extends React.Component {
                     onEnterDown={value => console.log(value)}
                 />
             ),
-            deleteBtnInfo: 'DISABLE VIP'
+            deleteBtnInfo: 'DISABLE VIP',
+            CBD: (e) => console.log(e)
         };
 
         return (
@@ -43,7 +59,7 @@ class VipManagement extends React.Component {
                         <p className="vm-sentence">Manage VIP customers here.</p>
                     </div>
                 </div>
-                <Table data={sampledata} hasAction hasSelect isDetailed={tableDetail}/>
+                <Table data={this.state.vips} hasAction hasSelect isDetailed={tableDetail} isLoading={vipLoading}/>
             </div>
         );
     }

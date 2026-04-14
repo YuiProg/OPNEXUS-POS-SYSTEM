@@ -57,6 +57,10 @@ vipSchema.statics.getVipById = async function (id) {
     return getVip;
 }
 
+vipSchema.statics.getAllVip = async function () {
+    const allVips = await this.find({});
+    return allVips;
+}
 
 const Vip = mongoose.model('Vip', vipSchema);
 export default Vip;
