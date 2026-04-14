@@ -7,7 +7,8 @@ import axiosError from "../helpers/axiosError";
 
 const {
     ADDVIP,
-    GETALLVIP
+    GETALLVIP,
+    USEVIPCARD
 } = ApiConfig;
 
 const VipStore = create((set, get) => ({
@@ -21,6 +22,9 @@ const VipStore = create((set, get) => ({
         points: 0
     },
     vipLoading: false,
+    editVipModal: false,
+
+    setEditVipModal: (val) => set({editVipModal: val}),
 
     setInputs: (name, value) => {
         const inputs = get().inputs;
@@ -59,6 +63,19 @@ const VipStore = create((set, get) => ({
             setShowVipModal(false);
             isScreenLoading(false);
             get().resetInputs();
+        }
+    },
+
+    getVipById: async (id) => {
+        const { setSelectedItem } = ModalStore.getState();
+        try {
+            const vipData = await axiosInstance.get(USEVIPCARD.replace(':id', id));
+            setSelectedItem(vipData.data.data[0]);
+        } catch (error) {
+            if (axiosError(error)) {
+                toast.error(error.response.data.status);
+            }
+            console.log(error.message);
         }
     },
 

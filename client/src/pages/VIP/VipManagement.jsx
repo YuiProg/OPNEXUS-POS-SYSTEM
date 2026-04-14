@@ -28,6 +28,12 @@ class VipManagement extends React.Component {
         });
     }
 
+    viewModal = (data) => {
+        const {setEditVipModal, getVipById } = VipStore.getState();
+        getVipById(data.vipId);
+        setEditVipModal(true);
+    }
+
     render () {
         // const sampledata = [
         //     {vipId: '23', name: 'terk', email: 'email@gmail.com ', dateAdded: '23/23/23', status: 'ACTIVE', points: 234}
@@ -59,7 +65,14 @@ class VipManagement extends React.Component {
                         <p className="vm-sentence">Manage VIP customers here.</p>
                     </div>
                 </div>
-                <Table data={this.state.vips} hasAction hasSelect isDetailed={tableDetail} isLoading={vipLoading}/>
+                <Table 
+                    data={this.state.vips} 
+                    hasAction 
+                    hasSelect 
+                    isDetailed={tableDetail} 
+                    isLoading={vipLoading}
+                    onEdit={(e) => this.viewModal(e)}
+                />
             </div>
         );
     }

@@ -31,6 +31,8 @@ import ScreenLoading from "./components/ScreenLoading/ScreenLoading.jsx";
 import SalesStore from "./context/SalesStore.js";
 import VipManagement from "./pages/VIP/VipManagement.jsx";
 import addVipUser from "./pages/VIP/AddVipModal.jsx";
+import VipStore from "./context/VipStore.js";
+import disableManyVipModal from "./pages/VIP/DisableManyVipModal.jsx";
 
 const ServerError = lazy(
   () => import("./components/ErrorPages/ServerError/ServerError.jsx"),
@@ -129,6 +131,9 @@ export default function App() {
     loading,
     transactRefNo
   } = SalesStore();
+  const {
+    editVipModal
+  } = VipStore();
 
   const { SERVER_ERROR, PROD_FAIL } = Strings;
   //const [currentRole, setCurrentRole] = useState("");
@@ -1071,6 +1076,7 @@ export default function App() {
         {salesModal && viewSalesRecordModal()}
         {transactConfirmModal && showTransactConfirmModal()}
         {showVipModal && addVipUser()}
+        {editVipModal && disableManyVipModal()}
       </>
     );
   };
