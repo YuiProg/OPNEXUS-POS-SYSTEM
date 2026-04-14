@@ -113,7 +113,10 @@ class InputField extends React.Component {
                 onKeyDown={(e) => this.handleEnterDown(e, onEnterDown)}
                 maxLength={maxLength}
               />
-              <label className="floating-label">{placeholder}</label>
+              <label className="floating-label">
+                  {placeholder}
+                  {(required || isRequired) && <span style={{ color: '#8a3634', marginLeft: 2 }}>*</span>}
+              </label>
               {password &&
                 (this.state.showPassword ? (
                   <Eye

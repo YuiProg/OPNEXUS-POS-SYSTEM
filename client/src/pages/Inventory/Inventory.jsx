@@ -103,6 +103,7 @@ class Inventory extends React.Component {
     const {setSelectedBranch, selectedBranch} = AuthStore.getState();
     const { branches } = BranchStore.getState();
     const branchNames = branches.map(d=>d.location);
+    
     const tableData = {
       header: "ITEMS TEST",
       hasButton: this.state.isAdmin,

@@ -29,6 +29,10 @@ import TimeInOutStore from "./context/TimeinOut.js";
 import URLError from "./components/ErrorPages/URLError/URLError.jsx";
 import ScreenLoading from "./components/ScreenLoading/ScreenLoading.jsx";
 import SalesStore from "./context/SalesStore.js";
+import VipManagement from "./pages/VIP/VipManagement.jsx";
+import addVipUser from "./pages/VIP/AddVipModal.jsx";
+import VipStore from "./context/VipStore.js";
+import disableManyVipModal from "./pages/VIP/DisableManyVipModal.jsx";
 
 const ServerError = lazy(
   () => import("./components/ErrorPages/ServerError/ServerError.jsx"),
@@ -91,7 +95,8 @@ export default function App() {
     setSelectedItem,
     screenLoading,
     setTransactConfirmModal,
-    transactConfirmModal
+    transactConfirmModal,
+    showVipModal
   } = ModalStore();
   const {
     setProductData,
@@ -126,6 +131,9 @@ export default function App() {
     loading,
     transactRefNo
   } = SalesStore();
+  const {
+    editVipModal
+  } = VipStore();
 
   const { SERVER_ERROR, PROD_FAIL } = Strings;
   //const [currentRole, setCurrentRole] = useState("");
@@ -1039,6 +1047,7 @@ export default function App() {
   //   );
   // }
 
+
   const returnModals = () => {
     const location = () => {
       if (changesModal && window.location.pathname === "/staff") {
@@ -1066,6 +1075,8 @@ export default function App() {
         {confirmDelete && confirmDeleteUserFromBranch(deleteBranch)}
         {salesModal && viewSalesRecordModal()}
         {transactConfirmModal && showTransactConfirmModal()}
+        {showVipModal && addVipUser()}
+        {editVipModal && disableManyVipModal()}
       </>
     );
   };
@@ -1133,6 +1144,21 @@ export default function App() {
               ) : (
                 <Sidebar user={AuthUser}>
                   <StaffManagement />
+                </Sidebar>
+              )
+            }
+          />
+
+          <Route
+            path="/vip"
+            element={
+              AuthUser?.role.toLowerCase() === "clerk" ? (
+                <Navigate to="/timeinout" replace />
+              ) : !AuthUser ? (
+                <Navigate to="/login" replace />
+              ) : (
+                <Sidebar user={AuthUser}>
+                  <VipManagement />
                 </Sidebar>
               )
             }

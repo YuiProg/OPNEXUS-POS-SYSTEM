@@ -397,10 +397,26 @@ export class TableData extends React.Component {
   formatValue = (key, value) => {
     const phpKeys = ["salary", "price", "paid", "total", "amountPaid", "subtotal", "change"];
     if (phpKeys.includes(key)) {
-        return `PHP ${Number(value).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      return `PHP ${Number(value).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    }
+    if (value === "ACTIVE") {
+      return (
+        <span style={{ display: "inline-flex", alignItems: "center", gap: 6, color: "#22C55E", fontWeight: 500 }}>
+          <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#22C55E", display: "inline-block" }} />
+          ACTIVE
+        </span>
+      );
+    }
+    if (value === "INACTIVE") {
+      return (
+        <span style={{ display: "inline-flex", alignItems: "center", gap: 6, color: "#888", fontWeight: 500 }}>
+          <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#888", display: "inline-block" }} />
+          INACTIVE
+        </span>
+      );
     }
     return value;
-};
+  };
 
   render() {
     const { data, hasSelect, selected, toggleRow, hasAction, CBD, CBE, onView, rowCB } = this.props;
@@ -408,16 +424,9 @@ export class TableData extends React.Component {
     return (
       <>
         {data.map((row, rowIndex) => {
-          const isActive = Object.values(row).some(value => value === "ACTIVE");
           return (
             <tr
-              className={
-                selected[rowIndex] === true
-                  ? "table-row table-row--selected"
-                  : isActive
-                  ? "table-row table-row--active"
-                  : "table-row"
-              }
+              className={selected[rowIndex] === true ? "table-row table-row--selected" : "table-row"}
               key={rowIndex}
               onClick={() => rowCB(row)}
             >

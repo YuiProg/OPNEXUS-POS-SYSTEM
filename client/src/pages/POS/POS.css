@@ -278,12 +278,261 @@
 
 .vip-details {
   display: flex;
-  flex-direction: row;
-  gap: 20px;
+  flex-direction: column;
+  gap: 12px;
 }
 
-/* slider button */
+/* Updated VIP success indicator styles to match design */
+.vip-id-input-container {
+  position: relative;
+  width: 100%;
+}
 
+.vip-loading-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 10px 12px;
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  font-size: 12px;
+  color: #bdbdbd;
+}
+
+.spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid #2a2a2a;
+  border-top: 2px solid #F59E0B;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.vip-success-indicator {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+  padding: 10px 12px;
+  background: #1a3a1a;
+  border: 1px solid #2a5a2a;
+  border-radius: 8px;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.vip-success-indicator svg {
+  flex-shrink: 0;
+}
+
+.vip-member-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 12px;
+  flex: 1;
+}
+
+.vip-member-info strong {
+  color: #4caf50;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.vip-member-info span {
+  color: #bdbdbd;
+  font-size: 11px;
+}
+
+/* Discount row styling */
+.discount-row {
+  display: flex;
+  justify-content: space-between;
+  color: #4caf50;
+}
+
+/* Add these styles to your existing POS.css */
+
+/* VIP Expired Indicator */
+.vip-expired-indicator {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+  padding: 10px 12px;
+  background: #2a1a1a;
+  border: 1px solid #d14a4a;
+  border-radius: 8px;
+  animation: slideIn 0.3s ease-out;
+}
+
+.expired-icon {
+  flex-shrink: 0;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.vip-expired-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 12px;
+  flex: 1;
+}
+
+.vip-expired-info strong {
+  color: #d14a4a;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.vip-expired-info span {
+  color: #bdbdbd;
+  font-size: 11px;
+}
+
+/* VIP Invalid Indicator */
+.vip-invalid-indicator {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+  padding: 10px 12px;
+  background: #2a1a1a;
+  border: 1px solid #d14a4a;
+  border-radius: 8px;
+  animation: shake 0.5s ease-out;
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+.invalid-icon {
+  flex-shrink: 0;
+}
+
+.vip-invalid-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 12px;
+  flex: 1;
+}
+
+.vip-invalid-info strong {
+  color: #d14a4a;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.vip-invalid-info span {
+  color: #bdbdbd;
+  font-size: 11px;
+}
+
+/* Existing VIP Success Indicator (updated to match theme) */
+.vip-success-indicator {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+  padding: 10px 12px;
+  background: #1a2a1a;
+  border: 1px solid #4caf50;
+  border-radius: 8px;
+  animation: slideIn 0.3s ease-out;
+}
+
+.vip-success-indicator strong {
+  color: #4caf50;
+}
+
+/* Loading indicator (updated to match theme) */
+.vip-loading-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 10px 12px;
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  font-size: 12px;
+  color: #bdbdbd;
+}
+
+/* Points info text */
+.points-info {
+  font-size: 10px;
+  color: #4caf50;
+  font-style: italic;
+  margin-top: 4px;
+}
+
+.spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid #2a2a2a;
+  border-top: 2px solid #F59E0B;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+
+/* Switch styles */
 .switch {
   font-size: 17px;
   position: relative;

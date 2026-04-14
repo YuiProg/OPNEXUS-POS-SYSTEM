@@ -41,6 +41,7 @@ const SalesStore = create((set) => ({
             minute: "2-digit",
             hour12: true
         }).replace(",", "");
+        console.log(data);
 
         const payload = {
             clerkName: AuthUser.username,
@@ -48,6 +49,9 @@ const SalesStore = create((set) => ({
             amountPaid: amountPaid,
             itemSold: totalCartQuantity,
             items: items,
+            vip: data.vip,
+            purchasedBy: data.purchasedBy,
+            discountAmount: data.discountAmount,
             dateTime: dateTime,  
             total: subtotal,
             branchLocation: AuthUser.branchLocation,
@@ -72,8 +76,8 @@ const SalesStore = create((set) => ({
     },
 
     fetchSingleSale: async (id) => {
-        set({ loading: true });
-        set({singleDataUnCleaned: null});
+        //set({ loading: true });
+        set({singleDataUnCleaned: null, loading: true});
         try {
             const result = await axiosInstance.get(GETSINGLERECORD.replace(':id', id));
             const record = result.data.data[0];
@@ -99,8 +103,8 @@ const SalesStore = create((set) => ({
                 ...rest
             }) => rest);
 
-            set({ singleData: cleanedItems });
-            set({ singleDataUnCleaned: record }); 
+            //set({ singleData: cleanedItems });
+            set({ singleDataUnCleaned: record, singleData: cleanedItems }); 
         } catch (error) {
             console.log(error);
         } finally {

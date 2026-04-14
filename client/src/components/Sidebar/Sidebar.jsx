@@ -3,7 +3,7 @@ import AuthStore from "../../context/Authstore";
 import Strings from "../../strings/strings-codes";
 import { Navigate, Link } from "react-router-dom";
 import './Sidebar.css';
-import { LayoutDashboard, ShelvingUnit, IdCardLanyard, Logs, Warehouse, Store, Clock, Monitor, GitBranch } from 'lucide-react';
+import { LayoutDashboard, ShelvingUnit, IdCardLanyard, Logs, Warehouse, Store, Clock, Gem, Monitor, GitBranch } from 'lucide-react';
 import Button from "../TRButton/Button";
 
 const { SUCCESS_MESS } = Strings;
@@ -93,6 +93,11 @@ class Sidebar extends React.Component {
                 title: "Staff Management",
                 icon: <IdCardLanyard />,
                 link: "/staff",
+            },
+            {
+                title: "VIP Management",
+                icon: <Gem />,
+                link: "/vip",
             },
             {
                 title: "Branches",

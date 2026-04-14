@@ -15,6 +15,9 @@ const ModalStore = create((set) => ({
     serverError: false,
     screenLoading: false,
     transactConfirmModal: false,
+    showVipModal: false,
+
+    setShowVipModal: (val) => set({showVipModal: val}),
 
     setTransactConfirmModal: (val) => set({transactConfirmModal: val}),
 
