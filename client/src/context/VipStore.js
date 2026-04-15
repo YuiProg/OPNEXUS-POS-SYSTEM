@@ -8,7 +8,8 @@ import axiosError from "../helpers/axiosError";
 const {
     ADDVIP,
     GETALLVIP,
-    USEVIPCARD
+    USEVIPCARD,
+    UPDATEVIP
 } = ApiConfig;
 
 const VipStore = create((set, get) => ({
@@ -19,11 +20,13 @@ const VipStore = create((set, get) => ({
         lastName: '',
         email: '',
         contactNo: null,
-        points: 0
+        points: 0,
+        isActive: 'ACTIVE'
     },
     vipLoading: false,
     editVipModal: false,
     activeDiscount: null,
+    vipChanges: null,
 
     setEditVipModal: (val) => set({editVipModal: val}),
 
@@ -64,6 +67,38 @@ const VipStore = create((set, get) => ({
             setShowVipModal(false);
             isScreenLoading(false);
             get().resetInputs();
+        }
+    },
+
+    updateVip: async () => {
+        const { isScreenLoading, selectedItem, setShowVipChangesModal } = ModalStore.getState();
+        const {firstName, middleName, lastName, email, contactNo, points, isActive} = get().inputs;
+        try {
+            isScreenLoading(true);
+            const payload = {
+                firstName: firstName || selectedItem.firstName,
+                middleName: middleName || selectedItem.middleName,
+                lastName: lastName || selectedItem.lastName,
+                email: email || selectedItem.email,
+                contactNo: contactNo || selectedItem.contactNo,
+                points: points || selectedItem.points,
+                status: isActive || selectedItem.isActive
+            }
+            const updatedVIP = await axiosInstance.post(UPDATEVIP.replace(':id', selectedItem._id), payload);
+            set({vipChanges: updatedVIP.data});
+            set({editVipModal: false});
+            toast.success(updatedVIP.data.status);
+            setShowVipChangesModal(true);
+        } catch (error) {
+            if (axiosError(error)) {
+                toast.error(error.response.data.status);
+            }
+            console.log(error.message);
+            isScreenLoading(false);
+        } finally {
+            isScreenLoading(false);
+            get().resetInputs();
+            await get().getVips();
         }
     },
 

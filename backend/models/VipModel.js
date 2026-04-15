@@ -66,6 +66,11 @@ vipSchema.statics.addVip = async function (data) {
     return newVip;
 };
 
+vipSchema.statics.updateVip = async function (id, data) {
+    const newVip = await this.findOneAndUpdate({_id: id}, data, {new: true});
+    return newVip;
+}
+
 vipSchema.statics.getVipById = async function (id) {
     const getVip = await this.find({_id: id});
     return getVip;

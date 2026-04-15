@@ -33,6 +33,7 @@ import VipManagement from "./pages/VIP/VipManagement.jsx";
 import addVipUser from "./pages/VIP/AddVipModal.jsx";
 import VipStore from "./context/VipStore.js";
 import disableManyVipModal from "./pages/VIP/DisableManyVipModal.jsx";
+import confirmChangesVipModal from "./pages/VIP/ConfirmChangesVipModal.jsx";
 
 const ServerError = lazy(
   () => import("./components/ErrorPages/ServerError/ServerError.jsx"),
@@ -96,7 +97,8 @@ export default function App() {
     screenLoading,
     setTransactConfirmModal,
     transactConfirmModal,
-    showVipModal
+    showVipModal,
+    showVipChangesModal
   } = ModalStore();
   const {
     setProductData,
@@ -942,8 +944,11 @@ export default function App() {
       itemSold,
       total,
       change,
+      vip,
+      purchasedBy,
+      discountAmount
     } = singleDataUnCleaned;
-
+    console.log(singleDataUnCleaned);
     return (
       <Modal
         header="View Transaction Record"
@@ -989,7 +994,7 @@ export default function App() {
             />
           </InputRow>
           <InputRow
-            titles={["Clerk", "Branch", "Date Processed"]}
+            titles={["Clerk", "Branch", "Date Processed", "Is VIP?"]}
             gap={15}
           >
             <InputField text placeholder="Clerk" value={clerkName} disabled />
@@ -1005,10 +1010,72 @@ export default function App() {
               value={dateTime}
               disabled
             />
+            <InputField
+              text
+              placeholder="VIP"
+              value={vip}
+              disabled
+            />
           </InputRow>
           <InputRow>
-            <Table data={singleData || []} isLoading={loading} />
+            <Table data={singleData || []} isLoading={loading} limit={5}/>
           </InputRow>
+          {purchasedBy && (
+            <>
+            <InputRow titles={['VIP ID', 'Email', 'Contact No', 'Is Active?']} gap={16}>
+              <InputField
+                text
+                placeholder="VIP ID"
+                value={purchasedBy._id}
+                disabled
+              />
+              <InputField
+                text
+                placeholder="EMAIL"
+                value={purchasedBy.email}
+                disabled
+              />
+              <InputField
+                text
+                placeholder="CONTACT NO"
+                value={purchasedBy.contactNo}
+                disabled
+              />
+              <InputField
+                text
+                placeholder="IS ACTIVE"
+                value={purchasedBy.status}
+                disabled
+              />
+            </InputRow>
+            <InputRow gap={16} titles={['First Name', 'Middle Name', 'Last Name', 'Points Used']}>
+              <InputField
+                text
+                placeholder="FIRST NAME"
+                value={purchasedBy.firstName}
+                disabled
+              />
+              <InputField
+                text
+                placeholder="MIDDLE NAME"
+                value={purchasedBy.middleName}
+                disabled
+              />
+              <InputField
+                text
+                placeholder="LAST NAME"
+                value={purchasedBy.lastName}
+                disabled
+              />
+              <InputField
+                text
+                placeholder="POINTS USED"
+                value={discountAmount}
+                disabled
+              />
+            </InputRow>
+            </>
+          )}
         </InputForm>
       </Modal>
     );
@@ -1077,6 +1144,7 @@ export default function App() {
         {transactConfirmModal && showTransactConfirmModal()}
         {showVipModal && addVipUser()}
         {editVipModal && disableManyVipModal()}
+        {showVipChangesModal && confirmChangesVipModal()}
       </>
     );
   };
