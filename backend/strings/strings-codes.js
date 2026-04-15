@@ -58,6 +58,7 @@ const Strings = Object.freeze({
     VIPADD: 'Vip successfully registered!',
     VIPFAIL: 'Vip failed to register.',
     VIPFOUND: 'Vip Card Activated.',
+    VIPUPDATED: 'Vip card updated',
 
     //credy
     usnm: 'username',

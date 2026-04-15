@@ -16,7 +16,10 @@ const ModalStore = create((set) => ({
     screenLoading: false,
     transactConfirmModal: false,
     showVipModal: false,
+    showVipChangesModal: false,
 
+    //for vip
+    setShowVipChangesModal: (val) => set({showVipChangesModal: val}), 
     setShowVipModal: (val) => set({showVipModal: val}),
 
     setTransactConfirmModal: (val) => set({transactConfirmModal: val}),

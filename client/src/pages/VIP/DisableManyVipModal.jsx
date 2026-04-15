@@ -8,26 +8,31 @@ import Toggle from "../../components/TRToggle/Toggle";
 
 
 const disableManyVipModal = () => {
-    const { setEditVipModal } = VipStore.getState();
+    const { setEditVipModal, setInputs, updateVip } = VipStore.getState();
     const { selectedItem } = ModalStore.getState();
     
     if (!selectedItem) return;
-    console.log(selectedItem);
+
+    const updateVIPUser = (e) => {
+        e.preventDefault();
+        updateVip();
+    }
+
     return(
         <Modal onClose={() => setEditVipModal(false)} header={`Edit ${selectedItem.firstName} VIP details`}>
-            <InputForm>
+            <InputForm onSubmit={(e) => updateVIPUser(e)}>
                 <InputRow gap={16} titles={['First Name', 'Middle Name', 'Last Name']}>
-                    <InputField text placeholder="First Name" value={selectedItem.firstName} onChange={() => {}} required/>
-                    <InputField text placeholder="First Name" value={selectedItem.middleName} onChange={() => {}} required/>
-                    <InputField text placeholder="First Name" value={selectedItem.lastName} onChange={() => {}} required/>
+                    <InputField text placeholder="First Name" value={selectedItem.firstName} onChange={(e) => setInputs('firstName', e)} required/>
+                    <InputField text placeholder="Middle Name" value={selectedItem.middleName} onChange={(e) => setInputs('middleName', e)}/>
+                    <InputField text placeholder="Last Name" value={selectedItem.lastName} onChange={(e) => setInputs('lastName', e)} required/>
                 </InputRow>
                 <InputRow gap={16} titles={['Email', 'Contact No', 'Points']}>
-                    <InputField text placeholder="Email" value={selectedItem.email} onChange={() => {}} required/>
-                    <InputField text placeholder="(+63)" value={selectedItem.contactNo} onChange={() => {}} required/>
-                    <InputField text placeholder="Default is 0" value={selectedItem.points} onChange={() => {}} required/>
+                    <InputField text placeholder="Email" value={selectedItem.email} onChange={(e) => setInputs('email', e)}/>
+                    <InputField text placeholder="(+63)" value={selectedItem.contactNo} onChange={(e) => setInputs('contactNo', Number(e))}/>
+                    <InputField text placeholder="Default is 0" value={selectedItem.points} onChange={(e) => setInputs('points', Number(e))}/>
                 </InputRow>
                 <InputRow titles={['VIP Status']}>
-                    <Toggle currentStatus={selectedItem.status} onToggle={(status) => selectedItem.status = status} />
+                    <Toggle currentStatus={selectedItem.status} onToggle={(status) => setInputs('isActive', status)} />
                 </InputRow>
             </InputForm>
         </Modal>

@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import ProductStore from "./ProductStore";
 import BranchStore from "./BranchStore";
 import ModalStore from "./ModalStore";
+import axiosError from "../helpers/axiosError";
 
 const {
     NEWSALE,
@@ -68,6 +69,9 @@ const SalesStore = create((set) => ({
             toast.success('Order Success.');
             setTransactConfirmModal(true);
         } catch (error) {
+            if (axiosError(error)) {
+                toast.error(error.response.data.status);
+            }
             console.log(error);
         } finally {
             set({saleLoading: false});
