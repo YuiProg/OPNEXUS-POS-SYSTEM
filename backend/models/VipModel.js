@@ -46,7 +46,21 @@ vipSchema.pre('save', async function () {
     }
 });
 
+vipSchema.statics.removePoints = async function (id) {
+    console.log(`REMOVED POINTS FOR ${id}`);
+    const removedPoints = await this.findOneAndUpdate({_id: id}, {points: 0});
+    return removedPoints;
+}
 
+vipSchema.statics.addVipPoints = async function(id, points) {
+    console.log(`ADDED ${points} POINTS FOR ${id}`);
+    const updatedVip = await this.findOneAndUpdate(
+        { _id: id },
+        { $inc: { points: points } }, 
+        { new: true }
+    );
+    return updatedVip;
+}
 vipSchema.statics.addVip = async function (data) {
     const newVip = await this.create(data);
     return newVip;

@@ -57,7 +57,7 @@ const SalesStore = create((set) => ({
             branchLocation: AuthUser.branchLocation,
             change
         };
-
+        
         try {
             const newSale = await axiosInstance.post(NEWSALE, payload);
             if (!newSale) {
