@@ -4,6 +4,7 @@ import VipStore from "../../context/VipStore";
 import ModalStore from "../../context/ModalStore";
 import { InputForm, InputRow } from "../../components/TRInputForm/TRInputForm";
 import InputField from "../../components/TRInputField/InputFIeld";
+import Toggle from "../../components/TRToggle/Toggle";
 
 
 const disableManyVipModal = () => {
@@ -25,8 +26,8 @@ const disableManyVipModal = () => {
                     <InputField text placeholder="(+63)" value={selectedItem.contactNo} onChange={() => {}} required/>
                     <InputField text placeholder="Default is 0" value={selectedItem.points} onChange={() => {}} required/>
                 </InputRow>
-                <InputRow>
-                    {/* REX DITO MO LAGAY YUNG TOGGLE BUTTON TAS ACTIVE OR INACTIVE */}
+                <InputRow titles={['VIP Status']}>
+                    <Toggle currentStatus={selectedItem.status} onToggle={(status) => selectedItem.status = status} />
                 </InputRow>
             </InputForm>
         </Modal>
