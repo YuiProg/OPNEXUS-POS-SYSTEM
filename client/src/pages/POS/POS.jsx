@@ -393,7 +393,7 @@ class POS extends React.Component {
                                     text="Process Order"
                                     maxWidth
                                     success
-                                    disabled={items.length === 0 || change < 0 || saleLoading}
+                                    disabled={items.length === 0 || change < 0 || saleLoading || (vipActive && !isVipCardValid)}
                                     onClick={() => this.processOrder()}
                                 />
                             </div>

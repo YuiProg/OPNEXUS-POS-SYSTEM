@@ -33,15 +33,16 @@ const vipSchema = new mongoose.Schema({
         required: true,
         default: 0
     }
-}, {_id: false});
+}, {_id: false, timestamps: true});
 
 vipSchema.pre('save', async function () {
     if (this.isNew) {
         try {
-            const count = await this.constructor.countDocuments();
-            this._id = String(count + 1).padStart(4, '0');
+            const last = await this.constructor.findOne({}, { _id: 1 }).sort({ _id: -1 });
+            const nextNumber = last ? parseInt(last._id, 10) + 1 : 1;
+            this._id = String(nextNumber).padStart(4, '0');
         } catch (error) {
-            throw error; 
+            throw error;
         }
     }
 });
@@ -77,8 +78,13 @@ vipSchema.statics.getVipById = async function (id) {
 }
 
 vipSchema.statics.getAllVip = async function () {
-    const allVips = await this.find({});
+    const allVips = await this.find({}).sort({createdAt: -1});
     return allVips;
+}
+
+vipSchema.statics.deleteVip = async function (id) {
+    const deleteVip = await this.deleteOne({_id: id});
+    return deleteVip;
 }
 
 const Vip = mongoose.model('Vip', vipSchema);

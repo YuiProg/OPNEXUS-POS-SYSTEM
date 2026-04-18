@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal } from "../../TRModal/Modal";
+import { Modal, ModalYesNo } from "../../TRModal/Modal";
 import VipStore from "../../context/VipStore";
 import ModalStore from "../../context/ModalStore";
 import { InputForm, InputRow } from "../../components/TRInputForm/TRInputForm";
@@ -7,7 +7,7 @@ import InputField from "../../components/TRInputField/InputFIeld";
 import Toggle from "../../components/TRToggle/Toggle";
 
 
-const disableManyVipModal = () => {
+export const editMainVipModal = () => {
     const { setEditVipModal, setInputs, updateVip } = VipStore.getState();
     const { selectedItem } = ModalStore.getState();
     
@@ -39,4 +39,15 @@ const disableManyVipModal = () => {
     );
 }
 
-export default disableManyVipModal;
+export const confirmDeleteVip = () => {
+    const { selectedItem } = ModalStore.getState();
+    const { setYesNoConfirmDelete, deleteVip } = VipStore.getState();
+    console.log(selectedItem);
+    return (
+        <ModalYesNo
+            message={`Delete ${selectedItem.name} as vip?`}
+            onClose={() => setYesNoConfirmDelete(false)}
+            onYes={() => deleteVip(selectedItem.vipId)}
+        />
+    );
+}

@@ -24,7 +24,7 @@ const addVipUser = () => {
                     <InputField text placeholder="Enter Last Name" onChange={value => setInputs('lastName', value)} required/>
                 </InputRow>
                 <InputRow titles={['Email', 'Contact No.', 'Points']} gap={15}>
-                    <InputField email placeholder="Enter Email" onChange={value => setInputs('email', value)} required/>
+                    <InputField email placeholder="Enter Email" onChange={value => setInputs('email', value.toLowerCase())} required/>
                     <InputField number placeholder="(+63)" onChange={value => setInputs('contactNo', Number(value))}/>
                     <InputField number placeholder="Default is 0" onChange={value => setInputs('points', Number(value))}/>
                 </InputRow>

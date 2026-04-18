@@ -9,7 +9,8 @@ const {
     ADDVIP,
     GETALLVIP,
     USEVIPCARD,
-    UPDATEVIP
+    UPDATEVIP,
+    DELETEVIP
 } = ApiConfig;
 
 const VipStore = create((set, get) => ({
@@ -27,6 +28,9 @@ const VipStore = create((set, get) => ({
     editVipModal: false,
     activeDiscount: null,
     vipChanges: null,
+    yesNoConfirmDelete: false,
+
+    setYesNoConfirmDelete: (val) => set({yesNoConfirmDelete: val}),
 
     setEditVipModal: (val) => set({editVipModal: val}),
 
@@ -46,7 +50,6 @@ const VipStore = create((set, get) => ({
             points: 0
         }});
     },
-
     addVip: async () => {
         const { setShowVipModal, isScreenLoading } = ModalStore.getState();
         set({vipLoading: true});
@@ -55,7 +58,6 @@ const VipStore = create((set, get) => ({
             isScreenLoading(true);
             const newVip = await axiosInstance.post(ADDVIP, input);
             toast.success(newVip.data.status);
-            set((state) => ({vips: [newVip.data.data, ...state.vips]}));
         } catch (error) {
             if (axiosError(error)) {
                 toast.error(error.response.data.status);
@@ -67,6 +69,21 @@ const VipStore = create((set, get) => ({
             setShowVipModal(false);
             isScreenLoading(false);
             get().resetInputs();
+            get().getVips();
+        }
+    },
+
+    deleteVip: async (id) => {
+        try {
+            const deleted = await axiosInstance.post(DELETEVIP.replace(':id', id));
+            toast.success(deleted.data.status);
+        } catch (error) {
+            if (axiosError(error)) {
+                toast.error(error.response.data.status);
+            }
+        } finally {
+            set({yesNoConfirmDelete: false});
+            get().getVips();
         }
     },
 

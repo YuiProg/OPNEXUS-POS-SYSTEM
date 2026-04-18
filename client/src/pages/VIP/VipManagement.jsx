@@ -34,6 +34,13 @@ class VipManagement extends React.Component {
         setEditVipModal(true);
     }
 
+    confirmDelete = (data) => {
+        const {setSelectedItem} = ModalStore.getState();
+        const { setYesNoConfirmDelete } = VipStore.getState();
+        setYesNoConfirmDelete(true); 
+        setSelectedItem(data);
+    }
+
     render () {
         // const sampledata = [
         //     {vipId: '23', name: 'terk', email: 'email@gmail.com ', dateAdded: '23/23/23', status: 'ACTIVE', points: 234}
@@ -72,6 +79,7 @@ class VipManagement extends React.Component {
                     isDetailed={tableDetail} 
                     isLoading={vipLoading}
                     onEdit={(e) => this.viewModal(e)}
+                    onDelete={(e) => this.confirmDelete(e)}
                 />
             </div>
         );
