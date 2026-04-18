@@ -358,6 +358,13 @@ class POS extends React.Component {
                                                     </div>
                                                 </div>
                                             )}
+                                            <div className="vip-discount">
+                                                <p className="vip-discount-text">Discount</p>
+                                                <label className="switch2">
+                                                    <input type="checkbox" />
+                                                    <span className="slider2"></span>
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
                                 )}
