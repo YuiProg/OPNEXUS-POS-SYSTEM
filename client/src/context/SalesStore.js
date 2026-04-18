@@ -53,6 +53,7 @@ const SalesStore = create((set) => ({
             vip: data.vip,
             purchasedBy: data.purchasedBy,
             discountAmount: data.discountAmount,
+            usedDiscount: data.usedDiscount,
             dateTime: dateTime,  
             total: subtotal,
             branchLocation: AuthUser.branchLocation,

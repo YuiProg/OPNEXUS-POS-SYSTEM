@@ -23,7 +23,8 @@ class POS extends React.Component {
             fetchedVipDetails: null,
             isVipCardValid: false,
             isCheckingVip: false,
-            vipStatus: null // 'active', 'expired', 'invalid'
+            vipStatus: null, // 'active', 'expired', 'invalid'
+            discountActive: false,
         };
         this.calculatorRef = React.createRef();
         this.idTypingTimeout = null;
@@ -54,7 +55,6 @@ class POS extends React.Component {
                     return toast.error('Card invalid');
                 }
                 
-                // Check if VIP card status is ACTIVE
                 if (data.status !== "ACTIVE") {
                     this.setState({ 
                         isCheckingVip: false,
@@ -136,31 +136,29 @@ class POS extends React.Component {
             isVipCardValid: false,
             fetchedVipDetails: null,
             isCheckingVip: false,
-            vipStatus: null
+            vipStatus: null,
+            discountActive: false,
         });
     };
 
     calculateDiscount = (subtotal, points) => {
-        // Discount is equal to points, but cannot exceed subtotal
         const discount = Math.min(points, subtotal);
         return discount;
     };
 
     processOrder = () => {
         const { processOrder } = SalesStore.getState();
-        const { items, amountPaid, fetchedVipDetails } = this.state;
+        const { items, amountPaid, fetchedVipDetails, vipActive, discountActive } = this.state;
         let subtotal = items.reduce((acc, item) => acc + this.getItemPrice(item) * item.quantity, 0);
         
-        // Apply points discount automatically if VIP is active
         let discountAmount = 0;
-        if (this.state.vipActive && fetchedVipDetails) {
+        if (vipActive && discountActive && fetchedVipDetails) {
             discountAmount = this.calculateDiscount(subtotal, fetchedVipDetails.points || 0);
             subtotal = subtotal - discountAmount;
         }
         
         const change = amountPaid - subtotal;
         
-        // Calculate remaining points after transaction
         const remainingPoints = fetchedVipDetails 
             ? (fetchedVipDetails.points || 0) - discountAmount
             : 0;
@@ -170,7 +168,8 @@ class POS extends React.Component {
             change, 
             items, 
             amountPaid, 
-            vip: this.state.vipActive ? 'Yes' : 'No',
+            vip: vipActive ? 'Yes' : 'No',
+            usedDiscount: vipActive && discountActive ? 'Yes' : 'No',
             purchasedBy: fetchedVipDetails,
             discountAmount,
             pointsUsed: discountAmount,
@@ -199,7 +198,8 @@ class POS extends React.Component {
         isVipCardValid: false,
         fetchedVipDetails: null,
         idNumber: "",
-        vipStatus: null
+        vipStatus: null,
+        discountActive: false,
     }));
 
     render() {
@@ -214,19 +214,19 @@ class POS extends React.Component {
             isVipCardValid,
             isCheckingVip,
             fetchedVipDetails,
-            vipStatus
+            vipStatus,
+            discountActive,
         } = this.state;
         const { saleLoading } = SalesStore.getState();
 
         const totalCartQuantity = items.reduce((acc, item) => acc + item.quantity, 0);
         let subtotal = items.reduce((acc, item) => acc + this.getItemPrice(item) * item.quantity, 0);
         
-        // Calculate points discount automatically
         let discountAmount = 0;
         let finalTotal = subtotal;
         let availablePoints = fetchedVipDetails?.points || 0;
         
-        if (vipActive && isVipCardValid) {
+        if (vipActive && isVipCardValid && discountActive) {
             discountAmount = this.calculateDiscount(subtotal, availablePoints);
             finalTotal = subtotal - discountAmount;
         }
@@ -327,7 +327,7 @@ class POS extends React.Component {
                                                         <span>Available Points: {fetchedVipDetails.points || 0}</span>
                                                         <span>Status: {fetchedVipDetails.status}</span>
                                                         {availablePoints > 0 && (
-                                                            <span className="points-info">Points will be automatically applied as discount</span>
+                                                            <span className="points-info">Toggle discount to apply points</span>
                                                         )}
                                                     </div>
                                                 </div>
@@ -361,7 +361,11 @@ class POS extends React.Component {
                                             <div className="vip-discount">
                                                 <p className="vip-discount-text">Discount</p>
                                                 <label className="switch2">
-                                                    <input type="checkbox" />
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={discountActive}
+                                                        onChange={() => this.setState((prev) => ({ discountActive: !prev.discountActive }))}
+                                                    />
                                                     <span className="slider2"></span>
                                                 </label>
                                             </div>
@@ -375,7 +379,7 @@ class POS extends React.Component {
                                         <p>PHP {subtotal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                                     </div>
                                     
-                                    {vipActive && isVipCardValid && discountAmount > 0 && (
+                                    {vipActive && isVipCardValid && discountActive && discountAmount > 0 && (
                                         <div style={{ display: "flex", justifyContent: "space-between", color: "#4caf50" }}>
                                             <p>Points Discount ({discountAmount} points)</p>
                                             <p>- PHP {discountAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>

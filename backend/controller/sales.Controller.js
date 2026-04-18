@@ -25,7 +25,9 @@ export const createSale = async (req, res) => {
         }
 
         if (_id != null && isActive === 'ACTIVE') {
-            await Vip.removePoints(_id);
+            if (data.usedDiscount === 'Yes') {
+                await Vip.removePoints(_id);
+            }
             if (earnedPoints > 0) {
                 await Vip.addVipPoints(_id, earnedPoints);
             }
