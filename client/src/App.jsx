@@ -29,10 +29,9 @@ import TimeInOutStore from "./context/TimeinOut.js";
 import URLError from "./components/ErrorPages/URLError/URLError.jsx";
 import ScreenLoading from "./components/ScreenLoading/ScreenLoading.jsx";
 import SalesStore from "./context/SalesStore.js";
-import VipManagement from "./pages/VIP/VipManagement.jsx";
 import addVipUser from "./pages/VIP/AddVipModal.jsx";
 import VipStore from "./context/VipStore.js";
-import disableManyVipModal from "./pages/VIP/DisableManyVipModal.jsx";
+import {confirmDeleteVip, editMainVipModal} from "./pages/VIP/EditVipModal.jsx";
 import confirmChangesVipModal from "./pages/VIP/ConfirmChangesVipModal.jsx";
 
 const ServerError = lazy(
@@ -44,6 +43,8 @@ const Dashboard = lazy(() => import("./pages/DashBoard/Dashboard.jsx"));
 const StaffManagement = lazy(
   () => import("./pages/StaffManagement/StaffManagement.jsx"),
 );
+const VipManagement = lazy(() => import("./pages/VIP/VipManagement.jsx"));
+
 /* eslint-disable no-unused-vars */
 export default function App() {
   //store instantiate wag burahin baka gamitin sa susunod
@@ -134,7 +135,8 @@ export default function App() {
     transactRefNo
   } = SalesStore();
   const {
-    editVipModal
+    editVipModal,
+    yesNoConfirmDelete
   } = VipStore();
 
   const { SERVER_ERROR, PROD_FAIL } = Strings;
@@ -237,7 +239,7 @@ export default function App() {
             <InputField
               email
               placeholder="Enter Email"
-              onChange={(value) => setInput("email", value)}
+              onChange={(value) => setInput("email", value.toLowerCase())}
               value={isUpdate ? selectedItem.email : null}
               required
             />
@@ -1143,8 +1145,9 @@ export default function App() {
         {salesModal && viewSalesRecordModal()}
         {transactConfirmModal && showTransactConfirmModal()}
         {showVipModal && addVipUser()}
-        {editVipModal && disableManyVipModal()}
+        {editVipModal && editMainVipModal()}
         {showVipChangesModal && confirmChangesVipModal()}
+        {yesNoConfirmDelete && confirmDeleteVip()}
       </>
     );
   };

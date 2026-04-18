@@ -7,7 +7,8 @@ const {
     CREATED,
     VIPADD,
     VIPFOUND,
-    VIPUPDATED
+    VIPUPDATED,
+    VIPREMOVED
 } = Strings;
 
 export const addVip = async (req, res) => {
@@ -15,6 +16,16 @@ export const addVip = async (req, res) => {
         const data = req.body;
         const newVip = await Vip.addVip(data);
         ApiResponseModel(res, CREATED, VIPADD, newVip);
+    } catch (error) {
+        ApiResponseModel(res, ERROR, error.message);
+    }
+}
+
+export const removeVip = async (req, res) => {
+    try {
+        const {id} = req.params;
+        const deletedVip = await Vip.deleteVip(id);
+        ApiResponseModel(res, CREATED, VIPREMOVED, deletedVip);
     } catch (error) {
         ApiResponseModel(res, ERROR, error.message);
     }
