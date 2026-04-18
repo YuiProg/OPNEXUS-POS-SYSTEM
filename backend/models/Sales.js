@@ -43,6 +43,10 @@ const salesSchema = new mongoose.Schema({
         type: String,
         default: 'No'
     },
+    usedDiscount: {
+        type: String,
+        default: 'No'
+    },
     discountAmount: {
         type: Number,
     },

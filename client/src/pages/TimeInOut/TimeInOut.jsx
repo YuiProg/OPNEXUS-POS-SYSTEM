@@ -23,11 +23,11 @@ class TimeInOut extends React.Component {
   componentDidMount() {
     const { getData } = TimeInOutStore.getState();
     const { AuthUser } = AuthStore.getState();
-    const { fetchProducts } = ProductStore.getState();
+    //const { fetchProducts } = ProductStore.getState();
     this.interval = setInterval(() => {
       this.setState({ time: this.timenow(), date: this.dateNow()});
     }, 1000);
-    fetchProducts();
+    //fetchProducts();
     getData(AuthUser._id);
   }
 

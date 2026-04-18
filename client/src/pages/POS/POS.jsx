@@ -305,6 +305,7 @@ class POS extends React.Component {
                                         <div className="vip-id-input-container">
                                             <InputField
                                                 number
+                                                maxLength={4}
                                                 placeholder="ID Number"
                                                 onChange={this.handleIDChange}
                                                 value={idNumber}
