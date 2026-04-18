@@ -31,6 +31,11 @@ export const editMainVipModal = () => {
                     <InputField text placeholder="(+63)" value={selectedItem.contactNo} onChange={(e) => setInputs('contactNo', Number(e))}/>
                     <InputField text placeholder="Default is 0" value={selectedItem.points} onChange={(e) => setInputs('points', Number(e))}/>
                 </InputRow>
+                {selectedItem.qrCode && (
+                    <InputRow titles={['QR CODE']}>
+                        <img src={selectedItem.qrCode} alt="qrcode" style={{width: '200px'}}/>
+                    </InputRow>
+                )}
                 <InputRow titles={['VIP Status']}>
                     <Toggle currentStatus={selectedItem.status} onToggle={(status) => setInputs('isActive', status)} />
                 </InputRow>

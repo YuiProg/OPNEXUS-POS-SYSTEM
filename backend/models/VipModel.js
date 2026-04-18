@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import QRCode from 'qrcode';
 
 const vipSchema = new mongoose.Schema({
     _id: {
@@ -32,6 +33,9 @@ const vipSchema = new mongoose.Schema({
         type: Number,
         required: true,
         default: 0
+    },
+    qrCode: {
+        type: String,
     }
 }, {_id: false, timestamps: true});
 
@@ -41,6 +45,7 @@ vipSchema.pre('save', async function () {
             const last = await this.constructor.findOne({}, { _id: 1 }).sort({ _id: -1 });
             const nextNumber = last ? parseInt(last._id, 10) + 1 : 1;
             this._id = String(nextNumber).padStart(4, '0');
+            this.qrCode = await QRCode.toDataURL(`https://vaporyapos.onrender.com/vip/${this._id}`);
         } catch (error) {
             throw error;
         }
