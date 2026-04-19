@@ -12,13 +12,11 @@ const io = new Server(server, {
     }
 });
 
-const activeUsers = []; 
-
 io.on('connection', (socket) => {
-    const { userId, username, role } = socket.handshake.auth; 
+    const { userId,} = socket.handshake.auth; 
 
     if (!userId) return;
-
+    /* eslint-disaable-next-line */
     // const alreadyActive = activeUsers.some((i) => i.userId === userId);
     // if (!alreadyActive) {
     //     activeUsers.push({ userId, username, role });
