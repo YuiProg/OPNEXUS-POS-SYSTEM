@@ -134,7 +134,7 @@ class Login extends React.Component {
                         <p className="login-container__credentials-footer">
                             All Rights Reserved.
                         </p>
-                        <p className="login-container__credentials-footer">v0.2.3</p>
+                        <p className="login-container__credentials-footer">v1.0.0</p>
                     </div>
                 </div>
             </>
