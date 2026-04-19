@@ -41,14 +41,10 @@ const vipSchema = new mongoose.Schema({
 
 vipSchema.pre('save', async function () {
     if (this.isNew) {
-        try {
-            const last = await this.constructor.findOne({}, { _id: 1 }).sort({ _id: -1 });
-            const nextNumber = last ? parseInt(last._id, 10) + 1 : 1;
-            this._id = String(nextNumber).padStart(4, '0');
-            this.qrCode = await QRCode.toDataURL(`https://vaporyapos.onrender.com/vip/${this._id}`);
-        } catch (error) {
-            throw error;
-        }
+        const last = await this.constructor.findOne({}, { _id: 1 }).sort({ _id: -1 });
+        const nextNumber = last ? parseInt(last._id, 10) + 1 : 1;
+        this._id = String(nextNumber).padStart(4, '0');
+        this.qrCode = await QRCode.toDataURL(`https://vaporyapos.onrender.com/vip/${this._id}`);
     }
 });
 

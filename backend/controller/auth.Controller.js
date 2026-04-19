@@ -36,9 +36,9 @@ export const loginUser = async (req, res) => {
         const {email, password} = req.body;
         const user = await User.loginUser(email, password);
         
-        const {password: _, ...userWithoutPassword} = user.toObject();
+        //const { _: _, ...userWithoutPassword } = user.toObject(); // already using _
         generateToken(user._id, res);
-        ApiResponseModel(res, SUCCESS, SUCCESS_MESS, userWithoutPassword);
+        ApiResponseModel(res, SUCCESS, SUCCESS_MESS, user);
     } catch (error) {
         ApiResponseModel(res, ERROR, error.message);
     }

@@ -6,7 +6,6 @@ import { io } from "../lib/socket.js";
 
 const {
     ERROR,
-    SERVER_ERROR,
     CREATED,
     NEW_PRODUCT,
     SUCCESS,
