@@ -73,7 +73,7 @@ salesSchema.statics.createSale = async function (data) {
 }
 
 salesSchema.statics.getSales = async function (branch) {
-    const hasBranch = branch && branch !== "null" ? { branchLocation: branch } : {};
+    const hasBranch = branch && branch !== "null" && branch !== "Branch" && branch !== "any" ? { branchLocation: branch } : {};
     const sales = await this.find(hasBranch).sort({createdAt: -1});
     return sales;
 }

@@ -56,6 +56,12 @@ const ApiConfig = Object.freeze({
     DEACTIVATEVIP: apiEndpoint + 'deactivateVip/:id',
     USEVIPCARD: apiEndpoint + 'useVip/:id',
     UPDATEVIP: apiEndpoint + 'updateVip/:id',
+
+    //DASHBOARD
+    GETMONTHLYSALES: apiEndpoint + 'monthlySales/:branch',
+    GETTODAYSALES: apiEndpoint + 'todaysSales/:branch',
+    GETNETPROFIT: apiEndpoint + 'netProfit/:branch',
+    GETTOPPRODUCTS: apiEndpoint + 'getTopProducts/:branch'
 })
 
 export default ApiConfig;
