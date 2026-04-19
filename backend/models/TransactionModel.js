@@ -1,5 +1,8 @@
 import mongoose from "mongoose";
 
+/**
+ * @model 
+ */
 const transactionSchema = new mongoose.Schema({
     clerk: {
         type: String,

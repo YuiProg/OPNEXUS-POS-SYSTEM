@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 
-
+/**
+ * @model 
+ */
 const timeinSchema = new mongoose.Schema({
     employeeName: {
         type: String,

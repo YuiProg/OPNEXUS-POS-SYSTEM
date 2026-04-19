@@ -8,6 +8,9 @@ const {
 
 const nanoid = customAlphabet(ID_SECRET, 4);
 
+/**
+ * @model 
+ */
 const salesSchema = new mongoose.Schema({
     _id: {
         type: String,
