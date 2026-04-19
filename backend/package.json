@@ -24,5 +24,9 @@
     "qrcode": "^1.5.4",
     "socket.io": "^4.8.3",
     "validator": "^13.15.26"
+  },
+  "devDependencies": {
+    "eslint": "^10.2.1",
+    "eslint-plugin-react": "^7.37.5"
   }
 }
