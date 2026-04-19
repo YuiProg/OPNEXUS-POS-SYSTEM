@@ -62,26 +62,27 @@ h1 {
     padding: 20px 30px;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
-    margin-bottom: -7px;
+    margin-bottom: -3px;
     background: #242426;
     color: #FFF;
     z-index: 0;
     position: relative;
-    border: 1px solid #fff;
+    border: 1px solid #ffffff00;
     border-bottom: 0;
     opacity: 0.3;
+    cursor: pointer;
 }
 
 .logos-container__buttons-item.active{
     padding: 20px 30px;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
-    margin-bottom: -7px;
+    margin-bottom: -3px;
     background: #242426;
     color: #FFF;
     z-index: 0;
     position: relative;
-    border: 1px solid #fff;
+    border: 1px solid #383838;
     border-bottom: 0;
     opacity: 1 !important;
 }
