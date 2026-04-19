@@ -1,4 +1,4 @@
-import mongoose, { Types } from "mongoose";
+import mongoose from "mongoose";
 import bcrypt from 'bcrypt';
 import Strings from "../strings/strings-codes.js";
 import { customAlphabet } from 'nanoid'
@@ -7,7 +7,6 @@ const {
     BRANCH_REQ,
     PASS_REQ,
     ROLE_REQ,
-    NAME_EXIST,
     CRED_ERROR,
     USER_NOT_EXIST,
     SHIFT_ERR,

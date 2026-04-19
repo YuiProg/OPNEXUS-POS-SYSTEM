@@ -64,9 +64,6 @@ const salesSchema = new mongoose.Schema({
     },
     change: {
         type: Number,
-    },
-    branchLocation: {
-        type: String,
     }
 }, {timestamps: true});
 
