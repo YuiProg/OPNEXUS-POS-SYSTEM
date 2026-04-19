@@ -7,10 +7,8 @@ import Strings from "../strings/strings-codes.js";
 const {
     SUCCESS_MESS,
     SUCCESS,
-    ERROR_MESS,
     ERROR,
     CREATED,
-    USER_LOGOUT
 } = Strings;
 
 const errorHandling = (error) => {
