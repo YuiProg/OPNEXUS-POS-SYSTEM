@@ -1,19 +1,34 @@
 import React from "react";
 import './TopProducts.css'
 import ProgressBar from "../Charts/ProgressBar";
-
-const testData = [
-  { id: '01', name: "Burat ng Tralala", bgcolor: "#D63F14", bgcolor2: "#d63f1440", completed: 80, sales: '45' },
-  { id: '02', name: "Tae ni Zek", bgcolor: "#FFA000", bgcolor2: "#ffa00040", completed: 60, sales: '29' },
-  { id: '03', name: "HDMI ni Boss Jaw", bgcolor: "#0088FF", bgcolor2: "#0088FF40", completed: 50, sales: '18' },
-  { id: '04', name: "Motor ni Ed", bgcolor: "#603309", bgcolor2: "#60330940", completed: 35, sales: '25' },
-];
+import DashboardStore from "../../../context/DashboardStore";
 
 class TopProducts extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      topProducts: [],
+    };
   }
-  render () {
+
+  componentDidMount() {
+    const { getTopProducts } = DashboardStore.getState();
+    getTopProducts();
+
+    this.unsubscribe = DashboardStore.subscribe((state) => {
+      const products = state.topProducts?.data;
+      if (products && products.length > 0) {
+        this.setState({ topProducts: products });
+      }
+    });
+  }
+
+  componentWillUnmount() {
+    if (this.unsubscribe) this.unsubscribe();
+  }
+
+  render() {
+    const { topProducts } = this.state;
     return (
       <div className="tp-container">
         <h1 className="tp-title">Top Products</h1>
@@ -26,19 +41,29 @@ class TopProducts extends React.Component {
               <th>Sales</th>
             </tr>
           </thead>
-          <tbody>
-            {testData.map((item, i) => (
-              <tr key={i}>
-                <td>{item.id}</td>
-                <td>{item.name}</td>
-                <td><ProgressBar bgcolor={item.bgcolor} bgcolor2={item.bgcolor2} completed={item.completed} /></td>
-                <td>{item.sales}%</td>
-              </tr>
-            ))}
-          </tbody>
         </table>
+        <div style={{ overflowY: 'auto', maxHeight: '200px' }}>
+          <table className="tp-table">
+            <tbody>
+              {topProducts.length === 0 ? (
+                <tr>
+                  <td colSpan={4} style={{ textAlign: 'center' }}>No data</td>
+                </tr>
+              ) : (
+                topProducts.map((item, i) => (
+                  <tr key={i}>
+                    <td>{item.id}</td>
+                    <td>{item.name}</td>
+                    <td><ProgressBar bgcolor={item.bgcolor} bgcolor2={item.bgcolor2} completed={item.completed} /></td>
+                    <td>{item.sales}</td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
-    )
+    );
   }
 }
 

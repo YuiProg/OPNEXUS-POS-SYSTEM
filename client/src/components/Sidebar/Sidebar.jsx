@@ -171,10 +171,14 @@ class Sidebar extends React.Component {
                         </ul>
                         <div className="user-panel">
                             {this.props.user.role.toLowerCase() === "clerk" && this.props.user.time && (
-                                <div className="user-clock-in">
-                                    <Clock className="clock-icon"/>
-                                    <p className="clock-label">Clocked in at</p>
-                                    <p className="clock-value">{this.props.user.time}</p>
+                                <div className="user-clock-in-container">
+                                    <div className="user-clock-in-details">
+                                        <Clock className="clock-icon"/>
+                                        <div className="user-clock-in-texts">
+                                            <p className="clock-label">Clocked in at</p>
+                                            <p className="clock-value">{this.props.user.time}</p>
+                                        </div>
+                                    </div>
                                 </div>
                             )}
                             {this.props.user ? (

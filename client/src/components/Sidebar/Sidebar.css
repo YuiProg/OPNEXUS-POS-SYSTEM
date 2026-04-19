@@ -103,30 +103,39 @@ body {
   gap: 5px;
 }
 
-.user-clock-in {
+.user-clock-in-container {
   width: 100%;
   border: 1px solid rgba(255, 255, 255, 0.7);
   border-radius: 4px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 2px;
   padding: 0 10px;
   margin-bottom: 2%;
 }
 
-.user-clock-in .clock-icon {
+.user-clock-in-container .user-clock-in-details {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.user-clock-in-container .user-clock-in-details .user-clock-in-texts {
+  display: flex;
+  flex-direction: row;
+  gap: 2px;
+}
+
+.user-clock-in-container .user-clock-in-details .clock-icon {
   width: 16px;
   height: 16px;
 }
 
-.user-clock-in .clock-label {
-  font-size: 11px;
+.user-clock-in-container .user-clock-in-details .user-clock-in-texts .clock-label {
+  font-size: 12px;
   font-weight: 300;
 }
 
-.user-clock-in .clock-value {
-  font-size: 11px;
+.user-clock-in-container .user-clock-in-details .user-clock-in-texts .clock-value {
+  font-size: 12px;
   font-weight: 500;
   color: #22C55E;
 }

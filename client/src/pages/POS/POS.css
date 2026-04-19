@@ -530,15 +530,15 @@
   }
 }
 
-.vip-details .vip-id-input-container .vip-discount {
+.vip-success-indicator .vip-discount {
   gap: 0.5em;
   margin-top: 0.8em;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
 }
 
-.vip-details .vip-id-input-container .vip-discount .vip-discount-text {
+.vip-success-indicator .vip-discount .vip-discount-text {
   font-size: 12px;
   font-weight: 200;
 }

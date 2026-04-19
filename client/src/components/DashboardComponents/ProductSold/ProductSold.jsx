@@ -11,9 +11,9 @@ class ProductSold extends React.Component {
     return (
       <div className="products-sold-container">
         <img className="products-sold-icon" src={productsold} alt="productsold" />
-        <h1 className="products-sold">{"5"}</h1>
+        <h1 className="products-sold">{this.props.sold}</h1>
         <h2 className="products-sold-label">Product Sold</h2>
-        <p className="products-sold-change">+1.2% from yesterday</p>
+        {/* <p className="products-sold-change">+1.2% from yesterday</p> */}
       </div>
     );
   }

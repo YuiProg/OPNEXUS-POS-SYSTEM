@@ -11,9 +11,9 @@ class StocksDB extends React.Component {
     return (
       <div className="stocks-container">
         <img className="stocks-icon" src={stocksicon} alt="stocksicon" />
-        <h1 className="stocks-amount">{"321"}</h1>
+        <h1 className="stocks-amount">{this.props.stock}</h1>
         <h2 className="stocks-label">Stocks</h2>
-        <p className="stocks-change">+1.2% from yesterday</p>
+        {/* <p className="stocks-change">+1.2% from yesterday</p> */}
       </div>
     );
   }
