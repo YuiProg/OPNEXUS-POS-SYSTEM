@@ -5,7 +5,6 @@ import ApiResponseModel from '../models/ApiResponseModel.js';
 const {
     FORBIDDEN,
     FORBIDDEN_MESS,
-    ERROR_MESS
 } = Strings;
 
 const protectRoutes = (req, res, next) => {
