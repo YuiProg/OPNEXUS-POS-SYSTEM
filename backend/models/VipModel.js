@@ -50,10 +50,15 @@ vipSchema.pre('save', async function () {
 
 vipSchema.statics.removePoints = async function (id, pointsUsed) {
     console.log(`REMOVED POINTS FOR ${id}`);
-    const removedPoints = await this.findOneAndUpdate({_id: id}, {points: -pointsUsed});
+    const vip = await this.findOne({ _id: id });
+    const newPoints = Math.max(0, (vip.points || 0) - pointsUsed);
+    const removedPoints = await this.findOneAndUpdate(
+        { _id: id },
+        { $set: { points: newPoints } },
+        { new: true }
+    );
     return removedPoints;
 }
-
 vipSchema.statics.addVipPoints = async function(id, points) {
     console.log(`ADDED ${points} POINTS FOR ${id}`);
     const updatedVip = await this.findOneAndUpdate(

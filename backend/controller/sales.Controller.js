@@ -17,13 +17,12 @@ export const createSale = async (req, res) => {
         const { items } = data;
         const _id = data.purchasedBy?._id ?? null;
         const isActive = data.purchasedBy?.status;
-        const baseAmount = data.total || data.discountAmount || data.amountPaid;
-        const earnedPoints = Math.floor(baseAmount / 100);
+        const earnedPoints = Math.floor((data.amountPaid || 0) / 100);
 
         if (isActive === 'INACTIVE') {
             return ApiResponseModel(res, ERROR, 'Card is current expired or inactive.');
         }
-        console.log(data);
+
         if (_id != null && isActive === 'ACTIVE') {
             if (data.usedDiscount === 'Yes') {
                 await Vip.removePoints(_id, data.pointsUsed);
