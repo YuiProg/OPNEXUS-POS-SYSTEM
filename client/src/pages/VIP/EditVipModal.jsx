@@ -51,6 +51,7 @@ export const confirmDeleteVip = () => {
     return (
         <ModalYesNo
             message={`Delete ${selectedItem.name} as vip?`}
+            message2={"This cannot be undone!"}
             onClose={() => setYesNoConfirmDelete(false)}
             onYes={() => deleteVip(selectedItem.vipId)}
         />

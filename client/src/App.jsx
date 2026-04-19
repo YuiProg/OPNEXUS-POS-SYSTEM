@@ -33,6 +33,8 @@ import addVipUser from "./pages/VIP/AddVipModal.jsx";
 import VipStore from "./context/VipStore.js";
 import {confirmDeleteVip, editMainVipModal} from "./pages/VIP/EditVipModal.jsx";
 import confirmChangesVipModal from "./pages/VIP/ConfirmChangesVipModal.jsx";
+import disableManyConfirmModal from "./pages/VIP/DisableManyConfirm.jsx";
+
 
 const ServerError = lazy(
   () => import("./components/ErrorPages/ServerError/ServerError.jsx"),
@@ -99,7 +101,8 @@ export default function App() {
     setTransactConfirmModal,
     transactConfirmModal,
     showVipModal,
-    showVipChangesModal
+    showVipChangesModal,
+    showVipDisableManyConfirm
   } = ModalStore();
   const {
     setProductData,
@@ -948,7 +951,8 @@ export default function App() {
       change,
       vip,
       purchasedBy,
-      discountAmount
+      discountAmount,
+      usedDiscount
     } = singleDataUnCleaned;
     console.log(singleDataUnCleaned);
     return (
@@ -1071,7 +1075,7 @@ export default function App() {
               />
               <InputField
                 text
-                placeholder="POINTS USED"
+                placeholder={usedDiscount === 'No' ? 'Vip did not use discount' : 'Points used'}
                 value={discountAmount}
                 disabled
               />
@@ -1148,6 +1152,7 @@ export default function App() {
         {editVipModal && editMainVipModal()}
         {showVipChangesModal && confirmChangesVipModal()}
         {yesNoConfirmDelete && confirmDeleteVip()}
+        {showVipDisableManyConfirm && disableManyConfirmModal()}
       </>
     );
   };

@@ -60,6 +60,7 @@ const Strings = Object.freeze({
     VIPFOUND: 'Vip Card Activated.',
     VIPUPDATED: 'Vip card updated',
     VIPREMOVED: 'Vip card removed',
+    VIPSDISABLED: 'Disabled list of vips',
 
     //credy
     usnm: 'username',

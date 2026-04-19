@@ -55,6 +55,13 @@ export const fetchProducts = async (req, res) => {
 export const deleteProductSingle = async (req, res) => {
     const { id } = req.body;
     try {
+        const fetchProduct = await Product.fetchSingle(id);
+        const product = fetchProduct[0]; 
+
+        if (product && product.productImageId != null) {
+            await cloudinary.uploader.destroy(product.productImageId);
+        }
+
         const result = await Product.deleteSingle(id);
         ApiResponseModel(res, SUCCESS, SUCCESS_MESS, result);
     } catch (error) {

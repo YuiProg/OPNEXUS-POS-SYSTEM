@@ -52,9 +52,9 @@ vipSchema.pre('save', async function () {
     }
 });
 
-vipSchema.statics.removePoints = async function (id) {
+vipSchema.statics.removePoints = async function (id, pointsUsed) {
     console.log(`REMOVED POINTS FOR ${id}`);
-    const removedPoints = await this.findOneAndUpdate({_id: id}, {points: 0});
+    const removedPoints = await this.findOneAndUpdate({_id: id}, {points: -pointsUsed});
     return removedPoints;
 }
 

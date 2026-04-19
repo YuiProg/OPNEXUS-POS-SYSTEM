@@ -251,7 +251,6 @@ const ProductStore = create((set, get) => ({
   //UNDEFINED YUNG ID DAW PUTANGINA
   deleteProduct: async () => {
     const { selectedItem, setYesNoModal, isScreenLoading } = ModalStore.getState();
-
     try {
       isScreenLoading(true);
       const result = await axiosInstance.post(deleteSingleProduct, {

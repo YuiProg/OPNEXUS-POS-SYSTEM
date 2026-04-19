@@ -43,7 +43,7 @@ const SalesStore = create((set) => ({
             hour12: true
         }).replace(",", "");
         console.log(data);
-
+        
         const payload = {
             clerkName: AuthUser.username,
             clerkId: AuthUser._id,
@@ -51,8 +51,10 @@ const SalesStore = create((set) => ({
             itemSold: totalCartQuantity,
             items: items,
             vip: data.vip,
+            pointsUsed: data.pointsUsed,
             purchasedBy: data.purchasedBy,
             discountAmount: data.discountAmount,
+            usedDiscount: data.usedDiscount,
             dateTime: dateTime,  
             total: subtotal,
             branchLocation: AuthUser.branchLocation,
