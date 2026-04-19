@@ -9,7 +9,7 @@ import Toggle from "../../components/TRToggle/Toggle";
 
 export const editMainVipModal = () => {
     const { setEditVipModal, setInputs, updateVip } = VipStore.getState();
-    const { selectedItem } = ModalStore.getState();
+    const { selectedItem, setSelectedItem } = ModalStore.getState();
     
     if (!selectedItem) return;
 
@@ -18,8 +18,13 @@ export const editMainVipModal = () => {
         updateVip();
     }
 
+    const onClose = () => {
+        setSelectedItem(null);
+        setEditVipModal(false);
+    }
+
     return(
-        <Modal onClose={() => setEditVipModal(false)} header={`Edit ${selectedItem.firstName} VIP details`}>
+        <Modal onClose={() => onClose()} header={`Edit ${selectedItem.firstName} VIP details`}>
             <InputForm onSubmit={(e) => updateVIPUser(e)}>
                 <InputRow gap={16} titles={['First Name', 'Middle Name', 'Last Name']}>
                     <InputField text placeholder="First Name" value={selectedItem.firstName} onChange={(e) => setInputs('firstName', e)} required/>

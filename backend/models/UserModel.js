@@ -24,6 +24,9 @@ const {
 
 const nanoid = customAlphabet(ID_SECRET, 5);
 
+/**
+ * @model 
+ */
 const userSchema = new mongoose.Schema({
     _id: {
         type: String,

@@ -1,6 +1,9 @@
 import mongoose from "mongoose";
 import QRCode from 'qrcode';
 
+/**
+ * @model 
+ */
 const vipSchema = new mongoose.Schema({
     _id: {
         type: String

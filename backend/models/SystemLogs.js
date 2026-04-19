@@ -1,5 +1,8 @@
 // import mongoose from "mongoose"
 
+/**
+ * @model 
+ */
 // const systemLogsSchema = new mongoose.Schema({
 //     user: {
 //         type: String,

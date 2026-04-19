@@ -8,6 +8,9 @@ const {
 
 const nanoid = customAlphabet(ID_SECRET, 5);
 
+/**
+ * @model 
+ */
 const branchSchema = new mongoose.Schema({
     _id: {
         type: String,
