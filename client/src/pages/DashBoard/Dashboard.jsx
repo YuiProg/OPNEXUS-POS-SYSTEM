@@ -17,6 +17,7 @@ import AuthStore from "../../context/Authstore";
 import BarsChart from "../../components/DashboardComponents/Charts/BarsChart";
 import TopProducts from "../../components/DashboardComponents/TopProducts/TopProducts";
 import BranchStore from "../../context/BranchStore";
+import DashboardStore from "../../context/DashboardStore";
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -38,6 +39,7 @@ class Dashboard extends React.Component {
     const {getBranch} = BranchStore.getState();
     getBranch();
   }
+
 
   // testonchange = (test) => {
   //   console.log(test);

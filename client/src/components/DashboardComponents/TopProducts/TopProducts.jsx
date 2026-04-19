@@ -8,6 +8,7 @@ class TopProducts extends React.Component {
     super(props);
     this.state = {
       topProducts: [],
+      topProductsLoading: false,
     };
   }
 
@@ -20,6 +21,7 @@ class TopProducts extends React.Component {
       if (products && products.length > 0) {
         this.setState({ topProducts: products });
       }
+      this.setState({ topProductsLoading: state.topProductsLoading });
     });
   }
 
@@ -28,42 +30,50 @@ class TopProducts extends React.Component {
   }
 
   render() {
-    const { topProducts } = this.state;
-    return (
-      <div className="tp-container">
-        <h1 className="tp-title">Top Products</h1>
-        <table className="tp-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Name</th>
-              <th>Popularity</th>
-              <th>Sales</th>
-            </tr>
-          </thead>
-        </table>
-        <div style={{ overflowY: 'auto', maxHeight: '200px' }}>
-          <table className="tp-table">
-            <tbody>
-              {topProducts.length === 0 ? (
-                <tr>
-                  <td colSpan={4} style={{ textAlign: 'center' }}>No data</td>
-                </tr>
-              ) : (
-                topProducts.map((item, i) => (
-                  <tr key={i}>
-                    <td>{item.id}</td>
-                    <td>{item.name}</td>
-                    <td><ProgressBar bgcolor={item.bgcolor} bgcolor2={item.bgcolor2} completed={item.completed} /></td>
-                    <td>{item.sales}</td>
+      const { topProducts, topProductsLoading } = this.state;
+      return (
+        <div className="tp-container">
+          <h1 className="tp-title">Top Products</h1>
+          {topProductsLoading ? (
+            <div className="tp-loading">
+              <span className="spinner"></span>
+            </div>
+          ) : (
+            <>
+              <table className="tp-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Popularity</th>
+                    <th>Sales</th>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+                </thead>
+              </table>
+              <div style={{ overflowY: 'auto', maxHeight: '200px' }}>
+                <table className="tp-table">
+                  <tbody>
+                    {topProducts.length === 0 ? (
+                      <tr>
+                        <td colSpan={4} style={{ textAlign: 'center', color: '#888' }}>No data available</td>
+                      </tr>
+                    ) : (
+                      topProducts.map((item, i) => (
+                        <tr key={i}>
+                          <td>{item.id}</td>
+                          <td>{item.name}</td>
+                          <td><ProgressBar bgcolor={item.bgcolor} bgcolor2={item.bgcolor2} completed={item.completed} /></td>
+                          <td>{item.sales}</td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </>
+          )}
         </div>
-      </div>
-    );
+      );
   }
 }
 
