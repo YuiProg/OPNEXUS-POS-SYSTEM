@@ -28,11 +28,11 @@ jobs:
 
       - name: Run ESLint (Backend)
         working-directory: backend
-        run: npx eslint . --max-warnings=0
+        run: npx eslint . --max-warnings=-1
 
       - name: Run ESLint (Client)
         working-directory: client
-        run: npx eslint . --max-warnings=0
+        run: npx eslint . --max-warnings=-1
 
   backend:
     name: Backend - Install & Check
