@@ -76,8 +76,9 @@ export const getAuthUser = async (req, res) => {
         const {userId} = req.user;
         const user = await User.getUser(userId);
 
-        //const {password: _, ...userWithoutPassword} = user.toObject();
-        ApiResponseModel(res, SUCCESS, SUCCESS_MESS, user);
+        /* eslint-disable-next-line */
+        const {password: _, ...userWithoutPassword} = user.toObject();
+        ApiResponseModel(res, SUCCESS, SUCCESS_MESS, userWithoutPassword);
     } catch (error) {
         ApiResponseModel(res, ERROR, error.message);
     }
