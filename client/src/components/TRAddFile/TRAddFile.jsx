@@ -33,7 +33,6 @@ class TRAddfile extends React.Component {
     render () {
         const {
             onChange,
-            isRequired,
             disabled
         } = this.props;
 
