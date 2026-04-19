@@ -20,6 +20,8 @@ const DashboardStore = create((set) => ({
     topProducts: null,
     statsLoading: false,
     todayLoading: false,
+    netProfitLoading: false,
+    topProductsLoading: true,
 
     getMonthlySales: async () => {
         const { selectedBranch } = AuthStore.getState();
@@ -54,6 +56,7 @@ const DashboardStore = create((set) => ({
     },
 
     getNetProfit: async () => {
+        set({netProfitLoading: true});
         try {
             const {selectedBranch} = AuthStore.getState();
             const netProfit = await axiosInstance.get(GETNETPROFIT.replace(':branch', selectedBranch));
@@ -62,10 +65,13 @@ const DashboardStore = create((set) => ({
             if (axiosError(error)) {
                 toast.error(error.response.data.status);
             }
+        } finally {
+            set({netProfitLoading: false});
         }
     },
 
     getTopProducts: async () => {
+        set({topProductsLoading: true});
         try {
             const { selectedBranch } = AuthStore.getState();
             const topproducts = await axiosInstance.get(GETTOPPRODUCTS.replace(':branch', selectedBranch));
@@ -74,6 +80,8 @@ const DashboardStore = create((set) => ({
             if (axiosError(error)) {
                 toast.error(error.response.data.status);
             }
+        } finally {
+            set({topProductsLoading: false});
         }
     }
 }));

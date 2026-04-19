@@ -19,19 +19,23 @@ class DonutChart extends React.Component {
     this.state = {
       chartData: [],
       selectedMonth: MONTH_LABELS[new Date().getMonth()],
+      netProfitLoading: false,
     };
   }
 
   componentDidMount() {
     const { getNetProfit } = DashboardStore.getState();
+    
+    this.setState({ netProfitLoading: true });
     getNetProfit();
 
     this.unsubscribe = DashboardStore.subscribe((state) => {
       const monthly = state.netProfit?.data;
+      this.setState({ netProfitLoading: state.netProfitLoading });
       if (monthly && monthly.length > 0) {
         const { selectedMonth } = this.state;
         const found = monthly.find((m) => m.month === selectedMonth);
-        this.setState({ chartData: found ? found.data : [] });
+        this.setState({ chartData: found ? found.data : this.state.chartData });
       }
     });
   }
@@ -41,7 +45,7 @@ class DonutChart extends React.Component {
   }
 
   render() {
-    const { chartData, selectedMonth } = this.state;
+    const { chartData, selectedMonth, netProfitLoading } = this.state;
 
     return (
       <div className="dc-container">
@@ -49,36 +53,44 @@ class DonutChart extends React.Component {
           <h1 className="dc-title">Net Profit</h1>
           <p className="dc-branch">{selectedMonth} &#40;monthly&#41;</p>
         </div>
-        <div className="donut-chart">
-          {chartData.length > 0 ? (
-            <PieChart
-              series={[{ 
-                innerRadius: 50, 
-                outerRadius: 90, 
-                data: chartData,
-              }]}
-              {...donutSettings}
-              sx={{
-                '& .MuiPieArc-root': {
-                  stroke: 'none',
-                },
-              }}
-            />
-          ) : (
-            <div className="dc-empty">No data</div>
-          )}
-        </div>
-        <div className="dc-legend">
-          {chartData.map((item, index) => (
-            <div className="legend-item" key={index}>
-              <div className="legend-circle" style={{ backgroundColor: item.color }}></div>
-              <div>
-                <h4 className="dc-legend-fund">{item.label}</h4>
-                <p className="dc-legend-label">{legendLabels[index]}</p>
-              </div>
+        {netProfitLoading ? (
+          <div className="dc-loading">
+            <span className="dc-spinner"></span>
+          </div>
+        ) : (
+          <>
+            <div className="donut-chart">
+              {chartData.length > 0 ? (
+                <PieChart
+                  series={[{ 
+                    innerRadius: 50, 
+                    outerRadius: 90, 
+                    data: chartData,
+                  }]}
+                  {...donutSettings}
+                  sx={{
+                    '& .MuiPieArc-root': {
+                      stroke: 'none',
+                    },
+                  }}
+                />
+              ) : (
+                <div className="dc-empty">No data</div>
+              )}
             </div>
-          ))}
-        </div>
+            <div className="dc-legend">
+              {chartData.map((item, index) => (
+                <div className="legend-item" key={index}>
+                  <div className="legend-circle" style={{ backgroundColor: item.color }}></div>
+                  <div>
+                    <h4 className="dc-legend-fund">{item.label}</h4>
+                    <p className="dc-legend-label">{legendLabels[index]}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
       </div>
     );
   }
