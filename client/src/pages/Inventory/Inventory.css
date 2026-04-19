@@ -34,13 +34,6 @@ h1 {
   font-weight: 200;
 }
 
-.iv-branch-dropdown,
-.sm-branch-dropdown,
-.db-branch-dropdown,
-.logs-branch-dropdown {
-  width: 30%;
-}
-
 .iv-top-contents .iv-bigtitle, .iv-branch-dropdown {
   font-weight: 600;
   color: #fff;
