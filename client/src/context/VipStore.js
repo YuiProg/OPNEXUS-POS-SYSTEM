@@ -10,7 +10,8 @@ const {
     GETALLVIP,
     USEVIPCARD,
     UPDATEVIP,
-    DELETEVIP
+    DELETEVIP,
+    DISABLEMANYVIP
 } = ApiConfig;
 
 const VipStore = create((set, get) => ({
@@ -83,6 +84,19 @@ const VipStore = create((set, get) => ({
             }
         } finally {
             set({yesNoConfirmDelete: false});
+            get().getVips();
+        }
+    },
+
+    disableManyVip: async (list) => {
+        try {
+            const update = await axiosInstance.post(DISABLEMANYVIP, list);
+            console.log(update);
+        } catch (error) {
+            if (axiosError(error)) {
+                toast.error(error.response.data.status);
+            }
+        } finally {
             get().getVips();
         }
     },

@@ -23,10 +23,10 @@ export const createSale = async (req, res) => {
         if (isActive === 'INACTIVE') {
             return ApiResponseModel(res, ERROR, 'Card is current expired or inactive.');
         }
-
+        console.log(data);
         if (_id != null && isActive === 'ACTIVE') {
             if (data.usedDiscount === 'Yes') {
-                await Vip.removePoints(_id);
+                await Vip.removePoints(_id, data.pointsUsed);
             }
             if (earnedPoints > 0) {
                 await Vip.addVipPoints(_id, earnedPoints);

@@ -8,7 +8,8 @@ const {
     VIPADD,
     VIPFOUND,
     VIPUPDATED,
-    VIPREMOVED
+    VIPREMOVED,
+    VIPSDISABLED
 } = Strings;
 
 export const addVip = async (req, res) => {
@@ -57,6 +58,21 @@ export const getVipById = async (req, res) => {
         const {id} = req.params;
         const vipData = await Vip.getVipById(id);
         ApiResponseModel(res, CREATED, VIPFOUND, vipData);
+    } catch (error) {
+        ApiResponseModel(res, ERROR, error.message);
+    }
+}
+
+export const disableManyVip = async (req, res) => {
+    let updatedList = [];
+    try {
+        const list = req.body;
+        for (let i = 0; i < list.length; i++) {
+            const updated = await Vip.updateVip(list[i], {status: 'INACTIVE'});
+            updatedList.push(updated);
+        }
+
+        ApiResponseModel(res, CREATED, VIPSDISABLED, updatedList);
     } catch (error) {
         ApiResponseModel(res, ERROR, error.message);
     }

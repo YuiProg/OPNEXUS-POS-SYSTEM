@@ -41,6 +41,13 @@ class VipManagement extends React.Component {
         setSelectedItem(data);
     }
 
+    disableManyConfirm = (e) => {
+        const { setSelectedItem, setShowVipDisableManyConfirm} = ModalStore.getState();
+        if (e.length === 0) return;
+        setSelectedItem(e);
+        setShowVipDisableManyConfirm(true);
+    }
+
     render () {
         // const sampledata = [
         //     {vipId: '23', name: 'terk', email: 'email@gmail.com ', dateAdded: '23/23/23', status: 'ACTIVE', points: 234}
@@ -61,7 +68,7 @@ class VipManagement extends React.Component {
                 />
             ),
             deleteBtnInfo: 'DISABLE VIP',
-            CBD: (e) => console.log(e)
+            CBD: (e) => this.disableManyConfirm(e)
         };
 
         return (
