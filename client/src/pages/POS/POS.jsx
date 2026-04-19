@@ -330,6 +330,17 @@ class POS extends React.Component {
                                                             <span className="points-info">Toggle discount to apply points</span>
                                                         )}
                                                     </div>
+                                                    <div className="vip-discount">
+                                                        <p className="vip-discount-text">Discount</p>
+                                                        <label className="switch2">
+                                                            <input
+                                                                type="checkbox"
+                                                                checked={discountActive}
+                                                                onChange={() => this.setState((prev) => ({ discountActive: !prev.discountActive }))}
+                                                            />
+                                                            <span className="slider2"></span>
+                                                        </label>
+                                                    </div>
                                                 </div>
                                             )}
                                             {vipStatus === 'expired' && fetchedVipDetails && (
@@ -358,17 +369,6 @@ class POS extends React.Component {
                                                     </div>
                                                 </div>
                                             )}
-                                            <div className="vip-discount">
-                                                <p className="vip-discount-text">Discount</p>
-                                                <label className="switch2">
-                                                    <input
-                                                        type="checkbox"
-                                                        checked={discountActive}
-                                                        onChange={() => this.setState((prev) => ({ discountActive: !prev.discountActive }))}
-                                                    />
-                                                    <span className="slider2"></span>
-                                                </label>
-                                            </div>
                                         </div>
                                     </div>
                                 )}
