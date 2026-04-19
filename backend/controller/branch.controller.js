@@ -96,7 +96,7 @@ export const setActiveBranch = async (req, res) => {
     const data = req.body;
     try {
         
-        const fetchUser = await User.getSingleUser(data._id);
+        //const fetchUser = await User.getSingleUser(data._id);
         const updated = await Branch.setActive(location, data);
         ApiResponseModel(res, SUCCESS, 'Branch Actived', updated);
     } catch (error) {
