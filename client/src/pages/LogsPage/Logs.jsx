@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import BranchStore from "../../context/BranchStore";
 import SalesStore from "../../context/SalesStore";
 import InputField from "../../components/TRInputField/InputFIeld";
+import { CalendarDays } from "lucide-react";
 
 class Logs extends React.Component {
     constructor (props) {
@@ -16,7 +17,9 @@ class Logs extends React.Component {
         this.state = {
             selectedTab: 'system',
             timeInData: [],
-            search: ''
+            search: '',
+            date: '',
+            showDateFilter: false
         }
     }
 
@@ -60,7 +63,25 @@ class Logs extends React.Component {
         fetchSingleSale(data.saleId);
     }
 
-    filterData = (data) => {
+    filterByDate = (data, dateField) => {
+        const { date } = this.state;
+        if (!date) return data;
+
+        const [year, month, day] = date.split('-').map(Number);
+        console.log('Filtering by:', year, month, day);
+        console.log('First item keys:', Object.keys(data[0] || {}));
+        console.log('First item dateField value:', data[0]?.[dateField]);
+
+        return data.filter((item) => {
+            const raw = item[dateField];
+            if (!raw) return true;
+            const [datePart] = raw.split(' ');
+            const [m, d, y] = datePart.split('/').map(Number);
+            return y === year && m === month && d === day;
+        });
+    }
+
+    filterBySearch = (data) => {
         const { search } = this.state;
         if (!search) return data;
         return data.filter((item) =>
@@ -68,6 +89,10 @@ class Logs extends React.Component {
                 String(val).toLowerCase().includes(search.toLowerCase())
             )
         );
+    }
+
+    clearFilters = () => {
+        this.setState({ search: '', date: '' });
     }
 
     render () { 
@@ -91,8 +116,8 @@ class Logs extends React.Component {
             }, {})
         );
 
-        const filteredUniqueUsers = this.filterData(uniqueUsers);
-        const filteredSales = this.filterData(salesForTable);
+        const filteredUniqueUsers = this.filterBySearch(uniqueUsers);
+        const filteredSales = this.filterBySearch(this.filterByDate(salesForTable, 'dateAndTime'));
 
         return (
             <>
@@ -114,11 +139,36 @@ class Logs extends React.Component {
                     </div>
                 </div>
                 <div className="logs-main-contents">
-                    <InputField
-                        isSearch
-                        placeholder="Search"
-                        onChange={(value) => this.setState({ search: value, })}
-                    />
+                    <div className="logs-filters">
+                        <InputField
+                            isSearch
+                            placeholder="Search"
+                            value={this.state.search}
+                            onChange={(value) => this.setState({ search: value })}
+                        />
+                        <button
+                            className={`logs-date-filter-toggle ${this.state.showDateFilter ? 'active' : ''}`}
+                            onClick={() => this.setState({ showDateFilter: !this.state.showDateFilter })}
+                        >
+                            <CalendarDays size={16} />
+                            Filter by Date
+                        </button>
+                        {this.state.showDateFilter && (
+                            <div className="logs-date-filter-dropdown">
+                                <input
+                                    type="date"
+                                    value={this.state.date}
+                                    onChange={(e) => this.setState({ date: e.target.value })}
+                                />
+                                <button
+                                    className="logs-date-filter-clear"
+                                    onClick={this.clearFilters}
+                                >
+                                    Clear
+                                </button>
+                            </div>
+                        )}
+                    </div>
                     <div className="logs-table">
                         <div className={`logos-container__buttons`}>
                             <button className={`logos-container__buttons-item ${this.state.selectedTab === 'system' ? 'active' : null}`} onClick={() => this.setState({selectedTab: 'system'})}>System Logs</button>
