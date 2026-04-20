@@ -10,14 +10,17 @@ const {
     GETMONTHLYSALES,
     GETTODAYSALES,
     GETNETPROFIT,
-    GETTOPPRODUCTS
+    GETTOPPRODUCTS,
+    GETTODAYSREVENUE
 } = ApiConfig;
 
 const DashboardStore = create((set) => ({
     monthlySales: null,
     todaySales: null,
     netProfit: null,
+    todayRevenue: null,
     topProducts: null,
+    todayRevenueLoading: false,
     statsLoading: false,
     todayLoading: false,
     netProfitLoading: false,
@@ -82,6 +85,21 @@ const DashboardStore = create((set) => ({
             }
         } finally {
             set({topProductsLoading: false});
+        }
+    },
+
+    getTodayRevenue: async () => {
+        try {
+            set({todayRevenueLoading: true});
+            const { selectedBranch } = AuthStore.getState();
+            const todayRevenue = await axiosInstance.get(GETTODAYSREVENUE.replace(':branch', selectedBranch));
+            set({todayRevenue: todayRevenue.data});
+        } catch (error) {
+            if (axiosError(error)) {
+                toast.error(error.response.data.status);
+            }
+        } finally {
+            set({todayRevenueLoading: false});
         }
     }
 }));
