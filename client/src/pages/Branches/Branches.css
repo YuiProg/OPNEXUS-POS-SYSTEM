@@ -60,7 +60,7 @@ h1 {
 
 .branches-cards-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     column-gap: 15px;
     row-gap: 15px;
 }
