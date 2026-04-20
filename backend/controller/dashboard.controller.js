@@ -5,7 +5,8 @@ import Strings from "../strings/strings-codes.js";
 
 const {
     ERROR,
-    SUCCESS
+    SUCCESS,
+    SUCCESS_MESS
 } = Strings;
 
 
@@ -171,6 +172,29 @@ export const getTopProducts = async (req, res) => {
                 sales: String(product.totalQuantitySold),
             }));
         ApiResponseModel(res, SUCCESS, "Top products fetched", topProducts);
+    } catch (error) {
+        ApiResponseModel(res, ERROR, error.message);
+    }
+}
+
+export const todayRevenue = async (req, res) => {
+    try {
+        const { branch } = req.params;
+        const sales = await Sales.getSales(branch);
+
+        const today = new Date();
+        const todaySales = sales.filter((sale) => {
+            const saleDate = new Date(sale.createdAt);
+            return (
+                saleDate.getFullYear() === today.getFullYear() &&
+                saleDate.getMonth() === today.getMonth() &&
+                saleDate.getDate() === today.getDate()
+            );
+        });
+
+        const revenue = todaySales.reduce((acc, sale) => acc + sale.total, 0);
+
+        ApiResponseModel(res, SUCCESS, SUCCESS_MESS, { revenue });
     } catch (error) {
         ApiResponseModel(res, ERROR, error.message);
     }

@@ -61,7 +61,8 @@ const ApiConfig = Object.freeze({
     GETMONTHLYSALES: apiEndpoint + 'monthlySales/:branch',
     GETTODAYSALES: apiEndpoint + 'todaysSales/:branch',
     GETNETPROFIT: apiEndpoint + 'netProfit/:branch',
-    GETTOPPRODUCTS: apiEndpoint + 'getTopProducts/:branch'
+    GETTOPPRODUCTS: apiEndpoint + 'getTopProducts/:branch',
+    GETTODAYSREVENUE: apiEndpoint + 'todayRevenue/:branch'
 })
 
 export default ApiConfig;
