@@ -177,15 +177,15 @@ class Logs extends React.Component {
                         </div>
                         {this.state.selectedTab === 'system' 
                             ? (
-                                <Table data={[]}/>
+                                <Table data={[]} limit={9}/>
                             ) 
                             : this.state.selectedTab === 'time' 
                             ? (
-                                <Table data={filteredUniqueUsers} isLoading={timeInLoading} onRowSelect={(e) => this.showViewModal(e)}/>
+                                <Table data={filteredUniqueUsers} limit={9} isLoading={timeInLoading} onRowSelect={(e) => this.showViewModal(e)}/>
                             ) 
                             : this.state.selectedTab === 'transact' 
                             ? (
-                                <Table data={filteredSales} onRowSelect={(e) => this.showViewTransactModal(e)}/>
+                                <Table data={filteredSales} limit={9} onRowSelect={(e) => this.showViewTransactModal(e)}/>
                             ) 
                             : null
                         }
