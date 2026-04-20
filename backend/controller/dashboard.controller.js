@@ -36,7 +36,7 @@ export const todaysSale = async (req, res) => {
     try {
         const sales = await Sales.getSales(branch);
         const products = await Product.fetchProducts(branch);
-        console.log(sales);
+
         // Filter today's sales
         const today = new Date();
         const todaySales = sales.filter((sale) => {
@@ -183,13 +183,13 @@ export const todayRevenue = async (req, res) => {
         const sales = await Sales.getSales(branch);
 
         const today = new Date();
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const dd = String(today.getDate()).padStart(2, '0');
+        const yyyy = today.getFullYear();
+        const todayStr = `${mm}/${dd}/${yyyy}`; // "04/20/2026"
+
         const todaySales = sales.filter((sale) => {
-            const saleDate = new Date(sale.createdAt);
-            return (
-                saleDate.getFullYear() === today.getFullYear() &&
-                saleDate.getMonth() === today.getMonth() &&
-                saleDate.getDate() === today.getDate()
-            );
+            return sale.dateTime?.startsWith(todayStr);
         });
 
         const revenue = todaySales.reduce((acc, sale) => acc + sale.total, 0);

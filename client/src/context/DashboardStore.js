@@ -88,12 +88,13 @@ const DashboardStore = create((set) => ({
         }
     },
 
+    //pedeng wala nato since parehas lang ng data sa todays sales
     getTodayRevenue: async () => {
         try {
             set({todayRevenueLoading: true});
             const { selectedBranch } = AuthStore.getState();
             const todayRevenue = await axiosInstance.get(GETTODAYSREVENUE.replace(':branch', selectedBranch));
-            set({todayRevenue: todayRevenue.data});
+            set({todayRevenue: todayRevenue.data.data});
         } catch (error) {
             if (axiosError(error)) {
                 toast.error(error.response.data.status);

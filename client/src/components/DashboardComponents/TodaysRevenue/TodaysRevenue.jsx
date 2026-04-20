@@ -48,7 +48,7 @@ class TodaysRevenue extends React.Component {
                             )
                         }
                     </h1>
-                    <p className="tr-label">0% from yesterday</p>
+                    {/* <p className="tr-label">0% from yesterday</p> */}
                 </div>
             </div>
         );
