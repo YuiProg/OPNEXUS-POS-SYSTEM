@@ -60,6 +60,9 @@ body {
   gap: 3%;
   width: 100%;
   padding: 13%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .sidebar-list .row .sb-icon {
