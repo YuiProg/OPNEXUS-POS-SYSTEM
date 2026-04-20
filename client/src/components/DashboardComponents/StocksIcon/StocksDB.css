@@ -1,3 +1,8 @@
+.stocks-link {
+    text-decoration: none;
+    display: contents;
+}
+
 .stocks-container {
     background: rgba(255, 160, 0, 0.3);
     border: 1px solid #FFA000;
