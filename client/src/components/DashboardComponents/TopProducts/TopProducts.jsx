@@ -50,7 +50,7 @@ class TopProducts extends React.Component {
                   </tr>
                 </thead>
               </table>
-              <div style={{ overflowY: 'auto', maxHeight: '200px' }}>
+              <div style={{ overflowY: 'auto' }}>
                 <table className="tp-table">
                   <tbody>
                     {topProducts.length === 0 ? (

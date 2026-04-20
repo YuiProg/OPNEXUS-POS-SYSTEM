@@ -1,3 +1,8 @@
+.stocks-link {
+    text-decoration: none;
+    display: contents;
+}
+
 .stocks-container {
     background: rgba(255, 160, 0, 0.3);
     border: 1px solid #FFA000;
@@ -9,6 +14,12 @@
     flex-direction: column;
     justify-content: space-between;
     gap: 10px;
+    transition: transform 0.1s ease-in-out;
+}
+
+.stocks-container:hover {
+    transform: scale(1.02);
+    cursor: pointer;
 }
 
 .stocks-label {

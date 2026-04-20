@@ -9,6 +9,11 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  transition: transform 0.1s ease-in-out;
+}
+
+.dc-container:hover {
+  transform: scale(1.02);
 }
 
 .dc-text {

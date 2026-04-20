@@ -9,6 +9,12 @@
     flex-direction: column;
     justify-content: space-between;
     gap: 10px;
+    transition: transform 0.1s ease-in-out;
+}
+
+.total-sales-container:hover {
+    transform: scale(1.02);
+    cursor: pointer;
 }
 
 .total-sales-label {
