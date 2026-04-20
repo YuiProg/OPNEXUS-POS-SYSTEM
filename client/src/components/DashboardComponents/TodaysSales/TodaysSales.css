@@ -1,27 +1,32 @@
 .todays-sales-container {
-    background-color: #111111;
-    width: 100%; 
-    border-radius: 16px;
-    border: 1px solid #404040;
-    box-shadow: 0px 10px 15px rgba(0,0,0,0.3);
-    padding: 15px;
+  background-color: #111111;
+  width: 100%; 
+  border-radius: 16px;
+  border: 1px solid #404040;
+  box-shadow: 0px 10px 15px rgba(0,0,0,0.3);
+  padding: 15px;
+  transition: transform 0.1s ease-in-out;
+}
+
+.todays-sales-container:hover {
+  transform: scale(1.02);
 }
 
 .todays-sales-title {
-    font-size: 24px;
-    font-weight: 600;
-    color: #fff;
+  font-size: 24px;
+  font-weight: 600;
+  color: #fff;
 }
 
 .todays-sales-label {
-    font-size: 16px;
-    font-weight: 400;
-    color: #ffffff89;
+  font-size: 16px;
+  font-weight: 400;
+  color: #ffffff89;
 }
 
 .todays-sales-content {
-    display: flex;
-    gap: 20px;
+  display: flex;
+  gap: 20px;
 }
 
 .todays-sales-loading {
