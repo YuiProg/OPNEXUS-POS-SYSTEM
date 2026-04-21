@@ -33,7 +33,7 @@ export const editMainVipModal = () => {
                 </InputRow>
                 <InputRow gap={16} titles={['Email', 'Contact No', 'Points']}>
                     <InputField text placeholder="Email" value={selectedItem.email} onChange={(e) => setInputs('email', e)}/>
-                    <InputField text placeholder="(+63)" value={selectedItem.contactNo} onChange={(e) => setInputs('contactNo', Number(e))}/>
+                    <InputField number placeholder="(+63)" maxLength={10} value={selectedItem.contactNo} onChange={(e) => setInputs('contactNo', Number(e))}/>
                     <InputField text placeholder="Default is 0" value={selectedItem.points} onChange={(e) => setInputs('points', Number(e))}/>
                 </InputRow>
                 {selectedItem.qrCode && (
