@@ -89,3 +89,44 @@
     background-color: #404040;
     color: #ffffff;
 }
+
+.tr-dropdown-list-portal {
+    position: fixed !important;
+    background-color: #1a1a1a;
+    border: 2px solid #404040;
+    border-radius: 8px;
+    list-style: none;
+    margin: 0;
+    padding: 4px 0;
+    z-index: 9999 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+/* Opening downward (default) */
+.tr-dropdown-down {
+    border-radius: 0 0 8px 8px;
+}
+
+/* Opening upward */
+.tr-dropdown-up {
+    border-radius: 8px 8px 0 0;
+}
+
+.tr-dropdown-list-portal::-webkit-scrollbar {
+    width: 6px;
+}
+
+.tr-dropdown-list-portal::-webkit-scrollbar-track {
+    background: #111111;
+}
+
+.tr-dropdown-list-portal::-webkit-scrollbar-thumb {
+    background: #404040;
+    border-radius: 3px;
+}
+
+.tr-dropdown-list-portal::-webkit-scrollbar-thumb:hover {
+    background: #505050;
+}
