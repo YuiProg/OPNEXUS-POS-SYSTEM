@@ -35,7 +35,7 @@ class Button extends React.Component {
                             : cancel && "transparent"}`,
                         width: `${
                             maxWidth ? "100%" 
-                            : customWidth ? customWidth 
+                            : customWidth ? `${customWidth}px` 
                             : "auto"
                         }`,
                         border: `${cancel ? "1px solid white" : null}`

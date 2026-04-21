@@ -455,9 +455,14 @@ export default function App() {
               />
             </InputRow>
             <InputRow
-              titles={["Category (required)", "Branch (required)"]}
+              titles={["Add New Category", "Category (required)", "Branch (required)"]}
               gap={15}
             >
+              <Button
+                maxWidth
+                cancel
+                text="New Category"
+              />
               <DropDown
                 maxWidth
                 options={categories}
