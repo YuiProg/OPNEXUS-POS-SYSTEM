@@ -20,8 +20,7 @@ class Button extends React.Component {
             onClick,
             disabled,
             cancel,
-            className,
-            customBorder
+            className
         } = this.props;
 
         return (
@@ -39,11 +38,7 @@ class Button extends React.Component {
                             : customWidth ? `${customWidth}px` 
                             : "auto"
                         }`,
-                        border: `${
-                            customBorder ? customBorder
-                            : cancel ? "1px solid white" 
-                            : null
-                        }`
+                        border: `${cancel ? "1px solid white" : null}`
                     }}
                     className={`TR-button ${disabled && 'tr-btn-disabled'} ${className || ''}`}
                     onClick={() => onClick()}

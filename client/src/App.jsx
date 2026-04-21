@@ -470,7 +470,6 @@ export default function App() {
             >
               <Button
                 maxWidth
-                customBorder="2px solid #404040"
                 cancel
                 text="New Category"
                 onClick={() => setShowNewCategoryModal(true)}
