@@ -149,6 +149,10 @@ class POS extends React.Component {
     processOrder = () => {
         const { processOrder } = SalesStore.getState();
         const { items, amountPaid, fetchedVipDetails, vipActive, discountActive } = this.state;
+        const { AuthUser } = AuthStore.getState();
+
+        if (!AuthUser.timedIn) return toast.error('You are not timed in!');
+        
         let subtotal = items.reduce((acc, item) => acc + this.getItemPrice(item) * item.quantity, 0);
         
         let discountAmount = 0;
