@@ -1,3 +1,8 @@
+.products-sold-link {
+    text-decoration: none;
+    display: contents;
+}
+
 .products-sold-container {
     background: rgba(0, 136, 255, 0.3);
     border: 1px solid #0088FF;

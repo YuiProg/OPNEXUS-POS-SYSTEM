@@ -20,13 +20,41 @@
   width: 100%;
   border-collapse: collapse;
   color: #fff;
+  table-layout: fixed;  /* Add this */
 }
-
 .tp-table th, .tp-table td {
   padding: 18px 0;
-  font-weight: 400;
   border-bottom: 1px solid #ffffff81;
   text-align: left;
+}
+
+/* # */
+.tp-table th:nth-child(1),
+.tp-table td:nth-child(1) { 
+  width: 10%;
+}
+
+/* Name */
+.tp-table th:nth-child(2),
+.tp-table td:nth-child(2) { 
+  width: 35%; 
+}
+
+/* Popularity */
+.tp-table th:nth-child(3),
+.tp-table td:nth-child(3) { 
+  width: 35%; 
+}  
+
+/* Sales */
+.tp-table th:nth-child(4),
+.tp-table td:nth-child(4) { 
+  width: 15%; 
+}  
+
+.tp-table-wrapper {
+  max-height: 25vh;
+  overflow-y: auto;
 }
 
 .tp-table th {

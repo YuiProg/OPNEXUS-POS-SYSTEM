@@ -34,6 +34,9 @@ import VipStore from "./context/VipStore.js";
 import {confirmDeleteVip, editMainVipModal} from "./pages/VIP/EditVipModal.jsx";
 import confirmChangesVipModal from "./pages/VIP/ConfirmChangesVipModal.jsx";
 import disableManyConfirmModal from "./pages/VIP/DisableManyConfirm.jsx";
+import newCategoryModal from "./pages/Inventory/NewCategoryModal.jsx";
+import CategoryStore from "./context/CategoryStore.js";
+import deleteCategoryConfirm from "./pages/Inventory/DeleteCategoryConfirm.jsx";
 
 
 const ServerError = lazy(
@@ -102,14 +105,16 @@ export default function App() {
     transactConfirmModal,
     showVipModal,
     showVipChangesModal,
-    showVipDisableManyConfirm
+    showVipDisableManyConfirm,
+    setShowNewCategoryModal,
+    showNewCategoryModal,
+    showConfirmDeleteCategory
   } = ModalStore();
   const {
     setProductData,
     addNewProduct,
     //branches,
     //errorProduct,
-    categories,
     addLoading,
     deleteMultipleProducts,
     deleteProduct,
@@ -141,6 +146,10 @@ export default function App() {
     editVipModal,
     yesNoConfirmDelete
   } = VipStore();
+  const {
+    categories,
+    getCategories
+  } = CategoryStore();
 
   const { SERVER_ERROR, PROD_FAIL } = Strings;
   //const [currentRole, setCurrentRole] = useState("");
@@ -149,7 +158,8 @@ export default function App() {
   useEffect(() => {
     checkAuth();
     fetchUsers();
-  }, [checkAuth, fetchUsers]);
+    getCategories();
+  }, [checkAuth, fetchUsers, getCategories]);
 
   //BUG PAG NAG LOG OUT HINDI NAG REREDIRECT TO /LOGIN
 
@@ -455,12 +465,18 @@ export default function App() {
               />
             </InputRow>
             <InputRow
-              titles={["Category (required)", "Branch (required)"]}
+              titles={["Add New Category", "Category (required)", "Branch (required)"]}
               gap={15}
             >
+              <Button
+                maxWidth
+                cancel
+                text="New Category"
+                onClick={() => setShowNewCategoryModal(true)}
+              />
               <DropDown
                 maxWidth
-                options={categories}
+                options={categories.map(d => d.categoryName)}
                 onChange={(value) => setProductData("category", value)}
                 defaultValue="Category"
                 value={isUpdate ? selectedItem.category : null}
@@ -1153,6 +1169,8 @@ export default function App() {
         {showVipChangesModal && confirmChangesVipModal()}
         {yesNoConfirmDelete && confirmDeleteVip()}
         {showVipDisableManyConfirm && disableManyConfirmModal()}
+        {showNewCategoryModal && newCategoryModal()}
+        {showConfirmDeleteCategory && deleteCategoryConfirm()}
       </>
     );
   };

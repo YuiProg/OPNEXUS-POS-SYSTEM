@@ -62,6 +62,11 @@ const Strings = Object.freeze({
     VIPREMOVED: 'Vip card removed',
     VIPSDISABLED: 'Disabled list of vips',
 
+    //CATEGORY
+    CATEGORYCREATED: 'New category created',
+    DELETECATEGORY: 'Category removed',
+    GETCATEGORIES: 'Categories found',
+
     //credy
     usnm: 'username',
     pw: 'password',

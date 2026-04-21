@@ -18,7 +18,12 @@ const ModalStore = create((set) => ({
     showVipModal: false,
     showVipChangesModal: false,
     showVipDisableManyConfirm: false,
+    showNewCategoryModal: false,
+    showConfirmDeleteCategory: false,
     
+    //category
+    setShowNewCategoryModal: (val) => set({showNewCategoryModal: val}),
+    setShowConfirmDeleteCategory: (val) => set({showConfirmDeleteCategory: val}),
 
     //for vip
     setShowVipDisableManyConfirm: (val) => set({showVipDisableManyConfirm: val}),
