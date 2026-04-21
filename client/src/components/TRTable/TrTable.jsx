@@ -140,7 +140,7 @@ export class Table extends React.Component {
   };
 
   render() {
-    const { data, hasSelect, hasAction, onDelete, onEdit, isDetailed, search, onView, isLoading, onRowSelect, noDataMessage } =
+    const { data, hasSelect, hasAction, onDelete, onEdit, isDetailed, search, onView, isLoading, onRowSelect, noDataMessage, noEdit } =
       this.props;
     const { selectAll, selected, currentPage, sortKey, sortDir } = this.state;
 
@@ -264,6 +264,7 @@ export class Table extends React.Component {
                   CBE={(e) => onEdit(e)}
                   onView={(e) => onView(e)}
                   rowCB={(e) => onRowSelect(e)}
+                  noEdit={noEdit}
                 />
               ) : (
                 <TableNoData colSpan={colCount} message={noDataMessage}/>
@@ -419,7 +420,7 @@ export class TableData extends React.Component {
   };
 
   render() {
-    const { data, hasSelect, selected, toggleRow, hasAction, CBD, CBE, onView, rowCB } = this.props;
+    const { data, hasSelect, selected, toggleRow, hasAction, CBD, CBE, onView, rowCB, noEdit } = this.props;
 
     return (
       <>
@@ -453,13 +454,15 @@ export class TableData extends React.Component {
               ))}
               {hasAction ? (
                 <td className="table-td table-td--action">
-                  <button
-                    type="button"
-                    className="table-action-btn table-action-btn--edit"
-                    onClick={(e) => { e.stopPropagation(); CBE(row); }}
-                  >
-                    <SquarePen size={20} />
-                  </button>
+                  {!noEdit && (
+                    <button
+                      type="button"
+                      className="table-action-btn table-action-btn--edit"
+                      onClick={(e) => { e.stopPropagation(); CBE(row); }}
+                    >
+                      <SquarePen size={20} />
+                    </button>
+                  )}
                   <button
                     type="button"
                     className="table-action-btn table-action-btn--delete"
@@ -505,6 +508,7 @@ Table.propTypes = {
   onEdit: PropTypes.func,
   search: PropTypes.string,
   isLoading: PropTypes.bool,
+  noEdit: PropTypes.bool,
   isDetailed: PropTypes.shape({
     header: PropTypes.string,
     search: PropTypes.node,
@@ -522,6 +526,7 @@ TableData.propTypes = {
   toggleRow: PropTypes.func,
   CBD: PropTypes.func,
   CBE: PropTypes.func,
+  noEdit: PropTypes.bool,
 };
 
 TableLoading.propTypes = {

@@ -14,8 +14,9 @@ class TodaysRevenue extends React.Component {
     componentDidMount () {
         const { getTodayRevenue } = DashboardStore.getState();
         getTodayRevenue();
-
+        
         this.unsubscribe = DashboardStore.subscribe(state => {
+            console.log(state);
             this.setState({
                 todayRevenue: state.todayRevenue,
                 todayRevenueLoading: state.todayRevenueLoading

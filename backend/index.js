@@ -12,6 +12,7 @@ import timeinRoutes from './routes/timeinout.routes.js';
 import salesRoutes from './routes/sales.routes.js';
 import vipRoutes from './routes/vip.routes.js';
 import dashboardRoutes from './routes/dashboard.routes.js';
+import categoryRoutes from './routes/category.routes.js';
 import { app, server } from './lib/socket.js';
 
 dotenv.config();
@@ -51,6 +52,7 @@ app.use('/api', timeinRoutes);
 app.use('/api', salesRoutes);
 app.use('/api', vipRoutes);
 app.use('/api', dashboardRoutes);
+app.use('/api', categoryRoutes);
 
 // Test route
 app.get('/test', (req, res) => {
