@@ -37,6 +37,7 @@ import disableManyConfirmModal from "./pages/VIP/DisableManyConfirm.jsx";
 import newCategoryModal from "./pages/Inventory/NewCategoryModal.jsx";
 import CategoryStore from "./context/CategoryStore.js";
 import deleteCategoryConfirm from "./pages/Inventory/DeleteCategoryConfirm.jsx";
+import CustomerLogin from "./pages/CustomerPage/CustomerLogIn.jsx";
 
 
 const ServerError = lazy(
@@ -470,6 +471,7 @@ export default function App() {
             >
               <Button
                 maxWidth
+                customBorder="2px solid #404040"
                 cancel
                 text="New Category"
                 onClick={() => setShowNewCategoryModal(true)}
@@ -1320,6 +1322,8 @@ export default function App() {
               )
             }
           />
+
+          <Route path='/customer-vip' element={<CustomerLogin/>}/>
           {/* NO URL AND ERROR */}
           <Route path="*" element={<URLError />} />
           <Route path="/servererror" element={<ServerError />} />

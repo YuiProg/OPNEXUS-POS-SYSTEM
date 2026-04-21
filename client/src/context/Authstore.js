@@ -254,6 +254,7 @@ const AuthStore = create((set, get) => ({
             setServerError(true);
         } finally {
             isScreenLoading(false);
+            get().resetInput();
         }
     },
 
