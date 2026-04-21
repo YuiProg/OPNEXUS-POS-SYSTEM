@@ -1,24 +1,44 @@
 import React, { useState } from "react";
 import "./CustomerLogin.css";
 import "../AuthPage/Login.css";
+import VipStore from "../../context/VipStore";
 
 const CustomerLogin = () => {
     const [submitted, setSubmitted] = useState(false);
     const [idNumber, setIdNumber] = useState("");
+    const [data, setData] = useState(null);
+    const {vipLoading} = VipStore.getState();
 
-    const customerData = {
-        name: "Juan Dela Cruz",
-        idNumber: "VIP-2026-00124",
-        vipCardRegistered: "Yes",
-        vipCardExpiration: "December 31, 2026",
-        fbPageUrl: "https://www.facebook.com/",
-        qrCodeImage:
-            "https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://www.facebook.com/",
+    const formatDate = (isoString) => {
+        if (!isoString) return "N/A";
+        return new Date(isoString).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+        });
     };
 
-    const handleSubmit = (e) => {
+    const getExpirationDate = (isoString) => {
+        if (!isoString) return "N/A";
+        const date = new Date(isoString);
+        date.setFullYear(date.getFullYear() + 1);
+        return formatDate(date.toISOString());
+    };
+
+    const getFullName = (vip) => {
+        return [vip.firstName, vip.middleName, vip.lastName]
+            .filter(Boolean)
+            .join(" ");
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        setSubmitted(true);
+        const { getVipById } = VipStore.getState();
+        const result = await getVipById(idNumber);
+        if (result) {
+            setData(result);
+            setSubmitted(true);
+        }
     };
 
     return (
@@ -72,41 +92,52 @@ const CustomerLogin = () => {
 
                         <div className="vip-login-info-row">
                             <span className="vip-login-label">Name</span>
-                            <span className="vip-login-value">{customerData.name}</span>
+                            <span className="vip-login-value">{getFullName(data)}</span>
                         </div>
 
                         <div className="vip-login-info-row">
                             <span className="vip-login-label">ID Number</span>
-                            <span className="vip-login-value">{customerData.idNumber}</span>
+                            <span className="vip-login-value">{data._id}</span>
+                        </div>
+
+                        <div className="vip-login-info-row">
+                            <span className="vip-login-label">Email</span>
+                            <span className="vip-login-value">{data.email}</span>
+                        </div>
+
+                        <div className="vip-login-info-row">
+                            <span className="vip-login-label">Contact No.</span>
+                            <span className="vip-login-value">{data.contactNo}</span>
+                        </div>
+
+                        <div className="vip-login-info-row">
+                            <span className="vip-login-label">Points</span>
+                            <span className="vip-login-value">{data.points}</span>
+                        </div>
+
+                        <div className="vip-login-info-row">
+                            <span className="vip-login-label">Status</span>
+                            <span className="vip-login-value">{data.status}</span>
                         </div>
 
                         <div className="vip-login-info-row">
                             <span className="vip-login-label">VIP Card Registered</span>
-                            <span className="vip-login-value">{customerData.vipCardRegistered}</span>
+                            <span className="vip-login-value">{formatDate(data.createdAt)}</span>
                         </div>
 
                         <div className="vip-login-info-row">
                             <span className="vip-login-label">VIP Card Expiration</span>
-                            <span className="vip-login-value">{customerData.vipCardExpiration}</span>
+                            <span className="vip-login-value">{getExpirationDate(data.createdAt)}</span>
                         </div>
 
-                        <div className="vip-login-qr-section">
-                            <p className="vip-login-label vip-login-qr-label">QR Code for FB Page</p>
-                            <img
-                                src={customerData.qrCodeImage}
-                                alt="Facebook Page QR Code"
-                                className="vip-login-qr-image"
-                            />
-                        </div>
-
-                        <a
-                            href={customerData.fbPageUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="vip-login-button vip-login-fb-button"
+                        <button
+                            type="button"
+                            className="vip-login-button"
+                            onClick={() => { setSubmitted(false); setIdNumber(""); setData(null); }}
+                            disabled={vipLoading}
                         >
-                            Open FB Page
-                        </a>
+                            Back
+                        </button>
                     </div>
                 )}
             </div>

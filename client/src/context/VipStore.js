@@ -143,6 +143,7 @@ const VipStore = create((set, get) => ({
 
     getVipById: async (id) => {
         const { setSelectedItem } = ModalStore.getState();
+        set({vipLoading: true});
         try {
             const vipData = await axiosInstance.get(USEVIPCARD.replace(':id', id));
             setSelectedItem(vipData.data.data[0]);
@@ -153,6 +154,8 @@ const VipStore = create((set, get) => ({
                 toast.error(error.response.data.status);
             }
             console.log(error.message);
+        } finally {
+            set({vipLoading: false});
         }
     },
 
