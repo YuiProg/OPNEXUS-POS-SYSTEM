@@ -115,6 +115,14 @@ const VipStore = create((set, get) => ({
                 points: points || selectedItem.points,
                 status: isActive || selectedItem.isActive
             }
+
+            const hasNoChanges = Object.values({
+                email, firstName, middleName,
+                lastName, contactNo
+            }).every(val => !val || val.trim() === '');
+
+            if (hasNoChanges) return toast.error('Nothing to update!');
+
             const updatedVIP = await axiosInstance.post(UPDATEVIP.replace(':id', selectedItem._id), payload);
             set({vipChanges: updatedVIP.data});
             set({editVipModal: false});
