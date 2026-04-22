@@ -211,12 +211,6 @@
     margin-top: 0;
 }
 
-.modal-p-header {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
 .tr-addfile-container {
     width: 100%;
     display: flex;
@@ -271,4 +265,33 @@
     font-weight: 300;
     color: #686869;
     padding-top: 10px;
+}
+
+.modal-p-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.modal-close-btn {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+    flex-shrink: 0;
+}
+
+.modal-close-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.modal-close-btn:active {
+    background-color: rgba(255, 255, 255, 0.2);
 }

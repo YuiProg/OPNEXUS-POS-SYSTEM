@@ -30,6 +30,7 @@
     font-size: 14px;
     background: none;
     border: none;
+    text-decoration: none;
 }
 
 .notes-container textarea:focus {

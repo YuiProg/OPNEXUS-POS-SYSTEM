@@ -16,7 +16,13 @@ const addVipUser = () => {
     }
 
     return (
-        <Modal onClose={() => setShowVipModal(false)} header="Add vip" subHeader="Add new vip for discounts etc.">
+        <Modal 
+            onClose={() => setShowVipModal(false)} 
+            header="Add vip" 
+            subHeader="Add new vip for discounts etc."
+            hasCancel
+            onCancel={() => setShowVipModal(false)}
+        >
             <InputForm onSubmit={(e) => handleSubmit(e)}>
                 <InputRow gap={15} titles={['First Name', 'Middle Name', 'Last Name']}>
                     <InputField text placeholder="Enter First Name" onChange={value => setInputs('firstName', value)} required/>
