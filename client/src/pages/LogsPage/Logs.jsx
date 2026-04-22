@@ -10,6 +10,7 @@ import BranchStore from "../../context/BranchStore";
 import SalesStore from "../../context/SalesStore";
 import InputField from "../../components/TRInputField/InputFIeld";
 import { CalendarDays } from "lucide-react";
+import LogStore from "../../context/LogsStore";
 
 class Logs extends React.Component {
     constructor (props) {
@@ -27,6 +28,8 @@ class Logs extends React.Component {
         const { getBranch } = BranchStore.getState();
         const { getAllData } = TimeInOutStore.getState();
         const { getSales } = SalesStore.getState();
+        const { getLogs } = LogStore.getState();
+        getLogs();
         getSales();
         getAllData();
         getBranch();
@@ -68,16 +71,16 @@ class Logs extends React.Component {
         if (!date) return data;
 
         const [year, month, day] = date.split('-').map(Number);
-        console.log('Filtering by:', year, month, day);
-        console.log('First item keys:', Object.keys(data[0] || {}));
-        console.log('First item dateField value:', data[0]?.[dateField]);
 
         return data.filter((item) => {
             const raw = item[dateField];
             if (!raw) return true;
-            const [datePart] = raw.split(' ');
+
+            const datePart = raw.split(' ')[0].replace(',', '');
             const [m, d, y] = datePart.split('/').map(Number);
-            return y === year && m === month && d === day;
+            const fullYear = y < 100 ? 2000 + y : y;
+
+            return fullYear === year && m === month && d === day;
         });
     }
 
@@ -100,6 +103,7 @@ class Logs extends React.Component {
         const { branches } = BranchStore.getState();
         const { setSelectedBranch, selectedBranch } = AuthStore.getState();
         const { salesForTable } = SalesStore.getState();
+        const { logs } = LogStore.getState();
         const branchNames = branches.map(d => d.location);
 
         const uniqueUsers = Object.values(
@@ -118,6 +122,7 @@ class Logs extends React.Component {
 
         const filteredUniqueUsers = this.filterBySearch(uniqueUsers);
         const filteredSales = this.filterBySearch(this.filterByDate(salesForTable, 'dateAndTime'));
+        const filteredLogs = this.filterBySearch(this.filterByDate(logs, 'date'));
 
         return (
             <>
@@ -177,7 +182,7 @@ class Logs extends React.Component {
                         </div>
                         {this.state.selectedTab === 'system' 
                             ? (
-                                <Table data={[]} limit={9}/>
+                                <Table data={filteredLogs} limit={9}/>
                             ) 
                             : this.state.selectedTab === 'time' 
                             ? (

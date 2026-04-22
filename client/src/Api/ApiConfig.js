@@ -67,7 +67,11 @@ const ApiConfig = Object.freeze({
     //CATEGORY
     CREATECATEGORY: apiEndpoint + 'createCategory',
     GETCATEGORIES: apiEndpoint + 'getCategories',
-    DELETECATEGORY: apiEndpoint + 'deleteCategory/:id'
+    DELETECATEGORY: apiEndpoint + 'deleteCategory/:id',
+
+    //logs
+    GETLOGS: apiEndpoint + 'getLogs/:branch',
+    CREATELOGS: apiEndpoint + 'addLog'
 })
 
 export default ApiConfig;

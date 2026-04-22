@@ -199,7 +199,7 @@ const ProductStore = create((set, get) => ({
       toast.error(error.message);
       console.log(error);
       set({ errorProduct: axiosError(error) });
-      window.location.href = "/servererror"
+      //window.location.href = "/servererror"
     } finally {
       get().fetchProducts();
       set({ image: null });
