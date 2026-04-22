@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import QRCode from 'qrcode';
 
 /**
  * @model 
