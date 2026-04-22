@@ -1,7 +1,8 @@
 import React from "react";
 import './Modal.css';
-import { BadgeCheck, Check } from "lucide-react";
+import { BadgeCheck, Check, X } from "lucide-react";
 import Button from "../components/TRButton/Button";
+import ModalStore from "../context/ModalStore";
 
 export class Modal extends React.Component {
     constructor(props) {
@@ -9,12 +10,16 @@ export class Modal extends React.Component {
         this.state = {
             isClosing: false
         };
+        
     }
-
+    
     handleClose = () => {
         const { onClose } = this.props;
+        const { setSelectedItems } = ModalStore.getState();
 
         this.setState({ isClosing: true });
+
+        setSelectedItems(null);
 
         setTimeout(() => {
             onClose();
@@ -50,8 +55,17 @@ export class Modal extends React.Component {
                 >
                     {header && (
                         <div className="modal-p-header">
-                            <h1 className="modal-p-h">{header}</h1>
-                            <p className="modal-p-sh">{subHeader}</p>
+                            <div>
+                                <h1 className="modal-p-h">{header}</h1>
+                                <p className="modal-p-sh">{subHeader}</p>
+                            </div>
+                            <button 
+                                className="modal-close-btn"
+                                onClick={this.handleClose}
+                                aria-label="Close modal"
+                            >
+                                <X size={24} />
+                            </button>
                         </div>
                     )}
                     {this.passPropsToChild()}
@@ -82,7 +96,7 @@ export class ModalConfim extends React.Component {
                         <h1 className="modal-confirm-header">{message}</h1>
                         <Button 
                             success 
-                            customWidth="150px" 
+                            customWidth={150}
                             text="OKAY" 
                             onClick={() => onClose()}
                         />

@@ -67,6 +67,21 @@ const Strings = Object.freeze({
     DELETECATEGORY: 'Category removed',
     GETCATEGORIES: 'Categories found',
 
+    //logs
+    GETLOGS: 'Logs fetched',
+    LOGCREATED: 'Log created',
+
+    //ACTION METHODS
+    CREATEPRODUCT: 'PRODUCT CREATION',
+    DELETEPRODUCT: 'PRODUCT DELETION',
+    EDITPRODUCT: 'EDIT PRODUCT',
+    VIPCREATION: 'VIP REGISTRATION',
+    VIPDELETION: 'VIP REMOVAL',
+    VIPDEACTIVATE: 'VIP DEACTIVATION',
+    VIPACTIVATE: 'VIPACTIVATION',
+    STAFFCREATION: 'STAFF ADDITION',
+    STAFFTERMINATION: 'STAFF TERMINATION',
+    
     //credy
     usnm: 'username',
     pw: 'password',

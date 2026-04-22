@@ -27,10 +27,12 @@ class DropdownPortal extends React.Component {
   }
 
   handleClickOutside = (event) => {
-    if (this.buttonRef.current && !this.buttonRef.current.contains(event.target)) {
-      this.setState({ isOpen: false });
-    }
-  };
+  const isPortalClick = document.querySelector('.tr-dropdown-list-portal')?.contains(event.target);
+  
+  if (this.buttonRef.current && !this.buttonRef.current.contains(event.target) && !isPortalClick) {
+    this.setState({ isOpen: false });
+  }
+};
 
   componentDidUpdate(prevProps) {
     if (prevProps.value !== this.props.value && this.props.value !== undefined) {
@@ -62,19 +64,16 @@ class DropdownPortal extends React.Component {
     let top = rect.bottom + gap;
     let openDirection = "down";
 
-    // Check if dropdown would go off bottom of screen
     if (top + listHeight > viewportHeight) {
       top = rect.top - listHeight - gap;
       openDirection = "up";
     }
 
-    // Ensure left position doesn't overflow right side
     let left = rect.left;
     if (left + rect.width > viewportWidth) {
       left = viewportWidth - rect.width - 16; // 16px margin
     }
 
-    // Ensure left doesn't go negative
     if (left < 0) {
       left = 16;
     }

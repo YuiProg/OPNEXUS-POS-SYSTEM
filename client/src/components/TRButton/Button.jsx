@@ -64,7 +64,7 @@ Button.propTypes = {
     customWidth: PropTypes.number,
     submit: PropTypes.bool,
     text: PropTypes.string,
-    onClick: PropTypes.bool,
+    onClick: PropTypes.func,
     disabled: PropTypes.bool,
     cancel: PropTypes.bool
 }

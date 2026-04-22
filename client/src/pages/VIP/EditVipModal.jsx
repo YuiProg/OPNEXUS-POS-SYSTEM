@@ -24,7 +24,12 @@ export const editMainVipModal = () => {
     }
 
     return(
-        <Modal onClose={() => onClose()} header={`Edit ${selectedItem.firstName} VIP details`}>
+        <Modal 
+            onClose={() => onClose()} 
+            header={`Edit ${selectedItem.firstName} VIP details`}
+            hasCancel
+            onCancel={() => onClose()}
+        >
             <InputForm onSubmit={(e) => updateVIPUser(e)}>
                 <InputRow gap={16} titles={['First Name', 'Middle Name', 'Last Name']}>
                     <InputField text placeholder="First Name" value={selectedItem.firstName} onChange={(e) => setInputs('firstName', e)} required/>

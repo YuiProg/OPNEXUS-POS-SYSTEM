@@ -3,6 +3,8 @@ import ApiResponseModel from "../models/ApiResponseModel.js";
 import Product from "../models/Products.js"
 import Strings from "../strings/strings-codes.js";
 import { io } from "../lib/socket.js";
+import User from "../models/UserModel.js";
+import SystemLogs from "../models/SystemLogs.js";
 
 const {
     ERROR,
@@ -10,7 +12,10 @@ const {
     NEW_PRODUCT,
     SUCCESS,
     SUCCESS_MESS,
-    GET_PRODUCT
+    GET_PRODUCT,
+    CREATEPRODUCT,
+    DELETEPRODUCT,
+    EDITPRODUCT
 } = Strings;
 
 export const newProduct = async (req, res) => {
@@ -23,6 +28,17 @@ export const newProduct = async (req, res) => {
             ...newProduct,
             userId: user.userId
         }
+
+        const userData = await User.getUser(user.userId);
+
+        const logPayload= {
+            user: userData.username,
+            action: CREATEPRODUCT,
+            branchLocation: userData.branchLocation,
+            log: `${userData.username} created a new product called ${data.productName}`
+        }
+        //console.log(logPayload);
+        await SystemLogs.addLog(logPayload);
 
         io.emit("newProduct", payload);
         ApiResponseModel(res, CREATED, NEW_PRODUCT, newProduct);
@@ -53,6 +69,7 @@ export const fetchProducts = async (req, res) => {
 
 export const deleteProductSingle = async (req, res) => {
     const { id } = req.body;
+    const {userId} = req.user;
     try {
         const fetchProduct = await Product.fetchSingle(id);
         const product = fetchProduct[0]; 
@@ -62,6 +79,14 @@ export const deleteProductSingle = async (req, res) => {
         }
 
         const result = await Product.deleteSingle(id);
+        const user = await User.getUser(userId);
+        const logPayload = {
+            user: user.username,
+            action: DELETEPRODUCT,
+            branchLocation: user.branchLocation,
+            log: `${user.username} deleted a product called ${product.productName}`
+        }
+        await SystemLogs.addLog(logPayload);
         ApiResponseModel(res, SUCCESS, SUCCESS_MESS, result);
     } catch (error) {
         ApiResponseModel(res, ERROR, error.message);
@@ -71,7 +96,31 @@ export const deleteProductSingle = async (req, res) => {
 export const deleteMultipleProducts = async (req, res) => {
     try {
         const list = req.body;
+        const { userId } = req.user;
+        const user = await User.getUser(userId);
+
+        const products = await Promise.all(list.map(id => Product.fetchSingle(id)));
+
+        for (const fetchedProduct of products) {
+            const product = fetchedProduct[0];
+            if (product && product.productImageId != null) {
+                await cloudinary.uploader.destroy(product.productImageId);
+            }
+        }
+
         const result = await Product.deleteMultiple(list);
+
+        for (const fetchedProduct of products) {
+            const product = fetchedProduct[0];
+            const logPayload = {
+                user: user.username,
+                action: DELETEPRODUCT,
+                branchLocation: user.branchLocation,
+                log: `${user.username} deleted a product called ${product.productName}`
+            };
+            await SystemLogs.addLog(logPayload);
+        }
+
         ApiResponseModel(res, SUCCESS, SUCCESS_MESS, result);
     } catch (error) {
         ApiResponseModel(res, ERROR, error.message);
@@ -90,14 +139,22 @@ export const fetchOneProduct = async (req, res) => {
 
 export const updateProduct = async (req, res) => {
     const { id } = req.params;
+    const {userId} = req.user;
     const data = req.body;
     try {
         const oldModel = await Product.fetchSingle(id);
-
+        const product = oldModel[0];
         if (!oldModel) {
             return ApiResponseModel(res, ERROR, "Product not found");
         }
-        
+        const user = await User.getUser(userId);
+        const logPayload = {
+            user: user.username,
+            action: EDITPRODUCT,
+            branchLocation: user.branchLocation,
+            log: `${user.username} modified a product called ${product.productName}`
+        }   
+        await SystemLogs.addLog(logPayload);
         const updatedProduct = await Product.updateProduct(id, data);
         ApiResponseModel(res, SUCCESS, SUCCESS_MESS, updatedProduct, oldModel);
     } catch (error) {
