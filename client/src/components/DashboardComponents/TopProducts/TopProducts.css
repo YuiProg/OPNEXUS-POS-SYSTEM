@@ -1,0 +1,83 @@
+.tp-container {
+  border-radius: 16px;
+  border: 1px solid #404040;
+  box-shadow: 0px 10px 15px rgba(0,0,0,0.3);
+  padding: 15px;
+  transition: transform 0.1s ease-in-out;
+}
+
+.tp-container:hover {
+  transform: scale(1.02);
+}
+
+.tp-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #fff;
+}
+
+.tp-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #fff;
+  table-layout: fixed;  /* Add this */
+}
+.tp-table th, .tp-table td {
+  padding: 18px 0;
+  border-bottom: 1px solid #ffffff81;
+  text-align: left;
+}
+
+/* # */
+.tp-table th:nth-child(1),
+.tp-table td:nth-child(1) { 
+  width: 10%;
+}
+
+/* Name */
+.tp-table th:nth-child(2),
+.tp-table td:nth-child(2) { 
+  width: 35%; 
+}
+
+/* Popularity */
+.tp-table th:nth-child(3),
+.tp-table td:nth-child(3) { 
+  width: 35%; 
+}  
+
+/* Sales */
+.tp-table th:nth-child(4),
+.tp-table td:nth-child(4) { 
+  width: 15%; 
+}  
+
+.tp-table-wrapper {
+  max-height: 25vh;
+  overflow-y: auto;
+}
+
+.tp-table th {
+  font-size: 15px;
+  font-weight: 100;
+}
+
+.tp-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+}
+
+.tp-loading .spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #2e2e2e;
+  border-top-color: #c0392b;
+  border-radius: 50%;
+  animation: spinner-rotate 0.8s linear infinite;
+}
+
+@keyframes spinner-rotate {
+  to { transform: rotate(360deg); }
+}

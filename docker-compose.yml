@@ -1,0 +1,14 @@
+services:
+  backend:
+    build: ./backend
+    restart: always
+    env_file:
+      - ./backend/.env
+
+  client:
+    build: ./client
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend

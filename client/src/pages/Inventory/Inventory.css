@@ -1,0 +1,53 @@
+body {
+  background: #111111;
+}
+
+h1 {
+  margin: 0;
+}
+
+.inventory-container {
+  width: auto;
+  height: 100%;
+  background: #111111;
+  padding: 16px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.inventory-container .table-wrapper{
+  width: 100%;
+}
+
+.iv-header {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.iv-header .iv-sentence {
+  padding-top: 2%;
+  bottom: 0;
+  font-size: 12px;
+  font-weight: 200;
+}
+
+.iv-top-contents .iv-bigtitle, .iv-branch-dropdown {
+  font-weight: 600;
+  color: #fff;
+}
+
+.iv-top-contents {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.iv-branch-text {
+  font-size: 15px;
+  font-weight: 300;
+  margin: 4px;
+}

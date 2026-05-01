@@ -1,0 +1,323 @@
+* {
+    font-family: "Outfit", sans-serif;
+}
+html,
+body
+{
+  padding: 0;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+:root {
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+} 
+
+img, video, canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #111111;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #ffffff89;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* styling of other components getting in other webs */
+@media screen and (max-width: 1170px){
+  .css-1b1chr4-MuiChartsSurface-root {
+    width: 100% !important;
+    height: 100% !important; 
+  }
+}
+
+/* trial of all "Search = "TRIAL CSS" */
+* {
+  box-sizing: border-box;
+}
+
+.children,
+.dashboard-container,
+.dashboard-container__graph-container,
+.todays-sales__top-products,
+.todays-sales-content,
+.notes-container,
+.bc-container,
+.dc-container,
+.tp-container {
+  min-width: 0;
+}
+
+.sidebar-container {
+  min-height: 100vh;
+  height: auto;
+  display: flex;
+  align-items: stretch;
+}
+
+.sidebar-aside {
+  width: 210px;
+  flex-shrink: 0;
+}
+
+.children {
+  flex: 1;
+  min-width: 0;
+}
+
+.dashboard-container {
+  background: #111111;
+  color: #fff;
+  width: 100%;
+  min-height: 100vh;
+  height: auto;
+  padding: 16px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.top-three-contents {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.dashboard-container__graph-container {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr) minmax(280px, 1fr);
+  gap: 20px;
+  width: 100%;
+}
+
+.todays-sales__top-products {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 20px;
+  width: 100%;
+}
+
+.todays-sales-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.total-sales-container,
+.products-sold-container,
+.stocks-container {
+  flex: 1 1 220px;
+  min-width: 220px;
+  width: auto;
+}
+
+.notes-container {
+  width: 100%;
+  min-width: 0;
+}
+
+@media (max-width: 1200px) {
+  .dashboard-container__graph-container,
+  .todays-sales__top-products {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 900px) {
+  .top-three-contents {
+    grid-template-columns: 1fr;
+  }
+
+  .db-top-contents {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .db-branch-dropdown,
+  .tr-dropdown-wrapper {
+    width: 100%;
+  }
+
+  .tr-dropdown {
+    width: 100% !important;
+  }
+}
+@media (max-width: 1200px) {
+  .dashboard-container__graph-container {
+    grid-template-columns: 1fr;
+  }
+
+  .todays-sales__top-products {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 900px) {
+  .top-three-contents {
+    grid-template-columns: 1fr;
+  }
+
+  .db-top-contents {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .tr-dropdown {
+    width: 100% !important;
+  }
+
+  .db-branch-dropdown {
+    width: 100%;
+  }
+
+  .tr-dropdown-wrapper {
+    width: 100%;
+  }
+}
+.notes-container {
+  width: 100%;
+  min-width: 0;
+}
+.todays-sales-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.total-sales-container,
+.products-sold-container,
+.stocks-container {
+  flex: 1 1 220px;
+  min-width: 220px;
+  width: auto;
+}
+.top-three-contents {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.dashboard-container__graph-container {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr) minmax(280px, 1fr);
+  gap: 20px;
+  width: 100%;
+}
+
+.todays-sales__top-products {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 20px;
+  width: 100%;
+}
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+.sidebar-container {
+  min-height: 100vh;
+  height: auto;
+  display: flex;
+  align-items: stretch;
+}
+
+.sidebar-aside {
+  width: 210px; /* or your preferred fixed sidebar width */
+  flex-shrink: 0;
+}
+
+.children {
+  flex: 1;
+  min-width: 0;
+}
+
+.dashboard-container {
+  width: 100%;
+  min-height: 100vh;
+  height: auto;
+  padding: 16px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* sticky side bar */
+.sidebar-aside {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+}
+
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.table {
+  width: max-content;
+}
+
+.table-th,
+.table-td {
+  white-space: nowrap;
+  padding: 16px 20px;
+}
+.table-container::-webkit-scrollbar {
+  height: 1px; /* horizontal scrollbar thickness */
+}
+
+/* app */
+.css-12352r1-MuiDateCalendar-root {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.css-1deag3q-MuiDayCalendar-slideTransition {
+  min-height: 100% !important;
+}
+
+.table-container {
+  cursor: grab;
+  scrollbar-width: thin;
+}
+
+.modal-container .table-wrapper {
+  width: 100%;
+}
+
+/* added global styles */
+.iv-branch-dropdown,
+.sm-branch-dropdown,
+.db-branch-dropdown,
+.logs-branch-dropdown {
+  width: 30%;
+}

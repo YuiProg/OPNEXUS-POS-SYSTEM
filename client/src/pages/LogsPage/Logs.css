@@ -1,0 +1,186 @@
+body {
+  background: #111111;
+}
+
+h1 {
+  margin: 0;
+}
+
+.logs-container {
+  width: auto;
+  height: 100%;
+  background: #111111;
+  padding: 16px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.logs-header {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.logs-header .logs-sentence {
+  padding-top: 2%;
+  bottom: 0;
+  font-size: 12px;
+  font-weight: 200;
+}
+
+.logs-top-contents .logs-bigtitle, .logs-branch-dropdown {
+  font-weight: 600;
+  color: #fff;
+}
+
+.logs-top-contents {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logs-branch-text {
+  font-size: 15px;
+  font-weight: 300;
+  margin: 4px;
+}
+
+.logs-main-contents {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.logs-main-contents .input-wrapper {
+  width: 443px;
+}
+
+.logos-container__buttons-item {
+    padding: 20px 30px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    margin-bottom: -3px;
+    background: #242426;
+    color: #FFF;
+    z-index: 0;
+    position: relative;
+    border: 1px solid #ffffff00;
+    border-bottom: 0;
+    opacity: 0.3;
+    cursor: pointer;
+}
+
+.logos-container__buttons-item.active{
+    padding: 20px 30px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    margin-bottom: -3px;
+    background: #242426;
+    color: #FFF;
+    z-index: 0;
+    position: relative;
+    border: 1px solid #383838;
+    border-bottom: 0;
+    opacity: 1 !important;
+}
+
+.table-thead-row,
+.no-data-wrapper {
+  position: relative;
+  z-index: 1;
+}
+
+.no-data-wrapper {
+  background-color: #111111;
+}
+
+.logs-filters {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.logs-date-filter-toggle {
+    padding: 10px 16px;
+    background: #242426;
+    border: 1px solid #383838;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 13px;
+    cursor: pointer;
+    white-space: nowrap;
+    height: 42px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.logs-date-filter-toggle:hover {
+    background: #2e2e30;
+}
+
+.logs-date-filter-toggle.active {
+    border-color: #fff;
+}
+
+.logs-date-filter-dropdown {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    background: #242426;
+    border: 1px solid #383838;
+    border-radius: 8px;
+    padding: 8px 12px;
+    animation: fadeIn 0.15s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.logs-date-filter-dropdown input[type="date"] {
+    background: #111111;
+    border: 1px solid #383838;
+    border-radius: 6px;
+    color: #fff;
+    padding: 6px 10px;
+    font-size: 13px;
+    cursor: pointer;
+    outline: none;
+    height: 34px;
+    box-sizing: border-box;
+    color-scheme: dark;
+}
+
+.logs-date-filter-dropdown input[type="date"]:focus {
+    border-color: #ffffff80;
+}
+
+.logs-date-filter-dropdown span {
+    color: #ffffff60;
+    font-size: 13px;
+}
+
+.logs-date-filter-clear {
+    background: transparent;
+    border: 1px solid #383838;
+    border-radius: 6px;
+    color: #ffffff80;
+    padding: 6px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    height: 34px;
+    box-sizing: border-box;
+}
+
+.logs-date-filter-clear:hover {
+    border-color: #fff;
+    color: #fff;
+}

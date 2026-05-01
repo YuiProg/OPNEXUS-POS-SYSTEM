@@ -1,0 +1,79 @@
+body {
+  background: #111111;
+}
+
+h1 {
+  margin: 0;
+}
+
+.dashboard-container {
+  background: #111111;
+  color: #fff;
+  width: auto;
+  height: -webkit-fill-available;
+  padding: 16px;
+  /* 
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto 1fr auto; 
+  */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.db-header {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.db-header .db-sentence {
+  padding-top: 2%;
+  bottom: 0;
+  font-size: 12px;
+  font-weight: 200;
+}
+
+.db-top-contents .db-bigtitle, .db-branch-dropdown {
+  font-weight: 600;
+  color: #fff;
+}
+
+.db-top-contents {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.db-branch-text {
+  font-size: 15px;
+  font-weight: 300;
+  margin: 4px;
+}
+
+.top-three-contents {
+  display: grid;
+  grid-template-columns: 0.48fr 0.5fr 1fr;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+}
+
+.dashboard-container__graph-container {
+  display: grid;
+  grid-template-columns: minmax(0, 2.07fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: 20px;
+  height: auto;
+  width: 100%;
+}
+
+.todays-sales__top-products {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  height: auto;
+  width: 100%;
+}

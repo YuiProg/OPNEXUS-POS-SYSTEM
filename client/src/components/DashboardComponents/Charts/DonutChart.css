@@ -1,0 +1,91 @@
+.dc-container {
+  height: auto;
+  width: auto;
+  background: #111111;
+  border: 1px solid #404040;
+  border-radius: 10px;
+  box-shadow: 0px 10px 15px rgba(0,0,0,0.3);
+  padding: 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.1s ease-in-out;
+}
+
+.dc-container:hover {
+  transform: scale(1.02);
+}
+
+.dc-text {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.dc-title {
+  font-size: 13px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.dc-branch {
+  font-size: 11px;
+  font-weight: 100;
+  margin: 3px;
+}
+
+.donut-chart {
+  justify-content: center;
+  align-items: center;
+}
+
+.dc-legend {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.dc-legend-fund {
+  font-size: 12px;
+  font-weight: 300;
+  margin: 0 0 -2px 0;  /* Negative bottom margin pulls label closer */
+}
+
+.dc-legend-label {
+  font-size: 10px;
+  font-weight: 100;
+  margin: 0;
+}
+
+.legend-item {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+
+.legend-circle {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-top: 8px;
+}
+.dc-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+}
+
+.dc-spinner {
+  display: block;
+  width: 32px;
+  height: 32px;
+  border: 3px solid #2e2e2e;
+  border-top-color: #c0392b;
+  border-radius: 50%;
+  animation: spinner-rotate 0.8s linear infinite;
+}
+
+@keyframes spinner-rotate {
+  to { transform: rotate(360deg); }
+}

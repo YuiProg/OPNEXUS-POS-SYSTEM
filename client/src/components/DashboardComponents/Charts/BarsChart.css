@@ -1,0 +1,40 @@
+.bc-container {
+  width: auto;
+  height: auto;
+  color: #fff;
+  border: 1px solid #404040;
+  box-shadow: 0px 10px 15px rgba(0,0,0,0.3);
+  border-radius: 10px;
+  position: relative;
+  transition: transform 0.1s ease-in-out;
+}
+
+.bc-container:hover {
+  transform: scale(1.02);
+}
+
+.bc-title {
+  font-size: 14px;
+  font-weight: 300;
+  color: #fff;
+  padding-left: 2%;
+}
+.bc-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+}
+
+.bc-loading .spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #2e2e2e;
+  border-top-color: #c0392b;
+  border-radius: 50%;
+  animation: spinner-rotate 0.8s linear infinite;
+}
+
+@keyframes spinner-rotate {
+  to { transform: rotate(360deg); }
+}

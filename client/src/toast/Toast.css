@@ -1,0 +1,68 @@
+.toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 9999;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    min-width: 280px;
+    max-width: 400px;
+    padding: 14px 18px;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #fff;
+
+    background-color: #323232;
+    animation: fade-in-out 3s ease-in-out forwards;
+}
+
+/* SUCCESS = GREEN */
+.toast.success {
+    background-color: #22C55E;
+    border-left: 4px solid #2a8e55;
+}
+
+/* ERROR = RED */
+.toast.error {
+    background-color: #EF4444;
+    border-left: 4px solid #E31E24;
+}
+
+.toast p {
+    margin: 0;
+    line-height: 1.4;
+    flex: 1;
+}
+
+.toast button {
+    flex-shrink: 0;
+    padding: 5px 14px;
+    border: 1.5px solid rgba(255, 255, 255, 0.5);
+    border-radius: 6px;
+    background: transparent;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.toast button:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.8);
+}
+
+@keyframes fade-in-out {
+  0% { opacity: 0; transform: translateY(20px); }
+  15% { opacity: 1; transform: translateY(0); }
+  85% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(20px); }
+}

@@ -1,0 +1,33 @@
+.st-container {
+  width: auto;
+  height: 100%;
+  background: #111111;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.st-header {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.st-header .st-sentence {
+  padding-top: 2%;
+  bottom: 0;
+  font-size: 12px;
+  font-weight: 200;
+}
+
+.st-top-contents .st-bigtitle {
+  font-weight: 600;
+  color: #fff;
+}
+
+.st-top-contents {
+  height: 71px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
