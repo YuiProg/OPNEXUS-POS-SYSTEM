@@ -1,5 +1,5 @@
 import express from 'express';
-import ApiConfig from '../../client/src/Api/ApiConfig.js';
+import ApiConfig from '../Api/ApiConfig.js';
 import protectRoutes from '../middleware/protectRoutes.js';
 import { getSettings, setSettingsToDefault, updateSettings } from '../controller/settings.controller.js';
 
