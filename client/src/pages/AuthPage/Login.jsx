@@ -66,7 +66,7 @@ class Login extends React.Component {
         const loginUser = AuthStore.getState().loginUser;
         loginUser(email, password);
     };
-
+    /* global __APP_VERSION__ */
     render() {
         const { loading } = this.state;
         return (
@@ -134,7 +134,7 @@ class Login extends React.Component {
                         <p className="login-container__credentials-footer">
                             All Rights Reserved.
                         </p>
-                        <p className="login-container__credentials-footer">v1.2.6</p>
+                        <p className="login-container__credentials-footer">v{__APP_VERSION__}</p>
                     </div>
                 </div>
             </>

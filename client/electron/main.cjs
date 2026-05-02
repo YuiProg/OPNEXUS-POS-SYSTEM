@@ -1,4 +1,4 @@
-const { app, BrowserWindow, shell } = require('electron')
+const { app, BrowserWindow, shell, session } = require('electron')
 const path = require('path')
 
 const isDev = process.env.NODE_ENV === 'development'
@@ -16,7 +16,6 @@ function createWindow() {
     },
   })
 
-  // Remove default menu bar
   win.setMenuBarVisibility(false)
 
   if (isDev) {
@@ -26,14 +25,34 @@ function createWindow() {
     win.loadFile(path.join(__dirname, '../dist/index.html'))
   }
 
-  // Open external links in browser, not Electron
   win.webContents.setWindowOpenHandler(({ url }) => {
     shell.openExternal(url)
     return { action: 'deny' }
   })
 }
 
-app.whenReady().then(createWindow)
+app.whenReady().then(() => {
+  // Rewrite Set-Cookie headers from Render so Electron accepts them cross-origin
+  session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+    const headers = { ...details.responseHeaders }
+
+    if (headers['set-cookie']) {
+      headers['set-cookie'] = headers['set-cookie'].map(cookie => {
+        // Remove existing SameSite and replace with None
+        cookie = cookie.replace(/;\s*SameSite=(Strict|Lax|None)/gi, '')
+        // Remove Secure flag conflicts
+        cookie = cookie.replace(/;\s*Secure/gi, '')
+        // Add SameSite=None; Secure back
+        cookie += '; SameSite=None; Secure'
+        return cookie
+      })
+    }
+
+    callback({ responseHeaders: headers })
+  })
+
+  createWindow()
+})
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit()
