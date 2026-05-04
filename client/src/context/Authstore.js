@@ -51,7 +51,8 @@ const AuthStore = create((set, get) => ({
         role: '',
         address: '',
         branch: '',
-        salary: null
+        salary: null,
+        sendEmail: false
     },
     users: [],
     onlineUsers: [],
@@ -231,7 +232,8 @@ const AuthStore = create((set, get) => ({
                 middleName: data.middleName,
                 lastName: data.lastName,
                 gender: data.gender,
-                address: data.address
+                address: data.address,
+                sendEmail: data.sendEmail
             };
 
             const payloadClerk = {
@@ -247,7 +249,8 @@ const AuthStore = create((set, get) => ({
                 middleName: data.middleName,
                 lastName: data.lastName,
                 gender: data.gender,
-                address: data.address
+                address: data.address,
+                sendEmail: data.sendEmail
             };
 
             //get muna yung branch check kung may laman na

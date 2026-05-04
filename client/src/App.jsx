@@ -40,6 +40,7 @@ import deleteCategoryConfirm from "./pages/Inventory/DeleteCategoryConfirm.jsx";
 import CustomerLogin from "./pages/CustomerPage/CustomerLogIn.jsx";
 import viewChangePasswordModal from "./pages/AuthPage/ChangePasswordModal.jsx";
 import SettingsPage from "./pages/Settings/Settings.jsx";
+import Toggle from "./components/TRToggle/Toggle.jsx";
 
 
 const ServerError = lazy(
@@ -364,6 +365,9 @@ export default function App() {
               />
             </InputRow>
           )}
+          <InputRow titles={["Send Email?"]}>
+            <Toggle currentStatus="INACTIVE" onToggle={(e) => setInput("sendEmail", e === 'INACTIVE' ? false : true)}/>
+          </InputRow>
         </InputForm>
       </Modal>
     );

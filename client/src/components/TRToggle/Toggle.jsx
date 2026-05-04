@@ -23,13 +23,14 @@ class Toggle extends React.Component {
 
   render() {
     const isActive = this.state.status === "ACTIVE";
+    const {isChecked} = this.props;
     return (
       <div className="toggle-container">
         <div className="toggle-btn">
           <label className="toggle-btn-control">
             <input 
               type="checkbox"
-              checked={isActive}
+              checked={isActive || isChecked}
               onChange={this.handleToggle}
             />
             <span className="toggle-switch"></span>
