@@ -1,11 +1,10 @@
 .dashboard-contents {
-  width: 100%;
+  width: auto;
   height: -webkit-fill-available;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   gap: 20px;
-  padding: 10px;
 }
 
 .top-three-contents {

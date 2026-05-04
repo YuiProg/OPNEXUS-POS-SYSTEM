@@ -2,8 +2,10 @@ import React from "react";
 import './VipManagement.css';
 import { Table } from "../../components/TRTable/TrTable";
 import InputField from "../../components/TRInputField/InputFIeld";
+import { InputRow, TRInputFormPanel, InputForm } from "../../components/TRInputForm/TRInputForm";
 import ModalStore from "../../context/ModalStore";
 import VipStore from "../../context/VipStore";
+import { PanelPage, RightPanel } from "../../components/TRPanelPage/TRPanelPage";
 
 class VipManagement extends React.Component {
     constructor (props) {
@@ -48,6 +50,40 @@ class VipManagement extends React.Component {
         setShowVipDisableManyConfirm(true);
     }
 
+    rightSideFilters = () => {
+
+    return (
+          <RightPanel>
+            <InputForm>
+              <InputRow titles={['Search Item Id']}>
+                <InputField
+                  placeholder="Search Item Id"
+                  isSearch
+                />
+              </InputRow>
+              <InputRow titles={['Search Name']}>
+                <InputField
+                  placeholder="Search Name"
+                  isSearch
+                />
+              </InputRow>
+              <InputRow titles={['Quantity']}>
+                <InputField
+                  number
+                  placeholder="Enter quantity"
+                />
+              </InputRow>
+              <InputRow titles={['Price']}>
+                <InputField
+                  number
+                  placeholder="Enter price"
+                />
+              </InputRow>
+            </InputForm>
+          </RightPanel>
+    );
+  }
+
     render () {
         // const sampledata = [
         //     {vipId: '23', name: 'terk', email: 'email@gmail.com ', dateAdded: '23/23/23', status: 'ACTIVE', points: 234}
@@ -73,13 +109,15 @@ class VipManagement extends React.Component {
         };
 
         return (
-            <div className="vm-container">
-                <div className="vm-top-contents">
-                    <div className="vm-header">
-                        <h1 className="vm-bigtitle">VIP Management</h1>
-                        <p className="vm-sentence">Manage VIP customers here.</p>
-                    </div>
-                </div>
+            <PanelPage
+                user={this.props.user} 
+                titlePage="VIP Management"
+                subTitle="Manage your VIP customers and their rewards."
+                hasTableFilters={true}
+                onFilterToggle={(isOpen) => this.setState({ filtersOpen: isOpen })}
+                filtersOpen={this.state.filtersOpen}
+                rightPanel={this.rightSideFilters()}
+            >
                 <Table 
                     data={this.state.vips} 
                     hasAction={user.role.toLowerCase() === 'admin' ? true : false} 
@@ -89,7 +127,7 @@ class VipManagement extends React.Component {
                     onEdit={(e) => this.viewModal(e)}
                     onDelete={(e) => this.confirmDelete(e)}
                 />
-            </div>
+            </PanelPage>
         );
     }
 }
