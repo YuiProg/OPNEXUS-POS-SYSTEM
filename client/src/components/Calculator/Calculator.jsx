@@ -33,7 +33,7 @@ const Calculator = forwardRef(({ onChange }, ref) => {
     setDisplay('0')
     onChange?.(0)
   }
-
+  console.log('Calculator rendered')
   return (
     <div className='calculator-container'>
       <div className='ellipse'/>
