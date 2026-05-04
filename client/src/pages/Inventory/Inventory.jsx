@@ -92,6 +92,7 @@ class Inventory extends React.Component {
   rightSideFilters = () => {
     const { branches } = BranchStore.getState();
     const branchNames = branches.map(d => d.location);
+    console.log(branchNames);
     return (
           <RightPanel>
             <InputForm>
