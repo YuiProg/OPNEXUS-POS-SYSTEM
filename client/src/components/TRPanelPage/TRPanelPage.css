@@ -32,7 +32,6 @@
   flex: 1;
   min-width: 0; 
   overflow-y: auto;
-  padding-right: 20px; /* Space between table content and the border line */
 }
 
 /* The Filter Sidebar - Clean minimalist style */

@@ -72,9 +72,30 @@ class StaffManagement extends React.Component {
     }
 
     rightSideTableFilter = () => {
+        const { branches } = BranchStore.getState();
+        const branchNames = branches.map(d => d.location);
         return (
             <RightPanel>
-
+                <InputForm>
+                    <InputRow titles={['Staff ID']}>
+                        <InputField
+                        placeholder="Search Staff ID"
+                        isSearch
+                        />
+                    </InputRow>
+                    <InputRow titles={['Name']}>
+                        <InputField
+                        placeholder="Search Name"
+                        isSearch
+                        />
+                    </InputRow>
+                    <InputRow titles={['Filter by branch']}>
+                        <DropDown
+                        placeholder="Select Branch"
+                        options={branchNames}
+                        />
+                    </InputRow>
+                </InputForm>
             </RightPanel>
         );
     }
@@ -109,14 +130,11 @@ class StaffManagement extends React.Component {
             <PanelPage 
                 user={this.props.user} 
                 titlePage="Staff Management" 
-                subTitle="Mange clerks." 
+                subTitle="Manage clerks." 
                 hasBranch={true} 
                 branchNames={branchNames}
                 dropDownFunc={(e) => setSelectedBranch(e)}
                 selectedBranch={selectedBranch}
-                hasTableFilters={true}
-                onFilterToggle={(isOpen) => this.setState({filtersOpen: isOpen})}
-                filtersOpen={this.state.filtersOpen}
                 rightPanel={this.rightSideTableFilter()}
             >
                 <div className="sm-main-contents">
@@ -130,8 +148,11 @@ class StaffManagement extends React.Component {
                             onEdit={(item) => this.showEditModal(item)}
                             search={this.state.search}
                             isLoading={fetchLoading}
+                            hasTableFilters={true}
+                            onFilterToggle={(isOpen) => this.setState({filtersOpen: isOpen})}
                         />
                     </div>
+                    {this.state.filtersOpen && this.rightSideTableFilter()}
                     <div className="sm-active-staffs">
                         <ActiveStaffs staffData={onlineUsers}/>
                     </div>
