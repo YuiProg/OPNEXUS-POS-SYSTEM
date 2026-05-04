@@ -56,7 +56,7 @@ class DropdownPortal extends React.Component {
     if (!this.buttonRef.current) return;
 
     const rect = this.buttonRef.current.getBoundingClientRect();
-    const listHeight = 200; // Approximate height, adjust as needed
+    const listHeight = 200; 
     const gap = 0;
     const viewportHeight = window.innerHeight;
     const viewportWidth = window.innerWidth;
@@ -71,7 +71,7 @@ class DropdownPortal extends React.Component {
 
     let left = rect.left;
     if (left + rect.width > viewportWidth) {
-      left = viewportWidth - rect.width - 16; // 16px margin
+      left = viewportWidth - rect.width - 16;
     }
 
     if (left < 0) {
