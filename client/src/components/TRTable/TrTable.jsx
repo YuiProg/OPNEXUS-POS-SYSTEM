@@ -8,23 +8,11 @@ import {
   ChevronUp,
   ChevronDown,
   Archive,
+  SlidersHorizontal,
 } from "lucide-react";
 import PropTypes from "prop-types";
 import Button from "../TRButton/Button";
 
-export class TablePage extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render () {
-    return (
-      <div>
-        
-      </div>
-    );
-  }
-}
 
 export class Table extends React.Component {
   constructor(props) {
@@ -49,6 +37,7 @@ export class Table extends React.Component {
         passive: false,
       });
     }
+    console.log(this.props);
   }
 
   componentWillUnmount() {
@@ -153,8 +142,15 @@ export class Table extends React.Component {
     });
   };
 
+  handleFilterToggle = () => {
+    this.filtersOpen = !this.filtersOpen;
+    if (this.props.onFilterToggle) {
+      this.props.onFilterToggle(this.filtersOpen);
+    }
+  };
+
   render() {
-    const { data, hasSelect, hasAction, onDelete, onEdit, isDetailed, search, onView, isLoading, onRowSelect, noDataMessage, noEdit } =
+    const { data, hasSelect, hasAction, onDelete, onEdit, isDetailed, search, onView, isLoading, onRowSelect, noDataMessage, noEdit, hasTableFilters } =
       this.props;
     const { selectAll, selected, currentPage, sortKey, sortDir } = this.state;
 
@@ -199,6 +195,18 @@ export class Table extends React.Component {
             <h1 className="table-title">{isDetailed.header}</h1>
             <div className="table-header-right">
               <div className="table-search">{isDetailed.search}</div>
+              {hasTableFilters && (
+                <Button
+                  cancel
+                  text={
+                    <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+                      <SlidersHorizontal size={15} />
+                      Filters
+                    </span>
+                  }
+                  onClick={this.handleFilterToggle}
+                />
+              )}
               {isDetailed.hasButton && isDetailed.hasDelete ? (
                 <>
                   <Button
@@ -221,7 +229,24 @@ export class Table extends React.Component {
               )}
             </div>
           </div>
-        ) : null}
+        ) : (
+          hasTableFilters && (
+            <div className="table-header">
+              <div className="table-header-right" style={{ marginLeft: "auto" }}>
+                <Button
+                  cancel
+                  text={
+                    <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+                      <SlidersHorizontal size={15} />
+                      Filters
+                    </span>
+                  }
+                  onClick={this.handleFilterToggle}
+                />
+              </div>
+            </div>
+          )
+        )}
 
         <div className="table-container" ref={this.tableContainerRef}>
           <table className="table">
@@ -523,6 +548,8 @@ Table.propTypes = {
   search: PropTypes.string,
   isLoading: PropTypes.bool,
   noEdit: PropTypes.bool,
+  hasTableFilters: PropTypes.bool,
+  onFilterToggle: PropTypes.func,
   isDetailed: PropTypes.shape({
     header: PropTypes.string,
     search: PropTypes.node,
