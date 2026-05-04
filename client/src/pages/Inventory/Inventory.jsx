@@ -10,6 +10,7 @@ import ModalStore from "../../context/ModalStore";
 import ProductStore from "../../context/ProductStore";
 import toast from "react-hot-toast";
 import BranchStore from "../../context/BranchStore";
+import PanelPage from "../../components/TRPanelPage/TRPanelPage";
 
 class Inventory extends React.Component {
   constructor(props) {
@@ -122,29 +123,15 @@ class Inventory extends React.Component {
     };
 
     return (
-      <>
-        <div className="inventory-container">
-          <div className="iv-top-contents">
-            <div className="iv-header">
-              <h1 className="iv-bigtitle">Stock Overview</h1>
-              <p className="iv-sentence">Manage stock, items, and quantities.</p>
-            </div>
-            <div className="iv-branch-dropdown">
-              {user.role !== 'Clerk' && (
-              <>
-              <p className="iv-branch-text">Branch</p>
-              <DropDown 
-                isHeader
-                className="iv-branch-dd" 
-                defaultValue={selectedBranch ? selectedBranch : "Branch"}
-                onChange={(e) => setSelectedBranch(e)}
-                options={branchNames}
-              />
-              </>
-              )}
-            </div>
-          </div>
-          <div>
+        <PanelPage 
+          branchNames={branchNames} 
+          selectedBranch={selectedBranch} 
+          dropDownFunc={(e) => setSelectedBranch(e)} 
+          user={user} 
+          titlePage="Stock Overview" 
+          subTitle="Manage stock, items, and quantities."
+          hasBranch={true}
+        >
             <Table
               data={this.state.products}
               isDetailed={tableData}
@@ -155,9 +142,7 @@ class Inventory extends React.Component {
               search={this.state.searchValue}
               isLoading={fetchLoading}
             />
-          </div>
-        </div>
-      </>
+        </PanelPage>
     );
   }
 }
