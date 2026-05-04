@@ -166,6 +166,7 @@ class Inventory extends React.Component {
         hasTableFilters={true}
         onFilterToggle={(isOpen) => this.setState({ filtersOpen: isOpen })}
         filtersOpen={this.state.filtersOpen}
+        rightPanel={this.rightSideFilters()}
       >
         <Table
           data={this.state.products}
@@ -177,9 +178,9 @@ class Inventory extends React.Component {
           search={this.state.searchValue}
           isLoading={fetchLoading}
         />
-        {this.state.filtersOpen && (
+        {/* {this.state.filtersOpen && (
           this.rightSideFilters()
-        )}
+        )} */}
       </PanelPage>
     );
   }

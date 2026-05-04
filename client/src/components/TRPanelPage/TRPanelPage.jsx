@@ -1,6 +1,7 @@
 import React from 'react';
 import './TRPanelPage.css';
 import DropDown from '../TRDropDown/Dropdown';
+import PropTypes from 'prop-types';
 
 export class RightPanel extends React.Component {
   render() {
@@ -18,7 +19,6 @@ export class PanelPage extends React.Component {
 
     return React.Children.map(this.props.children, (child) => {
       if (!child) return null;
-      // Don't pass table props to the RightPanel (filters)
       if (child.type === RightPanel) return child;
       return React.cloneElement(child, { hasTableFilters, onFilterToggle });
     });
@@ -35,12 +35,13 @@ export class PanelPage extends React.Component {
       hasBranch,
       hasTableFilters,
       filtersOpen,
+      rightPanel  
     } = this.props;
 
-    const childrenArray = React.Children.toArray(this.props.children);
+    // const childrenArray = React.Children.toArray(this.props.children);
     
     // Find the RightPanel in children
-    const rightPanel = childrenArray.find((child) => child.type === RightPanel);
+    // const rightPanel = childrenArray.find((child) => child.type === RightPanel);
 
     // Everything else goes in the Main area
     const mainChildren = React.Children.toArray(this.passPropsToChildren()).filter(
@@ -58,7 +59,7 @@ export class PanelPage extends React.Component {
           <div className="tr-panel-top-right">
             {hasBranch && user && (
               <div className="iv-branch-dropdown">
-                {user.role !== 'Clerk' && (
+                {user.role.toLowerCase() !== 'clerk' && (
                   <div>
                     <p className="iv-branch-text">Branch</p>
                     <DropDown
@@ -81,7 +82,7 @@ export class PanelPage extends React.Component {
           </div>
 
           {/* This is now a sidebar on the right */}
-          {filtersOpen && hasTableFilters && rightPanel && (
+          {filtersOpen && hasTableFilters && (
             <div className="tr-panel-right-wrapper">
               {rightPanel}
             </div>
@@ -90,4 +91,20 @@ export class PanelPage extends React.Component {
       </div>
     );
   }
+}
+
+PanelPage.propTypes = {
+    titlePage: PropTypes.string.isRequired,
+    subTitle: PropTypes.string,
+    selectedBranch: PropTypes.string,
+    dropDownFunc: PropTypes.func,
+    branchNames: PropTypes.arrayOf(PropTypes.string),
+    user: PropTypes.object,
+    hasBranch: PropTypes.bool,
+    hasTableFilters: PropTypes.bool,
+    onFilterToggle: PropTypes.func,
+}
+
+RightPanel.propTypes = {
+    children: PropTypes.node,
 }

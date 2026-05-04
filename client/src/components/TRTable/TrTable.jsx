@@ -195,18 +195,6 @@ export class Table extends React.Component {
             <h1 className="table-title">{isDetailed.header}</h1>
             <div className="table-header-right">
               <div className="table-search">{isDetailed.search}</div>
-              {hasTableFilters && (
-                <Button
-                  cancel
-                  text={
-                    <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
-                      <SlidersHorizontal size={15} />
-                      Filters
-                    </span>
-                  }
-                  onClick={this.handleFilterToggle}
-                />
-              )}
               {isDetailed.hasButton && isDetailed.hasDelete ? (
                 <>
                   <Button
@@ -225,6 +213,17 @@ export class Table extends React.Component {
                   error
                   text={isDetailed.buttonInfo}
                   onClick={(e) => isDetailed.CB(e)}
+                />
+              )}
+              {hasTableFilters && (
+                <Button
+                  cancel
+                  text={
+                    <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+                      <SlidersHorizontal/>
+                    </span>
+                  }
+                  onClick={this.handleFilterToggle}
                 />
               )}
             </div>
