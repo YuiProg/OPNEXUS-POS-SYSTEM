@@ -12,13 +12,15 @@ import ModalStore from "../../context/ModalStore";
 import ProductStore from "../../context/ProductStore";
 import ActiveStaffs from "./ActiveStaffs/ActiveStaffs";
 import toast from "react-hot-toast";
+import { PanelPage, RightPanel } from "../../components/TRPanelPage/TRPanelPage";
 
 class StaffManagement extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
             users: [],
-            search: ''
+            search: '',
+            filtersOpen: false,
         }
     }
 
@@ -69,6 +71,14 @@ class StaffManagement extends React.Component {
         }
     }
 
+    rightSideTableFilter = () => {
+        return (
+            <RightPanel>
+
+            </RightPanel>
+        );
+    }
+
     render () {
         //const {setShowModal} = BranchStore.getState();
         const { setShowAddModal } = ModalStore.getState();
@@ -96,50 +106,19 @@ class StaffManagement extends React.Component {
         };
         
         return (
-            // <TRInputFormPanel  
-            //     header="ADD NEW EMPLOYEE" 
-            //     subHeader="test subheader" 
-            //     onSubmit={(e) => {
-            //         e.preventDefault();
-            //         console.log('test');
-            //     }}
-            //     btnTXT="TEST"
-            //     isRequired
-            // >
-            //     <InputForm>
-            //         <InputRow gap={16} titles={['title1', 'title2']}>
-            //             <InputField text placeholder="test" onChange={value => console.log(value)}/>
-            //             <InputField text onChange={value => console.log(value)}/>
-            //         </InputRow>
-            //         <InputRow gap={16} titles={['title3', 'title4']}>
-            //             <InputField text onChange={value => console.log(value)}/>
-            //             <InputField text onChange={value => console.log(value)}/>
-            //         </InputRow>
-            //         <InputRow gap={16} titles={['title6', 'title7']}>
-            //             <InputField text onChange={value => console.log(value)}/>
-            //             <DropDown maxWidth/>
-            //         </InputRow>
-            //     </InputForm>
-            // </TRInputFormPanel>
-            //<Button success text="+ Add Stock" onClick={() => console.log('test')}/>
-            <>
-            <div className="sm-container">
-                <div className="sm-top-contents">
-                    <div className="sm-header">
-                        <h1 className="sm-bigtitle">Staff Management</h1>
-                        <p className="sm-sentence">Manage clerks.</p>
-                    </div>
-                    <div className="sm-branch-dropdown">
-                        <p className="sm-branch-text">Branch</p>
-                        <DropDown 
-                            isHeader
-                            options={branchNames}
-                            onChange={(e) => setSelectedBranch(e)}    
-                            className="sm-branch-dd"
-                            defaultValue={selectedBranch ? selectedBranch : 'Branch'}
-                        />
-                    </div>
-                </div>
+            <PanelPage 
+                user={this.props.user} 
+                titlePage="Staff Management" 
+                subTitle="Mange clerks." 
+                hasBranch={true} 
+                branchNames={branchNames}
+                dropDownFunc={(e) => setSelectedBranch(e)}
+                selectedBranch={selectedBranch}
+                hasTableFilters={true}
+                onFilterToggle={(isOpen) => this.setState({filtersOpen: isOpen})}
+                filtersOpen={this.state.filtersOpen}
+                rightPanel={this.rightSideTableFilter()}
+            >
                 <div className="sm-main-contents">
                     <div className="sm-table">
                         <Table 
@@ -151,14 +130,13 @@ class StaffManagement extends React.Component {
                             onEdit={(item) => this.showEditModal(item)}
                             search={this.state.search}
                             isLoading={fetchLoading}
-                            />
+                        />
                     </div>
                     <div className="sm-active-staffs">
                         <ActiveStaffs staffData={onlineUsers}/>
                     </div>
                 </div>
-            </div>
-            </>
+            </PanelPage>
         );
     }
 }

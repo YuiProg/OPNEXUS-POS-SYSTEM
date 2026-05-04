@@ -10,6 +10,7 @@ import ModalStore from "../../context/ModalStore";
 import ProductStore from "../../context/ProductStore";
 import toast from "react-hot-toast";
 import BranchStore from "../../context/BranchStore";
+import { PanelPage, RightPanel } from "../../components/TRPanelPage/TRPanelPage";
 
 class Inventory extends React.Component {
   constructor(props) {
@@ -19,7 +20,8 @@ class Inventory extends React.Component {
       isAdmin: false,
       showModal: false,
       isOpen: ModalStore.getState().isOpen,
-      products: []
+      products: [],
+      filtersOpen: false,
     };
   }
 
@@ -42,24 +44,15 @@ class Inventory extends React.Component {
       fetchProducts(false, user.branchLocation);
     }
     subscribeToProducts();
-    
+
     this.unsubscribe = ProductStore.subscribe((state) => {
       const products = state.products;
-      this.setState({products: products});
-      // const cleanedData = data.map(({ createdAt, updatedAt, createdById, _id, __v, ...rest }) => rest);
-      // this.setState({ products: cleanedData });
-      //console.log(this.state.products);
+      this.setState({ products: products });
     });
-    //console.log(products);
-    //this.setState({products: products});
-    // this.unsubscribeModal = ModalStore.subscribe((state) => {
-    //   this.setState({ isOpen: state.isOpen });
-    // });
-
   }
 
   componentWillUnmount() {
-    const {unsubscribeToProducts} = ProductStore.getState();
+    const { unsubscribeToProducts } = ProductStore.getState();
     unsubscribeToProducts();
     if (this.unsubscribeModal) this.unsubscribeModal();
   }
@@ -76,10 +69,10 @@ class Inventory extends React.Component {
   }
 
   showConfirmDelModal = (e) => {
-      const { setDeleteModal, setSelectedItems, setUrl } = ModalStore.getState();
-      setDeleteModal(true);
-      setSelectedItems(e);
-      setUrl("inventory");
+    const { setDeleteModal, setSelectedItems, setUrl } = ModalStore.getState();
+    setDeleteModal(true);
+    setSelectedItems(e);
+    setUrl("inventory");
   }
 
   showEditModal = async (item) => {
@@ -96,14 +89,54 @@ class Inventory extends React.Component {
     }
   }
 
+  rightSideFilters = () => {
+    const { branches } = BranchStore.getState();
+    const branchNames = branches.map(d => d.location);
+    return (
+          <RightPanel>
+            <InputForm>
+              <InputRow titles={['Search Item Id']}>
+                <InputField
+                  placeholder="Search Item Id"
+                  isSearch
+                />
+              </InputRow>
+              <InputRow titles={['Search Name']}>
+                <InputField
+                  placeholder="Search Name"
+                  isSearch
+                />
+              </InputRow>
+              <InputRow titles={['Quantity']}>
+                <InputField
+                  number
+                  placeholder="Enter quantity"
+                />
+              </InputRow>
+              <InputRow titles={['Price']}>
+                <InputField
+                  number
+                  placeholder="Enter price"
+                />
+              </InputRow>
+              <InputRow titles={['Filter by Category']}>
+                <DropDown
+                  placeholder="Select Category"
+                  options={branchNames}
+                />
+              </InputRow>
+            </InputForm>
+          </RightPanel>
+    );
+  }
+
   render() {
-    //const { setEditProductModal } = ModalStore.getState();
     const { user } = this.props;
     const { fetchLoading } = ProductStore.getState();
-    const {setSelectedBranch, selectedBranch} = AuthStore.getState();
+    const { setSelectedBranch, selectedBranch } = AuthStore.getState();
     const { branches } = BranchStore.getState();
-    const branchNames = branches.map(d=>d.location);
-    
+    const branchNames = branches.map(d => d.location);
+
     const tableData = {
       header: "ITEMS TEST",
       hasButton: this.state.isAdmin,
@@ -122,42 +155,33 @@ class Inventory extends React.Component {
     };
 
     return (
-      <>
-        <div className="inventory-container">
-          <div className="iv-top-contents">
-            <div className="iv-header">
-              <h1 className="iv-bigtitle">Stock Overview</h1>
-              <p className="iv-sentence">Manage stock, items, and quantities.</p>
-            </div>
-            <div className="iv-branch-dropdown">
-              {user.role !== 'Clerk' && (
-              <>
-              <p className="iv-branch-text">Branch</p>
-              <DropDown 
-                isHeader
-                className="iv-branch-dd" 
-                defaultValue={selectedBranch ? selectedBranch : "Branch"}
-                onChange={(e) => setSelectedBranch(e)}
-                options={branchNames}
-              />
-              </>
-              )}
-            </div>
-          </div>
-          <div>
-            <Table
-              data={this.state.products}
-              isDetailed={tableData}
-              hasAction={this.state.isAdmin}
-              hasSelect={this.state.isAdmin}
-              onDelete={(item) => this.showDeleteModal(item)}
-              onEdit={(item) => this.showEditModal(item)}
-              search={this.state.searchValue}
-              isLoading={fetchLoading}
-            />
-          </div>
-        </div>
-      </>
+      <PanelPage
+        branchNames={branchNames}
+        selectedBranch={selectedBranch}
+        dropDownFunc={(e) => setSelectedBranch(e)}
+        user={user}
+        titlePage="Stock Overview"
+        subTitle="Manage stock, items, and quantities."
+        hasBranch={true}
+        hasTableFilters={true}
+        onFilterToggle={(isOpen) => this.setState({ filtersOpen: isOpen })}
+        filtersOpen={this.state.filtersOpen}
+        rightPanel={this.rightSideFilters()}
+      >
+        <Table
+          data={this.state.products}
+          isDetailed={tableData}
+          hasAction={this.state.isAdmin}
+          hasSelect={this.state.isAdmin}
+          onDelete={(item) => this.showDeleteModal(item)}
+          onEdit={(item) => this.showEditModal(item)}
+          search={this.state.searchValue}
+          isLoading={fetchLoading}
+        />
+        {/* {this.state.filtersOpen && (
+          this.rightSideFilters()
+        )} */}
+      </PanelPage>
     );
   }
 }
