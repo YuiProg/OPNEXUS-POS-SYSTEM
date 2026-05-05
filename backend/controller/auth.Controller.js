@@ -19,18 +19,19 @@ const errorHandling = (error) => {
 
 export const register = async (req, res) => {
   try {
-    const data = req.body
+    const data = req.body;
 
-    const { userId } = req.user
-    const userData = await User.getUser(userId)
-    const createdUser = await User.registerUser(data)
+    const { userId } = req.user;
+    const userData = await User.getUser(userId);
+    const createdUser = await User.registerUser(data);
+    console.log(data);
     const logPayload = {
       user: userData.username,
       action: NEWUSER,
       branchLocation: userData.branchLocation,
       log: `${userData.username} created a new user called ${createdUser.username}`
-    }
-    console.log(data)
+    };
+    console.log(data);
     if (data.sendEmail) {
       //send email sa user
       try {
@@ -45,9 +46,9 @@ export const register = async (req, res) => {
                 <p>Please change your password after logging in.</p>
             `
         });
-        console.log('Email sent:', info.response)
+        console.log('Email sent:', info.response);
       } catch (error) {
-        console.error('Error sending email:', error)
+        console.error('Error sending email:', error);
       }
     }
     await SystemLogs.addLog(logPayload)

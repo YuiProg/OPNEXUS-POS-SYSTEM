@@ -211,14 +211,13 @@ const AuthStore = create((set, get) => ({
         }
     },
 
-    addUser: async (isAdmin) => {
+    addUser: async () => {
         const { setShowAddModal, setServerError, isScreenLoading } = ModalStore.getState();
 
         //const { getBranchByLocation } = BranchStore.getState();
         try {
             isScreenLoading(true);
             const data = get().input;
-            console.log(data);
             const payloadAdmin = {
                 username: data.username,
                 email: data.email,
@@ -235,12 +234,11 @@ const AuthStore = create((set, get) => ({
                 address: data.address,
                 sendEmail: data.sendEmail
             };
-
             const payloadClerk = {
                 username: data.username,
                 email: data.email,
                 password: data.password,
-                //branchLocation: data.branch,
+                //branchLocation: 'ADMIN',
                 shift: data.shift,
                 salary: Number(data.salary),
                 phoneNumber: Number(data.phoneNumber),
@@ -262,12 +260,13 @@ const AuthStore = create((set, get) => ({
             // }
             let user;
             
-            if (isAdmin === "Admin" || data.role) {
+            if (data.role === "Admin") {
                 const newUserAdmin = await axiosInstance.post(addUser, payloadAdmin);
                 user = newUserAdmin
-            } else if (isAdmin === "Clerk" || data.role) {
+            } else if (data.role === "Clerk") {
                 const newUserAdmin = await axiosInstance.post(addUser, payloadClerk);
                 user = newUserAdmin
+                console.log(newUserAdmin.data);
             }
 
             
@@ -280,18 +279,17 @@ const AuthStore = create((set, get) => ({
             //         session: shift
             //     });
             // }
-
+            
             const newData = {
                 Id: _id,
                 //Employee: `${firstName.toUpperCase()} ${middleName.toUpperCase()} ${lastName.toUpperCase()}`,
                 username,
                 Email: data.email,
-                branchlocation: branchLocation || 'N/A',
                 shift: shift,
                 salary: salary,
                 role: role,
                 phoneNumber: phoneNumber,
-                //address: address
+                branchlocation: branchLocation || 'N/A',
             };
             
 
