@@ -4,7 +4,6 @@ import Branch from '../models/Branches.js'
 import SystemLogs from '../models/SystemLogs.js'
 import User from '../models/UserModel.js'
 import Strings from '../strings/strings-codes.js'
-import transporter from '../middleware/sendEmail.js'
 import sendMail from '../middleware/sendEmail.js'
 
 const { SUCCESS_MESS, SUCCESS, ERROR, CREATED, DELETEUSER, NEWUSER, UPDATEUSER, PASSWORDEDIT } =
@@ -39,11 +38,13 @@ export const register = async (req, res) => {
             from: `"OPNEXUS" <${process.env.SMTP_USER}>`,
             to: data.email,
             subject: 'Welcome to Our Service',
-            text: `Hello! you are now a ${data.role} of {POS}. Your temporary password is: ${data.password}`,
+            text: `Hello! you are now a ${data.role} of {POSNAME}. Your temporary password is: ${data.password}`,
             html: `
-                <p>Hello! you are now a ${data.role} of {POS}</p>
+                <p>Hello! you are now a ${data.role} of {POSNAME}</p>
+                <p>Your Email is ${data.email}<p>
                 <p>Your temporary password is: <strong>${data.password}</strong></p>
                 <p>Please change your password after logging in.</p>
+                <p>THIS EMAIL IS CONFIDENTIAL AND SHALL USED FOR AUTHENTICATION PROCESSES.<p>
             `
         });
         console.log('Email sent:', info.response);
