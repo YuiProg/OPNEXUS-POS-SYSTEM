@@ -112,7 +112,7 @@ const ProductStore = create((set, get) => ({
       });
       //console.log(products.data.data);
       const data = products.data.data;
-      console.log(data);
+      
       set({productsUncleaned: data});
 
       //PANG REMOVE NG UNNECESSARY DATA SA RESPONSE, MAP PARA MA LOOP SA BAWAT ITEM SA ARRAY
@@ -134,7 +134,6 @@ const ProductStore = create((set, get) => ({
         }) => rest,
       );
       set({ products: cleanedData });
-      console.log(cleanedData);
     } catch (error) {
       setServerError(true);
       toast.error(error.message);

@@ -16,7 +16,6 @@ class TodaysRevenue extends React.Component {
         getTodayRevenue();
         
         this.unsubscribe = DashboardStore.subscribe(state => {
-            console.log(state);
             this.setState({
                 todayRevenue: state.todayRevenue,
                 todayRevenueLoading: state.todayRevenueLoading
