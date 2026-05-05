@@ -5,6 +5,7 @@ import Radio from "../../components/TRRadio/Radio";
 import Button from "../../components/TRButton/Button";
 import BranchStore from "../../context/BranchStore";
 import AuthStore from "../../context/Authstore";
+import { PanelPage } from "../../components/TRPanelPage/TRPanelPage";
 
 class Branches extends React.Component {
     constructor(props) {
@@ -69,16 +70,11 @@ class Branches extends React.Component {
         const filteredBranches = this.getFilteredBranches();
 
         return (
-            <div className="bm-container">
-                <div className="bm-top-contents">
-                    <div className="bm-header">
-                        <h1 className="bm-bigtitle">Branch Monitoring</h1>
-                        <p className="bm-sentence">
-                            See which branches are active and inactive.
-                        </p>
-                    </div>
-                </div>
-
+            <PanelPage
+                user={this.props.user} 
+                titlePage="Branches Monitoring"
+                subTitle="Manage your branches and their clerks."
+            >
                 <div className="branches-cards-activity">
                     <div className="branches-radio-container">
                         <Radio
@@ -96,7 +92,7 @@ class Branches extends React.Component {
                 <div className="branches-cards-container">
                     <BranchesCards data={filteredBranches} />
                 </div>
-            </div>
+            </PanelPage>
         );
     }
 }
