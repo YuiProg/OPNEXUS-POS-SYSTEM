@@ -71,7 +71,7 @@ class VipManagement extends React.Component {
             deleteBtnInfo: 'DISABLE VIP',
             CBD: (e) => this.disableManyConfirm(e)
         };
-
+        console.log('test');
         return (
             <div className="vm-container">
                 <div className="vm-top-contents">
