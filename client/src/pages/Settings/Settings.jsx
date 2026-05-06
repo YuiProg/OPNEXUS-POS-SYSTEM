@@ -23,31 +23,31 @@ class SettingsPage extends React.Component {
             case "Inventory":
                 return (
                 <div className="settings-content">
-                    <h2>Inventory Settings</h2>
+                    <h2 className="option-title">Inventory Settings</h2>
                 </div>
                 );
             case "Categories":
                 return (
                 <div className="settings-content">
-                    <h2>Categories Settings</h2>
+                    <h2 className="option-title">Categories Settings</h2>
                 </div>
                 );
             case "Staff Management":
                 return (
                 <div className="settings-content">
-                    <h2>Staff Management Settings</h2>
+                    <h2 className="option-title">Staff Management Settings</h2>
                 </div>
                 );
             case "VIP Management":
                 return (
                 <div className="settings-content">
-                    <h2>VIP Management Settings</h2>
+                    <h2 className="option-title">VIP Management Settings</h2>
                 </div>
                 );
             case "Branches":
                 return (
                 <div className="settings-content">
-                    <h2>Branches Settings</h2>
+                    <h2 className="option-title">Branches Settings</h2>
                 </div>
                 );
             default:
