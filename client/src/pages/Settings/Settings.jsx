@@ -7,6 +7,52 @@ import { PanelPage } from "../../components/TRPanelPage/TRPanelPage";
 class SettingsPage extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            selectedOption: "Inventory"
+        }
+    }
+
+    handleSettingsOptionClick = (option) => {
+        this.setState({ selectedOption: option });
+    }
+
+    renderSettingsContent = () => {
+        const { selectedOption } = this.state;
+
+        switch (selectedOption) {
+            case "Inventory":
+                return (
+                <div className="settings-content">
+                    <h2>Inventory Settings</h2>
+                </div>
+                );
+            case "Categories":
+                return (
+                <div className="settings-content">
+                    <h2>Categories Settings</h2>
+                </div>
+                );
+            case "Staff Management":
+                return (
+                <div className="settings-content">
+                    <h2>Staff Management Settings</h2>
+                </div>
+                );
+            case "VIP Management":
+                return (
+                <div className="settings-content">
+                    <h2>VIP Management Settings</h2>
+                </div>
+                );
+            case "Branches":
+                return (
+                <div className="settings-content">
+                    <h2>Branches Settings</h2>
+                </div>
+                );
+            default:
+                return null;
+        }
     }
 
     render () {
@@ -32,13 +78,23 @@ class SettingsPage extends React.Component {
                 titlePage="Settings" 
                 subTitle="Manage your account settings and preferences."
             >
-                {/* dito nalang kaya natin ilagay yung "Change password" ng admin accounts */}
-                <div className="settings-options">
-                    {settingsOptions.map((option, index) => (
-                        <div key={index} className="setting-option">
-                            <h3>{option.title}</h3>
-                        </div>
-                    ))}
+                <div className="settings-container">
+                    <aside className="settings-sidebar">
+                        <nav>
+                            {settingsOptions.map((option, i) => (
+                                <button
+                                    key={i}
+                                    className={`sidebar-item ${this.state.selectedOption === option.title ? 'active' : ''}`}
+                                    onClick={() => this.handleSettingsOptionClick(option.title)}
+                                >
+                                    {option.title}
+                                </button>
+                            ))}
+                        </nav>
+                    </aside>
+                    <main className="settings-main">
+                        {this.renderSettingsContent()}
+                    </main>
                 </div>
             </PanelPage>
         );
