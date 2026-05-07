@@ -77,7 +77,7 @@ const ApiConfig = Object.freeze({
     //SETTINGS
     GETSETTINGS: apiEndpoint + 'getSettings',
     UPDATESETTINGS: apiEndpoint + 'updateSettings/:id',
-    RESETSETTINGS: apiEndpoint + 'resetSettings'
+    RESETSETTINGS: apiEndpoint + 'resetSettings/:id'
 })
 
 export default ApiConfig;
