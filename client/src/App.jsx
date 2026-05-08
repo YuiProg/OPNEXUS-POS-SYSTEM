@@ -40,6 +40,7 @@ import deleteCategoryConfirm from "./pages/Inventory/DeleteCategoryConfirm.jsx";
 import CustomerLogin from "./pages/CustomerPage/CustomerLogIn.jsx";
 import viewChangePasswordModal from "./pages/AuthPage/ChangePasswordModal.jsx";
 import SettingsPage from "./pages/Settings/Settings.jsx";
+import Toggle from "./components/TRToggle/Toggle.jsx";
 
 
 const ServerError = lazy(
@@ -325,7 +326,7 @@ export default function App() {
               defaultValue="Role"
               onChange={(value) => {
                 setInput("role", value);
-                selectedItem.role = value;
+                //selectedItem.role = value;
               }}
               value={isUpdate ? selectedItem.role : null}
               isRequired
@@ -337,7 +338,7 @@ export default function App() {
               onChange={(value) => setInput("shift", value)}
               value={isUpdate ? selectedItem.shift : null}
               disabled={
-                (selectedItem && selectedItem.role === "Admin") ||
+                (selectedItem && selectedItem.role.toLowerCase() === "admin") ||
                 input.role === "Admin"
               }
               isRequired
@@ -351,7 +352,7 @@ export default function App() {
               isRequired
             />
           </InputRow>
-          {isUpdate && (
+          {isUpdate ? (
             <InputRow gap={15} titles={["Branch"]}>
               <DropDown
                 maxWidth
@@ -363,6 +364,10 @@ export default function App() {
                 isRequired
               />
             </InputRow>
+          ) : (
+          <InputRow titles={["Send Email?"]}>
+            <Toggle currentStatus="INACTIVE" onToggle={(e) => setInput("sendEmail", e === 'INACTIVE' ? false : true)}/>
+          </InputRow>
           )}
         </InputForm>
       </Modal>

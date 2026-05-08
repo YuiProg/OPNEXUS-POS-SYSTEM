@@ -110,11 +110,12 @@ userSchema.statics.registerUser = async function (data) {
 }
 
 userSchema.statics.loginUser = async function (email, password) {
-    const user = await this.findOne({ email });
+    const user = await this.findOne({ email }).select('-password');
+    const userPassword = await this.findOne({email});
     if (!user) {
         throw new Error(CRED_ERROR);
     }
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(password, userPassword.password);
     if (!isMatch) {
         throw new Error(CRED_ERROR);
     }

@@ -18,6 +18,7 @@ import BarsChart from "../../components/DashboardComponents/Charts/BarsChart";
 import TopProducts from "../../components/DashboardComponents/TopProducts/TopProducts";
 import BranchStore from "../../context/BranchStore";
 import DashboardStore from "../../context/DashboardStore";
+import { PanelPage } from "../../components/TRPanelPage/TRPanelPage";
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -52,43 +53,35 @@ class Dashboard extends React.Component {
 
     const active = onlineUsers.filter((d) => d.role === "Clerk");
     return (
-      <div className="dashboard-container">
-        {/* HELLO WHAT DO YOU WANT TO DO KEME KEME SECTION */}
-        <div className="db-top-contents">
-          <div className="db-header">
-            <h1 className="db-bigtitle">Dashboard</h1>
-            <p className="db-sentence">Overview of system activity and performance.</p>
+      <PanelPage
+        user={this.props.user} 
+        titlePage="Dashboard"
+        subTitle="Overview of system activity and performance."
+        hasBranch={true} 
+        branchNames={branchNames}
+        dropDownFunc={(e) => setSelectedBranch(e)}
+        branchNames={branchNames}
+        selectedBranch={selectedBranch}
+      >
+        <div className="dashboard-contents">
+          <div className="top-three-contents">
+            <StaffCount activeClerks={active.length}/>
+            <TodaysRevenue />
+            <RecentActivity activity={recentActivity}/>
           </div>
-          <div className="db-branch-dropdown">
-            <p className="db-branch-text">Branch</p>
-            <DropDown 
-              isHeader
-              defaultValue={selectedBranch ? selectedBranch : 'Branch'}
-              className="db-branch-dd"
-              options={branchNames} 
-              onChange={(e) => setSelectedBranch(e)}
-            />
+          <div className="dashboard-container__graph-container">
+            {/* DITO MACKY DAPAT YUNG STATISTICS PERO WALA */}
+            <div>{<BarsChart />}</div>
+            <DonutChart />
+            <Notes />
+          </div>
+          {/* VIOLET CONTAINER */}
+          <div className="todays-sales__top-products">
+            <TodaysSales />
+            <TopProducts />
           </div>
         </div>
-        {/* GREEN CONTAINER */}
-        <div className="top-three-contents">
-          <StaffCount activeClerks={active.length}/>
-          <TodaysRevenue />
-          <RecentActivity activity={recentActivity}/>
-        </div>
-        {/* BLUE CONTAINER */}
-        <div className="dashboard-container__graph-container">
-          {/* DITO MACKY DAPAT YUNG STATISTICS PERO WALA */}
-          <div>{<BarsChart />}</div>
-          <DonutChart />
-          <Notes />
-        </div>
-        {/* VIOLET CONTAINER */}
-        <div className="todays-sales__top-products">
-          <TodaysSales />
-          <TopProducts />
-        </div>
-      </div>
+      </PanelPage>
     );
   }
 }

@@ -1,7 +1,7 @@
 /* Container for the entire page */
 .tr-panel-container {
-  width: 100%;
-  height: 100vh;
+  width: auto;
+  height: -webkit-fill-available;
   background: #111111;
   padding: 16px;
   box-sizing: border-box;
@@ -12,6 +12,7 @@
 }
 
 .tr-panel-top-contents {
+  height: 7vh;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -32,7 +33,6 @@
   flex: 1;
   min-width: 0; 
   overflow-y: auto;
-  padding-right: 20px; /* Space between table content and the border line */
 }
 
 /* The Filter Sidebar - Clean minimalist style */
@@ -46,7 +46,6 @@
   /* Visual adjustments */
   background: transparent; /* Removed background color */
   padding: 0 0 0 20px; /* Padding only on the left to separate from the line */
-  border-left: 1px solid #333; /* The only divider line */
   
   height: 100%;
   overflow-y: auto;
@@ -66,5 +65,5 @@
 }
 
 .iv-branch-dropdown {
-  width: 250px;
+  width: 340px;
 }
