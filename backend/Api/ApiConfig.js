@@ -1,6 +1,6 @@
 
 
-const apiEndpoint = '/vaporyapos/';
+const apiEndpoint = '/opnexus/';
 
 const ApiConfig = Object.freeze({
     //========authentication======== 
@@ -79,7 +79,7 @@ const ApiConfig = Object.freeze({
 
     //SETTINGS
     GETSETTINGS: apiEndpoint + 'getSettings',
-    UPDATESETTINGS: apiEndpoint + 'updateSettings/:id',
+    UPDATESETTINGS: apiEndpoint + 'updateSettings/:id', //fetch the existing id in the db
     RESETSETTINGS: apiEndpoint + 'resetSettings'
 })
 
