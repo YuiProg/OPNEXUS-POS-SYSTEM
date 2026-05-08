@@ -1,6 +1,6 @@
 
 
-const apiEndpoint = '/vaporyapos/';
+const apiEndpoint = '/opnexus/';
 
 const ApiConfig = Object.freeze({
     //========authentication======== 

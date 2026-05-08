@@ -4,7 +4,7 @@ import Branch from '../models/Branches.js'
 import SystemLogs from '../models/SystemLogs.js'
 import User from '../models/UserModel.js'
 import Strings from '../strings/strings-codes.js'
-import sendMail from '../middleware/sendEmail.js'
+import sendMail from '../lib/sendEmail.js'
 
 const { SUCCESS_MESS, SUCCESS, ERROR, CREATED, DELETEUSER, NEWUSER, UPDATEUSER, PASSWORDEDIT } =
   Strings
@@ -31,7 +31,7 @@ export const register = async (req, res) => {
       log: `${userData.username} created a new user called ${createdUser.username}`
     };
     console.log(data);
-    if (data.sendEmail) {
+    if (data.sendEmail === 1) {
       //send email sa user
       try {
         const info = await sendMail({
