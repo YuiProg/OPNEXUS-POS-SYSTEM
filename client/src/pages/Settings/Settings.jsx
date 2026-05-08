@@ -4,12 +4,27 @@ import { InputForm, InputRow, TRInputFormPanel } from "../../components/TRInputF
 import InputField from "../../components/TRInputField/InputFIeld";
 import { PanelPage } from "../../components/TRPanelPage/TRPanelPage";
 import Toggle from "../../components/TRToggle/Toggle";
+import SettingsStore from "../../context/SettingsStore";
+import Button from "../../components/TRButton/Button";
 
 class SettingsPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedOption: "Inventory"
+            selectedOption: "Inventory",
+            settingsState: null
+        }
+    }
+
+    componentDidMount() {
+        this.unsubscribe = SettingsStore.subscribe((state) => {
+            console.log(state);
+        });
+    }
+
+    componentWillUnmount() {
+        if (this.unsubscribe) {
+            this.unsubscribe();
         }
     }
 
@@ -19,6 +34,7 @@ class SettingsPage extends React.Component {
 
     renderSettingsContent = () => {
         const { selectedOption } = this.state;
+        const { setInputs, settings } = SettingsStore.getState();
 
         switch (selectedOption) {
             case "Inventory":
@@ -28,18 +44,23 @@ class SettingsPage extends React.Component {
                     <InputRow titles={["Low Stock Threshold"]}>
                         <InputField
                             number
+                            onChange={(value) => setInputs("lowStockThreshold", value)}
+                            value={settings ? settings.inventorySettings?.lowStockThreshold : 0}
                         />
                     </InputRow>
-                    <h4>Maximum Character Limits for Items</h4>
+                    <h4 className="option-subtitle">Maximum Character Limits for Items</h4>
                     <InputRow gap={10} titles={["Product Name", "Quantity", "Price"]}>
                         <InputField
                             number
+                            onChange={(value) => setInputs("productNameMax", value)}
                         />
                         <InputField
                             number
+                            onChange={(value) => setInputs("quantityMax", value)}
                         />
                         <InputField
                             number
+                            onChange={(value) => setInputs("priceMax", value)}
                         />
                     </InputRow>
                 </div>
@@ -49,12 +70,13 @@ class SettingsPage extends React.Component {
                 <div className="settings-content">
                     <h2 className="option-title">Categories Settings</h2>
                     <InputRow titles={["Enable"]}>
-                        <Toggle />
+                        <Toggle hideLabel/>
                     </InputRow>
-                    <h4>Maximum Character Limits for Categories</h4>
+                    <h4 className="option-subtitle">Maximum Character Limits for Categories</h4>
                     <InputRow gap={10} titles={["Category Name"]}>
                         <InputField
                             number
+                            onChange={(value) => setInputs("categoryNameMax", value)}
                         />
                     </InputRow>
                 </div>
@@ -64,34 +86,41 @@ class SettingsPage extends React.Component {
                 <div className="settings-content">
                     <h2 className="option-title">Staff Management Settings</h2>
                     <InputRow titles={["Enable"]}>
-                        <Toggle />
+                        <Toggle hideLabel/>
                     </InputRow>
-                    <h4>Maximum Character Limits for Staff Management</h4>
+                    <h4 className="option-subtitle">Maximum Character Limits for Staff Management</h4>
                     <InputRow gap={10} titles={["Username", "Password"]}>
                         <InputField
                             number
+                            onChange={(value) => setInputs("staffUsernameMax", value)}
                         />
                         <InputField
                             number
+                            onChange={(value) => setInputs("staffPasswordMax", value)}
                         />
                     </InputRow>
                     <InputRow gap={10} titles={["First Name", "Middle Name", "Last Name"]}>
                         <InputField
                             number
+                            onChange={(value) => setInputs("staffFirstNameMax", value)}
                         />
                         <InputField
                             number
+                            onChange={(value) => setInputs("staffMiddleNameMax", value)}
                         />
                         <InputField
                             number
+                            onChange={(value) => setInputs("staffLastNameMax", value)}
                         />
                     </InputRow>
                     <InputRow gap={10} titles={["Address", "Salary"]}>
                         <InputField
                             number
+                            onChange={(value) => setInputs("staffAddressMax", value)}
                         />
                         <InputField
                             number
+                            onChange={(value) => setInputs("staffSalaryMax", value)}
                         />
                     </InputRow>
                 </div>
@@ -101,30 +130,34 @@ class SettingsPage extends React.Component {
                 <div className="settings-content">
                     <h2 className="option-title">VIP Management Settings</h2>
                     <InputRow titles={["Enable"]}>
-                        <Toggle />
+                        <Toggle hideLabel/>
                     </InputRow>
                     <InputRow titles={["Enable VIP ID Input Field"]}>
-                        <Toggle />
+                        <Toggle hideLabel/>
                     </InputRow>
-                    <h4>Maximum Character Limits for VIP Management</h4>
+                    <h4 className="option-subtitle">Maximum Character Limits for VIP Management</h4>
                     <InputRow gap={10} titles={["First Name", "Middle Name", "Last Name"]}>
                         <InputField
                             number
+                            onChange={(value) => setInputs("vipFirstNameMax", value)}
                         />
                         <InputField
                             number
+                            onChange={(value) => setInputs("vipMiddleNameMax", value)}
                         />
                         <InputField
                             number
+                            onChange={(value) => setInputs("vipLastNameMax", value)}
                         />
                     </InputRow>
                     <InputRow gap={10} titles={["Require Email", "Require Phone Number"]}>
-                        <Toggle />
-                        <Toggle />
+                        <Toggle hideLabel/>
+                        <Toggle hideLabel/>
                     </InputRow>
                     <InputRow titles={["Points"]}>
                         <InputField
                             number
+                            onChange={(value) => setInputs("vipPointsMax", value)}
                         />
                     </InputRow>
                 </div>
@@ -134,12 +167,13 @@ class SettingsPage extends React.Component {
                 <div className="settings-content">
                     <h2 className="option-title">Branches Settings</h2>
                     <InputRow titles={["Enable"]}>
-                        <Toggle />
+                        <Toggle hideLabel/>
                     </InputRow>
-                    <h4>Maximum Character Limits for Branches</h4>
+                    <h4 className="option-subtitle">Maximum Character Limits for Branches</h4>
                     <InputRow gap={10} titles={["Branch Name"]}>
                         <InputField
                             number
+                            onChange={(value) => setInputs("branchNameMax", value)}
                         />
                     </InputRow>
                 </div>
@@ -166,7 +200,9 @@ class SettingsPage extends React.Component {
             {
                 title: "Branches"
             }
-        ]
+        ];
+        const { resetSettings, setSettings } = SettingsStore.getState();
+
         return (
             <PanelPage 
                 titlePage="Settings" 
@@ -186,9 +222,21 @@ class SettingsPage extends React.Component {
                             ))}
                         </nav>
                     </aside>
-                    <main className="settings-main">
+                    <div className="settings-main">
                         {this.renderSettingsContent()}
-                    </main>
+                        <div className="settings-actions">
+                            <Button 
+                                text="Reset to Defaults"
+                                cancel
+                                onClick={() => resetSettings()}
+                            />
+                            <Button 
+                                text="Apply Changes"
+                                error
+                                onClick={() => setSettings()}
+                            />
+                        </div>
+                    </div>
                 </div>
             </PanelPage>
         );
