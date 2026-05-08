@@ -39,11 +39,21 @@ export const getSettings = async (req, res) => {
 
 export const setSettingsToDefault = async (req, res) => {
     try {
+        //const { id } = req.params;
         const defaultSettings = new SystemSettings();
-        const settings = await SystemSettings.findOneAndUpdate({}, defaultSettings, { new: true });
+        
+        /* eslint-disable-next-line */
+        const { _id, __v, ...defaultValues } = defaultSettings.toObject();
+        
+        const settings = await SystemSettings.findOneAndUpdate(
+            {},
+            { $set: defaultValues },
+            { new: true }
+        );
+        
         ApiResponseModel(res, SUCCESS, RESETSETTINGS, settings);
     } catch (error) {
-        ApiResponseModel(res, SETTINGSERROR, error.message);
+        ApiResponseModel(res, ERROR, SETTINGSERROR, error.message);
     }   
 }
 
@@ -57,7 +67,7 @@ export const updateSettings = async (req, res) => {
         }
         ApiResponseModel(res, SUCCESS, UPDATESETTINGS, settings);
     } catch (error) {
-        ApiResponseModel(res, SETTINGSERROR, error.message);
+        ApiResponseModel(res, ERROR, SETTINGSERROR, error.message);
     }
 }
     
