@@ -52,7 +52,7 @@ const AuthStore = create((set, get) => ({
         address: '',
         branch: '',
         salary: null,
-        sendEmail: false
+        sendEmail: 0
     },
     users: [],
     onlineUsers: [],

@@ -100,12 +100,12 @@ class Login extends React.Component {
                         ))}
                     </div>
                     <div className="login-container__image">
-                        <img src={bg_image1} className="login-container__image-one"/>
-                        <img src={bg_image2} className="login-container__image-two"/>
-                        <img src={bg_image3} className="login-container__image-three"/>
+                        <img loading="lazy" fetchPriority="high" src={bg_image1} className="login-container__image-one"/>
+                        <img loading="lazy" fetchPriority="high" src={bg_image2} className="login-container__image-two"/>
+                        <img loading="lazy" fetchPriority="high" src={bg_image3} className="login-container__image-three"/>
                     </div>
                     <div className="login-container__credentials">
-                        <img src={bg_logo}>
+                        <img loading="lazy" fetchPriority="high" src={bg_logo}>
                         </img>
                         <p className="login-container__mobile-heading"> Vaporya POS System </p>    
                         <form onSubmit={(e) => this.handleLogin(e)}>
