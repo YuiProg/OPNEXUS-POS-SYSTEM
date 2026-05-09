@@ -63,43 +63,44 @@ const SettingsStore = create((set, get) => ({
     try {
       const payload = {
         inventorySettings: {
-          lowStockThreshold: inputs.lowStockThreshold,
+          lowStockThreshold: inputs.lowStockThreshold > 0 ? inputs.lowStockThreshold : settings.data.inventorySettings.lowStockThreshold,
           inputLength: {
-            productName: inputs.productNameMax,
-            quantity: inputs.quantityMax,
-            price: inputs.priceMax
+            productName: inputs.productNameMax > 0 ? inputs.productNameMax : settings.data.inventorySettings.inputLength.productName,
+            quantity: inputs.quantityMax > 0 ? inputs.quantityMax : settings.data.inventorySettings.inputLength.quantity,
+            price: inputs.priceMax > 0 ? inputs.priceMax : settings.data.inventorySettings.inputLength.price
           }
         },
         categorySettings: {
           inputLength: {
-            categoryName: inputs.categoryNameMax
+            categoryName: inputs.categoryNameMax > 0 ? inputs.categoryNameMax : settings.data.categorySettings.inputLength.categoryName
           }
         },
         staffManagementSettings: {
           inputLength: {
-            username: inputs.staffUsernameMax,
-            password: inputs.staffPasswordMax,
-            firstName: inputs.staffFirstNameMax,
-            middleName: inputs.staffMiddleNameMax,
-            lastName: inputs.staffLastNameMax,
-            address: inputs.staffAddressMax,
-            salary: inputs.staffSalaryMax
+            username: inputs.staffUsernameMax > 0 ? inputs.staffUsernameMax : settings.data.staffManagementSettings.inputLength.username,
+            password: inputs.staffPasswordMax > 0 ? inputs.staffPasswordMax : settings.data.staffManagementSettings.inputLength.password,
+            firstName: inputs.staffFirstNameMax > 0 ? inputs.staffFirstNameMax : settings.data.staffManagementSettings.inputLength.firstName,
+            middleName: inputs.staffMiddleNameMax > 0 ? inputs.staffMiddleNameMax : settings.data.staffManagementSettings.inputLength.middleName,
+            lastName: inputs.staffLastNameMax > 0 ? inputs.staffLastNameMax : settings.data.staffManagementSettings.inputLength.lastName,
+            address: inputs.staffAddressMax > 0 ? inputs.staffAddressMax : settings.data.staffManagementSettings.inputLength.address,
+            salary: inputs.staffSalaryMax > 0 ? inputs.staffSalaryMax : settings.data.staffManagementSettings.inputLength.salary
           }
         },
         VipManagementSettings: {
           inputLength: {
-            firstName: inputs.vipFirstNameMax,
-            middleName: inputs.vipMiddleNameMax,
-            lastName: inputs.vipLastNameMax,
-            points: inputs.vipPointsMax
+            firstName: inputs.vipFirstNameMax > 0 ? inputs.vipFirstNameMax : settings.data.VipManagementSettings.inputLength.firstName,
+            middleName: inputs.vipMiddleNameMax > 0 ? inputs.vipMiddleNameMax : settings.data.VipManagementSettings.inputLength.middleName,
+            lastName: inputs.vipLastNameMax > 0 ? inputs.vipLastNameMax : settings.data.VipManagementSettings.inputLength.lastName,
+            points: inputs.vipPointsMax > 0 ? inputs.vipPointsMax : settings.data.VipManagementSettings.inputLength.points
           }
         },
         branchSettings: {
           inputLength: {
-            branchLocation: inputs.branchNameMax
+            branchLocation: inputs.branchNameMax > 0 ? inputs.branchNameMax : settings.data.branchSettings.inputLength.branchLocation
           }
         }
       };
+      console.log(payload);
       const response = await axiosInstance.post(UPDATESETTINGS.replace(':id', settings.data._id), payload);
       console.log(response.data);
     } catch (error) {
