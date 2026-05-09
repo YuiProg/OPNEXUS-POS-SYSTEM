@@ -11,20 +11,7 @@ class SettingsPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedOption: "Inventory",
-            settingsState: null
-        }
-    }
-
-    componentDidMount() {
-        this.unsubscribe = SettingsStore.subscribe((state) => {
-            console.log(state);
-        });
-    }
-
-    componentWillUnmount() {
-        if (this.unsubscribe) {
-            this.unsubscribe();
+            selectedOption: "Inventory"
         }
     }
 
@@ -34,8 +21,9 @@ class SettingsPage extends React.Component {
 
     renderSettingsContent = () => {
         const { selectedOption } = this.state;
-        const { setInputs, settings } = SettingsStore.getState();
-
+        const { setInputs } = SettingsStore.getState();
+        const { settingsProps } = this.props;
+        console.log(settingsProps);
         switch (selectedOption) {
             case "Inventory":
                 return (
@@ -45,7 +33,7 @@ class SettingsPage extends React.Component {
                         <InputField
                             number
                             onChange={(value) => setInputs("lowStockThreshold", value)}
-                            value={settings ? settings.inventorySettings?.lowStockThreshold : 0}
+                            placeholder={`Default is ${settingsProps && settingsProps.inventorySettings?.lowStockThreshold}`}
                         />
                     </InputRow>
                     <h4 className="option-subtitle">Maximum Character Limits for Items</h4>
@@ -53,14 +41,17 @@ class SettingsPage extends React.Component {
                         <InputField
                             number
                             onChange={(value) => setInputs("productNameMax", value)}
+                            placeholder={`Default is ${settingsProps && settingsProps.inventorySettings?.inputLength.productName}`}
                         />
                         <InputField
                             number
                             onChange={(value) => setInputs("quantityMax", value)}
+                            placeholder={`Default is ${settingsProps && settingsProps.inventorySettings?.inputLength.quantity}`}
                         />
                         <InputField
                             number
                             onChange={(value) => setInputs("priceMax", value)}
+                            placeholder={`Default is ${settingsProps && settingsProps.inventorySettings?.inputLength.price}`}
                         />
                     </InputRow>
                 </div>
@@ -77,6 +68,7 @@ class SettingsPage extends React.Component {
                         <InputField
                             number
                             onChange={(value) => setInputs("categoryNameMax", value)}
+                            placeholder={`Default is ${settingsProps && settingsProps.categorySettings?.inputLength.categoryName}`}
                         />
                     </InputRow>
                 </div>
@@ -93,34 +85,41 @@ class SettingsPage extends React.Component {
                         <InputField
                             number
                             onChange={(value) => setInputs("staffUsernameMax", value)}
+                            placeholder={`Default is ${settingsProps && settingsProps.staffManagementSettings?.inputLength.username}`}
                         />
                         <InputField
                             number
                             onChange={(value) => setInputs("staffPasswordMax", value)}
+                            placeholder={`Default is ${settingsProps && settingsProps.staffManagementSettings?.inputLength.password}`}
                         />
                     </InputRow>
                     <InputRow gap={10} titles={["First Name", "Middle Name", "Last Name"]}>
                         <InputField
                             number
                             onChange={(value) => setInputs("staffFirstNameMax", value)}
+                            placeholder={`Default is ${settingsProps && settingsProps.staffManagementSettings?.inputLength.firstName}`}
                         />
                         <InputField
                             number
                             onChange={(value) => setInputs("staffMiddleNameMax", value)}
+                            placeholder={`Default is ${settingsProps && settingsProps.staffManagementSettings?.inputLength.middleName}`}
                         />
                         <InputField
                             number
                             onChange={(value) => setInputs("staffLastNameMax", value)}
+                            placeholder={`Default is ${settingsProps && settingsProps.staffManagementSettings?.inputLength.lastName}`}
                         />
                     </InputRow>
                     <InputRow gap={10} titles={["Address", "Salary"]}>
                         <InputField
                             number
                             onChange={(value) => setInputs("staffAddressMax", value)}
+                            placeholder={`Default is ${settingsProps && settingsProps.staffManagementSettings?.inputLength.address}`}
                         />
                         <InputField
                             number
                             onChange={(value) => setInputs("staffSalaryMax", value)}
+                            placeholder={`Default is ${settingsProps && settingsProps.staffManagementSettings?.inputLength.salary}`}
                         />
                     </InputRow>
                 </div>
@@ -140,14 +139,17 @@ class SettingsPage extends React.Component {
                         <InputField
                             number
                             onChange={(value) => setInputs("vipFirstNameMax", value)}
+                            placeholder={`Default is ${settingsProps && settingsProps.VipManagementSettings?.inputLength.firstName}`}
                         />
                         <InputField
                             number
                             onChange={(value) => setInputs("vipMiddleNameMax", value)}
+                            placeholder={`Default is ${settingsProps && settingsProps.VipManagementSettings?.inputLength.middleName}`}
                         />
                         <InputField
                             number
                             onChange={(value) => setInputs("vipLastNameMax", value)}
+                            placeholder={`Default is ${settingsProps && settingsProps.VipManagementSettings?.inputLength.lastName}`}
                         />
                     </InputRow>
                     <InputRow gap={10} titles={["Require Email", "Require Phone Number"]}>
@@ -158,6 +160,7 @@ class SettingsPage extends React.Component {
                         <InputField
                             number
                             onChange={(value) => setInputs("vipPointsMax", value)}
+                            placeholder={`Default is ${settingsProps && settingsProps.VipManagementSettings?.inputLength.points}`}
                         />
                     </InputRow>
                 </div>
@@ -174,6 +177,7 @@ class SettingsPage extends React.Component {
                         <InputField
                             number
                             onChange={(value) => setInputs("branchNameMax", value)}
+                            placeholder={`Default is ${settingsProps && settingsProps.branchSettings?.inputLength?.branchLocation}`}
                         />
                     </InputRow>
                 </div>

@@ -86,7 +86,7 @@ const SettingsStore = create((set, get) => ({
             salary: inputs.staffSalaryMax
           }
         },
-        vipManagementSettings: {
+        VipManagementSettings: {
           inputLength: {
             firstName: inputs.vipFirstNameMax,
             middleName: inputs.vipMiddleNameMax,
@@ -96,7 +96,7 @@ const SettingsStore = create((set, get) => ({
         },
         branchSettings: {
           inputLength: {
-            branchName: inputs.branchNameMax
+            branchLocation: inputs.branchNameMax
           }
         }
       };

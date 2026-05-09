@@ -157,7 +157,8 @@ export default function App() {
     getCategories
   } = CategoryStore();
   const {
-    getSettings
+    getSettings,
+    settings
   } = SettingsStore();
 
   const { SERVER_ERROR, PROD_FAIL } = Strings;
@@ -1345,7 +1346,7 @@ export default function App() {
                 <Navigate to="/login" replace />
               ) : (
                 <Sidebar user={AuthUser}>
-                  <SettingsPage />
+                  <SettingsPage settingsProps={settings.data || {}} />
                 </Sidebar>
               )
             }
