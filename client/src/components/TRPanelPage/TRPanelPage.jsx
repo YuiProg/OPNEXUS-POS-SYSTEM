@@ -2,6 +2,8 @@ import React from 'react';
 import './TRPanelPage.css';
 import DropDown from '../TRDropDown/Dropdown';
 import PropTypes from 'prop-types';
+import Button from '../TRButton/Button';
+import { InputRow } from '../TRInputForm/TRInputForm';
 
 export class RightPanel extends React.Component {
   render() {
@@ -35,7 +37,10 @@ export class PanelPage extends React.Component {
       hasBranch,
       hasTableFilters,
       filtersOpen,
-      rightPanel  
+      rightPanel,
+      onClickNext,
+      onClickBack,
+      hasStepper
     } = this.props;
 
     // const childrenArray = React.Children.toArray(this.props.children);
@@ -49,6 +54,7 @@ export class PanelPage extends React.Component {
     );
 
     return (
+      <>
       <div className="tr-panel-container">
         <div className="tr-panel-top-contents">
           <div className="tr-panel-header">
@@ -80,15 +86,22 @@ export class PanelPage extends React.Component {
           <div className="tr-panel-main">
             {mainChildren}
           </div>
-
-          {/* This is now a sidebar on the right */}
           {filtersOpen && hasTableFilters && (
             <div className="tr-panel-right-wrapper">
               {rightPanel}
             </div>
           )}
         </div>
+        {hasStepper && (
+        <div className='tr-panel-stepper-container'>
+          <InputRow gap={15}>
+            <Button error text="Back" maxWidth onClick={() => onClickBack()}/>
+            <Button success text="Next" maxWidth onClick={() => onClickNext()}/>
+          </InputRow>
+        </div>
+        )}
       </div>
+      </>
     );
   }
 }

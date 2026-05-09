@@ -23,7 +23,7 @@ class Toggle extends React.Component {
 
   render() {
     const isActive = this.state.status === "ACTIVE";
-    const {isChecked} = this.props;
+    const { isChecked, hideLabel } = this.props;
     return (
       <div className="toggle-container">
         <div className="toggle-btn">
@@ -35,9 +35,11 @@ class Toggle extends React.Component {
             />
             <span className="toggle-switch"></span>
           </label>
-          <p className={`toggle-subtitle ${isActive ? 'active' : 'inactive'}`}>
-            {isActive ? "Active" : "Inactive"}
-          </p>
+          {!hideLabel && (
+            <p className={`toggle-subtitle ${isActive ? 'active' : 'inactive'}`}>
+              {isActive ? "Active" : "Inactive"}
+            </p>
+          )}
         </div>
       </div>
     );

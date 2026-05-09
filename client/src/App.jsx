@@ -41,6 +41,7 @@ import CustomerLogin from "./pages/CustomerPage/CustomerLogIn.jsx";
 import viewChangePasswordModal from "./pages/AuthPage/ChangePasswordModal.jsx";
 import SettingsPage from "./pages/Settings/Settings.jsx";
 import Toggle from "./components/TRToggle/Toggle.jsx";
+import SettingsStore from "./context/SettingsStore.js";
 
 
 const ServerError = lazy(
@@ -155,20 +156,26 @@ export default function App() {
     categories,
     getCategories
   } = CategoryStore();
+  const {
+    getSettings,
+    settings,
+    settingsLoading
+  } = SettingsStore();
 
   const { SERVER_ERROR, PROD_FAIL } = Strings;
   //const [currentRole, setCurrentRole] = useState("");
   const [deleteBranch, setDeleteBranch] = useState(false);
 
   useEffect(() => {
+    getSettings();
     checkAuth();
     fetchUsers();
     getCategories();
-  }, [checkAuth, fetchUsers, getCategories]);
+  }, [getSettings, checkAuth, fetchUsers, getCategories]);
 
   //BUG PAG NAG LOG OUT HINDI NAG REREDIRECT TO /LOGIN
 
-  if (AuthLoading)
+  if (AuthLoading || settingsLoading)
     return (
       <div>
         <Loading />
@@ -366,7 +373,7 @@ export default function App() {
             </InputRow>
           ) : (
           <InputRow titles={["Send Email?"]}>
-            <Toggle currentStatus="INACTIVE" onToggle={(e) => setInput("sendEmail", e === 'INACTIVE' ? false : true)}/>
+            <Toggle hideLabel currentStatus="INACTIVE" onToggle={(e) => setInput("sendEmail", e === 'INACTIVE' ? 0 : 1)}/>
           </InputRow>
           )}
         </InputForm>
@@ -1340,7 +1347,7 @@ export default function App() {
                 <Navigate to="/login" replace />
               ) : (
                 <Sidebar user={AuthUser}>
-                  <SettingsPage />
+                  <SettingsPage settingsProps={settings.data || {}} />
                 </Sidebar>
               )
             }
