@@ -158,7 +158,8 @@ export default function App() {
   } = CategoryStore();
   const {
     getSettings,
-    settings
+    settings,
+    settingsLoading
   } = SettingsStore();
 
   const { SERVER_ERROR, PROD_FAIL } = Strings;
@@ -174,7 +175,7 @@ export default function App() {
 
   //BUG PAG NAG LOG OUT HINDI NAG REREDIRECT TO /LOGIN
 
-  if (AuthLoading)
+  if (AuthLoading || settingsLoading)
     return (
       <div>
         <Loading />

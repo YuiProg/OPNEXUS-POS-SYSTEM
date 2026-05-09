@@ -31,6 +31,7 @@ const SettingsStore = create((set, get) => ({
     branchNameMax: 0
   },
   settings: null,
+  settingsLoading: false,
 
   setInputs : (name, value) => {
     const inputs = get().inputs;
@@ -49,12 +50,15 @@ const SettingsStore = create((set, get) => ({
   },
 
   getSettings : async() => {
+    set({settingsLoading: true});
     try {
       const response = await axiosInstance.get(GETSETTINGS);
       set({settings: response.data});
       console.log(response.data);
     } catch (error) {
       console.log(error);
+    } finally {
+      set({settingsLoading: false});
     }
   },
 
