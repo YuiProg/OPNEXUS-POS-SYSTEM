@@ -90,12 +90,12 @@ const SettingsStore = create((set, get) => ({
             salary: inputs.staffSalaryMax > 0 ? inputs.staffSalaryMax : settings.data.staffManagementSettings.inputLength.salary
           }
         },
-        VipManagementSettings: {
+        vipManagementSettings: {
           inputLength: {
-            firstName: inputs.vipFirstNameMax > 0 ? inputs.vipFirstNameMax : settings.data.VipManagementSettings.inputLength.firstName,
-            middleName: inputs.vipMiddleNameMax > 0 ? inputs.vipMiddleNameMax : settings.data.VipManagementSettings.inputLength.middleName,
-            lastName: inputs.vipLastNameMax > 0 ? inputs.vipLastNameMax : settings.data.VipManagementSettings.inputLength.lastName,
-            points: inputs.vipPointsMax > 0 ? inputs.vipPointsMax : settings.data.VipManagementSettings.inputLength.points
+            firstName: Number(inputs.vipFirstNameMax > 0 ? inputs.vipFirstNameMax : settings.data.vipManagementSettings.inputLength.firstName),
+            middleName: inputs.vipMiddleNameMax > 0 ? inputs.vipMiddleNameMax : settings.data.vipManagementSettings.inputLength.middleName,
+            lastName: inputs.vipLastNameMax > 0 ? inputs.vipLastNameMax : settings.data.vipManagementSettings.inputLength.lastName,
+            points: inputs.vipPointsMax > 0 ? inputs.vipPointsMax : settings.data.vipManagementSettings.inputLength.points
           }
         },
         branchSettings: {

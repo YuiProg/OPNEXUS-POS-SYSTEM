@@ -81,7 +81,7 @@ const SystemSettingsSchema = new mongoose.Schema({
       }
     }
   },
-  VipManagementSettings: {
+  vipManagementSettings: {
     enabled: {
       type: Boolean,
       default: true

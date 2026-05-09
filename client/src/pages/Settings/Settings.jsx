@@ -151,19 +151,19 @@ class SettingsPage extends React.Component {
                         <InputField
                             number
                             onChange={(value) => setInputs("vipFirstNameMax", value)}
-                            placeholder={`Default is ${settingsProps && settingsProps.VipManagementSettings?.inputLength.firstName}`}
+                            placeholder={`Default is ${settingsProps && settingsProps.vipManagementSettings?.inputLength.firstName}`}
                             value={inputs.vipFirstNameMax > 0 ? inputs.vipFirstNameMax : ""}
                         />
                         <InputField
                             number
                             onChange={(value) => setInputs("vipMiddleNameMax", value)}
-                            placeholder={`Default is ${settingsProps && settingsProps.VipManagementSettings?.inputLength.middleName}`}
+                            placeholder={`Default is ${settingsProps && settingsProps.vipManagementSettings?.inputLength.middleName}`}
                             value={inputs.vipMiddleNameMax > 0 ? inputs.vipMiddleNameMax : ""}
                         />
                         <InputField
                             number
                             onChange={(value) => setInputs("vipLastNameMax", value)}
-                            placeholder={`Default is ${settingsProps && settingsProps.VipManagementSettings?.inputLength.lastName}`}
+                            placeholder={`Default is ${settingsProps && settingsProps.vipManagementSettings?.inputLength.lastName}`}
                             value={inputs.vipLastNameMax > 0 ? inputs.vipLastNameMax : ""}
                         />
                     </InputRow>
@@ -175,7 +175,7 @@ class SettingsPage extends React.Component {
                         <InputField
                             number
                             onChange={(value) => setInputs("vipPointsMax", value)}
-                            placeholder={`Default is ${settingsProps && settingsProps.VipManagementSettings?.inputLength.points}`}
+                            placeholder={`Default is ${settingsProps && settingsProps.vipManagementSettings?.inputLength.points}`}
                             value={inputs.vipPointsMax > 0 ? inputs.vipPointsMax : ""}
                         />
                     </InputRow>
