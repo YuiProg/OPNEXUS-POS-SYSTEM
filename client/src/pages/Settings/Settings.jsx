@@ -6,6 +6,16 @@ import { PanelPage } from "../../components/TRPanelPage/TRPanelPage";
 import Toggle from "../../components/TRToggle/Toggle";
 import SettingsStore from "../../context/SettingsStore";
 import Button from "../../components/TRButton/Button";
+import { ModalYesNo } from "../../TRModal/Modal"
+
+const { 
+    yesNoSettingsApply,
+    setYesNoSettingsApply,
+    resetSettings, 
+    setSettings, 
+    setInputs, 
+    inputs 
+} = SettingsStore.getState();
 
 class SettingsPage extends React.Component {
     constructor(props) {
@@ -21,9 +31,7 @@ class SettingsPage extends React.Component {
 
     renderSettingsContent = () => {
         const { selectedOption } = this.state;
-        const { setInputs, inputs } = SettingsStore.getState();
         const { settingsProps } = this.props;
-        console.log(settingsProps);
         switch (selectedOption) {
             case "Inventory":
                 return (
@@ -203,6 +211,20 @@ class SettingsPage extends React.Component {
                 return null;
         }
     }
+    yesNoSettingsModal = () => {
+        return (
+            <ModalYesNo
+                message="Apply Changes"
+                message2="Are you sure you want to apply these changes?"
+                onClose={() => setYesNoSettingsApply(false)}
+                onYes={() => {
+                    setYesNoSettingsApply(false);
+                    setSettings();
+                }}
+            />
+        );
+    }
+
 
     render () {
         const settingsOptions = [
@@ -222,7 +244,6 @@ class SettingsPage extends React.Component {
                 title: "Branches"
             }
         ];
-        const { resetSettings, setSettings } = SettingsStore.getState();
 
         return (
             <PanelPage 
@@ -246,6 +267,8 @@ class SettingsPage extends React.Component {
                     <div className="settings-main">
                         {this.renderSettingsContent()}
                         <div className="settings-actions">
+                            {yesNoSettingsApply && this.yesNoSettingsModal()}
+
                             <Button 
                                 text="Reset to Defaults"
                                 cancel
@@ -254,8 +277,10 @@ class SettingsPage extends React.Component {
                             <Button 
                                 text="Apply Changes"
                                 error
-                                onClick={() => setSettings()}
+                                onClick={() => setYesNoSettingsApply(true)}
+                                
                             />
+
                         </div>
                     </div>
                 </div>

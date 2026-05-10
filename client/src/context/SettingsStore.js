@@ -32,12 +32,18 @@ const SettingsStore = create((set, get) => ({
   },
   settings: null,
   settingsLoading: false,
+  yesNoSettingsApply: false,
+  yesNoSettingsReset: false,
+
+  setYesNoSettingsApply: (val) => set({yesNoSettingsApply: val}),
+  setYesNoSettingsReset: (val) => set({yesNoSettingsReset: val}),
 
   setInputs : (name, value) => {
     const inputs = get().inputs;
     inputs[name] = value;
     set({inputs: inputs});
   },
+
   resetSettings : async() => {
     try {
       const response = await axiosInstance.post(RESETSETTINGS);
