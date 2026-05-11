@@ -42,6 +42,7 @@ import viewChangePasswordModal from "./pages/AuthPage/ChangePasswordModal.jsx";
 import SettingsPage from "./pages/Settings/Settings.jsx";
 import Toggle from "./components/TRToggle/Toggle.jsx";
 import SettingsStore from "./context/SettingsStore.js";
+import { yesNoSettingsApplyModal, yesNoSettingsResetModal } from "./pages/Settings/ApplySettingsModal.jsx";
 
 
 const ServerError = lazy(
@@ -157,6 +158,8 @@ export default function App() {
     getCategories
   } = CategoryStore();
   const {
+    yesNoSettingsReset,
+    yesNoSettingsApply,
     getSettings,
     settings,
     settingsLoading
@@ -1190,6 +1193,8 @@ export default function App() {
         {showNewCategoryModal && newCategoryModal()}
         {showConfirmDeleteCategory && deleteCategoryConfirm()}
         {changePasswordModal && viewChangePasswordModal()}
+        {yesNoSettingsApply && yesNoSettingsApplyModal()}
+        {yesNoSettingsReset && yesNoSettingsResetModal()}
       </>
     );
   };
