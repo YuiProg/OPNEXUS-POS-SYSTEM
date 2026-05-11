@@ -11,8 +11,7 @@ import { ModalYesNo } from "../../TRModal/Modal"
 const { 
     yesNoSettingsApply,
     setYesNoSettingsApply,
-    resetSettings, 
-    setSettings, 
+    setYesNoSettingsReset,
     setInputs, 
     inputs 
 } = SettingsStore.getState();
@@ -211,20 +210,6 @@ class SettingsPage extends React.Component {
                 return null;
         }
     }
-    yesNoSettingsModal = () => {
-        return (
-            <ModalYesNo
-                message="Apply Changes"
-                message2="Are you sure you want to apply these changes?"
-                onClose={() => setYesNoSettingsApply(false)}
-                onYes={() => {
-                    setYesNoSettingsApply(false);
-                    setSettings();
-                }}
-            />
-        );
-    }
-
 
     render () {
         const settingsOptions = [
@@ -272,7 +257,7 @@ class SettingsPage extends React.Component {
                             <Button 
                                 text="Reset to Defaults"
                                 cancel
-                                onClick={() => resetSettings()}
+                                onClick={() => setYesNoSettingsReset(true)}
                             />
                             <Button 
                                 text="Apply Changes"
@@ -280,7 +265,6 @@ class SettingsPage extends React.Component {
                                 onClick={() => setYesNoSettingsApply(true)}
                                 
                             />
-
                         </div>
                     </div>
                 </div>
