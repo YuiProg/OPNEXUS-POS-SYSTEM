@@ -76,7 +76,11 @@
 .settings-main {
   width: 100%;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   background-color: #1a1a1a;
+  gap: 20px;
   border-radius: 8px;
   overflow-y: auto;
 }

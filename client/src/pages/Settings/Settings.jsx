@@ -253,7 +253,6 @@ class SettingsPage extends React.Component {
                         {this.renderSettingsContent()}
                         <div className="settings-actions">
                             {yesNoSettingsApply && this.yesNoSettingsModal()}
-
                             <Button 
                                 text="Reset to Defaults"
                                 cancel
@@ -263,7 +262,6 @@ class SettingsPage extends React.Component {
                                 text="Apply Changes"
                                 error
                                 onClick={() => setYesNoSettingsApply(true)}
-                                
                             />
                         </div>
                     </div>
