@@ -97,13 +97,6 @@ class VipManagement extends React.Component {
             CB: () => this.showVipModal(),
             buttonInfo: 'NEW VIP',
             hasDelete: user.role.toLowerCase() === 'admin',
-            search: (
-                <InputField
-                    placeholder="Search item"
-                    isSearch
-                    onEnterDown={value => console.log(value)} //todo: add search functionality
-                />
-            ),
             deleteBtnInfo: 'DISABLE VIP',
             CBD: (e) => this.disableManyConfirm(e)
         };

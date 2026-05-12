@@ -3,10 +3,7 @@ import SettingsStore from '../../context/SettingsStore';
 import { ModalYesNo } from '../../TRModal/Modal';
 
 export const yesNoSettingsApplyModal = () => {
-  const { 
-    setYesNoSettingsApply,
-    setSettings 
-  } = SettingsStore.getState();
+  const { setYesNoSettingsApply, setSettings } = SettingsStore.getState();
   return (
     <ModalYesNo
         message="Apply Changes"

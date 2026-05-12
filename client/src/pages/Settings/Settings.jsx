@@ -9,7 +9,6 @@ import Button from "../../components/TRButton/Button";
 import { ModalYesNo } from "../../TRModal/Modal"
 
 const { 
-    yesNoSettingsApply,
     setYesNoSettingsApply,
     setYesNoSettingsReset,
     setInputs, 
@@ -252,7 +251,6 @@ class SettingsPage extends React.Component {
                     <div className="settings-main">
                         {this.renderSettingsContent()}
                         <div className="settings-actions">
-                            {yesNoSettingsApply && this.yesNoSettingsModal()}
                             <Button 
                                 text="Reset to Defaults"
                                 cancel

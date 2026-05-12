@@ -16,7 +16,6 @@ class Inventory extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchValue: '',
       isAdmin: false,
       showModal: false,
       isOpen: ModalStore.getState().isOpen,
@@ -55,10 +54,6 @@ class Inventory extends React.Component {
     const { unsubscribeToProducts } = ProductStore.getState();
     unsubscribeToProducts();
     if (this.unsubscribeModal) this.unsubscribeModal();
-  }
-
-  handleTableSearch = (value) => {
-    this.setState({ searchValue: value });
   }
 
   showDeleteModal = (item) => {
@@ -142,13 +137,6 @@ class Inventory extends React.Component {
       hasButton: this.state.isAdmin,
       CB: () => ModalStore.getState().setModal(true),
       buttonInfo: "NEW ITEM",
-      search: (
-        <InputField
-          placeholder="Search item"
-          isSearch
-          onEnterDown={value => this.handleTableSearch(value)}
-        />
-      ),
       hasDelete: true,
       deleteBtnInfo: "Delete",
       CBD: (e) => this.showConfirmDelModal(e)
@@ -175,7 +163,6 @@ class Inventory extends React.Component {
           hasSelect={this.state.isAdmin}
           onDelete={(item) => this.showDeleteModal(item)}
           onEdit={(item) => this.showEditModal(item)}
-          search={this.state.searchValue}
           isLoading={fetchLoading}
         />
         {/* {this.state.filtersOpen && (
