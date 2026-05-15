@@ -13,7 +13,7 @@ const {
     setYesNoSettingsApply,
     setYesNoSettingsReset,
     setInputs, 
-    inputs 
+    inputs,
 } = SettingsStore.getState();
 
 class SettingsPage extends React.Component {
@@ -31,6 +31,7 @@ class SettingsPage extends React.Component {
     renderSettingsContent = () => {
         const { selectedOption } = this.state;
         const { settingsProps } = this.props;
+        console.log(settingsProps.categorySettings?.enabled === true ? 'ACTIVE' : 'INACTIVE');
         switch (selectedOption) {
             case "Inventory":
                 return (
@@ -72,7 +73,7 @@ class SettingsPage extends React.Component {
                 <div className="settings-content">
                     <h2 className="option-title">Categories Settings</h2>
                     <InputRow titles={["Enable"]}>
-                        <Toggle hideLabel/>
+                        <Toggle hideLabel currentStatus={settingsProps.categorySettings?.enabled === true ? 'ACTIVE' : 'INACTIVE'} onToggle={value => setInputs('categoryEnabled', value === 'ACTIVE' ? true : false)}/>
                     </InputRow>
                     <h4 className="option-subtitle">Maximum Character Limits for Categories</h4>
                     <InputRow gap={10} titles={["Category Name"]}>
@@ -90,7 +91,7 @@ class SettingsPage extends React.Component {
                 <div className="settings-content">
                     <h2 className="option-title">Staff Management Settings</h2>
                     <InputRow titles={["Enable"]}>
-                        <Toggle hideLabel/>
+                        <Toggle currentStatus={settingsProps.staffManagementSettings?.enabled === true ? 'ACTIVE' : 'INACTIVE'} hideLabel onToggle={value => setInputs('staffEnabled', value === 'ACTIVE' ? true : false)}/>
                     </InputRow>
                     <h4 className="option-subtitle">Maximum Character Limits for Staff Management</h4>
                     <InputRow gap={10} titles={["Username", "Password"]}>
@@ -148,7 +149,7 @@ class SettingsPage extends React.Component {
                 <div className="settings-content">
                     <h2 className="option-title">VIP Management Settings</h2>
                     <InputRow titles={["Enable"]}>
-                        <Toggle hideLabel/>
+                        <Toggle hideLabel currentStatus={settingsProps.vipManagementSettings?.enabled === true ? 'ACTIVE' : 'INACTIVE'} onToggle={value => setInputs('vipEnabled', value === 'ACTIVE' ? true : false)}/>
                     </InputRow>
                     <InputRow titles={["Enable VIP ID Input Field"]}>
                         <Toggle hideLabel/>
@@ -193,7 +194,7 @@ class SettingsPage extends React.Component {
                 <div className="settings-content">
                     <h2 className="option-title">Branches Settings</h2>
                     <InputRow titles={["Enable"]}>
-                        <Toggle hideLabel/>
+                        <Toggle hideLabel onToggle={value => setInputs('branchEnabled', value === 'ACTIVE' ? true : false)}/>
                     </InputRow>
                     <h4 className="option-subtitle">Maximum Character Limits for Branches</h4>
                     <InputRow gap={10} titles={["Branch Name"]}>
