@@ -1352,7 +1352,7 @@ export default function App() {
                 <Navigate to="/login" replace />
               ) : (
                 <Sidebar user={AuthUser}>
-                  <SettingsPage settingsProps={settings.data || {}} />
+                  <SettingsPage settingsProps={settings?.data || {}} />
                 </Sidebar>
               )
             }

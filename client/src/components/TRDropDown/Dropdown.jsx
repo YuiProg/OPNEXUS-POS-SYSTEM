@@ -4,6 +4,10 @@ import "./Dropdown.css";
 import { Warehouse, ChevronDown } from "lucide-react";
 import PropTypes from "prop-types";
 
+/**
+ * @class
+ * @component
+ */
 class DropdownPortal extends React.Component {
   constructor(props) {
     super(props);
