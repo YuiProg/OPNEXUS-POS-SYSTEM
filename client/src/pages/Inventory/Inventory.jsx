@@ -11,6 +11,7 @@ import ProductStore from "../../context/ProductStore";
 import toast from "react-hot-toast";
 import BranchStore from "../../context/BranchStore";
 import { PanelPage, RightPanel } from "../../components/TRPanelPage/TRPanelPage";
+import { Link } from "react-router-dom";
 
 class Inventory extends React.Component {
   constructor(props) {
@@ -181,6 +182,7 @@ class Inventory extends React.Component {
         {/* {this.state.filtersOpen && (
           this.rightSideFilters()
         )} */}
+        <Link to="/newproduct">TEST</Link>
       </PanelPage>
     );
   }
