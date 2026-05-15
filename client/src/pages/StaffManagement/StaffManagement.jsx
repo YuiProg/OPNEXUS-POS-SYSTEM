@@ -13,6 +13,7 @@ import ProductStore from "../../context/ProductStore";
 import ActiveStaffs from "./ActiveStaffs/ActiveStaffs";
 import toast from "react-hot-toast";
 import { PanelPage, RightPanel } from "../../components/TRPanelPage/TRPanelPage";
+import { Link } from "react-router-dom";
 
 class StaffManagement extends React.Component {
     constructor (props) {
@@ -144,6 +145,7 @@ class StaffManagement extends React.Component {
                         <ActiveStaffs staffData={onlineUsers}/>
                     </div>
                 </div>
+                <Link to="/addstaff">TEST</Link>
             </PanelPage>
         );
     }
