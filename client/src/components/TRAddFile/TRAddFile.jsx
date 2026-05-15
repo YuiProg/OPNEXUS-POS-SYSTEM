@@ -1,7 +1,10 @@
 import React from "react";
 import './TRAddFile.css';
 import { Image } from 'lucide-react';
-
+/**
+ * @class
+ * @component
+ */
 class TRAddfile extends React.Component {
     constructor (props) {
         super(props);

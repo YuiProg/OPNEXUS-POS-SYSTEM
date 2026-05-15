@@ -5,6 +5,10 @@ import Button from "../TRButton/Button";
 
 
 //dito lalagay mga inputfields parang panel tong una
+/**
+ * @class
+ * @component
+ */
 export class TRInputFormPanel extends React.Component {
     constructor(props) {
         super(props);

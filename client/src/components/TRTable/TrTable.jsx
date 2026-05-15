@@ -13,7 +13,10 @@ import {
 import PropTypes from "prop-types";
 import Button from "../TRButton/Button";
 
-
+/**
+ * @class
+ * @component
+ */
 export class Table extends React.Component {
   constructor(props) {
     super(props);

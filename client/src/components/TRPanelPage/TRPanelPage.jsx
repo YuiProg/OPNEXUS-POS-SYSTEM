@@ -4,7 +4,10 @@ import DropDown from '../TRDropDown/Dropdown';
 import PropTypes from 'prop-types';
 import Button from '../TRButton/Button';
 import { InputRow } from '../TRInputForm/TRInputForm';
-
+/**
+ * @class
+ * @component
+ */
 export class RightPanel extends React.Component {
   render() {
     return (

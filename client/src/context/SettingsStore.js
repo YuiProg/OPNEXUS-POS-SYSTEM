@@ -56,7 +56,11 @@ const SettingsStore = create((set, get) => ({
       vipMiddleNameMax: 0,
       vipLastNameMax: 0,
       vipPointsMax: 0,
-      branchNameMax: 0
+      branchNameMax: 0,
+      categoryEnabled: null,
+      staffEnabled: null,
+      branchEnabled: null,
+      vipEnabled: null,
     },
   }),
 
@@ -103,11 +107,13 @@ const SettingsStore = create((set, get) => ({
           }
         },
         categorySettings: {
+          enabled: inputs.categoryEnabled,
           inputLength: {
             categoryName: inputs.categoryNameMax > 0 ? inputs.categoryNameMax : settings.data.categorySettings.inputLength.categoryName
           }
         },
         staffManagementSettings: {
+          enabled: inputs.staffEnabled,
           inputLength: {
             username: inputs.staffUsernameMax > 0 ? inputs.staffUsernameMax : settings.data.staffManagementSettings.inputLength.username,
             password: inputs.staffPasswordMax > 0 ? inputs.staffPasswordMax : settings.data.staffManagementSettings.inputLength.password,
@@ -119,6 +125,7 @@ const SettingsStore = create((set, get) => ({
           }
         },
         vipManagementSettings: {
+          enabled: inputs.vipEnabled,
           inputLength: {
             firstName: Number(inputs.vipFirstNameMax > 0 ? inputs.vipFirstNameMax : settings.data.vipManagementSettings.inputLength.firstName),
             middleName: inputs.vipMiddleNameMax > 0 ? inputs.vipMiddleNameMax : settings.data.vipManagementSettings.inputLength.middleName,
@@ -127,15 +134,14 @@ const SettingsStore = create((set, get) => ({
           }
         },
         branchSettings: {
+          enabled: inputs.branchEnabled,
           inputLength: {
             branchLocation: inputs.branchNameMax > 0 ? inputs.branchNameMax : settings.data.branchSettings.inputLength.branchLocation
           }
         }
       };
-      console.log(payload);
       const response = await axiosInstance.post(UPDATESETTINGS.replace(':id', settings.data._id), payload);
       set({settings: response.data});
-      console.log(response.data);
     } catch (error) {
       console.log(error);
     } finally {
