@@ -38,6 +38,7 @@ import newCategoryModal from "./pages/Inventory/NewCategoryModal.jsx";
 import CategoryStore from "./context/CategoryStore.js";
 import deleteCategoryConfirm from "./pages/Inventory/DeleteCategoryConfirm.jsx";
 import CustomerLogin from "./pages/CustomerPage/CustomerLogIn.jsx";
+import PaymentRequired from "./pages/PaymentRequired/PaymentRequired.jsx";
 
 
 const ServerError = lazy(
@@ -163,11 +164,12 @@ export default function App() {
   }, [checkAuth, fetchUsers, getCategories]);
 
   //BUG PAG NAG LOG OUT HINDI NAG REREDIRECT TO /LOGIN
+  const payed = false;
 
-  if (AuthLoading)
+  if (!AuthLoading)
     return (
       <div>
-        <Loading />
+        <PaymentRequired/>
       </div>
     );
 
@@ -1180,6 +1182,7 @@ export default function App() {
   //ROUTING
   return (
     <>
+      {payed && <PaymentRequired/>}
       {screenLoading && <ScreenLoading />}
       {returnModals()}
       <Toaster position="bottom-right" />

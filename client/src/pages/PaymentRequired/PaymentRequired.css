@@ -1,0 +1,183 @@
+body {
+  background: #111111;
+}
+
+.payment-error-container {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.payment-error-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── Lock loader ── */
+.lock-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 8px;
+}
+
+.lock-icon-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+}
+
+.lockIcon {
+  width: 80px;
+  height: 80px;
+  animation: lockShake ease-in-out 3.5s infinite;
+  z-index: 2;
+  position: relative;
+}
+
+@keyframes lockShake {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  10%       { transform: rotate(-6deg) scale(1.04); }
+  20%       { transform: rotate(6deg) scale(1.04); }
+  30%       { transform: rotate(-4deg); }
+  40%       { transform: rotate(4deg); }
+  50%       { transform: rotate(0deg) scale(1); }
+}
+
+.lockIcon rect,
+.lockIcon path {
+  stroke: #C4161C;
+}
+
+.lockIcon rect {
+  fill: rgba(196, 22, 28, 0.12);
+}
+
+.pulse-ring {
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: 2px solid #C4161C;
+  opacity: 0;
+  animation: pulseRing ease-out 3.5s infinite;
+}
+
+@keyframes pulseRing {
+  0%   { transform: scale(0.6); opacity: 0.6; }
+  60%  { transform: scale(1.3); opacity: 0; }
+  100% { opacity: 0; }
+}
+
+/* ── Bars (same as URLError but muted/desaturated feel) ── */
+.payment-error-content .barContainer {
+  width: 130px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.payment-error-content .bar {
+  width: 100%;
+  height: 8px;
+  background: linear-gradient(
+    to right,
+    #C4161C,
+    #F59E0B,
+    #C4161C
+  );
+  background-size: 200% 100%;
+  border-radius: 10px;
+  animation: bar ease-in-out 3s infinite alternate-reverse;
+  filter: grayscale(40%) brightness(0.7);
+}
+
+.payment-error-content .bar2 {
+  width: 50%;
+}
+
+@keyframes bar {
+  0%   { background-position: left; }
+  100% { background-position: right; }
+}
+
+/* ── Text ── */
+.payment-error-title {
+  font-size: 24px;
+  font-weight: 200;
+  color: #fff;
+  margin: 8px 0 0;
+  letter-spacing: 0.02em;
+}
+
+.payment-error-sub {
+  font-size: 14px;
+  font-weight: 300;
+  color: #888;
+  text-align: center;
+  line-height: 1.6;
+  margin: 4px 0 12px;
+}
+
+/* ── Buttons ── */
+.payment-error-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.payment-error-btn {
+  font-size: 16px;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 6px;
+  padding: 9px 28px;
+  transition: transform 0.15s ease, color 0.15s ease, background 0.15s ease;
+  display: inline-block;
+}
+
+.payment-error-btn.primary {
+  background: #C4161C;
+  color: #fff;
+  font-weight: 400;
+}
+
+.payment-error-btn.primary:hover {
+  background: #F59E0B;
+  transform: scale(1.05);
+}
+
+.payment-error-btn.primary:active {
+  transform: scale(0.98);
+  background: #C4161C;
+}
+
+.payment-error-btn.secondary {
+  background: transparent;
+  color: #666;
+  font-size: 14px;
+  padding: 4px 0;
+}
+
+.payment-error-btn.secondary:hover {
+  color: #fff;
+  transform: scale(1.03);
+}
+
+.payment-error-btn.secondary:active {
+  transform: scale(0.98);
+  color: #888;
+}
