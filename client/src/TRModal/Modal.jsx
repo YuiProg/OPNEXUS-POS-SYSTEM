@@ -181,3 +181,15 @@ export class ModalError extends React.Component {
     }
 }
 
+Modal.propTypes = {
+
+}
+
+ModalYesNo.propTypes = {
+
+}
+
+ModalYesNo.propTypes = {
+    
+}
+
