@@ -181,7 +181,7 @@ export default function App() {
 
   //BUG PAG NAG LOG OUT HINDI NAG REREDIRECT TO /LOGIN
 
-  if (AuthLoading || settingsLoading)
+  if (AuthLoading)
     return (
       <div>
         <Loading />
