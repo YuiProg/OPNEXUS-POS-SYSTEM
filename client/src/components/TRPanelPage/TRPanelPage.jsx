@@ -47,11 +47,6 @@ export class PanelPage extends React.Component {
     } = this.props;
 
     // const childrenArray = React.Children.toArray(this.props.children);
-    
-    // Find the RightPanel in children
-    // const rightPanel = childrenArray.find((child) => child.type === RightPanel);
-
-    // Everything else goes in the Main area
     const mainChildren = React.Children.toArray(this.passPropsToChildren()).filter(
       (child) => child.type !== RightPanel
     );
@@ -109,6 +104,18 @@ export class PanelPage extends React.Component {
   }
 }
 
+export class PanelContainer extends React.Component {
+  render () {
+    return (
+      <>
+        <div className='tr-panel-container-child'>
+          {this.props.children}
+        </div>
+      </>
+    );
+  }
+}
+
 PanelPage.propTypes = {
     titlePage: PropTypes.string.isRequired,
     subTitle: PropTypes.string,
@@ -123,4 +130,8 @@ PanelPage.propTypes = {
 
 RightPanel.propTypes = {
     children: PropTypes.node,
+}
+
+PanelContainer.propTypes = {
+  
 }

@@ -16,7 +16,6 @@ const disableManyConfirmModal = () => {
     const disableMany = (e) => {
         e.preventDefault();
         setShowVipDisableManyConfirm(false);
-        console.log(ids);
         disableManyVip(ids);
     }
 

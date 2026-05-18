@@ -72,10 +72,10 @@ export class InputForm extends React.Component {
     }
 
     render () {
-        const { onSubmit, btnTXT, hasCancel, onCancel, cancelTXT, btnDisabled, noBtn } = this.props;
+        const { onSubmit, btnTXT, hasCancel, onCancel, cancelTXT, btnDisabled, noBtn, noBorder } = this.props;
         console.log(this.props);
         return (
-            <form className="tr-inputform" onSubmit={(e) => onSubmit(e)}>
+            <form className="tr-inputform" onSubmit={(e) => onSubmit(e)} style={noBorder && {border: '0'}}>
                 {this.passPropsToChildren()}
                 <div className="tr-inputform-actions">
                     {hasCancel && !noBtn ? (
