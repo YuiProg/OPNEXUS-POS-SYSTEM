@@ -80,7 +80,10 @@ const ApiConfig = Object.freeze({
     //SETTINGS
     GETSETTINGS: apiEndpoint + 'getSettings',
     UPDATESETTINGS: apiEndpoint + 'updateSettings/:id', //fetch the existing id in the db
-    RESETSETTINGS: apiEndpoint + 'resetSettings'
+    RESETSETTINGS: apiEndpoint + 'resetSettings',
+
+    //SEARCH FILTERS
+    INVENTORYSEARCH: apiEndpoint + '/inventorysearch'
 })
 
 export default ApiConfig;

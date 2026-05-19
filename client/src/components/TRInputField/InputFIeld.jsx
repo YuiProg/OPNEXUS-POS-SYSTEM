@@ -1,7 +1,10 @@
 import React from "react";
 import "./InputField.css";
 import { Search, EyeClosed, Eye } from "lucide-react";
-
+/**
+ * @class
+ * @component
+ */
 class InputField extends React.Component {
   constructor(props) {
     super(props);

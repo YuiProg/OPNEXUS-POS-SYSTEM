@@ -174,7 +174,7 @@ export const deleteMultiple = async (req, res) => {
         branchLocation: userData.branchLocation,
         log: `${userData.username} deleted the user ${user.username}`
       }
-      await SystemLogs.addLog(logPayload)
+      await SystemLogs.addLog(logPayload);
     }
     const result = await User.deleteMultiple(list)
     ApiResponseModel(res, SUCCESS, SUCCESS_MESS, result)
@@ -194,6 +194,14 @@ export const deleteSingle = async (req, res) => {
     if (user.branchLocation !== 'N/A') {
       await Branch.removeUserFromOldBranch(user.branchLocation, { Id: user._id })
     }
+    
+    const logPayload = {
+      user: user.username,
+      action: DELETEUSER,
+      branchLocation: user.branchLocation,
+      log: `${user.username} deleted the user ${user.username}`
+    }
+    await SystemLogs.addLog(logPayload);
     const result = await User.deleteSingleUser(id)
     ApiResponseModel(res, SUCCESS, SUCCESS_MESS, result)
   } catch (error) {

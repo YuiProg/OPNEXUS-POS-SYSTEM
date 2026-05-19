@@ -32,12 +32,44 @@ const SettingsStore = create((set, get) => ({
   },
   settings: null,
   settingsLoading: false,
+  yesNoSettingsApply: false,
+  yesNoSettingsReset: false,
+
+  setYesNoSettingsApply: (val) => set({yesNoSettingsApply: val}),
+  setYesNoSettingsReset: (val) => set({yesNoSettingsReset: val}),
+
+  resetInputs : () => set({
+    inputs: {
+      lowStockThreshold: 0,
+      productNameMax: 0,
+      quantityMax: 0,
+      priceMax: 0,
+      categoryNameMax: 0,
+      staffUsernameMax: 0,
+      staffPasswordMax: 0,
+      staffFirstNameMax: 0,
+      staffMiddleNameMax: 0,
+      staffLastNameMax: 0,
+      staffAddressMax: 0,
+      staffSalaryMax: 0,
+      vipFirstNameMax: 0,
+      vipMiddleNameMax: 0,
+      vipLastNameMax: 0,
+      vipPointsMax: 0,
+      branchNameMax: 0,
+      categoryEnabled: null,
+      staffEnabled: null,
+      branchEnabled: null,
+      vipEnabled: null,
+    },
+  }),
 
   setInputs : (name, value) => {
     const inputs = get().inputs;
     inputs[name] = value;
     set({inputs: inputs});
   },
+
   resetSettings : async() => {
     try {
       const response = await axiosInstance.post(RESETSETTINGS);
@@ -75,11 +107,13 @@ const SettingsStore = create((set, get) => ({
           }
         },
         categorySettings: {
+          enabled: inputs.categoryEnabled,
           inputLength: {
             categoryName: inputs.categoryNameMax > 0 ? inputs.categoryNameMax : settings.data.categorySettings.inputLength.categoryName
           }
         },
         staffManagementSettings: {
+          enabled: inputs.staffEnabled,
           inputLength: {
             username: inputs.staffUsernameMax > 0 ? inputs.staffUsernameMax : settings.data.staffManagementSettings.inputLength.username,
             password: inputs.staffPasswordMax > 0 ? inputs.staffPasswordMax : settings.data.staffManagementSettings.inputLength.password,
@@ -91,6 +125,7 @@ const SettingsStore = create((set, get) => ({
           }
         },
         vipManagementSettings: {
+          enabled: inputs.vipEnabled,
           inputLength: {
             firstName: Number(inputs.vipFirstNameMax > 0 ? inputs.vipFirstNameMax : settings.data.vipManagementSettings.inputLength.firstName),
             middleName: inputs.vipMiddleNameMax > 0 ? inputs.vipMiddleNameMax : settings.data.vipManagementSettings.inputLength.middleName,
@@ -99,16 +134,19 @@ const SettingsStore = create((set, get) => ({
           }
         },
         branchSettings: {
+          enabled: inputs.branchEnabled,
           inputLength: {
             branchLocation: inputs.branchNameMax > 0 ? inputs.branchNameMax : settings.data.branchSettings.inputLength.branchLocation
           }
         }
       };
-      console.log(payload);
       const response = await axiosInstance.post(UPDATESETTINGS.replace(':id', settings.data._id), payload);
-      console.log(response.data);
+      set({settings: response.data});
     } catch (error) {
       console.log(error);
+    } finally {
+      get().resetInputs();
+      window.location.reload();
     }
   }
 }));

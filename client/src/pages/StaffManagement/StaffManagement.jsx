@@ -13,13 +13,13 @@ import ProductStore from "../../context/ProductStore";
 import ActiveStaffs from "./ActiveStaffs/ActiveStaffs";
 import toast from "react-hot-toast";
 import { PanelPage, RightPanel } from "../../components/TRPanelPage/TRPanelPage";
+import { Link } from "react-router-dom";
 
 class StaffManagement extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
             users: [],
-            search: '',
             filtersOpen: false,
         }
     }
@@ -44,10 +44,6 @@ class StaffManagement extends React.Component {
         setDeleteModal(true);
         setSelectedItems(e);
         setUrl("staff");
-    }
-
-    handleTableSearch = (value) => {
-        this.setState({ search: value });
     }
 
     showDeleteModal = (item) => {
@@ -114,13 +110,6 @@ class StaffManagement extends React.Component {
             hasButton: true,
             CB: () => setShowAddModal(true),
             buttonInfo: "NEW CLERK",
-            search: (
-                <InputField
-                placeholder="Search staff"
-                isSearch
-                onEnterDown={value => this.handleTableSearch(value)}
-                />
-            ),
             hasDelete: true,
             deleteBtnInfo: 'Delete',
             CBD: (e) => this.showConfirmDelModal(e)
@@ -146,7 +135,6 @@ class StaffManagement extends React.Component {
                             hasAction
                             onDelete={(e) => this.showDeleteModal(e)}
                             onEdit={(item) => this.showEditModal(item)}
-                            search={this.state.search}
                             isLoading={fetchLoading}
                             hasTableFilters={true}
                             onFilterToggle={(isOpen) => this.setState({filtersOpen: isOpen})}
@@ -157,6 +145,7 @@ class StaffManagement extends React.Component {
                         <ActiveStaffs staffData={onlineUsers}/>
                     </div>
                 </div>
+                <Link to="/addstaff">TEST</Link>
             </PanelPage>
         );
     }

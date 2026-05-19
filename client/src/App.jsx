@@ -42,6 +42,10 @@ import viewChangePasswordModal from "./pages/AuthPage/ChangePasswordModal.jsx";
 import SettingsPage from "./pages/Settings/Settings.jsx";
 import Toggle from "./components/TRToggle/Toggle.jsx";
 import SettingsStore from "./context/SettingsStore.js";
+import { yesNoSettingsApplyModal, yesNoSettingsResetModal } from "./pages/Settings/ApplySettingsModal.jsx";
+import AddVipPage from "./pages/VIP/AddVipPage.jsx";
+import AddStaffPage from "./pages/StaffManagement/AddStaffPage.jsx";
+import NewProductPage from "./pages/Inventory/NewProductPage.jsx";
 
 
 const ServerError = lazy(
@@ -157,6 +161,8 @@ export default function App() {
     getCategories
   } = CategoryStore();
   const {
+    yesNoSettingsReset,
+    yesNoSettingsApply,
     getSettings,
     settings,
     settingsLoading
@@ -1190,6 +1196,8 @@ export default function App() {
         {showNewCategoryModal && newCategoryModal()}
         {showConfirmDeleteCategory && deleteCategoryConfirm()}
         {changePasswordModal && viewChangePasswordModal()}
+        {yesNoSettingsApply && yesNoSettingsApplyModal()}
+        {yesNoSettingsReset && yesNoSettingsResetModal()}
       </>
     );
   };
@@ -1347,7 +1355,46 @@ export default function App() {
                 <Navigate to="/login" replace />
               ) : (
                 <Sidebar user={AuthUser}>
-                  <SettingsPage settingsProps={settings.data || {}} />
+                  <SettingsPage settingsProps={settings?.data || {}} />
+                </Sidebar>
+              )
+            }
+          />
+
+          <Route
+            path="/addvip"
+            element={
+              AuthUser?.role.toLowerCase() === "clerk" ? (
+                <Navigate to="/timeinout" replace/>
+              ) : (
+                <Sidebar user={AuthUser}>
+                  <AddVipPage/>
+                </Sidebar>
+              )
+            }
+          />
+
+          <Route
+            path="/addstaff"
+            element={
+              AuthUser?.role.toLowerCase() === "clerk" ? (
+                <Navigate to="/timeinout" replace/>
+              ) : (
+                <Sidebar user={AuthUser}>
+                  <AddStaffPage/>
+                </Sidebar>
+              )
+            }
+          />
+
+          <Route
+            path="/newproduct"
+            element={
+              AuthUser?.role.toLowerCase() === "clerk" ? (
+                <Navigate to="/timeinout" replace/>
+              ) : (
+                <Sidebar user={AuthUser}>
+                  <NewProductPage/>
                 </Sidebar>
               )
             }

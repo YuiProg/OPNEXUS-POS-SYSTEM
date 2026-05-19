@@ -72,5 +72,20 @@
   width: auto;
   height: 100px;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+}
+
+.tr-panel-container-child {
+  margin: 0 10px 10px 10px;
+  width: auto;
+  height: auto;
+  border: 1px solid #404040;
+  border-radius: 5px;
+  padding: 20px;
+}
+
+.tr-panel-step {
+  font-size: 12px;
+  font-weight: 200;
+  opacity: 0.8;
 }

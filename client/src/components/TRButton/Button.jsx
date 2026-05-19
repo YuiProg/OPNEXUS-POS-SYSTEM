@@ -1,7 +1,10 @@
 import PropTypes from "prop-types";
 import React from "react";
 import './Button.css';
-
+/**
+ * @class
+ * @component
+ */
 class Button extends React.Component {
     constructor (props) {
         super(props);

@@ -5,6 +5,10 @@ import Button from "../TRButton/Button";
 
 
 //dito lalagay mga inputfields parang panel tong una
+/**
+ * @class
+ * @component
+ */
 export class TRInputFormPanel extends React.Component {
     constructor(props) {
         super(props);
@@ -68,10 +72,10 @@ export class InputForm extends React.Component {
     }
 
     render () {
-        const { onSubmit, btnTXT, hasCancel, onCancel, cancelTXT, btnDisabled, noBtn } = this.props;
+        const { onSubmit, btnTXT, hasCancel, onCancel, cancelTXT, btnDisabled, noBtn, noBorder } = this.props;
         console.log(this.props);
         return (
-            <form className="tr-inputform" onSubmit={(e) => onSubmit(e)}>
+            <form className="tr-inputform" onSubmit={(e) => onSubmit(e)} style={noBorder && {border: '0'}}>
                 {this.passPropsToChildren()}
                 <div className="tr-inputform-actions">
                     {hasCancel && !noBtn ? (
@@ -101,12 +105,12 @@ export class InputRow extends React.Component {
     }
 
     render () {
-        const { gap, titles } = this.props;
+        const { gap, titles, bottomMargin } = this.props;
 
         const children = this.passPropsToChildren();
 
         return (
-            <div className="tr-inputrow" style={{ gap: `${gap}px` }}>
+            <div className="tr-inputrow" style={bottomMargin ? { gap: `${gap}px`, marginBottom: '5px' } :{ gap: `${gap}px` }}>
                 {React.Children.map(children, (child, i) => (
                     <div className="tr-inputrow-field" key={i}>
                         {titles

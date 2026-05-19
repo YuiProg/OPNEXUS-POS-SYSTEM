@@ -4,7 +4,10 @@ import DropDown from '../TRDropDown/Dropdown';
 import PropTypes from 'prop-types';
 import Button from '../TRButton/Button';
 import { InputRow } from '../TRInputForm/TRInputForm';
-
+/**
+ * @class
+ * @component
+ */
 export class RightPanel extends React.Component {
   render() {
     return (
@@ -44,11 +47,6 @@ export class PanelPage extends React.Component {
     } = this.props;
 
     // const childrenArray = React.Children.toArray(this.props.children);
-    
-    // Find the RightPanel in children
-    // const rightPanel = childrenArray.find((child) => child.type === RightPanel);
-
-    // Everything else goes in the Main area
     const mainChildren = React.Children.toArray(this.passPropsToChildren()).filter(
       (child) => child.type !== RightPanel
     );
@@ -106,6 +104,25 @@ export class PanelPage extends React.Component {
   }
 }
 
+export class PanelContainer extends React.Component {
+  render () {
+    const {
+      currentStep,
+      totalSteps
+    } = this.props;
+    return (
+      <>
+        <div style={{padding: '0 10px 10px 10px'}}>
+          <p style={{margin: '0'}} className='tr-panel-step'>{`step ${currentStep} out of ${totalSteps}`}</p>
+        </div>
+        <div className='tr-panel-container-child'>
+          {this.props.children}
+        </div>
+      </>
+    );
+  }
+}
+
 PanelPage.propTypes = {
     titlePage: PropTypes.string.isRequired,
     subTitle: PropTypes.string,
@@ -120,4 +137,8 @@ PanelPage.propTypes = {
 
 RightPanel.propTypes = {
     children: PropTypes.node,
+}
+
+PanelContainer.propTypes = {
+  
 }

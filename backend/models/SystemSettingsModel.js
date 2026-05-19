@@ -2,6 +2,10 @@ import mongoose from 'mongoose'
 
 const SystemSettingsSchema = new mongoose.Schema({
   inventorySettings: {
+    topProductsThreshold: {
+      type: Number,
+      default: 15
+    },
     lowStockThreshold: {
       type: Number,
       default: 10

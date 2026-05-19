@@ -1,6 +1,9 @@
 import React from "react";
 import "./Toggle.css";
-
+/**
+ * @class
+ * @component
+ */
 class Toggle extends React.Component {
   constructor(props) {
     super(props);
@@ -36,7 +39,7 @@ class Toggle extends React.Component {
             <span className="toggle-switch"></span>
           </label>
           {!hideLabel && (
-            <p className={`toggle-subtitle ${isActive ? 'active' : 'inactive'}`}>
+            <p className={`toggle-subtitle ${isActive.toLowerCase() ? 'active' : 'inactive'}`}>
               {isActive ? "Active" : "Inactive"}
             </p>
           )}
