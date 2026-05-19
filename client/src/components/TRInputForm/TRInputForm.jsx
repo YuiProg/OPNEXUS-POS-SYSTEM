@@ -105,12 +105,12 @@ export class InputRow extends React.Component {
     }
 
     render () {
-        const { gap, titles } = this.props;
+        const { gap, titles, bottomMargin } = this.props;
 
         const children = this.passPropsToChildren();
 
         return (
-            <div className="tr-inputrow" style={{ gap: `${gap}px` }}>
+            <div className="tr-inputrow" style={bottomMargin ? { gap: `${gap}px`, marginBottom: '5px' } :{ gap: `${gap}px` }}>
                 {React.Children.map(children, (child, i) => (
                     <div className="tr-inputrow-field" key={i}>
                         {titles

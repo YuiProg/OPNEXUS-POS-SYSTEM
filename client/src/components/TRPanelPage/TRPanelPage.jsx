@@ -106,8 +106,15 @@ export class PanelPage extends React.Component {
 
 export class PanelContainer extends React.Component {
   render () {
+    const {
+      currentStep,
+      totalSteps
+    } = this.props;
     return (
       <>
+        <div style={{padding: '0 10px 10px 10px'}}>
+          <p style={{margin: '0'}} className='tr-panel-step'>{`step ${currentStep} out of ${totalSteps}`}</p>
+        </div>
         <div className='tr-panel-container-child'>
           {this.props.children}
         </div>
