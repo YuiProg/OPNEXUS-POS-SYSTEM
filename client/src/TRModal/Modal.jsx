@@ -173,6 +173,11 @@ export class ModalError extends React.Component {
     }
 
     render () {
+        const {
+            missingFields,
+            onClose,
+            message
+        } = this.props;
         return (
             <div>
 

@@ -15,8 +15,39 @@ const {
     GET_PRODUCT,
     CREATEPRODUCT,
     DELETEPRODUCT,
-    EDITPRODUCT
+    EDITPRODUCT,
+    BAD_REQUEST
 } = Strings;
+
+export const validateProduct = async (req, res) => {
+    try {
+        const missingFields = [];
+        const data = req.body;
+
+        if (data.productName.trim() === ' ' || data.productName.length <= 0) {
+            missingFields.push('Product Name');
+        }
+
+        if (data.price === 0) {
+            missingFields.push('Price');
+        }
+
+        if (data.category.trim() === ' ' || data.category.length <= 0) {
+            missingFields.push('Category');
+        }
+
+        if (data.productBranch.trim() === ' ' || data.productBranch.length <= 0) {
+            missingFields.push('Branch');
+        }
+
+        if (missingFields.length >= 1) {
+            return ApiResponseModel(res, BAD_REQUEST, 'Missing fields!', missingFields);
+        }
+        ApiResponseModel(res, CREATED, 'Validation successfull', data);
+    } catch (error) {
+        ApiResponseModel(res, ERROR, error.message);
+    }
+}
 
 export const newProduct = async (req, res) => {
     const data = req.body;
