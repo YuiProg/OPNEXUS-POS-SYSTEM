@@ -1,6 +1,6 @@
 import express from 'express'
 import ApiConfig from '../Api/ApiConfig.js';
-import { deleteMultipleProducts, deleteProductSingle, fetchOneProduct, fetchProducts, newProduct, updateProduct } from '../controller/product.Controller.js';
+import { deleteMultipleProducts, deleteProductSingle, fetchOneProduct, fetchProducts, newProduct, updateProduct, validateProduct } from '../controller/product.Controller.js';
 import protectRoutes from '../middleware/protectRoutes.js';
 
 const {
@@ -9,12 +9,14 @@ const {
     deleteMultipleProduct,
     deleteSingleProduct,
     fetchSingleProduct,
-    UPDATEPRODUCT
+    UPDATEPRODUCT,
+    VALIDATEPRODUCT
 } = ApiConfig;
 
 const router = express.Router();
 
 router.post(addProduct, protectRoutes, newProduct);
+router.post(VALIDATEPRODUCT, protectRoutes, validateProduct);
 
 //delete
 router.post(deleteMultipleProduct, protectRoutes, deleteMultipleProducts);
