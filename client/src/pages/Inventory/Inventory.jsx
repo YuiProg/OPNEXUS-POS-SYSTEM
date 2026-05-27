@@ -136,7 +136,7 @@ class Inventory extends React.Component {
     const tableData = {
       header: "ITEMS TEST",
       hasButton: this.state.isAdmin,
-      CB: () => ModalStore.getState().setModal(true),
+      CB: () => this.props.navigate('/newproduct'),
       buttonInfo: "NEW ITEM",
       hasDelete: true,
       deleteBtnInfo: "Delete",
@@ -169,7 +169,6 @@ class Inventory extends React.Component {
         {/* {this.state.filtersOpen && (
           this.rightSideFilters()
         )} */}
-        <Link to="/newproduct">TEST</Link>
       </PanelPage>
     );
   }

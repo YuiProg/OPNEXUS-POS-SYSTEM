@@ -1,5 +1,5 @@
 import { useEffect, lazy, Suspense, useState } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import Login from "./pages/AuthPage/Login.jsx";
 import AuthStore from "./context/Authstore.js";
 import Sidebar from "./components/Sidebar/Sidebar.jsx";
@@ -167,6 +167,7 @@ export default function App() {
     settings,
     settingsLoading
   } = SettingsStore();
+  const navigate = useNavigate();
 
   const { SERVER_ERROR, PROD_FAIL } = Strings;
   //const [currentRole, setCurrentRole] = useState("");
@@ -1249,7 +1250,7 @@ export default function App() {
                 <Navigate to="/login" replace />
               ) : (
                 <Sidebar user={AuthUser}>
-                  <Inventory user={AuthUser} />
+                  <Inventory user={AuthUser} navigate={navigate}/>
                 </Sidebar>
               )
             }
@@ -1394,7 +1395,7 @@ export default function App() {
                 <Navigate to="/timeinout" replace/>
               ) : (
                 <Sidebar user={AuthUser}>
-                  <NewProductPage/>
+                  <NewProductPage navigate={navigate}/>
                 </Sidebar>
               )
             }
