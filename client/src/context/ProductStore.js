@@ -61,6 +61,19 @@ const ProductStore = create((set, get) => ({
     }))
   },
 
+  resetInput: () => {
+    set({
+      input: {
+        productName: '',
+        quantity: 0,
+        price: 0,
+        category: '',
+        productBranch: '',
+        image: null
+      }
+    })
+  },
+
   //TODO: IMAGE VALIDATION
   addNewProduct: async (isValidate, validatePayload) => {
     const { productName, quantity, category, price, productBranch, image } = get()
@@ -92,7 +105,6 @@ const ProductStore = create((set, get) => ({
           category: data.category,
           price: data.price
         }
-        
         set((state) => ({ products: [newData, ...state.products] }));
         return;
       }
@@ -137,7 +149,7 @@ const ProductStore = create((set, get) => ({
       return validate
     } catch (error) {
       if (axiosError(error)) {
-        return error.response?.data
+        toast.error(`Missing fields! ${error.response.data.data.map((msg) => msg).join(', ')}`);
       }
     }
   },

@@ -12,7 +12,7 @@ import AuthStore from '../../context/Authstore'
 
 const { getBranch } = BranchStore.getState()
 const { getCategories } = CategoryStore.getState()
-const { setProductInput, validateProduct, setStep, addNewProduct } = ProductStore.getState();
+const { setProductInput, validateProduct, setStep, addNewProduct, resetInput } = ProductStore.getState();
 
 class NewProductPage extends React.Component {
   constructor(props) {
@@ -29,6 +29,8 @@ class NewProductPage extends React.Component {
   componentDidMount() {
     getBranch()
     getCategories()
+    setStep(1);
+    resetInput();
 
     this.unsubscribeBranches = BranchStore.subscribe((state) => {
       this.setState({ branches: state.branches })
@@ -67,7 +69,10 @@ class NewProductPage extends React.Component {
   }
 
   clickBack = () => {
-    setStep(1);
+    setStep(this.state.step - 1);
+    if (this.state.step === 1) {
+      this.props.navigate('/inventory');
+    }
   }
 
   componentWillUnmount() {
