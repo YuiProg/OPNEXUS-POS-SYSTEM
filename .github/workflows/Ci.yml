@@ -26,6 +26,15 @@ jobs:
         working-directory: backend
         run: npx eslint . --max-warnings=0
 
+      - name: Install frontend dependencies
+        working-directory: client
+        run: npm ci
+
+      - name: Run ESLint (Frontend)
+        working-directory: client
+        run: npx eslint . --max-warnings=0
+
+
   backend:
     name: Backend - Install & Check
     runs-on: ubuntu-latest
