@@ -1162,6 +1162,7 @@ export default function App() {
 
 
   const returnModals = () => {
+    //get location based sa path
     const location = () => {
       const hash = window.location.pathname;
       if (changesModal && hash === "/staff") {
