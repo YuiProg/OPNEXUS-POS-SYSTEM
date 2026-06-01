@@ -1163,7 +1163,7 @@ export default function App() {
 
   const returnModals = () => {
     const location = () => {
-      const hash = window.location.hash.replace('#', '')
+      const hash = window.location.pathname;
       if (changesModal && hash === "/staff") {
         return viewUserChangesModal();
       } else if (changesModal && hash === "/inventory") {
