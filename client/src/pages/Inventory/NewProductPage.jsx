@@ -45,6 +45,7 @@ class NewProductPage extends React.Component {
     });
   }
 
+
   clickNext = async () => {
     const {AuthUser} = AuthStore.getState();
     switch (this.state.step) {
@@ -210,6 +211,8 @@ class NewProductPage extends React.Component {
         hasStepper 
         onClickNext={() => this.clickNext()} 
         onClickBack={() => this.clickBack()}
+        secondBTNfunc={() => window.location.reload()}
+        secondBTNText="Reset Inputs"
       >
         <PanelContainer currentStep={this.state.step} totalSteps={3}>
           {this.currentStep()}
