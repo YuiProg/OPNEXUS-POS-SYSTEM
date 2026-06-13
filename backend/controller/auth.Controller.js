@@ -16,6 +16,10 @@ const errorHandling = (error) => {
   return error.message
 }
 
+const logResponse = (req, status, data) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl} -> ${status}`, JSON.stringify(data))
+}
+
 export const register = async (req, res) => {
   try {
     const data = req.body;
@@ -53,9 +57,11 @@ export const register = async (req, res) => {
       }
     }
     await SystemLogs.addLog(logPayload)
+    logResponse(req, CREATED, { status: SUCCESS_MESS, data: createdUser })
     ApiResponseModel(res, CREATED, SUCCESS_MESS, createdUser)
   } catch (error) {
     const message = errorHandling(error)
+    logResponse(req, ERROR, { status: message })
     ApiResponseModel(res, ERROR, message)
   }
 }
@@ -67,8 +73,10 @@ export const loginUser = async (req, res) => {
 
     //const { _: _, ...userWithoutPassword } = user.toObject(); // already using _
     generateToken(user._id, res)
+    logResponse(req, SUCCESS, { status: SUCCESS_MESS, user: user.username || user.email })
     ApiResponseModel(res, SUCCESS, SUCCESS_MESS, user)
   } catch (error) {
+    logResponse(req, ERROR, { status: error.message })
     ApiResponseModel(res, ERROR, error.message)
   }
 }
@@ -81,6 +89,7 @@ export const updateUser = async (req, res) => {
     const userData = await User.getUser(userId)
     const oldModel = await User.getSingleUser(id)
     if (!oldModel) {
+      logResponse(req, ERROR, { status: 'User not found' })
       return ApiResponseModel(res, ERROR, 'User not found')
     }
 
@@ -99,8 +108,10 @@ export const updateUser = async (req, res) => {
     await SystemLogs.addLog(logPayload)
 
     const updated_user = await User.updateUser(id, data)
+    logResponse(req, SUCCESS, { status: SUCCESS_MESS, data: updated_user })
     ApiResponseModel(res, SUCCESS, SUCCESS_MESS, updated_user, oldModel)
   } catch (error) {
+    logResponse(req, ERROR, { status: error.message })
     ApiResponseModel(res, ERROR, error.message)
   }
 }
@@ -108,6 +119,7 @@ export const updateUser = async (req, res) => {
 export const logoutUser = async (req, res) => {
   res.cookie('jwt', '', { maxAge: 0 })
   //res.status(SUCCESS).json({status: SUCCESS_MESS, message: USER_LOGOUT});
+  logResponse(req, SUCCESS, { status: SUCCESS_MESS })
   ApiResponseModel(res, SUCCESS, SUCCESS_MESS)
 }
 
@@ -118,8 +130,10 @@ export const getAuthUser = async (req, res) => {
 
     /* eslint-disable-next-line */
     const { password: _, ...userWithoutPassword } = user.toObject()
+    logResponse(req, SUCCESS, { status: SUCCESS_MESS, data: userWithoutPassword })
     ApiResponseModel(res, SUCCESS, SUCCESS_MESS, userWithoutPassword)
   } catch (error) {
+    logResponse(req, ERROR, { status: error.message })
     ApiResponseModel(res, ERROR, error.message)
   }
 }
@@ -128,8 +142,10 @@ export const getSingleUser = async (req, res) => {
   try {
     const { id } = req.params
     const user = await User.getSingleUser(id)
+    logResponse(req, SUCCESS, { status: SUCCESS_MESS, data: user })
     ApiResponseModel(res, SUCCESS, SUCCESS_MESS, user)
   } catch (error) {
+    logResponse(req, ERROR, { status: error.message })
     ApiResponseModel(res, ERROR, error.message)
   }
 }
@@ -148,8 +164,10 @@ export const getUsers = async (req, res) => {
         .toUpperCase(),
       ...user._doc
     }))
+    logResponse(req, SUCCESS, { status: SUCCESS_MESS, count: usersWithFullName.length })
     ApiResponseModel(res, SUCCESS, SUCCESS_MESS, usersWithFullName)
   } catch (error) {
+    logResponse(req, ERROR, { status: error.message })
     ApiResponseModel(res, ERROR, error.message)
   }
 }
@@ -163,6 +181,7 @@ export const deleteMultiple = async (req, res) => {
 
     for (const user of users) {
       if (user.timedIn) {
+        logResponse(req, ERROR, { status: `User ${user.username} is currently timed in!` })
         return ApiResponseModel(res, ERROR, `User ${user.username} is currently timed in!`)
       }
       if (user.branchLocation !== 'N/A') {
@@ -177,8 +196,10 @@ export const deleteMultiple = async (req, res) => {
       await SystemLogs.addLog(logPayload);
     }
     const result = await User.deleteMultiple(list)
+    logResponse(req, SUCCESS, { status: SUCCESS_MESS, data: result })
     ApiResponseModel(res, SUCCESS, SUCCESS_MESS, result)
   } catch (error) {
+    logResponse(req, ERROR, { status: error.message })
     ApiResponseModel(res, ERROR, error.message)
   }
 }
@@ -188,6 +209,7 @@ export const deleteSingle = async (req, res) => {
     const { id } = req.body
     const user = await User.getSingleUser(id)
     if (user.timedIn) {
+      logResponse(req, ERROR, { status: 'User is currently timed in!' })
       return ApiResponseModel(res, ERROR, 'User is currently timed in!')
     }
     //console.log(user.Id);
@@ -203,8 +225,10 @@ export const deleteSingle = async (req, res) => {
     }
     await SystemLogs.addLog(logPayload);
     const result = await User.deleteSingleUser(id)
+    logResponse(req, SUCCESS, { status: SUCCESS_MESS, data: result })
     ApiResponseModel(res, SUCCESS, SUCCESS_MESS, result)
   } catch (error) {
+    logResponse(req, ERROR, { status: error.message })
     ApiResponseModel(res, ERROR, error.message)
   }
 }
@@ -222,8 +246,10 @@ export const changePassword = async (req, res) => {
       log: `${updatedUser.username} changed their password`
     }
     await SystemLogs.addLog(logPayload)
+    logResponse(req, SUCCESS, { status: SUCCESS_MESS })
     ApiResponseModel(res, SUCCESS, SUCCESS_MESS)
   } catch (error) {
+    logResponse(req, ERROR, { status: error.message })
     ApiResponseModel(res, ERROR, error.message)
   }
 }
