@@ -19,6 +19,11 @@ const {
     BAD_REQUEST
 } = Strings;
 
+const logResponse = (req, status, data) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl} -> ${status}`, JSON.stringify(data))
+}
+
+
 export const validateProduct = async (req, res) => {
     try {
         const missingFields = [];
@@ -43,8 +48,10 @@ export const validateProduct = async (req, res) => {
         if (missingFields.length >= 1) {
             return ApiResponseModel(res, BAD_REQUEST, 'Missing fields!', missingFields);
         }
+        logResponse(req, SUCCESS, { status: SUCCESS_MESS, data });
         ApiResponseModel(res, CREATED, 'Validation successfull', data);
     } catch (error) {
+        logResponse(req, ERROR, { status: error.message });
         ApiResponseModel(res, ERROR, error.message);
     }
 }
@@ -54,7 +61,8 @@ export const newProduct = async (req, res) => {
     const user = req.user;
     try {
         const newProduct = await Product.addProduct(data, user);
-        
+        logResponse(req, CREATED, { status: SUCCESS_MESS, data: newProduct });
+
         const payload = {
             ...newProduct,
             userId: user.userId
@@ -74,6 +82,7 @@ export const newProduct = async (req, res) => {
         io.emit("newProduct", payload);
         ApiResponseModel(res, CREATED, NEW_PRODUCT, newProduct);
     } catch (error) {
+        logResponse(req, ERROR, { status: error.message });
         ApiResponseModel(res, ERROR, error.message);
     }
 }
@@ -92,8 +101,10 @@ export const fetchProducts = async (req, res) => {
             Branch: data.productBranch,
             ...data._doc
         }));
+        logResponse(req, SUCCESS, { status: SUCCESS_MESS, count: cleanedData.length });
         ApiResponseModel(res, SUCCESS, NEW_PRODUCT, cleanedData);
     } catch (error) {
+        logResponse(req, ERROR, { status: error.message });
         ApiResponseModel(res, ERROR, error.message);
     }
 }
@@ -118,8 +129,10 @@ export const deleteProductSingle = async (req, res) => {
             log: `${user.username} deleted a product called ${product.productName}`
         }
         await SystemLogs.addLog(logPayload);
+        logResponse(req, SUCCESS, { status: SUCCESS_MESS, data: result });
         ApiResponseModel(res, SUCCESS, SUCCESS_MESS, result);
     } catch (error) {
+        logResponse(req, ERROR, { status: error.message });
         ApiResponseModel(res, ERROR, error.message);
     }
 }
@@ -151,9 +164,10 @@ export const deleteMultipleProducts = async (req, res) => {
             };
             await SystemLogs.addLog(logPayload);
         }
-
+        logResponse(req, SUCCESS, { status: SUCCESS_MESS, count: result.deletedCount });
         ApiResponseModel(res, SUCCESS, SUCCESS_MESS, result);
     } catch (error) {
+        logResponse(req, ERROR, { status: error.message });
         ApiResponseModel(res, ERROR, error.message);
     }
 }
@@ -162,8 +176,10 @@ export const fetchOneProduct = async (req, res) => {
     const { id } = req.params;
     try {
         const product = await Product.fetchSingle(id);
+        logResponse(req, SUCCESS, { status: SUCCESS_MESS, data: product });
         ApiResponseModel(res, SUCCESS, GET_PRODUCT, product);
     } catch (error) {
+        logResponse(req, ERROR, { status: error.message });
         ApiResponseModel(res, ERROR, error.message);
     }
 }
@@ -187,8 +203,10 @@ export const updateProduct = async (req, res) => {
         }   
         await SystemLogs.addLog(logPayload);
         const updatedProduct = await Product.updateProduct(id, data);
+        logResponse(req, SUCCESS, { status: SUCCESS_MESS, data: updatedProduct });
         ApiResponseModel(res, SUCCESS, SUCCESS_MESS, updatedProduct, oldModel);
     } catch (error) {
+        logResponse(req, ERROR, { status: error.message });
         ApiResponseModel(res, ERROR, error.message);
     }
 }
