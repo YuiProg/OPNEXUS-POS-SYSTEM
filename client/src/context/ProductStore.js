@@ -144,13 +144,19 @@ const ProductStore = create((set, get) => ({
   },
 
   validateProduct: async () => {
+    const { isScreenLoading } = ModalStore.getState();
     try {
+      set({addLoading: true});
+      isScreenLoading(true);
       const validate = await axiosInstance.post(VALIDATEPRODUCT, get().input)
       return validate
     } catch (error) {
       if (axiosError(error)) {
         toast.error(`Missing fields! ${error.response.data.data.map((msg) => msg).join(', ')}`);
       }
+    } finally {
+      set({ addLoading: false });
+      isScreenLoading(false);
     }
   },
 

@@ -9,6 +9,7 @@ import CategoryStore from '../../context/CategoryStore'
 import ProductStore from '../../context/ProductStore'
 import Button from '../../components/TRButton/Button'
 import AuthStore from '../../context/Authstore'
+import ModalStore from '../../context/ModalStore'
 
 const { getBranch } = BranchStore.getState()
 const { getCategories } = CategoryStore.getState()
@@ -48,6 +49,7 @@ class NewProductPage extends React.Component {
 
   clickNext = async () => {
     const {AuthUser} = AuthStore.getState();
+
     switch (this.state.step) {
       case 1: {
         const validate = await validateProduct();
