@@ -65,7 +65,7 @@ class NewProductPage extends React.Component {
         break;
       }
       case 3: {
-        window.location.href = '/inventory';
+        this.props.navigate('/inventory');
         break;
       }
     }
