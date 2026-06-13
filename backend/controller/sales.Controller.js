@@ -24,6 +24,7 @@ export const createSale = async (req, res) => {
         const earnedPoints = Math.floor((data.amountPaid || 0) / 100);
 
         if (isActive === 'INACTIVE') {
+            logResponse(req, ERROR, { status: 'Card is current expired or inactive.' });
             return ApiResponseModel(res, ERROR, 'Card is current expired or inactive.');
         }
 
