@@ -1,6 +1,6 @@
-# 💨 Vaporya POS System
+# 💨 OPNEXUS POS System
 
-A modern Point of Sale (POS) system built for **Vaporya Vapeshop**.
+A modern Point of Sale (POS) system
 
 Designed to streamline sales, inventory management, and daily operations with a fast and responsive web-based interface.
 
