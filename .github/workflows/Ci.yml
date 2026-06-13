@@ -103,7 +103,7 @@ jobs:
     steps:
       - name: Trigger Render Deploy Hook (Backend 1)
         run: |
-          curl -f ${{ secrets.RENDER_DEPLOY_HOOK }}
+          curl -f ${{ secrets.RENDER_DEPLOY_HOOK_2 }}
       - name: Trigger Render Deploy Hook (Backend 2)
         run: |
           curl -f ${{ secrets.RENDER_DEPLOY_HOOK_2 }}
