@@ -60,7 +60,7 @@ class NewProductPage extends React.Component {
         break;
       }
       case 2: {
-        addNewProduct(true, this.state.validateData);
+        await addNewProduct(true, this.state.validateData);
         setStep(3);
         break;
       }
