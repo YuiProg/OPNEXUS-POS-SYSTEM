@@ -40,7 +40,7 @@ import deleteCategoryConfirm from "./pages/Inventory/DeleteCategoryConfirm.jsx";
 import CustomerLogin from "./pages/CustomerPage/CustomerLogIn.jsx";
 import viewChangePasswordModal from "./pages/AuthPage/ChangePasswordModal.jsx";
 import SettingsPage from "./pages/Settings/Settings.jsx";
-import Toggle from "./components/TRToggle/Toggle.jsx";
+import {Toggle} from "./components/TRToggle/Toggle.jsx";
 import SettingsStore from "./context/SettingsStore.js";
 import { yesNoSettingsApplyModal, yesNoSettingsResetModal } from "./pages/Settings/ApplySettingsModal.jsx";
 import AddVipPage from "./pages/VIP/AddVipPage.jsx";
@@ -1266,7 +1266,7 @@ export default function App() {
                 <Navigate to="/login" replace />
               ) : (
                 <Sidebar user={AuthUser}>
-                  <StaffManagement />
+                  <StaffManagement navigate={navigate}/>
                 </Sidebar>
               )
             }

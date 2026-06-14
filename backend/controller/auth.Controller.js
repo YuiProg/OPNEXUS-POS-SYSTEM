@@ -20,6 +20,24 @@ const logResponse = (req, status, data) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl} -> ${status}`, JSON.stringify(data))
 }
 
+export const validateNewUser = async (req, res) => {
+  const data = req.body;
+  
+  if (data.username && data.password && data.firstName && data.lastName && data.email) {
+    try {
+      const existingUser = await User.findOne({ username: data.username });
+      if (existingUser) {
+        return res.status(ERROR).json({ status: 'Username already exists' });
+      }
+    } catch (error) {
+      return res.status(ERROR).json({ status: 'Error validating username', error: error.message });
+    }
+    return res.status(SUCCESS).json({ status: 'Validation successful', data });
+  } else {
+    return res.status(ERROR).json({ status: 'Missing required fields' });
+  }
+}
+
 export const register = async (req, res) => {
   try {
     const data = req.body;
@@ -35,7 +53,7 @@ export const register = async (req, res) => {
       log: `${userData.username} created a new user called ${createdUser.username}`
     };
     console.log(data);
-    if (data.sendEmail === 1) {
+    if (data.sendEmail === true) {
       //send email sa user
       try {
         const info = await sendMail({
@@ -48,7 +66,7 @@ export const register = async (req, res) => {
                 <p>Your Email is ${data.email}<p>
                 <p>Your temporary password is: <strong>${data.password}</strong></p>
                 <p>Please change your password after logging in.</p>
-                <p>THIS EMAIL IS CONFIDENTIAL AND SHALL USED FOR AUTHENTICATION PROCESSES.<p>
+                <p>THIS EMAIL IS CONFIDENTIAL AND SHALL BE USED FOR AUTHENTICATION PROCESSES.<p>
             `
         });
         console.log('Email sent:', info.response);
