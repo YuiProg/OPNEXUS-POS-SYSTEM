@@ -44,8 +44,6 @@ export class PanelPage extends React.Component {
       onClickNext,
       onClickBack,
       hasStepper,
-      secondBTNfunc,
-      secondBTNText
     } = this.props;
 
     // const childrenArray = React.Children.toArray(this.props.children);
@@ -96,10 +94,10 @@ export class PanelPage extends React.Component {
         <div className='tr-panel-stepper-container'>
           <InputRow gap={15}>
             <InputRow>
-              <Button customWidth={200} error text="Back" onClick={() => onClickBack()}/>
+              {/* <Button customWidth={200} error text="Back" onClick={() => onClickBack()}/> */}
             </InputRow>
             <InputRow gap={20}>
-              <Button cancel text={secondBTNText} maxWidth onClick={() => secondBTNfunc()}/>
+              <Button error text="Back" maxWidth onClick={() => onClickBack()}/>
               <Button success text="Next" maxWidth onClick={() => onClickNext()}/>
             </InputRow>
           </InputRow>
