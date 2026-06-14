@@ -23,7 +23,8 @@ const {
     UPDATE_USER,
     UPDATEBRANCH,
     REMOVEADMINFROMBRANCH,
-    CHANGEPASSWORD
+    CHANGEPASSWORD,
+    VALIDATEUSER
 } = ApiConfig;
 
 const {
@@ -52,7 +53,7 @@ const AuthStore = create((set, get) => ({
         address: '',
         branch: '',
         salary: null,
-        sendEmail: 0
+        sendEmail: false
     },
     users: [],
     onlineUsers: [],
@@ -66,6 +67,25 @@ const AuthStore = create((set, get) => ({
         confirmPassword: ''
     },
     changePasswordLoading: false,
+    steps: 1,
+    validateData: null,
+
+    setValidateData: (data) => set({validateData: data}),
+
+    setStep: (val) => set({step: val}),
+
+    validateDataFunc: async () => {
+        set({authLoading: true});
+        const inputs = get().input;
+        try {
+            const validate = axiosInstance.post(VALIDATEUSER, inputs);
+            console.log(await validate);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            set({authLoading: false});
+        }
+    },
 
     setChangePasswordInput: (name, value) => {
         console.log(value);

@@ -109,6 +109,7 @@ class NewProductPage extends React.Component {
   }
 
   productDropDown = () => {
+    const { setShowNewCategoryModal } = ModalStore.getState();
     return (
       <>
         <InputRow gap={16} titles={['Category', 'Add Category']} bottomMargin>
@@ -117,7 +118,7 @@ class NewProductPage extends React.Component {
             options={this.state.categories?.map((d) => d.categoryName)}
             onChange={(e) => setProductInput('category', e)}  
           />
-          <Button maxWidth cancel text='Add Category'/>
+          <Button maxWidth cancel text='Add Category' onClick={() => setShowNewCategoryModal(true)}/>
         </InputRow>
         <InputRow gap={16} titles={['Branch']} bottomMargin>
           <DropdownPortal
@@ -213,8 +214,6 @@ class NewProductPage extends React.Component {
         hasStepper 
         onClickNext={() => this.clickNext()} 
         onClickBack={() => this.clickBack()}
-        secondBTNfunc={() => window.location.reload()}
-        secondBTNText="Reset Inputs"
       >
         <PanelContainer currentStep={this.state.step} totalSteps={3}>
           {this.currentStep()}

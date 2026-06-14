@@ -4,7 +4,7 @@ import VipStore from "../../context/VipStore";
 import ModalStore from "../../context/ModalStore";
 import { InputForm, InputRow } from "../../components/TRInputForm/TRInputForm";
 import InputField from "../../components/TRInputField/InputFIeld";
-import Toggle from "../../components/TRToggle/Toggle";
+import {Toggle} from "../../components/TRToggle/Toggle";
 
 
 export const editMainVipModal = () => {

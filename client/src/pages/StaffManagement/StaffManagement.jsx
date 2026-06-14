@@ -108,8 +108,8 @@ class StaffManagement extends React.Component {
         const tableData = {
             header: "STAFFS",
             hasButton: true,
-            CB: () => setShowAddModal(true),
-            buttonInfo: "NEW CLERK",
+            CB: () => this.props.navigate("/addStaff"),
+            buttonInfo: "NEW STAFF",
             hasDelete: true,
             deleteBtnInfo: 'Delete',
             CBD: (e) => this.showConfirmDelModal(e)
@@ -145,7 +145,6 @@ class StaffManagement extends React.Component {
                         <ActiveStaffs staffData={onlineUsers}/>
                     </div>
                 </div>
-                <Link to="/addstaff">TEST</Link>
             </PanelPage>
         );
     }
