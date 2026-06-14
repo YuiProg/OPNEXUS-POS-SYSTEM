@@ -98,7 +98,7 @@ class StaffManagement extends React.Component {
 
     render () {
         //const {setShowModal} = BranchStore.getState();
-        const { setShowAddModal } = ModalStore.getState();
+        //const { setShowAddModal } = ModalStore.getState();
         const { onlineUsers, fetchLoading } = AuthStore.getState();
         const {setSelectedBranch, selectedBranch} = AuthStore.getState();
         const { branches } = BranchStore.getState();
