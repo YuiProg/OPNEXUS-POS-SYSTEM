@@ -45,7 +45,7 @@ export const register = async (req, res) => {
     const { userId } = req.user;
     const userData = await User.getUser(userId);
     const createdUser = await User.registerUser(data);
-    console.log(data);
+
     const logPayload = {
       user: userData.username,
       action: NEWUSER,

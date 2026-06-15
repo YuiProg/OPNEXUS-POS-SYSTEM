@@ -72,16 +72,19 @@ const AuthStore = create((set, get) => ({
 
     setValidateData: (data) => set({validateData: data}),
 
-    setStep: (val) => set({step: val}),
+    setStep: (val) => set({steps: val}),
 
     validateDataFunc: async () => {
         set({authLoading: true});
         const inputs = get().input;
         try {
-            const validate = axiosInstance.post(VALIDATEUSER, inputs);
-            console.log(await validate);
+            const validate = await axiosInstance.post(VALIDATEUSER, inputs);
+            set({validateData: validate.data});
+            return validate.data;
         } catch (error) {
-            console.log(error);
+            if (axiosError(error)) {
+                toast.error(error.response.data.status);
+            }
         } finally {
             set({authLoading: false});
         }
