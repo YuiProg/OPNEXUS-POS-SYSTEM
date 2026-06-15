@@ -1381,9 +1381,11 @@ export default function App() {
             element={
               AuthUser?.role.toLowerCase() === "clerk" ? (
                 <Navigate to="/timeinout" replace/>
-              ) : (
+                ) :!AuthUser ? (
+                  <Navigate to="/login" replace />
+                ) : (
                 <Sidebar user={AuthUser}>
-                  <AddStaffPage/>
+                  <AddStaffPage navigate={navigate}/>
                 </Sidebar>
               )
             }
@@ -1394,6 +1396,8 @@ export default function App() {
             element={
               AuthUser?.role.toLowerCase() === "clerk" ? (
                 <Navigate to="/timeinout" replace/>
+              ) : !AuthUser ? (
+                <Navigate to="/login" replace />
               ) : (
                 <Sidebar user={AuthUser}>
                   <NewProductPage navigate={navigate}/>

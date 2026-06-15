@@ -6,26 +6,35 @@ import InputField from '../../components/TRInputField/InputFIeld'
 import { Toggle, BooleanToggle } from '../../components/TRToggle/Toggle'
 import DropdownPortal from '../../components/TRDropDown/Dropdown'
 
-const { setStep, setInput, input, validateDataFunc } = AuthStore.getState()
+const { setStep, setInput, input, resetInput, validateDataFunc, addUser } = AuthStore.getState()
 
 class AddStaffPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      step: 1
+      step: 1,
+      validateDate: null
     }
   }
 
   componentDidMount() {
+    resetInput();
     setStep(1)
-    this.unsubscribe = AuthStore.subscribe((state) => {
+    this.unsubscribeAuth = AuthStore.subscribe((state) => {
       this.setState({ step: state.steps })
     })
+  }
+
+  componentWillUnmount() {
+    this.unsubscribeAuth();
   }
 
   addStaff = (isView) => {
     return (
       <>
+        <div style={{marginBottom: '10px'}}>
+          <h1>{this.state.step === 1 ? 'Add Staff' : this.state.step === 2 ? 'Confirm Details' : 'Staff Added'}</h1>
+        </div>
         <InputRow gap={16} titles={['Username', 'Email', 'Password']} bottomMargin>
           <InputField
             text
@@ -109,23 +118,26 @@ class AddStaffPage extends React.Component {
             defaultValue="Role"
             options={['Admin', 'Clerk']}
             onChange={(e) => setInput('role', e)}
+            disabled={isView}
           />
           <DropdownPortal
             defaultValue="Shift"
             options={['Day', 'Night']}
             onChange={(e) => setInput('shift', e)}
+            disabled={isView}
           />
           <DropdownPortal
             defaultValue="Gender"
             options={['Male', 'Female']}
             onChange={(e) => setInput('gender', e)}
+            disabled={isView}
           />
         </InputRow>
         <InputRow titles={['Send Email Notification']} bottomMargin>
           {!isView ? (
             <BooleanToggle defaultValue={false} hideLabel onChange={(val) => setInput('sendEmail', val)} />
           ) : (
-            <p>YES</p>
+            <p>{input.sendEmail ? 'Yes' : 'No'}</p>
           )}
         </InputRow>
       </>
@@ -135,16 +147,42 @@ class AddStaffPage extends React.Component {
   currentStep = () => {
     switch (this.state.step) {
       case 1:
-        return this.addStaff(false)
+        return this.addStaff(false);
       case 2:
-        return this.addStaff(true)
+        return this.addStaff(true);
+      case 3:
+        return this.addStaff(true);
       default:
         return this.addStaff(false)
     }
   }
 
-  onClickNext = () => {
-    validateDataFunc();
+  clickNext = async () => {
+    switch (this.state.step) {
+      case 1: {
+        const validate = await validateDataFunc();
+        if (validate) {
+          this.setState({ validateDate: validate.data });
+          setStep(2);
+        }
+        break;
+      }
+      case 2:
+        await addUser();
+        setStep(3);
+        break;
+      case 3: 
+        this.setState({ validateDate: null });
+        this.props.navigate('/staff');
+        break;
+    }
+  }
+
+  clickBack = () => {
+    if (this.state.step === 1) {
+      this.props.navigate('/staff');
+    }
+    setStep(this.state.step - 1);
   }
 
   render() {
@@ -153,7 +191,8 @@ class AddStaffPage extends React.Component {
         titlePage="Add Staff" 
         subTitle="Add newly hired staff or admins here." 
         hasStepper
-        onClickNext={() => this.onClickNext()}
+        onClickNext={() => this.clickNext()}
+        onClickBack={() => this.clickBack()}
       >
         <PanelContainer currentStep={this.state.step} totalSteps={3}>
           {this.currentStep()}
