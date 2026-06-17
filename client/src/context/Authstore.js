@@ -75,6 +75,8 @@ const AuthStore = create((set, get) => ({
     setStep: (val) => set({steps: val}),
 
     validateDataFunc: async () => {
+        const {isScrenLoading} = ModalStore.getState();
+        isScrenLoading(true);
         set({authLoading: true});
         const inputs = get().input;
         try {
@@ -87,6 +89,7 @@ const AuthStore = create((set, get) => ({
             }
         } finally {
             set({authLoading: false});
+            isScrenLoading(false);
         }
     },
 
