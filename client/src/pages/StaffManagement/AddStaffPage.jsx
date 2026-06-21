@@ -3,7 +3,7 @@ import { PanelContainer, PanelPage } from '../../components/TRPanelPage/TRPanelP
 import { InputRow } from '../../components/TRInputForm/TRInputForm'
 import AuthStore from '../../context/Authstore'
 import InputField from '../../components/TRInputField/InputFIeld'
-import { Toggle, BooleanToggle } from '../../components/TRToggle/Toggle'
+import { BooleanToggle } from '../../components/TRToggle/Toggle'
 import DropdownPortal from '../../components/TRDropDown/Dropdown'
 
 const { setStep, setInput, input, resetInput, validateDataFunc, addUser } = AuthStore.getState()
@@ -13,7 +13,7 @@ class AddStaffPage extends React.Component {
     super(props)
     this.state = {
       step: 1,
-      validateDate: null
+      validateDate: null,
     }
   }
 
@@ -30,6 +30,8 @@ class AddStaffPage extends React.Component {
   }
 
   addStaff = (isView) => {
+    const inputLength = this.props.settings.staffManagementSettings.inputLength
+
     return (
       <>
         <div style={{marginBottom: '10px'}}>
@@ -43,6 +45,7 @@ class AddStaffPage extends React.Component {
             placeholder="Username"
             required
             disabled={isView}
+            maxLength={inputLength.username}
           />
           <InputField
             email            
@@ -60,6 +63,7 @@ class AddStaffPage extends React.Component {
             type="password"
             required
             disabled={isView}
+            maxLength={inputLength.password}
           />
         </InputRow>
         <InputRow gap={16} titles={['First Name', 'Middle Name', 'Last Name']} bottomMargin>
@@ -70,6 +74,7 @@ class AddStaffPage extends React.Component {
             placeholder="First Name"
             required
             disabled={isView}
+            maxLength={inputLength.firstName}
           />
           <InputField
             text
@@ -77,6 +82,7 @@ class AddStaffPage extends React.Component {
             value={input.middleName}
             placeholder="Middle Name"
             disabled={isView}
+            maxLength={inputLength.middleName}
           />
           <InputField
             text
@@ -85,6 +91,7 @@ class AddStaffPage extends React.Component {
             placeholder="Last Name"
             required
             disabled={isView}
+            maxLength={inputLength.lastName}
           />
         </InputRow>
         <InputRow gap={16} titles={['Address', 'Contact Number', 'Salary']} bottomMargin>
@@ -95,6 +102,7 @@ class AddStaffPage extends React.Component {
             placeholder="Address"
             required
             disabled={isView}
+            maxLength={inputLength.address}
           />
           <InputField
             number
@@ -111,6 +119,7 @@ class AddStaffPage extends React.Component {
             placeholder="Salary"
             required
             disabled={isView}
+            maxLength={inputLength.salary}
           />
         </InputRow>
         <InputRow gap={16} titles={['Role', 'Shift', 'Gender']} bottomMargin>

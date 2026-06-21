@@ -1385,7 +1385,7 @@ export default function App() {
                   <Navigate to="/login" replace />
                 ) : (
                 <Sidebar user={AuthUser}>
-                  <AddStaffPage navigate={navigate}/>
+                  <AddStaffPage navigate={navigate} settings={settings?.data}/>
                 </Sidebar>
               )
             }
@@ -1400,7 +1400,7 @@ export default function App() {
                 <Navigate to="/login" replace />
               ) : (
                 <Sidebar user={AuthUser}>
-                  <NewProductPage navigate={navigate}/>
+                  <NewProductPage navigate={navigate} settings={settings?.data}/>
                 </Sidebar>
               )
             }
