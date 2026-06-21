@@ -12,6 +12,7 @@ import toast from "react-hot-toast";
 import BranchStore from "../../context/BranchStore";
 import { PanelPage, RightPanel } from "../../components/TRPanelPage/TRPanelPage";
 import { Link } from "react-router-dom";
+import SettingsStore from "../../context/SettingsStore";
 
 class Inventory extends React.Component {
   constructor(props) {
