@@ -5,6 +5,7 @@ import { Navigate, Link } from "react-router-dom";
 import './Sidebar.css';
 import { LayoutDashboard, ShelvingUnit, IdCardLanyard, Logs, Warehouse, Store, Clock, Gem, Monitor, GitBranch, Settings } from 'lucide-react';
 import Button from "../TRButton/Button";
+import SettingsStore from "../../context/SettingsStore";
 
 const { SUCCESS_MESS } = Strings;
 
@@ -14,46 +15,26 @@ class Sidebar extends React.Component {
 
         this.state = {
             redirect: false,
-            user: null
+            user: null,
+            storeState: SettingsStore.getState(),
         };
     }
-    //pang protect ng routes
-    //pag walang user na naka login
-    //mag reredirect siya sa login page
-    // componentDidMount() {
-    //     const { checkAuth, AuthUser } = AuthStore.getState();
-    //     checkAuth();
 
-    //     if (AuthUser) {
-    //         this.setState({ user: AuthUser });
-    //     }
-        
-    //     this.unsubscribe = AuthStore.subscribe((state) => {
-    //         const { AuthUser } = state;
-    //         if (!AuthUser) {
-    //             this.setState({ redirect: true, user: null });
-    //         } else {
-    //             this.setState({ user: AuthUser }); 
-    //         }
-    //     });
-    // }
+    componentDidMount() {
+        this.unsubscribe = SettingsStore.subscribe(() => {
+            this.setState({ storeState: SettingsStore.getState() })
+        })
+    }
 
-    // componentWillUnmount() {
-    //     if (this.unsubscribe) this.unsubscribe();
-    // }
-
-    componentDidMount () {
-        //console.log(this.props.user);
+    componentWillUnmount() {
+        if (this.unsubscribe) this.unsubscribe();
     }
 
     handleLogout = () => {
         const { logoutUser } = AuthStore.getState();
         logoutUser();
-        // window.location.href = "/login";
     }
 
-    //check kung naka login paba kada click ng tabs sa sidebar
-    //pag hindi naka login i redirect natin si user sa login page
     checkAuthentication = () => {
 
     }
@@ -72,12 +53,14 @@ class Sidebar extends React.Component {
     }
 
     render() {
-        // if (this.state.redirect) {
-        //     return <Navigate to="/inventory" />;
-        // }
         const { user } = this.props;
-        //console.log(user);
-        //tanggalin muna error sa es-lint since dipa ginagamit tong variable nato pero eto yung items sa sidebar
+        const { settings } = this.state.storeState;
+        const settingsData = settings?.data;
+
+        const staffEnabled = settingsData?.staffManagementSettings?.enabled ?? true;
+        const vipEnabled = settingsData?.vipManagementSettings?.enabled ?? true;
+        const branchEnabled = settingsData?.branchSettings?.enabled ?? true;
+
         const sidebarItemsAdmin = [
             {
                 title: "Dashboard",
@@ -89,17 +72,17 @@ class Sidebar extends React.Component {
                 icon: <ShelvingUnit />,
                 link: "/inventory",
             },
-            {
+            staffEnabled && {
                 title: "Staff Management",
                 icon: <IdCardLanyard />,
                 link: "/staff",
             },
-            {
+            vipEnabled && {
                 title: "VIP Management",
                 icon: <Gem />,
                 link: "/vip",
             },
-            {
+            branchEnabled && {
                 title: "Branches",
                 icon: <Warehouse/>,
                 link: "/branch",
@@ -113,13 +96,8 @@ class Sidebar extends React.Component {
                 title: "Settings",
                 icon: <Settings/>,
                 link: "/settings"
-            }
-            // {
-            //     title: "Settings",
-            //     icon: <Settings />,
-            //     link: "/settings",
-            // },
-        ]
+            },
+        ].filter(Boolean)
 
         const sidebarItemsClerk = [
             {
@@ -127,7 +105,7 @@ class Sidebar extends React.Component {
                 icon: <Clock />,
                 link: "/timeinout",
             },
-            {
+            vipEnabled && {
                 title: "VIP Management",
                 icon: <Gem />,
                 link: "/vip",
@@ -142,12 +120,7 @@ class Sidebar extends React.Component {
                 icon: <Store/>,
                 link: "/pos"
             }
-        ];
-
-        //for debugging
-        // if (!user) {
-        //     return;
-        // }
+        ].filter(Boolean)
 
         return (
             <div className="sidebar-container">

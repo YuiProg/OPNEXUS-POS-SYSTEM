@@ -32,7 +32,7 @@ class NewProductPage extends React.Component {
     getCategories()
     setStep(1);
     resetInput();
-
+    console.log(this.props.settings.inventorySettings);
     this.unsubscribeBranches = BranchStore.subscribe((state) => {
       this.setState({ branches: state.branches })
     })
@@ -91,17 +91,21 @@ class NewProductPage extends React.Component {
           text
           placeholder="Enter Product Name"
           onChange={(e) => setProductInput('productName', e)}
+          maxLength={this.props.settings.inventorySettings.inputLength.productName}
           required
         />
         <InputField
           text
           placeholder="Enter Product Quantity"
           onChange={(e) => setProductInput('quantity', Number(e))}
+          maxLength={this.props.settings.inventorySettings.inputLength.quantity}
+          required
         />
         <InputField
           number
           placeholder="Enter Product Price"
           onChange={(e) => setProductInput('price', Number(e))}
+          maxLength={this.props.settings.inventorySettings.inputLength.price}
           required
         />
       </InputRow>
