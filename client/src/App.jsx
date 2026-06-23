@@ -1395,7 +1395,7 @@ export default function App() {
           />
 
           <Route
-            path="/newproduct"
+            path="/inventory/add"
             element={
               AuthUser?.role.toLowerCase() === "clerk" ? (
                 <Navigate to="/timeinout" replace/>
