@@ -137,7 +137,7 @@ class Inventory extends React.Component {
     const tableData = {
       header: "ITEMS",
       hasButton: this.state.isAdmin,
-      CB: () => this.props.navigate('/newproduct'),
+      CB: () => this.props.navigate('/inventory/add'),
       buttonInfo: "NEW ITEM",
       hasDelete: true,
       deleteBtnInfo: "Delete",

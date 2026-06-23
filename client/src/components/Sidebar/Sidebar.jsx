@@ -14,6 +14,7 @@ class Sidebar extends React.Component {
         this.state = {
             collapsed: false,
             logsExpanded: false,
+            inventoryExpanded: false,
             storeState: SettingsStore.getState(),
         };
     }
@@ -23,10 +24,14 @@ class Sidebar extends React.Component {
             this.setState({ storeState: SettingsStore.getState() });
         });
 
-        // Auto-expand logs sub-menu if loading directly into a sub-route
         const pathname = window.location.pathname;
+
         if (["/logs/system", "/logs/inout", "/logs/transactions"].includes(pathname)) {
             this.setState({ logsExpanded: true });
+        }
+
+        if (["/inventory", "/inventory/add"].includes(pathname)) {
+            this.setState({ inventoryExpanded: true });
         }
     }
 
@@ -45,9 +50,17 @@ class Sidebar extends React.Component {
 
     toggleLogsMenu = (e) => {
         e.preventDefault();
-        this.setState(prev => ({ 
+        this.setState(prev => ({
             logsExpanded: !prev.logsExpanded,
-            collapsed: prev.collapsed ? false : prev.collapsed 
+            collapsed: prev.collapsed ? false : prev.collapsed
+        }));
+    }
+
+    toggleInventoryMenu = (e) => {
+        e.preventDefault();
+        this.setState(prev => ({
+            inventoryExpanded: !prev.inventoryExpanded,
+            collapsed: prev.collapsed ? false : prev.collapsed
         }));
     }
 
@@ -60,8 +73,8 @@ class Sidebar extends React.Component {
     }
 
     render() {
-        const { user } = this.props; 
-        const { collapsed, storeState, logsExpanded } = this.state;
+        const { user } = this.props;
+        const { collapsed, storeState, logsExpanded, inventoryExpanded } = this.state;
         const { settings } = storeState;
         const settingsData = settings?.data;
 
@@ -77,6 +90,7 @@ class Sidebar extends React.Component {
             : user.role.slice(0, 2).toUpperCase();
 
         const isAnyLogActive = ["/logs/system", "/logs/inout", "/logs/transactions"].includes(pathname);
+        const isAnyInventoryActive = ["/inventory", "/inventory/add"].includes(pathname);
 
         return (
             <div className="sidebar-container">
@@ -107,13 +121,36 @@ class Sidebar extends React.Component {
                                             </Link>
                                             {collapsed && <span className="sb-tooltip">Dashboard</span>}
                                         </li>
-                                        <li className={`sb-row${pathname === '/inventory' ? ' active' : ''}`}>
-                                            <Link to="/inventory">
-                                                <span className="sb-icon-wrap"><Package size={20} /></span>
-                                                <span className="sb-title">Inventory</span>
-                                            </Link>
+
+                                        {/* Inventory Accordion */}
+                                        <li className={`sb-row sb-dropdown-wrapper ${inventoryExpanded ? 'is-expanded' : ''} ${isAnyInventoryActive ? 'parent-active' : ''}`}>
+                                            <a href="#inventory" onClick={this.toggleInventoryMenu} className="sb-dropdown-trigger">
+                                                <div className="sb-trigger-left">
+                                                    <span className="sb-icon-wrap"><Package size={20} /></span>
+                                                    <span className="sb-title">Inventory</span>
+                                                </div>
+                                                {!collapsed && (
+                                                    <ChevronDown className={`sb-chevron ${inventoryExpanded ? 'rotated' : ''}`} size={16} />
+                                                )}
+                                            </a>
                                             {collapsed && <span className="sb-tooltip">Inventory</span>}
+
+                                            <ul className="sb-submenu-list">
+                                                <li className={`sb-sub-row${pathname === '/inventory' ? ' sub-active' : ''}`}>
+                                                    <Link to="/inventory">
+                                                        <span className="sb-sub-dot"></span>
+                                                        <span className="sb-sub-title">View Inventory</span>
+                                                    </Link>
+                                                </li>
+                                                <li className={`sb-sub-row${pathname === '/inventory/add' ? ' sub-active' : ''}`}>
+                                                    <Link to="/inventory/add">
+                                                        <span className="sb-sub-dot"></span>
+                                                        <span className="sb-sub-title">Add New Item</span>
+                                                    </Link>
+                                                </li>
+                                            </ul>
                                         </li>
+
                                         {staffEnabled && (
                                             <li className={`sb-row${pathname === '/staff' ? ' active' : ''}`}>
                                                 <Link to="/staff">
@@ -160,13 +197,36 @@ class Sidebar extends React.Component {
                                                 {collapsed && <span className="sb-tooltip">VIP Management</span>}
                                             </li>
                                         )}
-                                        <li className={`sb-row${pathname === '/inventory' ? ' active' : ''}`}>
-                                            <Link to="/inventory">
-                                                <span className="sb-icon-wrap"><Package size={20} /></span>
-                                                <span className="sb-title">Inventory</span>
-                                            </Link>
+
+                                        {/* Clerk Inventory Accordion */}
+                                        <li className={`sb-row sb-dropdown-wrapper ${inventoryExpanded ? 'is-expanded' : ''} ${isAnyInventoryActive ? 'parent-active' : ''}`}>
+                                            <a href="#inventory" onClick={this.toggleInventoryMenu} className="sb-dropdown-trigger">
+                                                <div className="sb-trigger-left">
+                                                    <span className="sb-icon-wrap"><Package size={20} /></span>
+                                                    <span className="sb-title">Inventory</span>
+                                                </div>
+                                                {!collapsed && (
+                                                    <ChevronDown className={`sb-chevron ${inventoryExpanded ? 'rotated' : ''}`} size={16} />
+                                                )}
+                                            </a>
                                             {collapsed && <span className="sb-tooltip">Inventory</span>}
+
+                                            <ul className="sb-submenu-list">
+                                                <li className={`sb-sub-row${pathname === '/inventory' ? ' sub-active' : ''}`}>
+                                                    <Link to="/inventory">
+                                                        <span className="sb-sub-dot"></span>
+                                                        <span className="sb-sub-title">View Inventory</span>
+                                                    </Link>
+                                                </li>
+                                                <li className={`sb-sub-row${pathname === '/inventory/add' ? ' sub-active' : ''}`}>
+                                                    <Link to="/inventory/add">
+                                                        <span className="sb-sub-dot"></span>
+                                                        <span className="sb-sub-title">Add New Item</span>
+                                                    </Link>
+                                                </li>
+                                            </ul>
                                         </li>
+
                                         <li className={`sb-row${pathname === '/pos' ? ' active' : ''}`}>
                                             <Link to="/pos">
                                                 <span className="sb-icon-wrap"><Store size={20} /></span>
@@ -184,7 +244,7 @@ class Sidebar extends React.Component {
                             <div className="sb-section">
                                 <p className="sb-section-label">System</p>
                                 <ul className="sidebar-list">
-                                    {/* Accordion Logs Root Parent Trigger */}
+                                    {/* Accordion Logs */}
                                     <li className={`sb-row sb-dropdown-wrapper ${logsExpanded ? 'is-expanded' : ''} ${isAnyLogActive ? 'parent-active' : ''}`}>
                                         <a href="#logs" onClick={this.toggleLogsMenu} className="sb-dropdown-trigger">
                                             <div className="sb-trigger-left">
@@ -197,7 +257,6 @@ class Sidebar extends React.Component {
                                         </a>
                                         {collapsed && <span className="sb-tooltip">Logs Menu</span>}
 
-                                        {/* Sub-Items Panel List */}
                                         <ul className="sb-submenu-list">
                                             <li className={`sb-sub-row${pathname === '/logs/system' ? ' sub-active' : ''}`}>
                                                 <Link to="/logs/system">
