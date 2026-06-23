@@ -4,6 +4,7 @@ import DropDown from '../TRDropDown/Dropdown';
 import PropTypes from 'prop-types';
 import Button from '../TRButton/Button';
 import { InputRow } from '../TRInputForm/TRInputForm';
+
 /**
  * @class
  * @component
@@ -46,40 +47,36 @@ export class PanelPage extends React.Component {
       hasStepper,
     } = this.props;
 
-    // const childrenArray = React.Children.toArray(this.props.children);
     const mainChildren = React.Children.toArray(this.passPropsToChildren()).filter(
       (child) => child.type !== RightPanel
     );
 
     return (
-      <>
       <div className="tr-panel-container">
-        <div className="tr-panel-top-contents">
+        {/* Top Navbar Header */}
+        <header className="tr-panel-topbar">
           <div className="tr-panel-header">
             <h1 className="tr-panel-bigtitle">{titlePage}</h1>
-            <p className="tr-panel-sentence">{subTitle}</p>
+            {subTitle && <p className="tr-panel-sentence">{subTitle}</p>}
           </div>
           
           <div className="tr-panel-top-right">
-            {hasBranch && user && (
-              <div className="iv-branch-dropdown">
-                {user.role.toLowerCase() !== 'clerk' && (
-                  <div>
-                    <p className="iv-branch-text">Branch</p>
-                    <DropDown
-                      isHeader
-                      className="iv-branch-dd"
-                      defaultValue={selectedBranch || 'Branch'}
-                      onChange={(e) => dropDownFunc(e)}
-                      options={branchNames}
-                    />
-                  </div>
-                )}
+            {hasBranch && user && user.role.toLowerCase() !== 'clerk' && (
+              <div className="iv-branch-dropdown-wrapper">
+                <span className="iv-branch-label-inline">Branch</span>
+                <DropDown
+                  isHeader
+                  className="iv-branch-dd"
+                  defaultValue={selectedBranch || 'Select Branch...'}
+                  onChange={(e) => dropDownFunc(e)}
+                  options={branchNames}
+                />
               </div>
             )}
           </div>
-        </div>
+        </header>
 
+        {/* Content Body */}
         <div className="tr-panel-body">
           <div className="tr-panel-main">
             {mainChildren}
@@ -90,31 +87,26 @@ export class PanelPage extends React.Component {
             </div>
           )}
         </div>
+
         {hasStepper && (
-        <div className='tr-panel-stepper-container'>
-          <InputRow gap={15}>
-            <InputRow>
-              {/* <Button customWidth={200} error text="Back" onClick={() => onClickBack()}/> */}
+          <div className='tr-panel-stepper-container'>
+            <InputRow gap={15}>
+              <InputRow></InputRow>
+              <InputRow gap={20}>
+                <Button error text="Back" maxWidth onClick={() => onClickBack()}/>
+                <Button success text="Next" maxWidth onClick={() => onClickNext()}/>
+              </InputRow>
             </InputRow>
-            <InputRow gap={20}>
-              <Button error text="Back" maxWidth onClick={() => onClickBack()}/>
-              <Button success text="Next" maxWidth onClick={() => onClickNext()}/>
-            </InputRow>
-          </InputRow>
-        </div>
+          </div>
         )}
       </div>
-      </>
     );
   }
 }
 
 export class PanelContainer extends React.Component {
   render () {
-    const {
-      currentStep,
-      totalSteps
-    } = this.props;
+    const { currentStep, totalSteps } = this.props;
     return (
       <>
         <div style={{padding: '0 10px 10px 10px'}}>
@@ -144,6 +136,4 @@ RightPanel.propTypes = {
     children: PropTypes.node,
 }
 
-PanelContainer.propTypes = {
-  
-}
+PanelContainer.propTypes = {}
