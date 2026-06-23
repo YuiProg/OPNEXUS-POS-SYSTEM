@@ -4,10 +4,9 @@ import { PieChart } from '@mui/x-charts/PieChart';
 import DashboardStore from "../../../context/DashboardStore";
 
 const donutSettings = {
-  margin: { right: 5 },
+  margin: { top: 10, bottom: 10, left: 10, right: 10 },
   width: 200,
   height: 200,
-  hideLegend: true,
 };
 
 const MONTH_LABELS = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
@@ -31,7 +30,7 @@ class DonutChart extends React.Component {
 
     this.unsubscribe = DashboardStore.subscribe((state) => {
       const monthly = state.netProfit?.data;
-      this.setState({ netProfitLoading: state.netProfitLoading });
+      this.setState({ netProfitLoading: state.netProfitLoading || false });
       if (monthly && monthly.length > 0) {
         const { selectedMonth } = this.state;
         const found = monthly.find((m) => m.month === selectedMonth);
@@ -49,47 +48,67 @@ class DonutChart extends React.Component {
 
     return (
       <div className="dc-container">
-        <div className="dc-text">
-          <h1 className="dc-title">Net Profit</h1>
-          <p className="dc-branch">{selectedMonth} &#40;monthly&#41;</p>
+        <div className="dc-header">
+          <div className="dc-title-group">
+            <span className="dc-label">Performance Breakdown</span>
+            <h3 className="dc-title">Net Profit</h3>
+          </div>
+          <span className="dc-branch">{selectedMonth} (Monthly)</span>
         </div>
+
         {netProfitLoading ? (
           <div className="dc-loading">
             <span className="dc-spinner"></span>
           </div>
         ) : (
-          <>
-            <div className="donut-chart">
+          <div className="dc-content-body">
+            <div className="donut-chart-wrapper">
               {chartData.length > 0 ? (
                 <PieChart
                   series={[{ 
-                    innerRadius: 50, 
-                    outerRadius: 90, 
+                    innerRadius: 60, 
+                    outerRadius: 85, 
                     data: chartData,
+                    paddingAngle: 2, 
+                    cornerRadius: 4,
                   }]}
                   {...donutSettings}
+                  // Suppresses the hidden dark text layout block entirely
+                  slotProps={{
+                    legend: {
+                      hidden: true
+                    }
+                  }}
                   sx={{
                     '& .MuiPieArc-root': {
                       stroke: 'none',
                     },
+                    // Absolute fallback layout pruning for native legend elements
+                    '& .MuiChartsLegend-root, & .MuiChartsLegend-series text': {
+                      display: 'none !important',
+                    }
                   }}
                 />
               ) : (
-                <div className="dc-empty">No data</div>
+                <div className="dc-empty">No data available</div>
               )}
             </div>
+            
+            {/* Custom Bottom Legend - Colors and text align correctly */}
             <div className="dc-legend">
               {chartData.map((item, index) => (
                 <div className="legend-item" key={index}>
-                  <div className="legend-circle" style={{ backgroundColor: item.color }}></div>
-                  <div>
-                    <h4 className="dc-legend-fund">{item.label}</h4>
-                    <p className="dc-legend-label">{legendLabels[index]}</p>
+                  <span className="legend-circle" style={{ backgroundColor: item.color || '#e24b4a' }}></span>
+                  <div className="legend-texts">
+                    <h4 className="dc-legend-fund">
+                      {item.value?.toLocaleString() || item.total?.toLocaleString() || 0}
+                    </h4>
+                    <p className="dc-legend-label">{legendLabels[index] || item.label}</p>
                   </div>
                 </div>
               ))}
             </div>
-          </>
+          </div>
         )}
       </div>
     );

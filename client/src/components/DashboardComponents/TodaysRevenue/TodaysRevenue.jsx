@@ -1,17 +1,18 @@
 import React from "react";
 import './TodaysRevenue.css';
+import { DollarSign } from 'lucide-react';
 import DashboardStore from "../../../context/DashboardStore";
 
 class TodaysRevenue extends React.Component {
-    constructor (props) {
+    constructor(props) {
         super(props);
         this.state = {
             todayRevenue: null,
             todayRevenueLoading: false
-        }
+        };
     }
 
-    componentDidMount () {
+    componentDidMount() {
         const { getTodayRevenue } = DashboardStore.getState();
         getTodayRevenue();
         
@@ -23,32 +24,37 @@ class TodaysRevenue extends React.Component {
         });
     }
 
-    componentWillUnmount () {
+    componentWillUnmount() {
         if (this.unsubscribe) this.unsubscribe();
     }
 
-    render () {
+    formatCurrency = (amount) => {
+        return new Intl.NumberFormat('en-PH', {
+            style: 'currency',
+            currency: 'PHP',
+            minimumFractionDigits: 2
+        }).format(amount || 0);
+    }
+
+    render() {
         const { todayRevenue, todayRevenueLoading } = this.state;
 
         return (
             <div className="tr-container">
                 <div className="tr-content">
-                    <p className="tr-label">Today's revenue</p>
-                    <h1 className="tr-head">
-                        {todayRevenueLoading 
-                            ? (
-                                <div className="tr-spinner-wrapper">
-                                    <div className="tr-spinner" />
-                                </div>
-                            ) 
-                            : (
-                                <h1 className="tr-head">
-                                    {`PHP ${todayRevenue?.revenue ?? 0}`}
-                                </h1>
-                            )
-                        }
-                    </h1>
-                    {/* <p className="tr-label">0% from yesterday</p> */}
+                    <span className="tr-label">Today's Revenue</span>
+                    {todayRevenueLoading ? (
+                        <div className="tr-spinner-wrapper">
+                            <div className="tr-spinner" />
+                        </div>
+                    ) : (
+                        <h1 className="tr-head">
+                            {this.formatCurrency(todayRevenue?.revenue)}
+                        </h1>
+                    )}
+                </div>
+                <div className="tr-icon-box">
+                    <DollarSign size={22} strokeWidth={2.5} />
                 </div>
             </div>
         );

@@ -40,7 +40,6 @@ export class Table extends React.Component {
         passive: false,
       });
     }
-    console.log(this.props);
   }
 
   componentWillUnmount() {
@@ -195,7 +194,10 @@ export class Table extends React.Component {
       <div className="table-wrapper">
         {isDetailed && data ? (
           <div className="table-header">
-            <h1 className="table-title">{isDetailed.header}</h1>
+            <div className="table-title-area">
+              <span className="table-subtitle">Management Console</span>
+              <h1 className="table-title">{isDetailed.header}</h1>
+            </div>
             <div className="table-header-right">
               <div className="table-search">{isDetailed.search}</div>
               {isDetailed.hasButton && isDetailed.hasDelete ? (
@@ -223,7 +225,7 @@ export class Table extends React.Component {
                   cancel
                   text={
                     <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
-                      <SlidersHorizontal/>
+                      <SlidersHorizontal size={15}/>
                     </span>
                   }
                   onClick={this.handleFilterToggle}
@@ -233,7 +235,7 @@ export class Table extends React.Component {
           </div>
         ) : (
           hasTableFilters && (
-            <div className="table-header">
+            <div className="table-header table-header--isolated">
               <div className="table-header-right" style={{ marginLeft: "auto" }}>
                 <Button
                   cancel
@@ -318,7 +320,7 @@ export class Table extends React.Component {
           <div className="pagination">
             <span className="pagination-info">
               {sortedData
-                ? `showing ${Math.min(startIndex + this.rowsPerPage, sortedData.length)} of ${sortedData.length} results`
+                ? `Showing ${Math.min(startIndex + this.rowsPerPage, sortedData.length)} of ${sortedData.length} results`
                 : null}
             </span>
             <div className="pagination-controls">
@@ -432,10 +434,6 @@ export class TableLoading extends React.Component {
 }
 
 export class TableData extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   formatValue = (key, value) => {
     const phpKeys = ["salary", "price", "paid", "total", "amountPaid", "subtotal", "change"];
     if (phpKeys.includes(key)) {
@@ -444,15 +442,15 @@ export class TableData extends React.Component {
     if (value === "ACTIVE") {
       return (
         <span style={{ display: "inline-flex", alignItems: "center", gap: 6, color: "#22C55E", fontWeight: 500 }}>
-          <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#22C55E", display: "inline-block" }} />
+          <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#22C55E", display: "inline-block" }} />
           ACTIVE
         </span>
       );
     }
     if (value === "INACTIVE") {
       return (
-        <span style={{ display: "inline-flex", alignItems: "center", gap: 6, color: "#888", fontWeight: 500 }}>
-          <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#888", display: "inline-block" }} />
+        <span style={{ display: "inline-flex", alignItems: "center", gap: 6, color: "rgba(255,255,255,0.3)", fontWeight: 500 }}>
+          <span style={{ width: 6, height: 6, borderRadius: "50%", background: "rgba(255,255,255,0.3)", display: "inline-block" }} />
           INACTIVE
         </span>
       );
@@ -473,7 +471,7 @@ export class TableData extends React.Component {
               onClick={() => rowCB(row)}
             >
               {hasSelect ? (
-                <td className="table-td table-td--check">
+                <td className="table-td table-td--check" onClick={(e) => e.stopPropagation()}>
                   <input
                     className="table-checkbox"
                     type="checkbox"
@@ -485,7 +483,7 @@ export class TableData extends React.Component {
               {Object.entries(row).map(([key, value], colIndex) => (
                 <td className="table-td" key={colIndex}>
                   {colIndex === 0 ? (
-                    <strong style={{ cursor: "pointer" }} onClick={() => onView(row)}>
+                    <strong className="table-clickable-id" onClick={(e) => { e.stopPropagation(); onView(row); }}>
                       {value}
                     </strong>
                   ) : (
@@ -501,7 +499,7 @@ export class TableData extends React.Component {
                       className="table-action-btn table-action-btn--edit"
                       onClick={(e) => { e.stopPropagation(); CBE(row); }}
                     >
-                      <SquarePen size={20} />
+                      <SquarePen size={16} />
                     </button>
                   )}
                   <button
@@ -509,7 +507,7 @@ export class TableData extends React.Component {
                     className="table-action-btn table-action-btn--delete"
                     onClick={(e) => { e.stopPropagation(); CBD(row); }}
                   >
-                    <Trash2 size={20} />
+                    <Trash2 size={16} />
                   </button>
                 </td>
               ) : null}
@@ -522,17 +520,13 @@ export class TableData extends React.Component {
 }
 
 export class TableNoData extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const { message } = this.props;
     return (
       <tr>
         <td colSpan={this.props.colSpan} className="table-td--nodata">
           <div className="no-data-wrapper">
-            <Archive size={32} strokeWidth={1.5} className="no-data-icon" />
+            <Archive size={28} strokeWidth={1.5} className="no-data-icon" />
             <p className="no-data-title">{message ? message : `No data found :(`}</p>
           </div>
         </td>
@@ -540,6 +534,7 @@ export class TableNoData extends React.Component {
     );
   }
 }
+
 
 Table.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object).isRequired,

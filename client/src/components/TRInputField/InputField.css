@@ -14,7 +14,7 @@
   border-radius: 6px;
   color: #d0d0d0;
   font-size: 15px;
-  padding: 18px 16px 6px 16px;
+  padding: 22px 16px 6px 16px; /* Adjusted padding to push input values down */
   box-sizing: border-box;
   outline: none;
   font-family: sans-serif;
@@ -36,7 +36,8 @@
 
 .input-error-message {
   color: #EF4444;
-  margin: 0px;
+  margin: 0px 0px 4px 0px;
+  font-size: 13px;
 }
 
 .input-wrapper input[type="text"]:focus,
@@ -45,47 +46,47 @@
   background-color: #323232;
 }
 
+/* ── FIX: Floating Label Core Engine ── */
 .input-wrapper .floating-label {
   position: absolute;
   left: 16px;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 14px; /* Set a reliable static top offset */
   color: #6e6e6e;
   font-size: 15px;
   font-family: sans-serif;
   pointer-events: none;
-  transition: top 0.2s ease, font-size 0.2s ease, color 0.2s ease;
+  transform-origin: top left; /* Smoothes text scaling transformations */
+  transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1), color 0.2s ease;
 }
 
+/* ── FIX: Smooth CSS Matrix Transform Transitions ── */
 .input-wrapper input[type="text"]:focus + .floating-label,
 .input-wrapper input[type="text"]:not(:placeholder-shown) + .floating-label,
 .input-wrapper input[type="password"]:focus + .floating-label,
 .input-wrapper input[type="password"]:not(:placeholder-shown) + .floating-label,
 .input-wrapper input[type="email"]:focus + .floating-label,
 .input-wrapper input[type="email"]:not(:placeholder-shown) + .floating-label {
-  top: 10px;
-  font-size: 10px;
+  transform: translateY(-8px) scale(0.72); /* Safely resizes layout rules without text clipping */
+  color: #a1a1aa;
 }
 
 /* ── Search variant ── */
 .input-wrapper input.search-input {
-  padding: 18px 16px 6px 36px;
+  padding: 22px 16px 6px 38px;
 }
 
 .input-wrapper input.search-input + .floating-label {
-  left: 36px;
+  left: 38px;
 }
 
 .input-wrapper input.search-input:focus + .floating-label,
 .input-wrapper input.search-input:not(:placeholder-shown) + .floating-label {
-  top: 10px;
-  left: 16px;
-  font-size: 10px;
+  transform: translate(-22px, -8px) scale(0.72); /* Re-aligns left boundary cleanly on zoom */
 }
 
 .search-icon {
   position: absolute;
-  left: 12px;
+  left: 14px;
   top: 50%;
   transform: translateY(-50%);
   color: #6e6e6e;
@@ -102,7 +103,7 @@
 /* ── Eye icon ── */
 .input-wrapper .eye-icon {
   position: absolute;
-  right: 12px;
+  right: 14px;
   top: 50%;
   transform: translateY(-50%);
   color: #6e6e6e;
@@ -113,6 +114,7 @@
 
 /* ── Error state ── */
 .input-error input[type="text"],
-.input-error input[type="password"] {
+.input-error input[type="password"],
+.input-error input[type="email"] {
   outline: 1px solid #EF4444;
 }

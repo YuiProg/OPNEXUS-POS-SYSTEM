@@ -1,49 +1,67 @@
 .todays-sales-container {
-  background-color: #111111;
   width: 100%; 
-  border-radius: 16px;
-  border: 1px solid #404040;
-  box-shadow: 0px 10px 15px rgba(0,0,0,0.3);
-  padding: 15px;
-  transition: transform 0.1s ease-in-out;
+  background-color: #1C1C1E; /* Matches the updated visual theme layout */
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: background-color 0.15s ease, transform 0.15s ease;
 }
 
 .todays-sales-container:hover {
-  /* transform: scale(1.01); */
+  background-color: #242426;
+  transform: translateY(-1px);
 }
 
-.todays-sales-title {
-  font-size: 24px;
-  font-weight: 600;
-  color: #fff;
+.todays-sales-header {
+  display: flex;
+  flex-direction: column;
 }
 
 .todays-sales-label {
-  font-size: 16px;
-  font-weight: 400;
-  color: #ffffff89;
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.todays-sales-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+  margin: 4px 0 0 0;
+  line-height: 1.2;
 }
 
 .todays-sales-content {
   display: flex;
-  gap: 20px;
+  flex-direction: row;
+  gap: 16px;
+  width: 100%;
 }
 
+/* ── Loading Spinner ─────────────────────────────────────── */
 .todays-sales-loading {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 150px;
+  height: 120px;
+  width: 100%;
 }
 
 .todays-spinner {
-  display: block;
-  width: 32px;
-  height: 32px;
-  border: 3px solid #2e2e2e;
-  border-top-color: #c0392b;
+  width: 24px;
+  height: 24px;
+  border: 2.5px solid rgba(255, 255, 255, 0.1);
+  border-top-color: #e24b4a; /* Brand identity red accent color */
   border-radius: 50%;
-  animation: spinner-rotate 0.8s linear infinite;
+  animation: spinner-rotate 0.7s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
 @keyframes spinner-rotate {
