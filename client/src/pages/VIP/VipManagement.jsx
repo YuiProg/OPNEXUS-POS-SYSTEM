@@ -121,9 +121,6 @@ class VipManagement extends React.Component {
                     onEdit={(e) => this.viewModal(e)}
                     onDelete={(e) => this.confirmDelete(e)}
                 />
-                <li>
-                <Link to="/addvip">test</Link>
-                </li>
             </PanelPage>
         );
     }
