@@ -62,8 +62,8 @@ class DropdownPortal extends React.Component {
     if (!this.buttonRef.current) return;
 
     const rect = this.buttonRef.current.getBoundingClientRect();
-    const listHeight = 220; // Accounts for items + padding
-    const gap = 4; // Clean airspace margin between trigger button and portal container
+    const listHeight = 220;
+    const gap = 4; 
     const viewportHeight = window.innerHeight;
     const viewportWidth = window.innerWidth;
 
