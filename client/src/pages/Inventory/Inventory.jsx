@@ -135,7 +135,7 @@ class Inventory extends React.Component {
     const branchNames = branches.map(d => d.location);
 
     const tableData = {
-      header: "ITEMS TEST",
+      header: "ITEMS",
       hasButton: this.state.isAdmin,
       CB: () => this.props.navigate('/newproduct'),
       buttonInfo: "NEW ITEM",

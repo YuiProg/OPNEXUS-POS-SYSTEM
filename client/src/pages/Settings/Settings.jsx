@@ -1,16 +1,16 @@
-import React from 'react'
-import './Settings.css'
-import { InputRow } from '../../components/TRInputForm/TRInputForm'
-import InputField from '../../components/TRInputField/InputFIeld'
-import { PanelPage } from '../../components/TRPanelPage/TRPanelPage'
-import { Toggle, BooleanToggle } from '../../components/TRToggle/Toggle'
-import SettingsStore from '../../context/SettingsStore'
-import Button from '../../components/TRButton/Button'
+import React from 'react';
+import './Settings.css';
+import { InputRow } from '../../components/TRInputForm/TRInputForm';
+import InputField from '../../components/TRInputField/InputFIeld';
+import { PanelPage } from '../../components/TRPanelPage/TRPanelPage';
+import { Toggle, BooleanToggle } from '../../components/TRToggle/Toggle';
+import SettingsStore from '../../context/SettingsStore';
+import Button from '../../components/TRButton/Button';
 
 class SettingsPage extends React.Component {
   constructor(props) {
-    super(props)
-    const { settingsProps } = props
+    super(props);
+    const { settingsProps } = props;
     this.state = {
       selectedOption: 'Inventory',
       storeState: SettingsStore.getState(),
@@ -42,27 +42,27 @@ class SettingsPage extends React.Component {
       staffSalaryMax: 0,
       // branch
       branchNameMax: 0,
-    }
+    };
   }
 
   componentDidMount() {
     this.unsubscribe = SettingsStore.subscribe(() => {
-      this.setState({ storeState: SettingsStore.getState() })
-    })
+      this.setState({ storeState: SettingsStore.getState() });
+    });
   }
 
   componentWillUnmount() {
     if (this.unsubscribe) {
-      this.unsubscribe()
+      this.unsubscribe();
     }
   }
 
   handleSettingsOptionClick = (option) => {
-    this.setState({ selectedOption: option })
-  }
+    this.setState({ selectedOption: option });
+  };
 
   categoryPanel = () => {
-    const { settingsProps } = this.props
+    const { settingsProps } = this.props;
     return (
       <div className="settings-content">
         <h2 className="option-title">Categories Settings</h2>
@@ -78,16 +78,16 @@ class SettingsPage extends React.Component {
           <InputField
             number
             onChange={(value) => this.setState({ categoryNameMax: value })}
-            placeholder={`Default is ${settingsProps && settingsProps.categorySettings?.inputLength.categoryName}`}
+            placeholder={`Default is ${settingsProps?.categorySettings?.inputLength?.categoryName ?? ''}`}
             value={this.state.categoryNameMax > 0 ? this.state.categoryNameMax : ""}
           />
         </InputRow>
       </div>
-    )
-  }
+    );
+  };
 
   inventoryPanel = () => {
-    const { settingsProps } = this.props
+    const { settingsProps } = this.props;
     return (
       <div className="settings-content">
         <h2 className="option-title">Inventory Settings</h2>
@@ -95,7 +95,7 @@ class SettingsPage extends React.Component {
           <InputField
             number
             onChange={(value) => this.setState({ lowStockThreshold: value })}
-            placeholder={`Default is ${settingsProps && settingsProps.inventorySettings?.lowStockThreshold}`}
+            placeholder={`Default is ${settingsProps?.inventorySettings?.lowStockThreshold ?? ''}`}
             value={this.state.lowStockThreshold > 0 ? this.state.lowStockThreshold : ""}
           />
         </InputRow>
@@ -104,28 +104,28 @@ class SettingsPage extends React.Component {
           <InputField
             number
             onChange={(value) => this.setState({ productNameMax: value })}
-            placeholder={`Default is ${settingsProps && settingsProps.inventorySettings?.inputLength.productName}`}
+            placeholder={`Default is ${settingsProps?.inventorySettings?.inputLength?.productName ?? ''}`}
             value={this.state.productNameMax > 0 ? this.state.productNameMax : ""}
           />
           <InputField
             number
             onChange={(value) => this.setState({ quantityMax: value })}
-            placeholder={`Default is ${settingsProps && settingsProps.inventorySettings?.inputLength.quantity}`}
+            placeholder={`Default is ${settingsProps?.inventorySettings?.inputLength?.quantity ?? ''}`}
             value={this.state.quantityMax > 0 ? this.state.quantityMax : ""}
           />
           <InputField
             number
             onChange={(value) => this.setState({ priceMax: value })}
-            placeholder={`Default is ${settingsProps && settingsProps.inventorySettings?.inputLength.price}`}
+            placeholder={`Default is ${settingsProps?.inventorySettings?.inputLength?.price ?? ''}`}
             value={this.state.priceMax > 0 ? this.state.priceMax : ""}
           />
         </InputRow>
       </div>
-    )
-  }
+    );
+  };
 
   vipManagementPanel = () => {
-    const { settingsProps } = this.props
+    const { settingsProps } = this.props;
     return (
       <div className="settings-content">
         <h2 className="option-title">VIP Management Settings</h2>
@@ -148,19 +148,19 @@ class SettingsPage extends React.Component {
           <InputField
             number
             onChange={(value) => this.setState({ vipFirstNameMax: value })}
-            placeholder={`Default is ${settingsProps && settingsProps.vipManagementSettings?.inputLength.firstName}`}
+            placeholder={`Default is ${settingsProps?.vipManagementSettings?.inputLength?.firstName ?? ''}`}
             value={this.state.vipFirstNameMax > 0 ? this.state.vipFirstNameMax : ""}
           />
           <InputField
             number
             onChange={(value) => this.setState({ vipMiddleNameMax: value })}
-            placeholder={`Default is ${settingsProps && settingsProps.vipManagementSettings?.inputLength.middleName}`}
+            placeholder={`Default is ${settingsProps?.vipManagementSettings?.inputLength?.middleName ?? ''}`}
             value={this.state.vipMiddleNameMax > 0 ? this.state.vipMiddleNameMax : ""}
           />
           <InputField
             number
             onChange={(value) => this.setState({ vipLastNameMax: value })}
-            placeholder={`Default is ${settingsProps && settingsProps.vipManagementSettings?.inputLength.lastName}`}
+            placeholder={`Default is ${settingsProps?.vipManagementSettings?.inputLength?.lastName ?? ''}`}
             value={this.state.vipLastNameMax > 0 ? this.state.vipLastNameMax : ""}
           />
         </InputRow>
@@ -172,16 +172,16 @@ class SettingsPage extends React.Component {
           <InputField
             number
             onChange={(value) => this.setState({ vipPointsMax: value })}
-            placeholder={`Default is ${settingsProps && settingsProps.vipManagementSettings?.inputLength.points}`}
+            placeholder={`Default is ${settingsProps?.vipManagementSettings?.inputLength?.points ?? ''}`}
             value={this.state.vipPointsMax > 0 ? this.state.vipPointsMax : ""}
           />
         </InputRow>
       </div>
-    )
-  }
+    );
+  };
 
   staffPanel = () => {
-    const { settingsProps } = this.props
+    const { settingsProps } = this.props;
     return (
       <div className="settings-content">
         <h2 className="option-title">Staff Management Settings</h2>
@@ -197,13 +197,13 @@ class SettingsPage extends React.Component {
           <InputField
             number
             onChange={(value) => this.setState({ staffUsernameMax: value })}
-            placeholder={`Default is ${settingsProps && settingsProps.staffManagementSettings?.inputLength.username}`}
+            placeholder={`Default is ${settingsProps?.staffManagementSettings?.inputLength?.username ?? ''}`}
             value={this.state.staffUsernameMax > 0 ? this.state.staffUsernameMax : ""}
           />
           <InputField
             number
             onChange={(value) => this.setState({ staffPasswordMax: value })}
-            placeholder={`Default is ${settingsProps && settingsProps.staffManagementSettings?.inputLength.password}`}
+            placeholder={`Default is ${settingsProps?.staffManagementSettings?.inputLength?.password ?? ''}`}
             value={this.state.staffPasswordMax > 0 ? this.state.staffPasswordMax : ""}
           />
         </InputRow>
@@ -211,19 +211,19 @@ class SettingsPage extends React.Component {
           <InputField
             number
             onChange={(value) => this.setState({ staffFirstNameMax: value })}
-            placeholder={`Default is ${settingsProps && settingsProps.staffManagementSettings?.inputLength.firstName}`}
+            placeholder={`Default is ${settingsProps?.staffManagementSettings?.inputLength?.firstName ?? ''}`}
             value={this.state.staffFirstNameMax > 0 ? this.state.staffFirstNameMax : ""}
           />
           <InputField
             number
             onChange={(value) => this.setState({ staffMiddleNameMax: value })}
-            placeholder={`Default is ${settingsProps && settingsProps.staffManagementSettings?.inputLength.middleName}`}
+            placeholder={`Default is ${settingsProps?.staffManagementSettings?.inputLength?.middleName ?? ''}`}
             value={this.state.staffMiddleNameMax > 0 ? this.state.staffMiddleNameMax : ""}
           />
           <InputField
             number
             onChange={(value) => this.setState({ staffLastNameMax: value })}
-            placeholder={`Default is ${settingsProps && settingsProps.staffManagementSettings?.inputLength.lastName}`}
+            placeholder={`Default is ${settingsProps?.staffManagementSettings?.inputLength?.lastName ?? ''}`}
             value={this.state.staffLastNameMax > 0 ? this.state.staffLastNameMax : ""}
           />
         </InputRow>
@@ -231,22 +231,22 @@ class SettingsPage extends React.Component {
           <InputField
             number
             onChange={(value) => this.setState({ staffAddressMax: value })}
-            placeholder={`Default is ${settingsProps && settingsProps.staffManagementSettings?.inputLength.address}`}
+            placeholder={`Default is ${settingsProps?.staffManagementSettings?.inputLength?.address ?? ''}`}
             value={this.state.staffAddressMax > 0 ? this.state.staffAddressMax : ""}
           />
           <InputField
             number
             onChange={(value) => this.setState({ staffSalaryMax: value })}
-            placeholder={`Default is ${settingsProps && settingsProps.staffManagementSettings?.inputLength.salary}`}
+            placeholder={`Default is ${settingsProps?.staffManagementSettings?.inputLength?.salary ?? ''}`}
             value={this.state.staffSalaryMax > 0 ? this.state.staffSalaryMax : ""}
           />
         </InputRow>
       </div>
-    )
-  }
+    );
+  };
 
   branchPanel = () => {
-    const { settingsProps } = this.props
+    const { settingsProps } = this.props;
     return (
       <div className="settings-content">
         <h2 className="option-title">Branches Settings</h2>
@@ -262,35 +262,35 @@ class SettingsPage extends React.Component {
           <InputField
             number
             onChange={(value) => this.setState({ branchNameMax: value })}
-            placeholder={`Default is ${settingsProps && settingsProps.branchSettings?.inputLength?.branchLocation}`}
+            placeholder={`Default is ${settingsProps?.branchSettings?.inputLength?.branchLocation ?? ''}`}
             value={this.state.branchNameMax > 0 ? this.state.branchNameMax : ""}
           />
         </InputRow>
       </div>
-    )
-  }
+    );
+  };
 
   renderSettingsContent = () => {
-    const { selectedOption } = this.state
+    const { selectedOption } = this.state;
 
     switch (selectedOption) {
       case 'Inventory':
-        return this.inventoryPanel()
+        return this.inventoryPanel();
       case 'Categories':
-        return this.categoryPanel()
+        return this.categoryPanel();
       case 'Staff Management':
-        return this.staffPanel()
+        return this.staffPanel();
       case 'VIP Management':
-        return this.vipManagementPanel()
+        return this.vipManagementPanel();
       case 'Branches':
-        return this.branchPanel()
+        return this.branchPanel();
       default:
-        return null
+        return null;
     }
-  }
+  };
 
   render() {
-    const { setYesNoSettingsReset, setSettings } = this.state.storeState
+    const { setYesNoSettingsReset, setSettings } = this.state.storeState;
 
     const settingsOptions = [
       { title: 'Inventory' },
@@ -298,7 +298,7 @@ class SettingsPage extends React.Component {
       { title: 'Staff Management' },
       { title: 'VIP Management' },
       { title: 'Branches' },
-    ]
+    ];
 
     return (
       <PanelPage titlePage="Settings" subTitle="Manage your account settings and preferences.">
@@ -325,8 +325,8 @@ class SettingsPage extends React.Component {
           </div>
         </div>
       </PanelPage>
-    )
+    );
   }
 }
 
-export default SettingsPage
+export default SettingsPage;

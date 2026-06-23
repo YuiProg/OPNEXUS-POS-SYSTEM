@@ -21,14 +21,19 @@ class BarsChart extends React.Component {
 
     this.unsubscribe = DashboardStore.subscribe((state) => {
       const sales = state.monthlySales?.data;
+      let mapped = new Array(12).fill(0);
+      
       if (sales && sales.length > 0) {
-        const mapped = xLabels.map((month) => {
+        mapped = xLabels.map((month) => {
           const found = sales.find((s) => s.month === month);
           return found ? found.total : 0;
         });
-        this.setState({ monthlySales: mapped });
       }
-      this.setState({ statsLoading: state.statsLoading });
+
+      this.setState({ 
+        monthlySales: mapped,
+        statsLoading: state.statsLoading || false
+      });
     });
   }
 
@@ -40,44 +45,46 @@ class BarsChart extends React.Component {
     const { monthlySales, statsLoading } = this.state;
     return (
       <div className="bc-container">
+        <span className="bc-label">Performance Metrics</span>
         <h3 className="bc-title">Statistics</h3>
+        
         {statsLoading ? (
           <div className="bc-loading">
             <span className="spinner"></span>
           </div>
         ) : (
-          <Box sx={{ width: '100%', height: 300 }}>
+          <Box sx={{ width: '100%', height: 260, position: 'relative' }}>
+            
+            {/* Custom HTML Legend Layer - Clean White Text */}
+            <div className="bc-custom-legend">
+              <span className="legend-color-box"></span>
+              <span className="legend-text">Sales</span>
+            </div>
+
             <BarChart
               series={[
-                { data: monthlySales, label: 'Sales', id: 'pvId', color: '#E31E24' },
+                { data: monthlySales, id: 'pvId', color: '#e24b4a' },
               ]}
+              margin={{ top: 35, bottom: 30, left: 75, right: 15 }}
               xAxis={[{ 
                 data: xLabels, 
                 height: 28,
                 tickLabelStyle: {
-                  fill: 'white',
-                  fontWeight: 10,
+                  fill: 'rgba(255, 255, 255, 0.4)',
+                  fontSize: 11,
+                  fontWeight: 500,
                 },
               }]}
               yAxis={[{ 
-                width: 50,
+                width: 70,
                 tickLabelStyle: {
-                  fill: 'white',
-                  fontWeight: 10,
+                  fill: 'rgba(255, 255, 255, 0.4)',
+                  fontSize: 11,
+                  fontWeight: 500,
                 },
               }]}
-              slotProps={{
-                legend: {
-                  direction: 'horizontal',
-                  position: { vertical: 'top', horizontal: 'center' },
-                  padding: 0,
-                  itemMarkWidth: 10,
-                  itemMarkHeight: 10,
-                  sx: {
-                    color: 'white',
-                  },
-                },
-              }}
+              // Directly forces the internal engine layout to ignore rendering the built-in legend entirely
+              legend={{ hidden: true }}
             />
           </Box>
         )}

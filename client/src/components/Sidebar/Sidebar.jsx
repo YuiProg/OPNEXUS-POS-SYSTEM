@@ -1,29 +1,33 @@
 import React from "react";
 import AuthStore from "../../context/Authstore";
-import Strings from "../../strings/strings-codes";
-import { Navigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import './Sidebar.css';
-import { LayoutDashboard, ShelvingUnit, IdCardLanyard, Logs, Warehouse, Store, Clock, Gem, Monitor, GitBranch, Settings } from 'lucide-react';
-import Button from "../TRButton/Button";
+import {
+    LayoutDashboard, Package, IdCard, Gem, Warehouse,
+    ClipboardList, Settings, Clock, Store, LogOut, Menu, ChevronDown
+} from 'lucide-react';
 import SettingsStore from "../../context/SettingsStore";
-
-const { SUCCESS_MESS } = Strings;
 
 class Sidebar extends React.Component {
     constructor(props) {
         super(props);
-
         this.state = {
-            redirect: false,
-            user: null,
+            collapsed: false,
+            logsExpanded: false,
             storeState: SettingsStore.getState(),
         };
     }
 
     componentDidMount() {
         this.unsubscribe = SettingsStore.subscribe(() => {
-            this.setState({ storeState: SettingsStore.getState() })
-        })
+            this.setState({ storeState: SettingsStore.getState() });
+        });
+
+        // Auto-expand logs sub-menu if loading directly into a sub-route
+        const pathname = window.location.pathname;
+        if (["/logs/system", "/logs/inout", "/logs/transactions"].includes(pathname)) {
+            this.setState({ logsExpanded: true });
+        }
     }
 
     componentWillUnmount() {
@@ -35,148 +39,235 @@ class Sidebar extends React.Component {
         logoutUser();
     }
 
-    checkAuthentication = () => {
+    toggleSidebar = () => {
+        this.setState(prev => ({ collapsed: !prev.collapsed }));
+    }
 
+    toggleLogsMenu = (e) => {
+        e.preventDefault();
+        this.setState(prev => ({ 
+            logsExpanded: !prev.logsExpanded,
+            collapsed: prev.collapsed ? false : prev.collapsed 
+        }));
     }
 
     passProps = () => {
         const { user } = this.props;
-
-        const enhancedChildren = React.Children.map(this.props.children, (child) => {
+        return React.Children.map(this.props.children, (child) => {
             if (!child) return;
-            return React.cloneElement(child, {
-                user
-            }); 
+            return React.cloneElement(child, { user });
         });
-
-        return enhancedChildren;
     }
 
     render() {
-        const { user } = this.props;
-        const { settings } = this.state.storeState;
+        const { user } = this.props; 
+        const { collapsed, storeState, logsExpanded } = this.state;
+        const { settings } = storeState;
         const settingsData = settings?.data;
 
         const staffEnabled = settingsData?.staffManagementSettings?.enabled ?? true;
         const vipEnabled = settingsData?.vipManagementSettings?.enabled ?? true;
         const branchEnabled = settingsData?.branchSettings?.enabled ?? true;
 
-        const sidebarItemsAdmin = [
-            {
-                title: "Dashboard",
-                icon: <LayoutDashboard />,
-                link: "/dashboard",
-            },
-            {
-                title: "Inventory",
-                icon: <ShelvingUnit />,
-                link: "/inventory",
-            },
-            staffEnabled && {
-                title: "Staff Management",
-                icon: <IdCardLanyard />,
-                link: "/staff",
-            },
-            vipEnabled && {
-                title: "VIP Management",
-                icon: <Gem />,
-                link: "/vip",
-            },
-            branchEnabled && {
-                title: "Branches",
-                icon: <Warehouse/>,
-                link: "/branch",
-            },
-            {
-                title: "Logs",
-                icon: <Logs />,
-                link: "/logs",
-            },
-            {
-                title: "Settings",
-                icon: <Settings/>,
-                link: "/settings"
-            },
-        ].filter(Boolean)
+        const role = user.role.toLowerCase();
+        const pathname = window.location.pathname;
 
-        const sidebarItemsClerk = [
-            {
-                title: "Time In / Out",
-                icon: <Clock />,
-                link: "/timeinout",
-            },
-            vipEnabled && {
-                title: "VIP Management",
-                icon: <Gem />,
-                link: "/vip",
-            },
-            {
-                title: "Inventory",
-                icon: <ShelvingUnit />,
-                link: "/inventory",
-            },
-            {
-                title: "POS",
-                icon: <Store/>,
-                link: "/pos"
-            }
-        ].filter(Boolean)
+        const initials = user.username
+            ? user.username.slice(0, 2).toUpperCase()
+            : user.role.slice(0, 2).toUpperCase();
+
+        const isAnyLogActive = ["/logs/system", "/logs/inout", "/logs/transactions"].includes(pathname);
 
         return (
             <div className="sidebar-container">
-                <aside className="sidebar-aside">
-                    <img loading="lazy" fetchPriority="high" src="https://i.imgur.com/4hfuK5S.png" alt="logo" className="logo"/>
-                    <div className="sidebar-below-container">
-                        <ul className="sidebar-list">
-                            {user.role.toLowerCase() === 'admin' ? (
-                                sidebarItemsAdmin.map((l,i) => {
-                                    return (
-                                        <li key={i} className="row" id={window.location.pathname === l.link ? "active" : ""}>
-                                            <Link to={l.link}>
-                                                <div className="sb-icon">{l.icon}</div>
-                                                <div className="sb-title">{l.title}</div>
+                <aside className={`sidebar-aside${collapsed ? ' collapsed' : ''}`}>
+
+                    {/* Top Section */}
+                    <div className="sb-top">
+                        <div className="sb-logo-area">
+                            {!collapsed && <span className="sb-logo-text">POS SYSTEM</span>}
+                        </div>
+                        <button className="sb-burger" onClick={this.toggleSidebar} aria-label="Toggle sidebar">
+                            <Menu size={20} />
+                        </button>
+                    </div>
+
+                    {/* Navigation Menu Links */}
+                    <nav className="sb-nav">
+                        {/* ── SECTION ONE: MAIN ── */}
+                        <div className="sb-section">
+                            <p className="sb-section-label">Main</p>
+                            <ul className="sidebar-list">
+                                {role === 'admin' ? (
+                                    <>
+                                        <li className={`sb-row${pathname === '/dashboard' ? ' active' : ''}`}>
+                                            <Link to="/dashboard">
+                                                <span className="sb-icon-wrap"><LayoutDashboard size={20} /></span>
+                                                <span className="sb-title">Dashboard</span>
                                             </Link>
+                                            {collapsed && <span className="sb-tooltip">Dashboard</span>}
                                         </li>
-                                    );
-                                })
-                            ) : user.role.toLowerCase() === 'clerk' ? (
-                                sidebarItemsClerk.map((l,i) => {
-                                    return (
-                                        <li key={i} className="row" id={window.location.pathname == l.link ? "active" : ""}>
-                                            <Link to={l.link}>
-                                                <div className="sb-icon">{l.icon}</div>
-                                                <div className="sb-title">{l.title}</div>
+                                        <li className={`sb-row${pathname === '/inventory' ? ' active' : ''}`}>
+                                            <Link to="/inventory">
+                                                <span className="sb-icon-wrap"><Package size={20} /></span>
+                                                <span className="sb-title">Inventory</span>
                                             </Link>
+                                            {collapsed && <span className="sb-tooltip">Inventory</span>}
                                         </li>
-                                    );
-                                })
-                            ) : null}
-                        </ul>
-                        <div className="user-panel">
-                            {this.props.user.role.toLowerCase() === "clerk" && this.props.user.time && (
-                                <div className="user-clock-in-container">
-                                    <div className="user-clock-in-details">
-                                        <Clock className="clock-icon"/>
-                                        <div className="user-clock-in-texts">
-                                            <p className="clock-label">Clocked in at</p>
-                                            <p className="clock-value">{this.props.user.time}</p>
-                                        </div>
+                                        {staffEnabled && (
+                                            <li className={`sb-row${pathname === '/staff' ? ' active' : ''}`}>
+                                                <Link to="/staff">
+                                                    <span className="sb-icon-wrap"><IdCard size={20} /></span>
+                                                    <span className="sb-title">Staff Management</span>
+                                                </Link>
+                                                {collapsed && <span className="sb-tooltip">Staff Management</span>}
+                                            </li>
+                                        )}
+                                        {vipEnabled && (
+                                            <li className={`sb-row${pathname === '/vip' ? ' active' : ''}`}>
+                                                <Link to="/vip">
+                                                    <span className="sb-icon-wrap"><Gem size={20} /></span>
+                                                    <span className="sb-title">VIP Management</span>
+                                                </Link>
+                                                {collapsed && <span className="sb-tooltip">VIP Management</span>}
+                                            </li>
+                                        )}
+                                        {branchEnabled && (
+                                            <li className={`sb-row${pathname === '/branch' ? ' active' : ''}`}>
+                                                <Link to="/branch">
+                                                    <span className="sb-icon-wrap"><Warehouse size={20} /></span>
+                                                    <span className="sb-title">Branches</span>
+                                                </Link>
+                                                {collapsed && <span className="sb-tooltip">Branches</span>}
+                                            </li>
+                                        )}
+                                    </>
+                                ) : role === 'clerk' ? (
+                                    <>
+                                        <li className={`sb-row${pathname === '/timeinout' ? ' active' : ''}`}>
+                                            <Link to="/timeinout">
+                                                <span className="sb-icon-wrap"><Clock size={20} /></span>
+                                                <span className="sb-title">Time In / Out</span>
+                                            </Link>
+                                            {collapsed && <span className="sb-tooltip">Time In / Out</span>}
+                                        </li>
+                                        {vipEnabled && (
+                                            <li className={`sb-row${pathname === '/vip' ? ' active' : ''}`}>
+                                                <Link to="/vip">
+                                                    <span className="sb-icon-wrap"><Gem size={20} /></span>
+                                                    <span className="sb-title">VIP Management</span>
+                                                </Link>
+                                                {collapsed && <span className="sb-tooltip">VIP Management</span>}
+                                            </li>
+                                        )}
+                                        <li className={`sb-row${pathname === '/inventory' ? ' active' : ''}`}>
+                                            <Link to="/inventory">
+                                                <span className="sb-icon-wrap"><Package size={20} /></span>
+                                                <span className="sb-title">Inventory</span>
+                                            </Link>
+                                            {collapsed && <span className="sb-tooltip">Inventory</span>}
+                                        </li>
+                                        <li className={`sb-row${pathname === '/pos' ? ' active' : ''}`}>
+                                            <Link to="/pos">
+                                                <span className="sb-icon-wrap"><Store size={20} /></span>
+                                                <span className="sb-title">POS</span>
+                                            </Link>
+                                            {collapsed && <span className="sb-tooltip">POS</span>}
+                                        </li>
+                                    </>
+                                ) : null}
+                            </ul>
+                        </div>
+
+                        {/* ── SECTION TWO: SYSTEM ── */}
+                        {role === 'admin' && (
+                            <div className="sb-section">
+                                <p className="sb-section-label">System</p>
+                                <ul className="sidebar-list">
+                                    {/* Accordion Logs Root Parent Trigger */}
+                                    <li className={`sb-row sb-dropdown-wrapper ${logsExpanded ? 'is-expanded' : ''} ${isAnyLogActive ? 'parent-active' : ''}`}>
+                                        <a href="#logs" onClick={this.toggleLogsMenu} className="sb-dropdown-trigger">
+                                            <div className="sb-trigger-left">
+                                                <span className="sb-icon-wrap"><ClipboardList size={20} /></span>
+                                                <span className="sb-title">Logs</span>
+                                            </div>
+                                            {!collapsed && (
+                                                <ChevronDown className={`sb-chevron ${logsExpanded ? 'rotated' : ''}`} size={16} />
+                                            )}
+                                        </a>
+                                        {collapsed && <span className="sb-tooltip">Logs Menu</span>}
+
+                                        {/* Sub-Items Panel List */}
+                                        <ul className="sb-submenu-list">
+                                            <li className={`sb-sub-row${pathname === '/logs/system' ? ' sub-active' : ''}`}>
+                                                <Link to="/logs/system">
+                                                    <span className="sb-sub-dot"></span>
+                                                    <span className="sb-sub-title">System Logs</span>
+                                                </Link>
+                                            </li>
+                                            <li className={`sb-sub-row${pathname === '/logs/inout' ? ' sub-active' : ''}`}>
+                                                <Link to="/logs/inout">
+                                                    <span className="sb-sub-dot"></span>
+                                                    <span className="sb-sub-title">In/Out Logs</span>
+                                                </Link>
+                                            </li>
+                                            <li className={`sb-sub-row${pathname === '/logs/transactions' ? ' sub-active' : ''}`}>
+                                                <Link to="/logs/transactions">
+                                                    <span className="sb-sub-dot"></span>
+                                                    <span className="sb-sub-title">Transaction Logs</span>
+                                                </Link>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                    <li className={`sb-row${pathname === '/settings' ? ' active' : ''}`}>
+                                        <Link to="/settings">
+                                            <span className="sb-icon-wrap"><Settings size={20} /></span>
+                                            <span className="sb-title">Settings</span>
+                                        </Link>
+                                        {collapsed && <span className="sb-tooltip">Settings</span>}
+                                    </li>
+                                </ul>
+                            </div>
+                        )}
+                    </nav>
+
+                    {/* Bottom User Profile Section */}
+                    <div className="user-panel">
+                        {role === 'clerk' && user.time && (
+                            <div className="user-clock-in-container">
+                                <Clock size={14} className="clock-icon" />
+                                {!collapsed && (
+                                    <div className="user-clock-in-texts">
+                                        <p className="clock-label">Clocked in at</p>
+                                        <p className="clock-value">{user.time}</p>
                                     </div>
+                                )}
+                            </div>
+                        )}
+                        <div className="user-row">
+                            <div className="sb-avatar">{initials}</div>
+                            {!collapsed && (
+                                <div className="user-info">
+                                    <p className="userName">{user.username}</p>
+                                    <p className="userRole">{user.role}</p>
+                                    <a
+                                        className="change-password"
+                                        onClick={() => AuthStore.getState().setChangePasswordModal(true)}
+                                    >
+                                        Change password
+                                    </a>
                                 </div>
                             )}
-                            {this.props.user ? (
-                                <>
-                                <p className="userName">{user.username}</p>
-                                <p className="userRole">{user.role}</p>
-                                </>
-                            ) : <p>LOADING ...</p>}
-                            <a className="change-password" onClick={() => AuthStore.getState().setChangePasswordModal(true)}>
-                                Change password
-                            </a>
-                            <Button error maxWidth text="LOG OUT" onClick={() => this.handleLogout()}/>
+                            {!collapsed && (
+                                <button className="sb-logout-btn" onClick={this.handleLogout} aria-label="Log out">
+                                    <LogOut size={16} />
+                                </button>
+                            )}
                         </div>
                     </div>
                 </aside>
+
                 <main className="children">
                     {this.passProps()}
                 </main>

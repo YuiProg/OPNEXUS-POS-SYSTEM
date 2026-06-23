@@ -46,6 +46,9 @@ import { yesNoSettingsApplyModal, yesNoSettingsResetModal } from "./pages/Settin
 import AddVipPage from "./pages/VIP/AddVipPage.jsx";
 import AddStaffPage from "./pages/StaffManagement/AddStaffPage.jsx";
 import NewProductPage from "./pages/Inventory/NewProductPage.jsx";
+import InOutLogs from "./pages/Logs/InOutLogs.jsx";
+import SalesLogs from "./pages/Logs/SalesLogs.jsx";
+import SystemLogs from "./pages/Logs/SystemLogs.jsx";
 
 
 const ServerError = lazy(
@@ -1401,6 +1404,51 @@ export default function App() {
               ) : (
                 <Sidebar user={AuthUser}>
                   <NewProductPage navigate={navigate} settings={settings?.data}/>
+                </Sidebar>
+              )
+            }
+          />
+
+          <Route
+            path="/logs/inout"
+            element={
+              AuthUser?.role.toLowerCase() === "clerk" ? (
+                <Navigate to="/timeinout" replace/>
+              ) : !AuthUser ? (
+                <Navigate to="/login" replace />
+              ) : (
+                <Sidebar user={AuthUser}>
+                  <InOutLogs/>
+                </Sidebar>
+              )
+            }
+          />
+
+          <Route
+            path="/logs/transactions"
+            element={
+              AuthUser?.role.toLowerCase() === "clerk" ? (
+                <Navigate to="/timeinout" replace/>
+              ) : !AuthUser ? (
+                <Navigate to="/login" replace />
+              ) : (
+                <Sidebar user={AuthUser}>
+                  <SalesLogs/>
+                </Sidebar>
+              )
+            }
+          />
+
+          <Route
+            path="/logs/system"
+            element={
+              AuthUser?.role.toLowerCase() === "clerk" ? (
+                <Navigate to="/timeinout" replace/>
+              ) : !AuthUser ? (
+                <Navigate to="/login" replace />
+              ) : (
+                <Sidebar user={AuthUser}>
+                  <SystemLogs/>
                 </Sidebar>
               )
             }
