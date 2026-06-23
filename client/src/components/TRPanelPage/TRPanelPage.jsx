@@ -67,7 +67,7 @@ export class PanelPage extends React.Component {
                 <DropDown
                   isHeader
                   className="iv-branch-dd"
-                  defaultValue={selectedBranch || 'Select Branch...'}
+                  defaultValue={selectedBranch}
                   onChange={(e) => dropDownFunc(e)}
                   options={branchNames}
                 />
