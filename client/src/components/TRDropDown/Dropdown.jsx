@@ -102,7 +102,7 @@ class DropdownPortal extends React.Component {
   render() {
     const { options, defaultValue, isRequired, disabled, isHeader } = this.props;
     const { value, isOpen, listPosition, openDirection } = this.state;
-    const displayValue = value || (defaultValue ? `Select ${defaultValue}...` : "Select Branch...");
+    const displayValue = value || (defaultValue ? `${defaultValue}` : "Select Branch...");
 
     return (
       <>
