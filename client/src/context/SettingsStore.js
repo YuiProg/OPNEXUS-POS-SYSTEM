@@ -131,7 +131,10 @@ const SettingsStore = create((set, get) => ({
             middleName: data.vipMiddleNameMax > 0 ? data.vipMiddleNameMax : settings.data.vipManagementSettings.inputLength.middleName,
             lastName: data.vipLastNameMax > 0 ? data.vipLastNameMax : settings.data.vipManagementSettings.inputLength.lastName,
             points: data.vipPointsMax > 0 ? data.vipPointsMax : settings.data.vipManagementSettings.inputLength.points,
-          }
+            emailRequired: data.emailRequired,
+            contactNoRequired: data.contactNoRequired
+          },
+          vipIdInputField: data.vipIdInputField
         },
         branchSettings: {
           enabled: data.branchEnabled,

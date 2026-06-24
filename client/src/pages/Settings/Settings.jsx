@@ -20,7 +20,9 @@ class SettingsPage extends React.Component {
       staffEnabled: settingsProps.staffManagementSettings?.enabled ?? false,
       branchEnabled: settingsProps.branchSettings?.enabled ?? false,
       vipEnabled: settingsProps.vipManagementSettings?.enabled ?? false,
-      vipIdInputEnabled: settingsProps.vipManagementSettings?.vipIdInputEnabled ?? false,
+      vipIdInputField: settingsProps.vipManagementSettings?.vipIdInputField ?? false,
+      emailRequired: settingsProps.vipManagementSettings?.inputLength.emailRequired ?? false,
+      contactNoRequired: settingsProps.vipManagementSettings?.inputLength.contactNoRequired ?? false,
       // category
       categoryNameMax: 0,
       // inventory
@@ -50,6 +52,7 @@ class SettingsPage extends React.Component {
     this.unsubscribe = SettingsStore.subscribe(() => {
       this.setState({ storeState: SettingsStore.getState() });
     });
+
   }
 
   componentWillUnmount() {
@@ -152,9 +155,9 @@ class SettingsPage extends React.Component {
         </InputRow>
         <InputRow titles={['Enable VIP ID Input Field']}>
           <BooleanToggle
-            value={this.state.vipIdInputEnabled}
+            value={this.state.vipIdInputField}
             hideLabel
-            onChange={(value) => this.setState({ vipIdInputEnabled: value })}
+            onChange={(value) => this.setState({ vipIdInputField: value })}
           />
         </InputRow>
         <h4 className="option-subtitle">Maximum Character Limits for VIP Management</h4>
@@ -179,8 +182,16 @@ class SettingsPage extends React.Component {
           />
         </InputRow>
         <InputRow gap={10} titles={['Require Email', 'Require Phone Number']}>
-          <Toggle hideLabel />
-          <Toggle hideLabel />
+          <BooleanToggle
+            value={this.state.emailRequired}
+            hideLabel
+            onChange={(value) => this.setState({ emailRequired: value })}
+          />
+          <BooleanToggle
+            value={this.state.contactNoRequired}
+            hideLabel
+            onChange={(value) => this.setState({ contactNoRequired: value })}
+          />
         </InputRow>
         <InputRow titles={['Points']}>
           <InputField

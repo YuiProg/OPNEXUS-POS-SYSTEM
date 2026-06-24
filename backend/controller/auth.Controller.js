@@ -255,7 +255,7 @@ export const changePassword = async (req, res) => {
   try {
     const { id } = req.params
     const { newPassword, oldPassword } = req.body
-    console.log(oldPassword, newPassword)
+    
     const updatedUser = await User.changePassword(id, newPassword, oldPassword)
     const logPayload = {
       user: updatedUser.username,
@@ -266,6 +266,17 @@ export const changePassword = async (req, res) => {
     await SystemLogs.addLog(logPayload)
     logResponse(req, SUCCESS, { status: SUCCESS_MESS })
     ApiResponseModel(res, SUCCESS, SUCCESS_MESS)
+  } catch (error) {
+    logResponse(req, ERROR, { status: error.message })
+    ApiResponseModel(res, ERROR, error.message)
+  }
+}
+
+export const fetchActiveUsers = async (req, res) => {
+  try {
+    const users = await User.getActiveUsers();
+    logResponse(req, SUCCESS, { status: SUCCESS_MESS, data: users});
+    ApiResponseModel(res, SUCCESS, SUCCESS_MESS, users);
   } catch (error) {
     logResponse(req, ERROR, { status: error.message })
     ApiResponseModel(res, ERROR, error.message)

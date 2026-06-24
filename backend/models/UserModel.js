@@ -200,6 +200,11 @@ userSchema.statics.changePassword = async function (id, newPassword, oldPassword
     return await this.findById(id).select("-password");
 }
 
+userSchema.statics.getActiveUsers = async function () {
+    const users = await this.find({timedIn: true});
+    return users;
+}
+
 const User = mongoose.model(us, userSchema);
 
 export default User;

@@ -32,7 +32,7 @@ class NewProductPage extends React.Component {
     getCategories()
     setStep(1);
     resetInput();
-    console.log(this.props.settings.inventorySettings);
+    console.log(this.props.settings.categorySettings.enabled);
     this.unsubscribeBranches = BranchStore.subscribe((state) => {
       this.setState({ branches: state.branches })
     })
@@ -122,7 +122,9 @@ class NewProductPage extends React.Component {
             options={this.state.categories?.map((d) => d.categoryName)}
             onChange={(e) => setProductInput('category', e)}  
           />
-          <Button maxWidth cancel text='Add Category' onClick={() => setShowNewCategoryModal(true)}/>
+          {this.props.settings.categorySettings.enabled 
+            && 
+          (<Button maxWidth cancel text='Add Category' onClick={() => setShowNewCategoryModal(true)}/>)}
         </InputRow>
         <InputRow gap={16} titles={['Branch']} bottomMargin>
           <DropdownPortal

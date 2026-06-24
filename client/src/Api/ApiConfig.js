@@ -16,6 +16,7 @@ const ApiConfig = Object.freeze({
     UPDATE_USER: apiEndpoint + 'updateUser/:id',
     CHANGEPASSWORD: apiEndpoint + 'changePassword/:id',
     VALIDATEUSER: apiEndpoint + 'validateUser',
+    GETACTIVEUSERS: apiEndpoint + 'getactiveusers',
     //==============================
 
     //=========add product==========
