@@ -12,7 +12,8 @@ class SettingsPage extends React.Component {
     super(props);
     const { settingsProps } = props;
     this.state = {
-      selectedOption: 'Inventory',
+      selectedOption: 'General Settings',
+      systemName: settingsProps.systemName ?? null,
       storeState: SettingsStore.getState(),
       // toggles
       categoryEnabled: settingsProps.categorySettings?.enabled ?? false,
@@ -60,6 +61,19 @@ class SettingsPage extends React.Component {
   handleSettingsOptionClick = (option) => {
     this.setState({ selectedOption: option });
   };
+
+  generalSettings = () => {
+    const { settingsProps } = this.props;
+    console.log(settingsProps);
+    return (
+      <div className="settings-content">
+        <h2 className="option-title">General Settings</h2>
+        <InputRow titles={['System Name']}>
+          <InputField text placeholder="Enter system name" value={this.state.systemName} onChange={e => this.setState({systemName: e})}/>
+        </InputRow>
+      </div>
+    );
+  }
 
   categoryPanel = () => {
     const { settingsProps } = this.props;
@@ -274,6 +288,8 @@ class SettingsPage extends React.Component {
     const { selectedOption } = this.state;
 
     switch (selectedOption) {
+      case 'General Settings':
+        return this.generalSettings();
       case 'Inventory':
         return this.inventoryPanel();
       case 'Categories':
@@ -293,6 +309,7 @@ class SettingsPage extends React.Component {
     const { setYesNoSettingsReset, setSettings } = this.state.storeState;
 
     const settingsOptions = [
+      { title: 'General Settings'},
       { title: 'Inventory' },
       { title: 'Categories' },
       { title: 'Staff Management' },
