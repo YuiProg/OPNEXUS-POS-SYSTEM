@@ -178,23 +178,16 @@ const ProductStore = create((set, get) => ({
       set({ productsUncleaned: data })
 
       //PANG REMOVE NG UNNECESSARY DATA SA RESPONSE, MAP PARA MA LOOP SA BAWAT ITEM SA ARRAY
-      /* eslint-disable no-unused-vars */
-      const cleanedData = data.map(
-        ({
-          createdAt,
-          productName,
-          creatorName,
-          productBranch,
-          createdById,
-          _id,
-          productImage,
-          productImageId,
-          updatedAt,
-          Creator,
-          __v,
-          ...rest
-        }) => rest
-      )
+      const cleanedData = data.map((item) => ({
+        Id:       item._id,
+        Name:     item.productName,
+        Branch:   item.productBranch,
+        Quantity: item.quantity ?? 'N/A',
+        Category: item.category ?? 'N/A',
+        Price:    item.price !== undefined ? `PHP ${Number(item.price).toLocaleString('en-PH', { minimumFractionDigits: 2 })}` : 'N/A',
+        Supplier: item.supplier ?? 'N/A',
+      }))
+      
       set({ products: cleanedData })
     } catch (error) {
       setServerError(true)

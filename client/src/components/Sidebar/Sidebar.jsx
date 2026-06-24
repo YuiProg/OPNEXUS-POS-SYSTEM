@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import './Sidebar.css';
 import {
     LayoutDashboard, Package, IdCard, Gem, Warehouse,
-    ClipboardList, Settings, Clock, Store, LogOut, Menu, ChevronDown
+    ClipboardList, Settings, Clock, Store, LogOut, Menu, ChevronDown, Truck
 } from 'lucide-react';
 import SettingsStore from "../../context/SettingsStore";
 
@@ -15,6 +15,8 @@ class Sidebar extends React.Component {
             collapsed: false,
             logsExpanded: false,
             inventoryExpanded: false,
+            staffExpanded: false,
+            supplierExpanded: false,
             storeState: SettingsStore.getState(),
         };
     }
@@ -23,15 +25,20 @@ class Sidebar extends React.Component {
         this.unsubscribe = SettingsStore.subscribe(() => {
             this.setState({ storeState: SettingsStore.getState() });
         });
-
+        
         const pathname = window.location.pathname;
 
         if (["/logs/system", "/logs/inout", "/logs/transactions"].includes(pathname)) {
             this.setState({ logsExpanded: true });
         }
-
         if (["/inventory", "/inventory/add"].includes(pathname)) {
             this.setState({ inventoryExpanded: true });
+        }
+        if (["/staff", "/staff/add"].includes(pathname)) {
+            this.setState({ staffExpanded: true });
+        }
+        if (["/supplier", "/supplier/add"].includes(pathname)) {
+            this.setState({ supplierExpanded: true });
         }
     }
 
@@ -48,19 +55,11 @@ class Sidebar extends React.Component {
         this.setState(prev => ({ collapsed: !prev.collapsed }));
     }
 
-    toggleLogsMenu = (e) => {
+    toggleMenu = (key) => (e) => {
         e.preventDefault();
         this.setState(prev => ({
-            logsExpanded: !prev.logsExpanded,
-            collapsed: prev.collapsed ? false : prev.collapsed
-        }));
-    }
-
-    toggleInventoryMenu = (e) => {
-        e.preventDefault();
-        this.setState(prev => ({
-            inventoryExpanded: !prev.inventoryExpanded,
-            collapsed: prev.collapsed ? false : prev.collapsed
+            [key]: !prev[key],
+            collapsed: prev.collapsed ? false : prev.collapsed,
         }));
     }
 
@@ -72,9 +71,53 @@ class Sidebar extends React.Component {
         });
     }
 
+    renderAccordion({ key, expanded, active, icon, label, tooltip, items }) {
+        const { collapsed } = this.state;
+        return (
+            <li className={`sb-row sb-dropdown-wrapper ${expanded ? 'is-expanded' : ''} ${active ? 'parent-active' : ''}`}>
+                <a href={`#${key}`} onClick={this.toggleMenu(`${key}Expanded`)} className="sb-dropdown-trigger">
+                    <div className="sb-trigger-left">
+                        <span className="sb-icon-wrap">{icon}</span>
+                        <span className="sb-title">{label}</span>
+                    </div>
+                    {!collapsed && (
+                        <ChevronDown className={`sb-chevron ${expanded ? 'rotated' : ''}`} size={16} />
+                    )}
+                </a>
+                {collapsed && <span className="sb-tooltip">{tooltip || label}</span>}
+                <ul className="sb-submenu-list">
+                    {items.map(({ path, title }) => {
+                        const pathname = window.location.pathname;
+                        return (
+                            <li key={path} className={`sb-sub-row${pathname === path ? ' sub-active' : ''}`}>
+                                <Link to={path}>
+                                    <span className="sb-sub-dot"></span>
+                                    <span className="sb-sub-title">{title}</span>
+                                </Link>
+                            </li>
+                        );
+                    })}
+                </ul>
+            </li>
+        );
+    }
+
+    renderSimpleItem({ path, icon, label, pathname }) {
+        const { collapsed } = this.state;
+        return (
+            <li className={`sb-row${pathname === path ? ' active' : ''}`}>
+                <Link to={path}>
+                    <span className="sb-icon-wrap">{icon}</span>
+                    <span className="sb-title">{label}</span>
+                </Link>
+                {collapsed && <span className="sb-tooltip">{label}</span>}
+            </li>
+        );
+    }
+
     render() {
         const { user } = this.props;
-        const { collapsed, storeState, logsExpanded, inventoryExpanded } = this.state;
+        const { collapsed, storeState, logsExpanded, inventoryExpanded, staffExpanded, supplierExpanded } = this.state;
         const { settings } = storeState;
         const settingsData = settings?.data;
 
@@ -91,6 +134,8 @@ class Sidebar extends React.Component {
 
         const isAnyLogActive = ["/logs/system", "/logs/inout", "/logs/transactions"].includes(pathname);
         const isAnyInventoryActive = ["/inventory", "/inventory/add"].includes(pathname);
+        const isAnyStaffActive = ["/staff", "/staff/add"].includes(pathname);
+        const isAnySupplierActive = ["/supplier", "/supplier/add"].includes(pathname);
 
         return (
             <div className="sidebar-container">
@@ -99,196 +144,135 @@ class Sidebar extends React.Component {
                     {/* Top Section */}
                     <div className="sb-top">
                         <div className="sb-logo-area">
-                            {!collapsed && <span className="sb-logo-text">POS SYSTEM</span>}
+                            {!collapsed && <span className="sb-logo-text">{this.props.settings.data.systemName}</span>}
                         </div>
                         <button className="sb-burger" onClick={this.toggleSidebar} aria-label="Toggle sidebar">
                             <Menu size={20} />
                         </button>
                     </div>
 
-                    {/* Navigation Menu Links */}
                     <nav className="sb-nav">
-                        {/* ── SECTION ONE: MAIN ── */}
-                        <div className="sb-section">
-                            <p className="sb-section-label">Main</p>
-                            <ul className="sidebar-list">
-                                {role === 'admin' ? (
-                                    <>
-                                        <li className={`sb-row${pathname === '/dashboard' ? ' active' : ''}`}>
-                                            <Link to="/dashboard">
-                                                <span className="sb-icon-wrap"><LayoutDashboard size={20} /></span>
-                                                <span className="sb-title">Dashboard</span>
-                                            </Link>
-                                            {collapsed && <span className="sb-tooltip">Dashboard</span>}
-                                        </li>
 
-                                        {/* Inventory Accordion */}
-                                        <li className={`sb-row sb-dropdown-wrapper ${inventoryExpanded ? 'is-expanded' : ''} ${isAnyInventoryActive ? 'parent-active' : ''}`}>
-                                            <a href="#inventory" onClick={this.toggleInventoryMenu} className="sb-dropdown-trigger">
-                                                <div className="sb-trigger-left">
-                                                    <span className="sb-icon-wrap"><Package size={20} /></span>
-                                                    <span className="sb-title">Inventory</span>
-                                                </div>
-                                                {!collapsed && (
-                                                    <ChevronDown className={`sb-chevron ${inventoryExpanded ? 'rotated' : ''}`} size={16} />
-                                                )}
-                                            </a>
-                                            {collapsed && <span className="sb-tooltip">Inventory</span>}
+                        {role === 'admin' ? (
+                            <>
+                                {/* ── OVERVIEW ── */}
+                                <div className="sb-section">
+                                    <p className="sb-section-label">Overview</p>
+                                    <ul className="sidebar-list">
+                                        {this.renderSimpleItem({ path: '/dashboard', icon: <LayoutDashboard size={20} />, label: 'Dashboard', pathname })}
+                                    </ul>
+                                </div>
 
-                                            <ul className="sb-submenu-list">
-                                                <li className={`sb-sub-row${pathname === '/inventory' ? ' sub-active' : ''}`}>
-                                                    <Link to="/inventory">
-                                                        <span className="sb-sub-dot"></span>
-                                                        <span className="sb-sub-title">View Inventory</span>
-                                                    </Link>
-                                                </li>
-                                                <li className={`sb-sub-row${pathname === '/inventory/add' ? ' sub-active' : ''}`}>
-                                                    <Link to="/inventory/add">
-                                                        <span className="sb-sub-dot"></span>
-                                                        <span className="sb-sub-title">Add New Item</span>
-                                                    </Link>
-                                                </li>
-                                            </ul>
-                                        </li>
+                                {/* ── ITEM MANAGEMENT ── */}
+                                <div className="sb-section">
+                                    <p className="sb-section-label">Item Management</p>
+                                    <ul className="sidebar-list">
+                                        {this.renderAccordion({
+                                            key: 'inventory',
+                                            expanded: inventoryExpanded,
+                                            active: isAnyInventoryActive,
+                                            icon: <Package size={20} />,
+                                            label: 'Inventory',
+                                            items: [
+                                                { path: '/inventory', title: 'View Inventory' },
+                                                { path: '/inventory/add', title: 'Add New Item' },
+                                            ],
+                                        })}
+                                        {this.renderAccordion({
+                                            key: 'supplier',
+                                            expanded: supplierExpanded,
+                                            active: isAnySupplierActive,
+                                            icon: <Truck size={20} />,
+                                            label: 'Suppliers',
+                                            items: [
+                                                { path: '/supplier', title: 'View Suppliers' },
+                                                { path: '/supplier/add', title: 'Add Supplier' },
+                                            ],
+                                        })}
+                                        {branchEnabled && this.renderSimpleItem({ path: '/branch', icon: <Warehouse size={20} />, label: 'Branches', pathname })}
+                                    </ul>
+                                </div>
 
-                                        {staffEnabled && (
-                                            <li className={`sb-row${pathname === '/staff' ? ' active' : ''}`}>
-                                                <Link to="/staff">
-                                                    <span className="sb-icon-wrap"><IdCard size={20} /></span>
-                                                    <span className="sb-title">Staff Management</span>
-                                                </Link>
-                                                {collapsed && <span className="sb-tooltip">Staff Management</span>}
-                                            </li>
-                                        )}
-                                        {vipEnabled && (
-                                            <li className={`sb-row${pathname === '/vip' ? ' active' : ''}`}>
-                                                <Link to="/vip">
-                                                    <span className="sb-icon-wrap"><Gem size={20} /></span>
-                                                    <span className="sb-title">VIP Management</span>
-                                                </Link>
-                                                {collapsed && <span className="sb-tooltip">VIP Management</span>}
-                                            </li>
-                                        )}
-                                        {branchEnabled && (
-                                            <li className={`sb-row${pathname === '/branch' ? ' active' : ''}`}>
-                                                <Link to="/branch">
-                                                    <span className="sb-icon-wrap"><Warehouse size={20} /></span>
-                                                    <span className="sb-title">Branches</span>
-                                                </Link>
-                                                {collapsed && <span className="sb-tooltip">Branches</span>}
-                                            </li>
-                                        )}
-                                    </>
-                                ) : role === 'clerk' ? (
-                                    <>
-                                        <li className={`sb-row${pathname === '/timeinout' ? ' active' : ''}`}>
-                                            <Link to="/timeinout">
-                                                <span className="sb-icon-wrap"><Clock size={20} /></span>
-                                                <span className="sb-title">Time In / Out</span>
-                                            </Link>
-                                            {collapsed && <span className="sb-tooltip">Time In / Out</span>}
-                                        </li>
-                                        {vipEnabled && (
-                                            <li className={`sb-row${pathname === '/vip' ? ' active' : ''}`}>
-                                                <Link to="/vip">
-                                                    <span className="sb-icon-wrap"><Gem size={20} /></span>
-                                                    <span className="sb-title">VIP Management</span>
-                                                </Link>
-                                                {collapsed && <span className="sb-tooltip">VIP Management</span>}
-                                            </li>
-                                        )}
+                                {/* ── PEOPLE MANAGEMENT ── */}
+                                <div className="sb-section">
+                                    <p className="sb-section-label">People</p>
+                                    <ul className="sidebar-list">
+                                        {staffEnabled && this.renderAccordion({
+                                            key: 'staff',
+                                            expanded: staffExpanded,
+                                            active: isAnyStaffActive,
+                                            icon: <IdCard size={20} />,
+                                            label: 'Staff Management',
+                                            items: [
+                                                { path: '/staff', title: 'View Staff' },
+                                                { path: '/staff/add', title: 'Add Staff' },
+                                            ],
+                                        })}
+                                        {vipEnabled && this.renderSimpleItem({ path: '/vip', icon: <Gem size={20} />, label: 'VIP Management', pathname })}
+                                    </ul>
+                                </div>
 
-                                        {/* Clerk Inventory Accordion */}
-                                        <li className={`sb-row sb-dropdown-wrapper ${inventoryExpanded ? 'is-expanded' : ''} ${isAnyInventoryActive ? 'parent-active' : ''}`}>
-                                            <a href="#inventory" onClick={this.toggleInventoryMenu} className="sb-dropdown-trigger">
-                                                <div className="sb-trigger-left">
-                                                    <span className="sb-icon-wrap"><Package size={20} /></span>
-                                                    <span className="sb-title">Inventory</span>
-                                                </div>
-                                                {!collapsed && (
-                                                    <ChevronDown className={`sb-chevron ${inventoryExpanded ? 'rotated' : ''}`} size={16} />
-                                                )}
-                                            </a>
-                                            {collapsed && <span className="sb-tooltip">Inventory</span>}
+                                {/* ── SYSTEM ── */}
+                                <div className="sb-section">
+                                    <p className="sb-section-label">System</p>
+                                    <ul className="sidebar-list">
+                                        {this.renderAccordion({
+                                            key: 'logs',
+                                            expanded: logsExpanded,
+                                            active: isAnyLogActive,
+                                            icon: <ClipboardList size={20} />,
+                                            label: 'Logs',
+                                            tooltip: 'Logs Menu',
+                                            items: [
+                                                { path: '/logs/system', title: 'System Logs' },
+                                                { path: '/logs/inout', title: 'In/Out Logs' },
+                                                { path: '/logs/transactions', title: 'Transaction Logs' },
+                                            ],
+                                        })}
+                                        {this.renderSimpleItem({ path: '/settings', icon: <Settings size={20} />, label: 'Settings', pathname })}
+                                    </ul>
+                                </div>
+                            </>
+                        ) : role === 'clerk' ? (
+                            <>
+                                {/* ── OVERVIEW ── */}
+                                <div className="sb-section">
+                                    <p className="sb-section-label">Overview</p>
+                                    <ul className="sidebar-list">
+                                        {this.renderSimpleItem({ path: '/timeinout', icon: <Clock size={20} />, label: 'Time In / Out', pathname })}
+                                    </ul>
+                                </div>
 
-                                            <ul className="sb-submenu-list">
-                                                <li className={`sb-sub-row${pathname === '/inventory' ? ' sub-active' : ''}`}>
-                                                    <Link to="/inventory">
-                                                        <span className="sb-sub-dot"></span>
-                                                        <span className="sb-sub-title">View Inventory</span>
-                                                    </Link>
-                                                </li>
-                                                <li className={`sb-sub-row${pathname === '/inventory/add' ? ' sub-active' : ''}`}>
-                                                    <Link to="/inventory/add">
-                                                        <span className="sb-sub-dot"></span>
-                                                        <span className="sb-sub-title">Add New Item</span>
-                                                    </Link>
-                                                </li>
-                                            </ul>
-                                        </li>
+                                {/* ── ITEM MANAGEMENT ── */}
+                                <div className="sb-section">
+                                    <p className="sb-section-label">Item Management</p>
+                                    <ul className="sidebar-list">
+                                        {this.renderAccordion({
+                                            key: 'inventory',
+                                            expanded: inventoryExpanded,
+                                            active: isAnyInventoryActive,
+                                            icon: <Package size={20} />,
+                                            label: 'Inventory',
+                                            items: [
+                                                { path: '/inventory', title: 'View Inventory' },
+                                                { path: '/inventory/add', title: 'Add New Item' },
+                                            ],
+                                        })}
+                                        {this.renderSimpleItem({ path: '/pos', icon: <Store size={20} />, label: 'POS', pathname })}
+                                    </ul>
+                                </div>
 
-                                        <li className={`sb-row${pathname === '/pos' ? ' active' : ''}`}>
-                                            <Link to="/pos">
-                                                <span className="sb-icon-wrap"><Store size={20} /></span>
-                                                <span className="sb-title">POS</span>
-                                            </Link>
-                                            {collapsed && <span className="sb-tooltip">POS</span>}
-                                        </li>
-                                    </>
-                                ) : null}
-                            </ul>
-                        </div>
-
-                        {/* ── SECTION TWO: SYSTEM ── */}
-                        {role === 'admin' && (
-                            <div className="sb-section">
-                                <p className="sb-section-label">System</p>
-                                <ul className="sidebar-list">
-                                    {/* Accordion Logs */}
-                                    <li className={`sb-row sb-dropdown-wrapper ${logsExpanded ? 'is-expanded' : ''} ${isAnyLogActive ? 'parent-active' : ''}`}>
-                                        <a href="#logs" onClick={this.toggleLogsMenu} className="sb-dropdown-trigger">
-                                            <div className="sb-trigger-left">
-                                                <span className="sb-icon-wrap"><ClipboardList size={20} /></span>
-                                                <span className="sb-title">Logs</span>
-                                            </div>
-                                            {!collapsed && (
-                                                <ChevronDown className={`sb-chevron ${logsExpanded ? 'rotated' : ''}`} size={16} />
-                                            )}
-                                        </a>
-                                        {collapsed && <span className="sb-tooltip">Logs Menu</span>}
-
-                                        <ul className="sb-submenu-list">
-                                            <li className={`sb-sub-row${pathname === '/logs/system' ? ' sub-active' : ''}`}>
-                                                <Link to="/logs/system">
-                                                    <span className="sb-sub-dot"></span>
-                                                    <span className="sb-sub-title">System Logs</span>
-                                                </Link>
-                                            </li>
-                                            <li className={`sb-sub-row${pathname === '/logs/inout' ? ' sub-active' : ''}`}>
-                                                <Link to="/logs/inout">
-                                                    <span className="sb-sub-dot"></span>
-                                                    <span className="sb-sub-title">In/Out Logs</span>
-                                                </Link>
-                                            </li>
-                                            <li className={`sb-sub-row${pathname === '/logs/transactions' ? ' sub-active' : ''}`}>
-                                                <Link to="/logs/transactions">
-                                                    <span className="sb-sub-dot"></span>
-                                                    <span className="sb-sub-title">Transaction Logs</span>
-                                                </Link>
-                                            </li>
+                                {/* ── PEOPLE ── */}
+                                {vipEnabled && (
+                                    <div className="sb-section">
+                                        <p className="sb-section-label">People</p>
+                                        <ul className="sidebar-list">
+                                            {this.renderSimpleItem({ path: '/vip', icon: <Gem size={20} />, label: 'VIP Management', pathname })}
                                         </ul>
-                                    </li>
-
-                                    <li className={`sb-row${pathname === '/settings' ? ' active' : ''}`}>
-                                        <Link to="/settings">
-                                            <span className="sb-icon-wrap"><Settings size={20} /></span>
-                                            <span className="sb-title">Settings</span>
-                                        </Link>
-                                        {collapsed && <span className="sb-tooltip">Settings</span>}
-                                    </li>
-                                </ul>
-                            </div>
-                        )}
+                                    </div>
+                                )}
+                            </>
+                        ) : null}
                     </nav>
 
                     {/* Bottom User Profile Section */}
