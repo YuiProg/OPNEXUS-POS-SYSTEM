@@ -23,7 +23,10 @@ class ActiveStaffs extends React.Component {
         <div className="as-top">
           <div className="as-top-left">
             <span className="as-live-dot" />
-            <h2 className="as-header">Active Clerks</h2>
+            <div className="as-top-left-texts">
+              <p className="as-eyebrow">Management Console</p>
+              <h2 className="as-header">Active Clerks</h2>
+            </div>
           </div>
           <span className="as-count">{clerks.length}</span>
         </div>

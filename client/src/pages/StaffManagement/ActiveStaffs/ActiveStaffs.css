@@ -23,6 +23,29 @@
 
 .as-top-left {
   display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.as-live-dot {
+  width: 7px;
+  height: 7px;
+  min-width: 7px;
+  border-radius: 50%;
+  background: #22c55e;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
+  animation: as-pulse 2s infinite;
+}
+
+@keyframes as-pulse {
+  0%, 100% { box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2); }
+  50%       { box-shadow: 0 0 0 5px rgba(34, 197, 94, 0.0); }
+}
+
+.as-top-left-texts {
+  display: flex;
   flex-direction: column;
   gap: 2px;
 }
@@ -53,6 +76,7 @@
   border-radius: 20px;
   padding: 3px 10px;
   align-self: flex-start;
+  margin-left: 15px;
 }
 
 /* ── List ── */

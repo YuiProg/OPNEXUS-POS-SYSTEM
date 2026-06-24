@@ -124,7 +124,7 @@ class NewProductPage extends React.Component {
           />
           {this.props.settings.categorySettings.enabled 
             && 
-          (<Button maxWidth cancel text='Add Category' onClick={() => setShowNewCategoryModal(true)}/>)}
+          (<Button customBorder="2px solid #404040" maxWidth cancel text='Add Category' onClick={() => setShowNewCategoryModal(true)}/>)}
         </InputRow>
         <InputRow gap={16} titles={['Branch']} bottomMargin>
           <DropdownPortal
