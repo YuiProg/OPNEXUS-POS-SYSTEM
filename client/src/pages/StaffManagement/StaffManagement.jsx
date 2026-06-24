@@ -25,10 +25,11 @@ class StaffManagement extends React.Component {
     }
 
     componentDidMount () {
-        const {fetchUsers} = AuthStore.getState();
+        const {fetchUsers, getActiveUsers} = AuthStore.getState();
         const { getBranch } = BranchStore.getState();
         fetchUsers();
         getBranch();
+        getActiveUsers();
         this.unsubscribe = AuthStore.subscribe((state) => {
             const users = state.users;
             this.setState({users: users});
@@ -99,7 +100,7 @@ class StaffManagement extends React.Component {
     render () {
         //const {setShowModal} = BranchStore.getState();
         //const { setShowAddModal } = ModalStore.getState();
-        const { onlineUsers, fetchLoading } = AuthStore.getState();
+        const { activeUsers, fetchLoading } = AuthStore.getState();
         const {setSelectedBranch, selectedBranch} = AuthStore.getState();
         const { branches } = BranchStore.getState();
 
@@ -108,7 +109,7 @@ class StaffManagement extends React.Component {
         const tableData = {
             header: "STAFFS",
             hasButton: true,
-            CB: () => this.props.navigate("/addStaff"),
+            CB: () => this.props.navigate("/staff/add"),
             buttonInfo: "NEW STAFF",
             hasDelete: true,
             deleteBtnInfo: 'Delete',
@@ -142,7 +143,7 @@ class StaffManagement extends React.Component {
                     </div>
                     {this.state.filtersOpen && this.rightSideTableFilter()}
                     <div className="sm-active-staffs">
-                        <ActiveStaffs staffData={onlineUsers}/>
+                        <ActiveStaffs staffData={activeUsers}/>
                     </div>
                 </div>
             </PanelPage>

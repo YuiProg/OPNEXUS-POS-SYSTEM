@@ -95,10 +95,8 @@ const SystemSettingsSchema = new mongoose.Schema({
       default: true
     },
     vipIdInputField: {
-      enabled: {
-        type: Boolean,
-        default: true
-      }
+      type: Boolean,
+      default: true
     },
     inputLength: {
       firstName: {
