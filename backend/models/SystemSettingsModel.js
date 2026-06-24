@@ -1,6 +1,10 @@
 import mongoose from 'mongoose'
 
 const SystemSettingsSchema = new mongoose.Schema({
+  systemName: {
+    type: String,
+    default: 'POS SYSTEM',
+  },
   inventorySettings: {
     topProductsThreshold: {
       type: Number,

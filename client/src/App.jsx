@@ -49,6 +49,7 @@ import NewProductPage from "./pages/Inventory/NewProductPage.jsx";
 import InOutLogs from "./pages/Logs/InOutLogs.jsx";
 import SalesLogs from "./pages/Logs/SalesLogs.jsx";
 import SystemLogs from "./pages/Logs/SystemLogs.jsx";
+import Supplier from "./pages/Supplier/Supplier.jsx";
 
 
 const ServerError = lazy(
@@ -1240,7 +1241,7 @@ export default function App() {
               ) : !AuthUser ? (
                 <Navigate to="/login" replace />
               ) : (
-                <Sidebar user={AuthUser}>
+                <Sidebar user={AuthUser} settings={settings}>
                   <Dashboard />
                 </Sidebar>
               )
@@ -1253,7 +1254,7 @@ export default function App() {
               !AuthUser ? (
                 <Navigate to="/login" replace />
               ) : (
-                <Sidebar user={AuthUser}>
+                <Sidebar user={AuthUser} settings={settings}>
                   <Inventory user={AuthUser} navigate={navigate}/>
                 </Sidebar>
               )
@@ -1268,7 +1269,7 @@ export default function App() {
               ) : !AuthUser ? (
                 <Navigate to="/login" replace />
               ) : (
-                <Sidebar user={AuthUser}>
+                <Sidebar user={AuthUser} settings={settings}>
                   <StaffManagement navigate={navigate}/>
                 </Sidebar>
               )
@@ -1281,7 +1282,7 @@ export default function App() {
               !AuthUser ? (
                 <Navigate to="/login" replace />
               ) : (
-                <Sidebar user={AuthUser}>
+                <Sidebar user={AuthUser} settings={settings}>
                   <VipManagement />
                 </Sidebar>
               )
@@ -1294,7 +1295,7 @@ export default function App() {
               !AuthUser ? (
                 <Navigate to="/login" replace />
               ) : (
-                <Sidebar user={AuthUser}>
+                <Sidebar user={AuthUser} settings={settings}>
                   <POS />
                 </Sidebar>
               )
@@ -1314,7 +1315,7 @@ export default function App() {
               ) : !AuthUser ? (
                 <Navigate to="/login" replace />
               ) : (
-                <Sidebar user={AuthUser}>
+                <Sidebar user={AuthUser} settings={settings}>
                   <Branches />
                 </Sidebar>
               )
@@ -1329,7 +1330,7 @@ export default function App() {
               ) : !AuthUser ? (
                 <Navigate to="/login" replace />
               ) : (
-                <Sidebar user={AuthUser}>
+                <Sidebar user={AuthUser} settings={settings}>
                   <TimeInOut />
                 </Sidebar>
               )
@@ -1344,7 +1345,7 @@ export default function App() {
               ) : !AuthUser ? (
                 <Navigate to="/login" replace />
               ) : (
-                <Sidebar user={AuthUser}>
+                <Sidebar user={AuthUser} settings={settings}>
                   <Logs />
                 </Sidebar>
               )
@@ -1359,7 +1360,7 @@ export default function App() {
               ) : !AuthUser ? (
                 <Navigate to="/login" replace />
               ) : (
-                <Sidebar user={AuthUser}>
+                <Sidebar user={AuthUser} settings={settings}>
                   <SettingsPage settingsProps={settings?.data || {}} />
                 </Sidebar>
               )
@@ -1372,7 +1373,7 @@ export default function App() {
               AuthUser?.role.toLowerCase() === "clerk" ? (
                 <Navigate to="/timeinout" replace/>
               ) : (
-                <Sidebar user={AuthUser}>
+                <Sidebar user={AuthUser} settings={settings}>
                   <AddVipPage/>
                 </Sidebar>
               )
@@ -1387,7 +1388,7 @@ export default function App() {
                 ) :!AuthUser ? (
                   <Navigate to="/login" replace />
                 ) : (
-                <Sidebar user={AuthUser}>
+                <Sidebar user={AuthUser} settings={settings}>
                   <AddStaffPage navigate={navigate} settings={settings?.data}/>
                 </Sidebar>
               )
@@ -1402,7 +1403,7 @@ export default function App() {
               ) : !AuthUser ? (
                 <Navigate to="/login" replace />
               ) : (
-                <Sidebar user={AuthUser}>
+                <Sidebar user={AuthUser} settings={settings}>
                   <NewProductPage navigate={navigate} settings={settings?.data}/>
                 </Sidebar>
               )
@@ -1417,7 +1418,7 @@ export default function App() {
               ) : !AuthUser ? (
                 <Navigate to="/login" replace />
               ) : (
-                <Sidebar user={AuthUser}>
+                <Sidebar user={AuthUser} settings={settings}>
                   <InOutLogs/>
                 </Sidebar>
               )
@@ -1432,7 +1433,7 @@ export default function App() {
               ) : !AuthUser ? (
                 <Navigate to="/login" replace />
               ) : (
-                <Sidebar user={AuthUser}>
+                <Sidebar user={AuthUser} settings={settings}>
                   <SalesLogs/>
                 </Sidebar>
               )
@@ -1447,8 +1448,23 @@ export default function App() {
               ) : !AuthUser ? (
                 <Navigate to="/login" replace />
               ) : (
-                <Sidebar user={AuthUser}>
+                <Sidebar user={AuthUser} settings={settings}>
                   <SystemLogs/>
+                </Sidebar>
+              )
+            }
+          />
+
+          <Route
+            path="/supplier"
+            element={
+              AuthUser?.role.toLowerCase() === "clerk" ? (
+                <Navigate to="/timeinout" replace/>
+              ) : !AuthUser ? (
+                <Navigate to="/login" replace />
+              ) : (
+                <Sidebar user={AuthUser} settings={settings}>
+                  <Supplier/>
                 </Sidebar>
               )
             }

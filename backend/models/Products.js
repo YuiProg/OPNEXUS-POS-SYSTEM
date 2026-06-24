@@ -61,6 +61,11 @@ const productSchema = new mongoose.Schema({
     productImageId: {
         type: String,
         required: false
+    },
+    supplier: {
+        type: String,
+        required: false,
+        default: 'N/A'
     }
 }, {timestamps: true});
 
