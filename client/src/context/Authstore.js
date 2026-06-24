@@ -24,7 +24,8 @@ const {
     UPDATEBRANCH,
     REMOVEADMINFROMBRANCH,
     CHANGEPASSWORD,
-    VALIDATEUSER
+    VALIDATEUSER,
+    GETACTIVEUSERS
 } = ApiConfig;
 
 const {
@@ -69,10 +70,22 @@ const AuthStore = create((set, get) => ({
     changePasswordLoading: false,
     steps: 1,
     validateData: null,
+    activeUsers: [],
 
     setValidateData: (data) => set({validateData: data}),
 
     setStep: (val) => set({steps: val}),
+
+    getActiveUsers: async () => {
+        try {
+            const activeUsers = await axiosInstance.get(GETACTIVEUSERS);
+            set({activeUsers: activeUsers.data.data});
+        } catch (error) {
+            if (axiosError(error)) {
+                toast.error(error.response.data.status);
+            }
+        }
+    },
 
     validateDataFunc: async () => {
         const {isScreenLoading} = ModalStore.getState();

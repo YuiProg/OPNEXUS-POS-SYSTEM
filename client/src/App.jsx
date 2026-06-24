@@ -1194,7 +1194,7 @@ export default function App() {
         {confirmDelete && confirmDeleteUserFromBranch(deleteBranch)}
         {salesModal && viewSalesRecordModal()}
         {transactConfirmModal && showTransactConfirmModal()}
-        {showVipModal && addVipUser()}
+        {showVipModal && addVipUser(settings)}
         {editVipModal && editMainVipModal()}
         {showVipChangesModal && confirmChangesVipModal()}
         {yesNoConfirmDelete && confirmDeleteVip()}
@@ -1381,7 +1381,7 @@ export default function App() {
           />
 
           <Route
-            path="/addstaff"
+            path="/staff/add"
             element={
               AuthUser?.role.toLowerCase() === "clerk" ? (
                 <Navigate to="/timeinout" replace/>
