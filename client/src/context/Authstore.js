@@ -55,6 +55,7 @@ const AuthStore = create((set, get) => ({
         address: '',
         branch: '',
         salary: null,
+        loginAttempts: null,
         sendEmail: false
     },
     users: [],
@@ -76,6 +77,17 @@ const AuthStore = create((set, get) => ({
     setValidateData: (data) => set({validateData: data}),
 
     setStep: (val) => set({steps: val}),
+
+    unlockUser: async () => {
+        const { selectedItem } = ModalStore.getState();
+        try {
+            console.log(selectedItem);
+        } catch (error) {
+            if (axiosError(error)) {
+                toast.error(error.response.data.status);
+            }
+        }
+    },
 
     getActiveUsers: async () => {
         try {
@@ -305,7 +317,7 @@ const AuthStore = create((set, get) => ({
             //     }
             // }
             let user;
-            
+
             if (data.role === "Admin") {
                 const newUserAdmin = await axiosInstance.post(addUser, payloadAdmin);
                 user = newUserAdmin
@@ -380,6 +392,7 @@ const AuthStore = create((set, get) => ({
                 gender, 
                 lastName, 
                 address, 
+                loginAttempts,
                 ...rest }) => ({
                 ...rest,
                 branchLocation: rest.branchLocation ?? "N/A",
