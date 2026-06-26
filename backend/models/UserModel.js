@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import bcrypt from 'bcryptjs';
 import Strings from "../strings/strings-codes.js";
 import { customAlphabet } from 'nanoid'
+import SystemSettings from "./SystemSettingsModel.js";
 
 const {
     BRANCH_REQ,
@@ -18,6 +19,7 @@ const {
     ADDR_ERR,
     ID_SECRET,
     EMAIL_ERR,
+    ACCLOCK,
     pw,
     us
 } = Strings;
@@ -95,6 +97,10 @@ const userSchema = new mongoose.Schema({
     time: {
         type: String,
         required: false
+    },
+    loginAttempts: {
+        type: Number,
+        default: 0
     }
 }, {timestamps: true});
 
@@ -111,12 +117,19 @@ userSchema.statics.registerUser = async function (data) {
 
 userSchema.statics.loginUser = async function (email, password) {
     const user = await this.findOne({ email }).select('-password');
+    const settings = await SystemSettings.getSettings();
+    if (user.loginAttempts === settings.generalSettings.maxLoginAttempts) {
+        throw new Error(ACCLOCK);
+    }
     const userPassword = await this.findOne({email});
     if (!user) {
         throw new Error(CRED_ERROR);
     }
     const isMatch = await bcrypt.compare(password, userPassword.password);
     if (!isMatch) {
+        if (user.role.toLocaleLowerCase() === 'clerk' && settings.generalSettings.allowAccountLocking) {
+            await this.findByIdAndUpdate(user._id, {$inc: {loginAttempts: 1}});
+        }
         throw new Error(CRED_ERROR);
     }
     return user;

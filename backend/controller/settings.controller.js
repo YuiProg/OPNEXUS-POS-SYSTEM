@@ -30,7 +30,7 @@ export const initializeSystemSettings = async () => {
 
 export const getSettings = async (req, res) => {
     try {
-        const settings = await SystemSettings.findOne();
+        const settings = await SystemSettings.getSettings();
         console.log('[GET SETTINGS]', JSON.stringify(settings, null, 2));
         ApiResponseModel(res, SUCCESS, GETSETTINGS, settings);
     } catch (error) {

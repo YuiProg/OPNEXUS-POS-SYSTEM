@@ -1,9 +1,23 @@
 import mongoose from 'mongoose'
 
 const SystemSettingsSchema = new mongoose.Schema({
-  systemName: {
-    type: String,
-    default: 'POS SYSTEM',
+  generalSettings: {
+    systemName: {
+      type: String,
+      default: 'POS SYSTEM',
+    },
+    maxLoginAttempts: {
+      type: Number,
+      default: 3
+    },
+    turnOffPOS: {
+      type: Boolean,
+      default: false
+    },
+    allowAccountLocking: {
+      type: Boolean,
+      default: true
+    }
   },
   inventorySettings: {
     topProductsThreshold: {
@@ -125,7 +139,12 @@ const SystemSettingsSchema = new mongoose.Schema({
       }
     }
   }
-})
+});
+
+SystemSettingsSchema.statics.getSettings = async function () {
+  const settings = await this.findOne();
+  return settings;
+}
 
 const SystemSettings = mongoose.model('SystemSettings', SystemSettingsSchema)
 

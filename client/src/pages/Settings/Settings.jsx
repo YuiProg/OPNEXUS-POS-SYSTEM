@@ -13,7 +13,8 @@ class SettingsPage extends React.Component {
     const { settingsProps } = props;
     this.state = {
       selectedOption: 'General Settings',
-      systemName: settingsProps.systemName ?? null,
+      systemName: settingsProps.generalSettings.systemName ?? null,
+      maxLoginAttempts: settingsProps.generalSettings.maxLoginAttempts ?? null,
       storeState: SettingsStore.getState(),
       // toggles
       categoryEnabled: settingsProps.categorySettings?.enabled ?? false,
@@ -72,7 +73,10 @@ class SettingsPage extends React.Component {
       <div className="settings-content">
         <h2 className="option-title">General Settings</h2>
         <InputRow titles={['System Name']}>
-          <InputField text placeholder="Enter system name" value={this.state.systemName} onChange={e => this.setState({systemName: e})}/>
+          <InputField text placeholder={settingsProps.generalSettings.systemName} onChange={e => this.setState({systemName: e})}/>
+        </InputRow>
+        <InputRow titles={['Max Login Attempt']}>
+          <InputField number placeholder={settingsProps.generalSettings.maxLoginAttempts} onChange={e => this.setState({maxLoginAttempts: e})}/>
         </InputRow>
       </div>
     );
