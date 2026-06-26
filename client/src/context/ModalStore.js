@@ -20,6 +20,10 @@ const ModalStore = create((set) => ({
     showVipDisableManyConfirm: false,
     showNewCategoryModal: false,
     showConfirmDeleteCategory: false,
+    showAccountLocked: false,
+
+    //account locked
+    setShowAccountLocked: (val) => set({showAccountLocked: val}),
     
     //category
     setShowNewCategoryModal: (val) => set({showNewCategoryModal: val}),

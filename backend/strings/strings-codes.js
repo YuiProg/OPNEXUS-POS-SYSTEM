@@ -107,6 +107,9 @@ const Strings = Object.freeze({
     br: 'branch',
     us: 'User',
 
+    //function codes
+    ACCLOCK: 'FNCCD1',
+
     //status codes
     // 1xx Informational
     CONTINUE: 100,

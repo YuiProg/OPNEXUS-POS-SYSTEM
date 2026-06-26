@@ -5,6 +5,7 @@ import SystemLogs from '../models/SystemLogs.js'
 import User from '../models/UserModel.js'
 import Strings from '../strings/strings-codes.js'
 import sendMail from '../lib/sendEmail.js'
+import SystemSettings from '../models/SystemSettingsModel.js'
 
 const { SUCCESS_MESS, SUCCESS, ERROR, CREATED, DELETEUSER, NEWUSER, UPDATEUSER, PASSWORDEDIT } =
   Strings
@@ -86,10 +87,9 @@ export const register = async (req, res) => {
 
 export const loginUser = async (req, res) => {
   try {
-    const { email, password } = req.body
-    const user = await User.loginUser(email, password)
-
-    //const { _: _, ...userWithoutPassword } = user.toObject(); // already using _
+    const { email, password } = req.body;
+    const user = await User.loginUser(email, password);
+    //const { _: _, ...userWithoutPassword } = user.toObject();
     generateToken(user._id, res)
     logResponse(req, SUCCESS, { status: SUCCESS_MESS, user: user.username || user.email })
     ApiResponseModel(res, SUCCESS, SUCCESS_MESS, user)

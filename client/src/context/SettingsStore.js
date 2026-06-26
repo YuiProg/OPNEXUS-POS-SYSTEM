@@ -97,7 +97,10 @@ const SettingsStore = create((set, get) => ({
     const { settings } = get();
     try {
       const payload = {
-        systemName: data.systemName,
+        generalSettings: {
+          systemName: data.systemName,
+          maxLoginAttempts: data.maxLoginAttempts
+        },
         inventorySettings: {
           lowStockThreshold: data.lowStockThreshold > 0 ? data.lowStockThreshold : settings.data.inventorySettings.lowStockThreshold,
           inputLength: {
