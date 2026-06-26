@@ -25,11 +25,12 @@ const {
     REMOVEADMINFROMBRANCH,
     CHANGEPASSWORD,
     VALIDATEUSER,
-    GETACTIVEUSERS
+    GETACTIVEUSERS,
 } = ApiConfig;
 
 const {
-    SUCCESS_MESS
+    SUCCESS_MESS,
+    ACCLOCK
 } = Strings;
 
 const AuthStore = create((set, get) => ({
@@ -171,6 +172,7 @@ const AuthStore = create((set, get) => ({
     },
 
     loginUser: async (email, password) => {
+        const { setShowAccountLocked } = ModalStore.getState();
         try {
             set({ AuthLoading: true, errorUser: null });
             
@@ -183,7 +185,12 @@ const AuthStore = create((set, get) => ({
             await get().checkAuth();
             
         } catch (error) {
-            toast.error(error.message);
+            if(axiosError(error)) {
+                if (error.response.data.status === ACCLOCK) {
+                    setShowAccountLocked(true);
+                }
+                toast.error(error.response.data.status);
+            }
             set({ errorUser: axiosError(error) });
         } finally {
             set({ AuthLoading: false });

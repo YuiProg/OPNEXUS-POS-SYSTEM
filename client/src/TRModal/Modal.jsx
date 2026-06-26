@@ -83,17 +83,26 @@ export class ModalConfim extends React.Component {
     render () {
         const {
             message,
-            onClose
+            subMessage,
+            onClose,
+            error
         } = this.props;
         return (
             <div className="modal-container-confirm">
                 <div className="" onClick={(e) => e.stopPropagation()}>
                     {/* CHECK MARK */}
                     <div className="modal-check-confirm">
-                        <div className="modal-confirm-green-circle">
-                            <Check size={80}/>
+                        {error ? (
+                        <div className="modal-confirm-cross-circle">
+                            <X size={80}/>
                         </div>
+                        ) : (
+                            <div className="modal-confirm-green-circle">
+                                <Check size={80}/>
+                            </div>
+                        )}
                         <h1 className="modal-confirm-header">{message}</h1>
+                        {subMessage && <p className="modal-confirm-subheader">{subMessage}</p>}
                         <Button 
                             success 
                             customWidth={150}

@@ -144,7 +144,7 @@ class Sidebar extends React.Component {
                     {/* Top Section */}
                     <div className="sb-top">
                         <div className="sb-logo-area">
-                            {!collapsed && <span className="sb-logo-text">{this.props.settings.data.systemName}</span>}
+                            {!collapsed && <span className="sb-logo-text">{this.props.settings.data.generalSettings.systemName}</span>}
                         </div>
                         <button className="sb-burger" onClick={this.toggleSidebar} aria-label="Toggle sidebar">
                             <Menu size={20} />
