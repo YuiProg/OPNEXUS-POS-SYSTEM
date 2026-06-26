@@ -5,6 +5,7 @@ import SystemLogs from '../models/SystemLogs.js'
 import User from '../models/UserModel.js'
 import Strings from '../strings/strings-codes.js'
 import sendMail from '../lib/sendEmail.js'
+import SystemSettings from '../models/SystemSettingsModel.js'
 
 
 const { SUCCESS_MESS, SUCCESS, ERROR, CREATED, DELETEUSER, NEWUSER, UPDATEUSER, PASSWORDEDIT } =
