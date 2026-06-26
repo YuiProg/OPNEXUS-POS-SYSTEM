@@ -7,7 +7,6 @@ import Strings from '../strings/strings-codes.js'
 import sendMail from '../lib/sendEmail.js'
 
 
-
 const { SUCCESS_MESS, SUCCESS, ERROR, CREATED, DELETEUSER, NEWUSER, UPDATEUSER, PASSWORDEDIT } =
   Strings
 
