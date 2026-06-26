@@ -1,5 +1,5 @@
-import React from "react";
-import "./TrTable.css";
+import React from 'react'
+import './TrTable.css'
 import {
   Trash2,
   SquarePen,
@@ -8,219 +8,220 @@ import {
   ChevronUp,
   ChevronDown,
   Archive,
-  SlidersHorizontal,
-} from "lucide-react";
-import PropTypes from "prop-types";
-import Button from "../TRButton/Button";
+  SlidersHorizontal
+} from 'lucide-react'
+import PropTypes from 'prop-types'
+import Button from '../TRButton/Button'
 
-
+/**
+ * @class
+ * @component
+ */
 export class Table extends React.Component {
   constructor(props) {
-    super(props);
-    this.tableContainerRef = React.createRef();
+    super(props)
+    this.tableContainerRef = React.createRef()
 
     this.state = {
       selectAll: false,
-      selected: this.props.data
-        ? new Array(props.data.length).fill(false)
-        : [],
+      selected: this.props.data ? new Array(props.data.length).fill(false) : [],
       productSelect: null,
       currentPage: 1,
       sortKey: null,
-      sortDir: null,
-    };
+      sortDir: null
+    }
   }
 
   componentDidMount() {
     if (this.tableContainerRef.current) {
-      this.tableContainerRef.current.addEventListener("wheel", this.handleHorizontalScroll, {
-        passive: false,
-      });
+      this.tableContainerRef.current.addEventListener('wheel', this.handleHorizontalScroll, {
+        passive: false
+      })
     }
-    console.log(this.props);
   }
 
   componentWillUnmount() {
     if (this.tableContainerRef.current) {
-      this.tableContainerRef.current.removeEventListener("wheel", this.handleHorizontalScroll);
+      this.tableContainerRef.current.removeEventListener('wheel', this.handleHorizontalScroll)
     }
   }
 
   handleHorizontalScroll = (e) => {
-    const container = this.tableContainerRef.current;
-    if (!container) return;
+    const container = this.tableContainerRef.current
+    if (!container) return
 
-    const isHorizontallyScrollable = container.scrollWidth > container.clientWidth;
+    const isHorizontallyScrollable = container.scrollWidth > container.clientWidth
 
     if (isHorizontallyScrollable) {
-      e.preventDefault();
-      container.scrollLeft += e.deltaY;
+      e.preventDefault()
+      container.scrollLeft += e.deltaY
     }
-  };
+  }
 
   get rowsPerPage() {
-    return this.props.limit || 10;
+    return this.props.limit || 10
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.search !== this.props.search) {
-      this.setState({ currentPage: 1 });
+      this.setState({ currentPage: 1 })
     }
 
     if (prevProps.data !== this.props.data) {
       this.setState({
         selected: new Array(this.props.data.length).fill(false),
-        selectAll: false,
-      });
+        selectAll: false
+      })
     }
   }
 
   selectAll = () => {
     this.setState((prev) => {
-      const selectAll = !prev.selectAll;
-      const selected = [...prev.selected];
+      const selectAll = !prev.selectAll
+      const selected = [...prev.selected]
 
-      const startIndex = (prev.currentPage - 1) * this.rowsPerPage;
-      const endIndex = startIndex + this.rowsPerPage;
+      const startIndex = (prev.currentPage - 1) * this.rowsPerPage
+      const endIndex = startIndex + this.rowsPerPage
       for (let i = startIndex; i < endIndex && i < this.props.data.length; i++) {
-        selected[i] = selectAll;
+        selected[i] = selectAll
       }
-      return { selectAll, selected };
-    });
-  };
+      return { selectAll, selected }
+    })
+  }
 
   toggleRow = (index) => {
     this.setState((prev) => {
-      const selected = [...prev.selected];
-      selected[index] = !selected[index];
+      const selected = [...prev.selected]
+      selected[index] = !selected[index]
       return {
         selected,
-        selectAll: selected.every(Boolean),
-      };
-    });
-  };
+        selectAll: selected.every(Boolean)
+      }
+    })
+  }
 
   goToPage = (page) => {
-    const totalPages = Math.ceil(this.props.data.length / this.rowsPerPage);
-    if (page < 1 || page > totalPages) return;
-    this.setState({ currentPage: page });
-  };
+    const totalPages = Math.ceil(this.props.data.length / this.rowsPerPage)
+    if (page < 1 || page > totalPages) return
+    this.setState({ currentPage: page })
+  }
 
   filterByValue(array, string) {
     return array.filter((o) =>
-      Object.keys(o).some((k) =>
-        String(o[k]).toLowerCase().includes(string.toLowerCase()),
-      ),
-    );
+      Object.keys(o).some((k) => String(o[k]).toLowerCase().includes(string.toLowerCase()))
+    )
   }
 
   handleSort = (key) => {
     this.setState((prev) => {
-      if (prev.sortKey !== key) return { sortKey: key, sortDir: "asc", currentPage: 1 };
-      if (prev.sortDir === "asc") return { sortKey: key, sortDir: "desc", currentPage: 1 };
-      return { sortKey: null, sortDir: null, currentPage: 1 };
-    });
-  };
+      if (prev.sortKey !== key) return { sortKey: key, sortDir: 'asc', currentPage: 1 }
+      if (prev.sortDir === 'asc') return { sortKey: key, sortDir: 'desc', currentPage: 1 }
+      return { sortKey: null, sortDir: null, currentPage: 1 }
+    })
+  }
 
   sortData = (array) => {
-    const { sortKey, sortDir } = this.state;
-    if (!sortKey || !sortDir) return array;
+    const { sortKey, sortDir } = this.state
+    if (!sortKey || !sortDir) return array
 
     return [...array].sort((a, b) => {
-      const aVal = a[sortKey];
-      const bVal = b[sortKey];
+      const aVal = a[sortKey]
+      const bVal = b[sortKey]
 
       if (!isNaN(aVal) && !isNaN(bVal)) {
-        return sortDir === "asc" ? aVal - bVal : bVal - aVal;
+        return sortDir === 'asc' ? aVal - bVal : bVal - aVal
       }
 
-      const aStr = String(aVal).toLowerCase();
-      const bStr = String(bVal).toLowerCase();
-      if (aStr < bStr) return sortDir === "asc" ? -1 : 1;
-      if (aStr > bStr) return sortDir === "asc" ? 1 : -1;
-      return 0;
-    });
-  };
+      const aStr = String(aVal).toLowerCase()
+      const bStr = String(bVal).toLowerCase()
+      if (aStr < bStr) return sortDir === 'asc' ? -1 : 1
+      if (aStr > bStr) return sortDir === 'asc' ? 1 : -1
+      return 0
+    })
+  }
 
   handleFilterToggle = () => {
-    this.filtersOpen = !this.filtersOpen;
+    this.filtersOpen = !this.filtersOpen
     if (this.props.onFilterToggle) {
-      this.props.onFilterToggle(this.filtersOpen);
+      this.props.onFilterToggle(this.filtersOpen)
     }
-  };
+  }
 
   render() {
-    const { data, hasSelect, hasAction, onDelete, onEdit, isDetailed, search, onView, isLoading, onRowSelect, noDataMessage, noEdit, hasTableFilters } =
-      this.props;
-    const { selectAll, selected, currentPage, sortKey, sortDir } = this.state;
+    const {
+      data,
+      hasSelect,
+      hasAction,
+      onDelete,
+      onEdit,
+      isDetailed,
+      search,
+      onView,
+      isLoading,
+      onRowSelect,
+      noDataMessage,
+      noEdit,
+      hasTableFilters
+    } = this.props
+    const { selectAll, selected, currentPage, sortKey, sortDir } = this.state
 
-    const filteredData = search ? this.filterByValue(data, search) : data;
-    const sortedData = this.sortData(filteredData);
+    const filteredData = search ? this.filterByValue(data, search) : data
+    const sortedData = this.sortData(filteredData)
 
-    const totalPages = sortedData
-      ? Math.ceil(sortedData.length / this.rowsPerPage)
-      : null;
-    const startIndex = (currentPage - 1) * this.rowsPerPage;
+    const totalPages = sortedData ? Math.ceil(sortedData.length / this.rowsPerPage) : null
+    const startIndex = (currentPage - 1) * this.rowsPerPage
     const paginatedData = sortedData
       ? sortedData.slice(startIndex, startIndex + this.rowsPerPage)
-      : null;
+      : null
     const paginatedSelected = paginatedData
       ? selected.slice(startIndex, startIndex + this.rowsPerPage)
-      : null;
+      : null
 
-    const selectedRows = this.props.data.filter((_, i) => selected[i]);
+    const selectedRows = this.props.data.filter((_, i) => selected[i])
 
     const headers =
-      this.props.data && this.props.data.length > 0
-        ? Object.keys(this.props.data[0])
-        : [];
+      this.props.data && this.props.data.length > 0 ? Object.keys(this.props.data[0]) : []
 
-    const hasData = paginatedData && paginatedData.length > 0;
-    const shouldPaginate = sortedData && sortedData.length > this.rowsPerPage;
+    const hasData = paginatedData && paginatedData.length > 0
+    const shouldPaginate = sortedData && sortedData.length > this.rowsPerPage
 
-    let pageNumbers = [];
+    let pageNumbers = []
     for (var i = 1; i <= totalPages; i++) {
-      pageNumbers.push(i);
+      pageNumbers.push(i)
     }
 
-    const colCount =
-      (headers ? headers.length : 0) +
-      (hasSelect ? 1 : 0) +
-      (hasAction ? 1 : 0);
+    const colCount = (headers ? headers.length : 0) + (hasSelect ? 1 : 0) + (hasAction ? 1 : 0)
 
     return (
       <div className="table-wrapper">
         {isDetailed && data ? (
           <div className="table-header">
-            <h1 className="table-title">{isDetailed.header}</h1>
+            <div className="table-title-area">
+              <span className="table-subtitle">Management Console</span>
+              <h1 className="table-title">{isDetailed.header}</h1>
+            </div>
             <div className="table-header-right">
               <div className="table-search">{isDetailed.search}</div>
               {isDetailed.hasButton && isDetailed.hasDelete ? (
                 <>
-                  <Button
-                    error
-                    text={isDetailed.buttonInfo}
-                    onClick={(e) => isDetailed.CB(e)}
-                  />
+                  <Button error text={isDetailed.buttonInfo} onClick={(e) => isDetailed.CB(e)} />
                   <Button
                     cancel
                     text={isDetailed.deleteBtnInfo}
                     onClick={() => isDetailed.CBD(selectedRows)}
                   />
                 </>
-              ) : isDetailed.hasButton && (
-                <Button
-                  error
-                  text={isDetailed.buttonInfo}
-                  onClick={(e) => isDetailed.CB(e)}
-                />
+              ) : (
+                isDetailed.hasButton && (
+                  <Button error text={isDetailed.buttonInfo} onClick={(e) => isDetailed.CB(e)} />
+                )
               )}
               {hasTableFilters && (
                 <Button
                   cancel
                   text={
-                    <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
-                      <SlidersHorizontal/>
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                      <SlidersHorizontal size={15} />
                     </span>
                   }
                   onClick={this.handleFilterToggle}
@@ -230,12 +231,12 @@ export class Table extends React.Component {
           </div>
         ) : (
           hasTableFilters && (
-            <div className="table-header">
-              <div className="table-header-right" style={{ marginLeft: "auto" }}>
+            <div className="table-header table-header--isolated">
+              <div className="table-header-right" style={{ marginLeft: 'auto' }}>
                 <Button
                   cancel
                   text={
-                    <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
                       <SlidersHorizontal size={15} />
                       Filters
                     </span>
@@ -271,7 +272,7 @@ export class Table extends React.Component {
                       {h.toUpperCase()}
                       <span className="table-sort-icon">
                         {sortKey === h ? (
-                          sortDir === "asc" ? (
+                          sortDir === 'asc' ? (
                             <ChevronUp size={14} />
                           ) : (
                             <ChevronDown size={14} />
@@ -305,7 +306,7 @@ export class Table extends React.Component {
                   noEdit={noEdit}
                 />
               ) : (
-                <TableNoData colSpan={colCount} message={noDataMessage}/>
+                <TableNoData colSpan={colCount} message={noDataMessage} />
               )}
             </tbody>
           </table>
@@ -315,7 +316,7 @@ export class Table extends React.Component {
           <div className="pagination">
             <span className="pagination-info">
               {sortedData
-                ? `showing ${Math.min(startIndex + this.rowsPerPage, sortedData.length)} of ${sortedData.length} results`
+                ? `Showing ${Math.min(startIndex + this.rowsPerPage, sortedData.length)} of ${sortedData.length} results`
                 : null}
             </span>
             <div className="pagination-controls">
@@ -333,12 +334,10 @@ export class Table extends React.Component {
                   page === totalPages ||
                   page === currentPage ||
                   page === currentPage - 1 ||
-                  page === currentPage + 1;
+                  page === currentPage + 1
 
-                const showLeftDots =
-                  page === currentPage - 1 && currentPage - 1 > 2;
-                const showRightDots =
-                  page === currentPage + 1 && currentPage + 1 < totalPages - 1;
+                const showLeftDots = page === currentPage - 1 && currentPage - 1 > 2
+                const showRightDots = page === currentPage + 1 && currentPage + 1 < totalPages - 1
 
                 if (showLeftDots) {
                   return (
@@ -348,15 +347,15 @@ export class Table extends React.Component {
                         type="button"
                         className={
                           currentPage === page
-                            ? "pagination-page pagination-page--active"
-                            : "pagination-page"
+                            ? 'pagination-page pagination-page--active'
+                            : 'pagination-page'
                         }
                         onClick={() => this.goToPage(page)}
                       >
                         {page}
                       </button>
                     </React.Fragment>
-                  );
+                  )
                 }
 
                 if (showRightDots) {
@@ -366,8 +365,8 @@ export class Table extends React.Component {
                         type="button"
                         className={
                           currentPage === page
-                            ? "pagination-page pagination-page--active"
-                            : "pagination-page"
+                            ? 'pagination-page pagination-page--active'
+                            : 'pagination-page'
                         }
                         onClick={() => this.goToPage(page)}
                       >
@@ -375,7 +374,7 @@ export class Table extends React.Component {
                       </button>
                       <span className="pagination-dots">...</span>
                     </React.Fragment>
-                  );
+                  )
                 }
 
                 if (showPage) {
@@ -385,16 +384,16 @@ export class Table extends React.Component {
                       key={page}
                       className={
                         currentPage === page
-                          ? "pagination-page pagination-page--active"
-                          : "pagination-page"
+                          ? 'pagination-page pagination-page--active'
+                          : 'pagination-page'
                       }
                       onClick={() => this.goToPage(page)}
                     >
                       {page}
                     </button>
-                  );
+                  )
                 }
-                return null;
+                return null
               })}
 
               <button
@@ -409,13 +408,13 @@ export class Table extends React.Component {
           </div>
         )}
       </div>
-    );
+    )
   }
 }
 
 export class TableLoading extends React.Component {
   render() {
-    const { colCount } = this.props;
+    const { colCount } = this.props
     return (
       <tr>
         <td colSpan={colCount} className="table-td--nodata">
@@ -424,53 +423,108 @@ export class TableLoading extends React.Component {
           </div>
         </td>
       </tr>
-    );
+    )
   }
 }
 
 export class TableData extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   formatValue = (key, value) => {
-    const phpKeys = ["salary", "price", "paid", "total", "amountPaid", "subtotal", "change"];
+    const phpKeys = ['salary', 'price', 'paid', 'total', 'amountPaid', 'subtotal', 'change']
     if (phpKeys.includes(key)) {
-      return `PHP ${Number(value).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      return `PHP ${Number(value).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
     }
-    if (value === "ACTIVE") {
+    if (value === 'ACTIVE') {
       return (
-        <span style={{ display: "inline-flex", alignItems: "center", gap: 6, color: "#22C55E", fontWeight: 500 }}>
-          <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#22C55E", display: "inline-block" }} />
+        <span
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 6,
+            color: '#22C55E',
+            fontWeight: 500
+          }}
+        >
+          <span
+            style={{
+              width: 6,
+              height: 6,
+              borderRadius: '50%',
+              background: '#22C55E',
+              display: 'inline-block'
+            }}
+          />
           ACTIVE
         </span>
-      );
+      )
     }
-    if (value === "INACTIVE") {
+    if (value === 'INACTIVE') {
       return (
-        <span style={{ display: "inline-flex", alignItems: "center", gap: 6, color: "#888", fontWeight: 500 }}>
-          <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#888", display: "inline-block" }} />
+        <span
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 6,
+            color: '#6B7280',
+            fontWeight: 500
+          }}
+        >
+          <span
+            style={{
+              width: 6,
+              height: 6,
+              borderRadius: '50%',
+              background: '#6B7280',
+              display: 'inline-block'
+            }}
+          />
           INACTIVE
         </span>
-      );
+      )
     }
-    return value;
-  };
+    if (value === 'PENDING') {
+      return (
+        <span
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 6,
+            color: '#F97316',
+            fontWeight: 500
+          }}
+        >
+          <span
+            style={{
+              width: 6,
+              height: 6,
+              borderRadius: '50%',
+              background: '#F97316',
+              display: 'inline-block'
+            }}
+          />
+          PENDING
+        </span>
+      )
+    }
+    return value
+  }
 
   render() {
-    const { data, hasSelect, selected, toggleRow, hasAction, CBD, CBE, onView, rowCB, noEdit } = this.props;
+    const { data, hasSelect, selected, toggleRow, hasAction, CBD, CBE, onView, rowCB, noEdit } =
+      this.props
 
     return (
       <>
         {data.map((row, rowIndex) => {
           return (
             <tr
-              className={selected[rowIndex] === true ? "table-row table-row--selected" : "table-row"}
+              className={
+                selected[rowIndex] === true ? 'table-row table-row--selected' : 'table-row'
+              }
               key={rowIndex}
               onClick={() => rowCB(row)}
             >
               {hasSelect ? (
-                <td className="table-td table-td--check">
+                <td className="table-td table-td--check" onClick={(e) => e.stopPropagation()}>
                   <input
                     className="table-checkbox"
                     type="checkbox"
@@ -482,7 +536,13 @@ export class TableData extends React.Component {
               {Object.entries(row).map(([key, value], colIndex) => (
                 <td className="table-td" key={colIndex}>
                   {colIndex === 0 ? (
-                    <strong style={{ cursor: "pointer" }} onClick={() => onView(row)}>
+                    <strong
+                      className="table-clickable-id"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        onView(row)
+                      }}
+                    >
                       {value}
                     </strong>
                   ) : (
@@ -496,45 +556,47 @@ export class TableData extends React.Component {
                     <button
                       type="button"
                       className="table-action-btn table-action-btn--edit"
-                      onClick={(e) => { e.stopPropagation(); CBE(row); }}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        CBE(row)
+                      }}
                     >
-                      <SquarePen size={20} />
+                      <SquarePen size={16} />
                     </button>
                   )}
                   <button
                     type="button"
                     className="table-action-btn table-action-btn--delete"
-                    onClick={(e) => { e.stopPropagation(); CBD(row); }}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      CBD(row)
+                    }}
                   >
-                    <Trash2 size={20} />
+                    <Trash2 size={16} />
                   </button>
                 </td>
               ) : null}
             </tr>
-          );
+          )
         })}
       </>
-    );
+    )
   }
 }
 
 export class TableNoData extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
-    const { message } = this.props;
+    const { message } = this.props
     return (
       <tr>
         <td colSpan={this.props.colSpan} className="table-td--nodata">
           <div className="no-data-wrapper">
-            <Archive size={32} strokeWidth={1.5} className="no-data-icon" />
+            <Archive size={28} strokeWidth={1.5} className="no-data-icon" />
             <p className="no-data-title">{message ? message : `No data found :(`}</p>
           </div>
         </td>
       </tr>
-    );
+    )
   }
 }
 
@@ -554,9 +616,9 @@ Table.propTypes = {
     search: PropTypes.node,
     hasButton: PropTypes.bool,
     buttonInfo: PropTypes.string,
-    CB: PropTypes.func,
-  }),
-};
+    CB: PropTypes.func
+  })
+}
 
 TableData.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -566,13 +628,13 @@ TableData.propTypes = {
   toggleRow: PropTypes.func,
   CBD: PropTypes.func,
   CBE: PropTypes.func,
-  noEdit: PropTypes.bool,
-};
+  noEdit: PropTypes.bool
+}
 
 TableLoading.propTypes = {
-  colCount: PropTypes.number.isRequired,
-};
+  colCount: PropTypes.number.isRequired
+}
 
 TableNoData.propTypes = {
-  colSpan: PropTypes.number,
-};
+  colSpan: PropTypes.number
+}

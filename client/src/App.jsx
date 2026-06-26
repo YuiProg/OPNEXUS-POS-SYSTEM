@@ -1,5 +1,5 @@
 import { useEffect, lazy, Suspense, useState } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import Login from "./pages/AuthPage/Login.jsx";
 import AuthStore from "./context/Authstore.js";
 import Sidebar from "./components/Sidebar/Sidebar.jsx";
@@ -40,9 +40,16 @@ import deleteCategoryConfirm from "./pages/Inventory/DeleteCategoryConfirm.jsx";
 import CustomerLogin from "./pages/CustomerPage/CustomerLogIn.jsx";
 import viewChangePasswordModal from "./pages/AuthPage/ChangePasswordModal.jsx";
 import SettingsPage from "./pages/Settings/Settings.jsx";
-import Toggle from "./components/TRToggle/Toggle.jsx";
+import {Toggle} from "./components/TRToggle/Toggle.jsx";
 import SettingsStore from "./context/SettingsStore.js";
 import { yesNoSettingsApplyModal, yesNoSettingsResetModal } from "./pages/Settings/ApplySettingsModal.jsx";
+import AddVipPage from "./pages/VIP/AddVipPage.jsx";
+import AddStaffPage from "./pages/StaffManagement/AddStaffPage.jsx";
+import NewProductPage from "./pages/Inventory/NewProductPage.jsx";
+import InOutLogs from "./pages/Logs/InOutLogs.jsx";
+import SalesLogs from "./pages/Logs/SalesLogs.jsx";
+import SystemLogs from "./pages/Logs/SystemLogs.jsx";
+import Supplier from "./pages/Supplier/Supplier.jsx";
 
 
 const ServerError = lazy(
@@ -164,6 +171,7 @@ export default function App() {
     settings,
     settingsLoading
   } = SettingsStore();
+  const navigate = useNavigate();
 
   const { SERVER_ERROR, PROD_FAIL } = Strings;
   //const [currentRole, setCurrentRole] = useState("");
@@ -1158,8 +1166,9 @@ export default function App() {
 
 
   const returnModals = () => {
+    //get location based sa path
     const location = () => {
-      const hash = window.location.hash.replace('#', '')
+      const hash = window.location.pathname;
       if (changesModal && hash === "/staff") {
         return viewUserChangesModal();
       } else if (changesModal && hash === "/inventory") {
@@ -1185,7 +1194,7 @@ export default function App() {
         {confirmDelete && confirmDeleteUserFromBranch(deleteBranch)}
         {salesModal && viewSalesRecordModal()}
         {transactConfirmModal && showTransactConfirmModal()}
-        {showVipModal && addVipUser()}
+        {showVipModal && addVipUser(settings)}
         {editVipModal && editMainVipModal()}
         {showVipChangesModal && confirmChangesVipModal()}
         {yesNoConfirmDelete && confirmDeleteVip()}
@@ -1232,7 +1241,7 @@ export default function App() {
               ) : !AuthUser ? (
                 <Navigate to="/login" replace />
               ) : (
-                <Sidebar user={AuthUser}>
+                <Sidebar user={AuthUser} settings={settings}>
                   <Dashboard />
                 </Sidebar>
               )
@@ -1245,8 +1254,8 @@ export default function App() {
               !AuthUser ? (
                 <Navigate to="/login" replace />
               ) : (
-                <Sidebar user={AuthUser}>
-                  <Inventory user={AuthUser} />
+                <Sidebar user={AuthUser} settings={settings}>
+                  <Inventory user={AuthUser} navigate={navigate}/>
                 </Sidebar>
               )
             }
@@ -1260,8 +1269,8 @@ export default function App() {
               ) : !AuthUser ? (
                 <Navigate to="/login" replace />
               ) : (
-                <Sidebar user={AuthUser}>
-                  <StaffManagement />
+                <Sidebar user={AuthUser} settings={settings}>
+                  <StaffManagement navigate={navigate}/>
                 </Sidebar>
               )
             }
@@ -1273,7 +1282,7 @@ export default function App() {
               !AuthUser ? (
                 <Navigate to="/login" replace />
               ) : (
-                <Sidebar user={AuthUser}>
+                <Sidebar user={AuthUser} settings={settings}>
                   <VipManagement />
                 </Sidebar>
               )
@@ -1286,7 +1295,7 @@ export default function App() {
               !AuthUser ? (
                 <Navigate to="/login" replace />
               ) : (
-                <Sidebar user={AuthUser}>
+                <Sidebar user={AuthUser} settings={settings}>
                   <POS />
                 </Sidebar>
               )
@@ -1306,7 +1315,7 @@ export default function App() {
               ) : !AuthUser ? (
                 <Navigate to="/login" replace />
               ) : (
-                <Sidebar user={AuthUser}>
+                <Sidebar user={AuthUser} settings={settings}>
                   <Branches />
                 </Sidebar>
               )
@@ -1321,7 +1330,7 @@ export default function App() {
               ) : !AuthUser ? (
                 <Navigate to="/login" replace />
               ) : (
-                <Sidebar user={AuthUser}>
+                <Sidebar user={AuthUser} settings={settings}>
                   <TimeInOut />
                 </Sidebar>
               )
@@ -1336,7 +1345,7 @@ export default function App() {
               ) : !AuthUser ? (
                 <Navigate to="/login" replace />
               ) : (
-                <Sidebar user={AuthUser}>
+                <Sidebar user={AuthUser} settings={settings}>
                   <Logs />
                 </Sidebar>
               )
@@ -1351,8 +1360,111 @@ export default function App() {
               ) : !AuthUser ? (
                 <Navigate to="/login" replace />
               ) : (
-                <Sidebar user={AuthUser}>
-                  <SettingsPage settingsProps={settings.data || {}} />
+                <Sidebar user={AuthUser} settings={settings}>
+                  <SettingsPage settingsProps={settings?.data || {}} />
+                </Sidebar>
+              )
+            }
+          />
+
+          <Route
+            path="/addvip"
+            element={
+              AuthUser?.role.toLowerCase() === "clerk" ? (
+                <Navigate to="/timeinout" replace/>
+              ) : (
+                <Sidebar user={AuthUser} settings={settings}>
+                  <AddVipPage/>
+                </Sidebar>
+              )
+            }
+          />
+
+          <Route
+            path="/staff/add"
+            element={
+              AuthUser?.role.toLowerCase() === "clerk" ? (
+                <Navigate to="/timeinout" replace/>
+                ) :!AuthUser ? (
+                  <Navigate to="/login" replace />
+                ) : (
+                <Sidebar user={AuthUser} settings={settings}>
+                  <AddStaffPage navigate={navigate} settings={settings?.data}/>
+                </Sidebar>
+              )
+            }
+          />
+
+          <Route
+            path="/inventory/add"
+            element={
+              AuthUser?.role.toLowerCase() === "clerk" ? (
+                <Navigate to="/timeinout" replace/>
+              ) : !AuthUser ? (
+                <Navigate to="/login" replace />
+              ) : (
+                <Sidebar user={AuthUser} settings={settings}>
+                  <NewProductPage navigate={navigate} settings={settings?.data}/>
+                </Sidebar>
+              )
+            }
+          />
+
+          <Route
+            path="/logs/inout"
+            element={
+              AuthUser?.role.toLowerCase() === "clerk" ? (
+                <Navigate to="/timeinout" replace/>
+              ) : !AuthUser ? (
+                <Navigate to="/login" replace />
+              ) : (
+                <Sidebar user={AuthUser} settings={settings}>
+                  <InOutLogs/>
+                </Sidebar>
+              )
+            }
+          />
+
+          <Route
+            path="/logs/transactions"
+            element={
+              AuthUser?.role.toLowerCase() === "clerk" ? (
+                <Navigate to="/timeinout" replace/>
+              ) : !AuthUser ? (
+                <Navigate to="/login" replace />
+              ) : (
+                <Sidebar user={AuthUser} settings={settings}>
+                  <SalesLogs/>
+                </Sidebar>
+              )
+            }
+          />
+
+          <Route
+            path="/logs/system"
+            element={
+              AuthUser?.role.toLowerCase() === "clerk" ? (
+                <Navigate to="/timeinout" replace/>
+              ) : !AuthUser ? (
+                <Navigate to="/login" replace />
+              ) : (
+                <Sidebar user={AuthUser} settings={settings}>
+                  <SystemLogs/>
+                </Sidebar>
+              )
+            }
+          />
+
+          <Route
+            path="/supplier"
+            element={
+              AuthUser?.role.toLowerCase() === "clerk" ? (
+                <Navigate to="/timeinout" replace/>
+              ) : !AuthUser ? (
+                <Navigate to="/login" replace />
+              ) : (
+                <Sidebar user={AuthUser} settings={settings}>
+                  <Supplier/>
                 </Sidebar>
               )
             }

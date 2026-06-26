@@ -1,68 +1,59 @@
 import React from "react";
 import './ActiveStaffs.css'
-import { CircleUserRound } from 'lucide-react';
-
-// const staffData = [
-//   { name: 'Neg Neg', role: 'Clerk' },
-//   { name: 'Zeendy Ann Wukong', role: 'Clerk' },
-//   { name: 'Aki Tinukmol', role: 'Clerk' },
-//   { name: 'Violet Alaw Pwet', role: 'Clerk' },
-//   { name: 'Theorra Binomba', role: 'Clerk' },
-//   { name: 'Levi Inadik RP', role: 'Clerk' },
-//   { name: 'Waffle Nasampol', role: 'Clerk' },
-//   { name: 'Jaooo Tungaooo', role: 'Clerk' },
-//   { name: 'China Balyena', role: 'Clerk' },
-//   { name: 'Shiloh Kulang sa Paloh', role: 'Clerk' },
-//   { name: 'Neg Neg', role: 'Clerk' },
-//   { name: 'Zeendy Ann Wukong', role: 'Clerk' },
-//   { name: 'Aki Tinukmol', role: 'Clerk' },
-//   { name: 'Violet Alaw Pwet', role: 'Clerk' },
-//   { name: 'Theorra Binomba', role: 'Clerk' },
-//   { name: 'Levi Inadik RP', role: 'Clerk' },
-//   { name: 'Waffle Nasampol', role: 'Clerk' },
-//   { name: 'Jaooo Tungaooo', role: 'Clerk' },
-//   { name: 'China Balyena', role: 'Clerk' },
-//   { name: 'Shiloh Kulang sa Paloh', role: 'Clerk' },
-//   { name: 'Neg Neg', role: 'Clerk' },
-//   { name: 'Zeendy Ann Wukong', role: 'Clerk' },
-//   { name: 'Aki Tinukmol', role: 'Clerk' },
-//   { name: 'Violet Alaw Pwet', role: 'Clerk' },
-//   { name: 'Theorra Binomba', role: 'Clerk' },
-//   { name: 'Levi Inadik RP', role: 'Clerk' },
-//   { name: 'Waffle Nasampol', role: 'Clerk' },
-//   { name: 'Jaooo Tungaooo', role: 'Clerk' },
-//   { name: 'China Balyena', role: 'Clerk' },
-//   { name: 'Shiloh Kulang sa Paloh', role: 'Clerk' },
-// ];
+import { Wifi } from 'lucide-react';
 
 class ActiveStaffs extends React.Component {
   constructor(props) {
     super(props);
   }
 
+  getInitials(name) {
+    if (!name) return '??';
+    const parts = name.trim().split(' ');
+    if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+    return (parts[0][0] + parts[1][0]).toUpperCase();
+  }
+
   render() {
     const { staffData } = this.props;
     const clerks = staffData.filter((d) => d.role === "Clerk");
+
     return (
       <div className="as-container">
-        <h1 className="as-header">Active Clerks</h1>
+        <div className="as-top">
+          <div className="as-top-left">
+            <span className="as-live-dot" />
+            <div className="as-top-left-texts">
+              <p className="as-eyebrow">Management Console</p>
+              <h2 className="as-header">Active Clerks</h2>
+            </div>
+          </div>
+          <span className="as-count">{clerks.length}</span>
+        </div>
+
         <ul className="staff-list">
           {Array.isArray(clerks) && clerks.length > 0 ? (
-            clerks.map((index, idx) => {
-            return (
-              <li key={idx} className="staff">
-                <div className="staff-icon"><CircleUserRound className="icon-pic"/></div>
-                <div className="staff-details">
-                  <div className="staff-name">{index.username}</div>
-                  <div className="staff-role">{index.role}</div>
+            clerks.map((clerk, idx) => (
+              <li key={idx} className="staff-item">
+                <div className="staff-avatar">
+                  {this.getInitials(clerk.username)}
                 </div>
+                <div className="staff-details">
+                  <p className="staff-name">{clerk.username}</p>
+                  <p className="staff-role">{clerk.role}</p>
+                </div>
+                <div className="staff-online-indicator" title="Online" />
               </li>
-            );
-          })
-          ) : (<p>No active clerk/s found.</p>)}
+            ))
+          ) : (
+            <li className="staff-empty">
+              <Wifi size={20} className="staff-empty-icon" />
+              <p>No active clerks found.</p>
+            </li>
+          )}
         </ul>
       </div>
-    )
+    );
   }
 }
 

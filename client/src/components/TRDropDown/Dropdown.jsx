@@ -4,6 +4,10 @@ import "./Dropdown.css";
 import { Warehouse, ChevronDown } from "lucide-react";
 import PropTypes from "prop-types";
 
+/**
+ * @class DropdownPortal
+ * @component Portal-isolated custom UI dropdown wrapper.
+ */
 class DropdownPortal extends React.Component {
   constructor(props) {
     super(props);
@@ -19,20 +23,22 @@ class DropdownPortal extends React.Component {
   componentDidMount() {
     document.addEventListener("mousedown", this.handleClickOutside);
     window.addEventListener("scroll", this.updatePosition, true);
+    window.addEventListener("resize", this.updatePosition);
   }
 
   componentWillUnmount() {
     document.removeEventListener("mousedown", this.handleClickOutside);
     window.removeEventListener("scroll", this.updatePosition, true);
+    window.removeEventListener("resize", this.updatePosition);
   }
 
   handleClickOutside = (event) => {
-  const isPortalClick = document.querySelector('.tr-dropdown-list-portal')?.contains(event.target);
-  
-  if (this.buttonRef.current && !this.buttonRef.current.contains(event.target) && !isPortalClick) {
-    this.setState({ isOpen: false });
-  }
-};
+    const isPortalClick = document.querySelector('.tr-dropdown-list-portal')?.contains(event.target);
+    
+    if (this.buttonRef.current && !this.buttonRef.current.contains(event.target) && !isPortalClick) {
+      this.setState({ isOpen: false });
+    }
+  };
 
   componentDidUpdate(prevProps) {
     if (prevProps.value !== this.props.value && this.props.value !== undefined) {
@@ -56,8 +62,8 @@ class DropdownPortal extends React.Component {
     if (!this.buttonRef.current) return;
 
     const rect = this.buttonRef.current.getBoundingClientRect();
-    const listHeight = 200; 
-    const gap = 0;
+    const listHeight = 220;
+    const gap = 4; 
     const viewportHeight = window.innerHeight;
     const viewportWidth = window.innerWidth;
 
@@ -80,8 +86,8 @@ class DropdownPortal extends React.Component {
 
     this.setState({
       listPosition: {
-        top: `${top}px`,
-        left: `${left}px`,
+        top: `${top + window.scrollY}px`, /* Handled with scroll calculation adjustments */
+        left: `${left + window.scrollX}px`,
         width: `${rect.width}px`
       },
       openDirection
@@ -90,20 +96,20 @@ class DropdownPortal extends React.Component {
 
   selectOption = (option) => {
     this.setState({ value: option, isOpen: false });
-    this.props.onChange(option);
+    if (this.props.onChange) this.props.onChange(option);
   };
 
   render() {
     const { options, defaultValue, isRequired, disabled, isHeader } = this.props;
     const { value, isOpen, listPosition, openDirection } = this.state;
-    const displayValue = value || (defaultValue ? `Select ${defaultValue}...` : "Select Branch...");
+    const displayValue = value || (defaultValue ? `${defaultValue}` : "Select Branch...");
 
     return (
       <>
         <div className="tr-dropdown-wrapper">
           <button
             ref={this.buttonRef}
-            className={`tr-dropdown-button ${disabled ? "disabled" : ""}`}
+            className={`tr-dropdown-button ${disabled ? "disabled" : ""} ${isOpen ? "active-trigger" : ""}`}
             onClick={this.toggleDropdown}
             type="button"
             required={isRequired}
@@ -122,7 +128,7 @@ class DropdownPortal extends React.Component {
           >
             {isHeader && (
               <li
-                className="tr-dropdown-item"
+                className="tr-dropdown-item tr-all-option"
                 onClick={() => this.selectOption("all")}
               >
                 Select All

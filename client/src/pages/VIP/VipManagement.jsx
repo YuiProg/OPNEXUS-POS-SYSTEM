@@ -6,6 +6,7 @@ import { InputRow, TRInputFormPanel, InputForm } from "../../components/TRInputF
 import ModalStore from "../../context/ModalStore";
 import VipStore from "../../context/VipStore";
 import { PanelPage, RightPanel } from "../../components/TRPanelPage/TRPanelPage";
+import { Link } from "react-router-dom";
 
 class VipManagement extends React.Component {
     constructor (props) {
@@ -97,13 +98,6 @@ class VipManagement extends React.Component {
             CB: () => this.showVipModal(),
             buttonInfo: 'NEW VIP',
             hasDelete: user.role.toLowerCase() === 'admin',
-            search: (
-                <InputField
-                    placeholder="Search item"
-                    isSearch
-                    onEnterDown={value => console.log(value)} //todo: add search functionality
-                />
-            ),
             deleteBtnInfo: 'DISABLE VIP',
             CBD: (e) => this.disableManyConfirm(e)
         };

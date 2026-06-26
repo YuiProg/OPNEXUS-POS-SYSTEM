@@ -13,22 +13,23 @@ import ProductStore from "../../context/ProductStore";
 import ActiveStaffs from "./ActiveStaffs/ActiveStaffs";
 import toast from "react-hot-toast";
 import { PanelPage, RightPanel } from "../../components/TRPanelPage/TRPanelPage";
+import { Link } from "react-router-dom";
 
 class StaffManagement extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
             users: [],
-            search: '',
             filtersOpen: false,
         }
     }
 
     componentDidMount () {
-        const {fetchUsers} = AuthStore.getState();
+        const {fetchUsers, getActiveUsers} = AuthStore.getState();
         const { getBranch } = BranchStore.getState();
         fetchUsers();
         getBranch();
+        getActiveUsers();
         this.unsubscribe = AuthStore.subscribe((state) => {
             const users = state.users;
             this.setState({users: users});
@@ -44,10 +45,6 @@ class StaffManagement extends React.Component {
         setDeleteModal(true);
         setSelectedItems(e);
         setUrl("staff");
-    }
-
-    handleTableSearch = (value) => {
-        this.setState({ search: value });
     }
 
     showDeleteModal = (item) => {
@@ -102,8 +99,8 @@ class StaffManagement extends React.Component {
 
     render () {
         //const {setShowModal} = BranchStore.getState();
-        const { setShowAddModal } = ModalStore.getState();
-        const { onlineUsers, fetchLoading } = AuthStore.getState();
+        //const { setShowAddModal } = ModalStore.getState();
+        const { activeUsers, fetchLoading } = AuthStore.getState();
         const {setSelectedBranch, selectedBranch} = AuthStore.getState();
         const { branches } = BranchStore.getState();
 
@@ -112,15 +109,8 @@ class StaffManagement extends React.Component {
         const tableData = {
             header: "STAFFS",
             hasButton: true,
-            CB: () => setShowAddModal(true),
-            buttonInfo: "NEW CLERK",
-            search: (
-                <InputField
-                placeholder="Search staff"
-                isSearch
-                onEnterDown={value => this.handleTableSearch(value)}
-                />
-            ),
+            CB: () => this.props.navigate("/staff/add"),
+            buttonInfo: "NEW STAFF",
             hasDelete: true,
             deleteBtnInfo: 'Delete',
             CBD: (e) => this.showConfirmDelModal(e)
@@ -146,7 +136,6 @@ class StaffManagement extends React.Component {
                             hasAction
                             onDelete={(e) => this.showDeleteModal(e)}
                             onEdit={(item) => this.showEditModal(item)}
-                            search={this.state.search}
                             isLoading={fetchLoading}
                             hasTableFilters={true}
                             onFilterToggle={(isOpen) => this.setState({filtersOpen: isOpen})}
@@ -154,7 +143,7 @@ class StaffManagement extends React.Component {
                     </div>
                     {this.state.filtersOpen && this.rightSideTableFilter()}
                     <div className="sm-active-staffs">
-                        <ActiveStaffs staffData={onlineUsers}/>
+                        <ActiveStaffs staffData={activeUsers}/>
                     </div>
                 </div>
             </PanelPage>

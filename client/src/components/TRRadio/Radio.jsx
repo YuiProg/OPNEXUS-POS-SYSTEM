@@ -1,6 +1,9 @@
 import React from "react";
 import "./Radio.css";
-
+/**
+ * @class
+ * @component
+ */
 class Radio extends React.Component {
     render() {
         const { filters, onFilterChange } = this.props;

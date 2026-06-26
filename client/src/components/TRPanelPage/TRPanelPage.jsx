@@ -40,47 +40,36 @@ export class PanelPage extends React.Component {
       rightPanel,
       onClickNext,
       onClickBack,
-      hasStepper
+      hasStepper,
     } = this.props;
 
-    // const childrenArray = React.Children.toArray(this.props.children);
-    
-    // Find the RightPanel in children
-    // const rightPanel = childrenArray.find((child) => child.type === RightPanel);
-
-    // Everything else goes in the Main area
     const mainChildren = React.Children.toArray(this.passPropsToChildren()).filter(
       (child) => child.type !== RightPanel
     );
 
     return (
-      <>
       <div className="tr-panel-container">
-        <div className="tr-panel-top-contents">
+        <header className="tr-panel-topbar">
           <div className="tr-panel-header">
             <h1 className="tr-panel-bigtitle">{titlePage}</h1>
-            <p className="tr-panel-sentence">{subTitle}</p>
+            {subTitle && <p className="tr-panel-sentence">{subTitle}</p>}
           </div>
-          
+
           <div className="tr-panel-top-right">
-            {hasBranch && user && (
-              <div className="iv-branch-dropdown">
-                {user.role.toLowerCase() !== 'clerk' && (
-                  <div>
-                    <p className="iv-branch-text">Branch</p>
-                    <DropDown
-                      isHeader
-                      className="iv-branch-dd"
-                      defaultValue={selectedBranch || 'Branch'}
-                      onChange={(e) => dropDownFunc(e)}
-                      options={branchNames}
-                    />
-                  </div>
-                )}
+            {hasBranch && user && user.role.toLowerCase() !== 'clerk' && (
+              <div className="iv-branch-dropdown-wrapper">
+                <span className="iv-branch-label-inline">Branch</span>
+                <DropDown
+                  isHeader
+                  className="iv-branch-dd"
+                  defaultValue={selectedBranch}
+                  onChange={(e) => dropDownFunc(e)}
+                  options={branchNames}
+                />
               </div>
             )}
           </div>
-        </div>
+        </header>
 
         <div className="tr-panel-body">
           <div className="tr-panel-main">
@@ -92,32 +81,55 @@ export class PanelPage extends React.Component {
             </div>
           )}
         </div>
+
         {hasStepper && (
-        <div className='tr-panel-stepper-container'>
-          <InputRow gap={15}>
-            <Button error text="Back" maxWidth onClick={() => onClickBack()}/>
-            <Button success text="Next" maxWidth onClick={() => onClickNext()}/>
-          </InputRow>
-        </div>
+          <div className='tr-panel-stepper-container'>
+            <div className="tr-panel-stepper-inner">
+              <Button error text="Back" onClick={() => onClickBack()} />
+              <Button success text="Next" onClick={() => onClickNext()} />
+            </div>
+          </div>
         )}
       </div>
-      </>
+    );
+  }
+}
+
+export class PanelContainer extends React.Component {
+  render() {
+    const { currentStep, totalSteps, title } = this.props;
+    return (
+      <div className='tr-panel-container-child'>
+        {(currentStep && totalSteps) && (
+          <p className='tr-panel-step'>{`Step ${currentStep} of ${totalSteps}`}</p>
+        )}
+        {title && (
+          <h2 className='tr-panel-container-title'>{title}</h2>
+        )}
+        {this.props.children}
+      </div>
     );
   }
 }
 
 PanelPage.propTypes = {
-    titlePage: PropTypes.string.isRequired,
-    subTitle: PropTypes.string,
-    selectedBranch: PropTypes.string,
-    dropDownFunc: PropTypes.func,
-    branchNames: PropTypes.arrayOf(PropTypes.string),
-    user: PropTypes.object,
-    hasBranch: PropTypes.bool,
-    hasTableFilters: PropTypes.bool,
-    onFilterToggle: PropTypes.func,
+  titlePage: PropTypes.string.isRequired,
+  subTitle: PropTypes.string,
+  selectedBranch: PropTypes.string,
+  dropDownFunc: PropTypes.func,
+  branchNames: PropTypes.arrayOf(PropTypes.string),
+  user: PropTypes.object,
+  hasBranch: PropTypes.bool,
+  hasTableFilters: PropTypes.bool,
+  onFilterToggle: PropTypes.func,
 }
 
 RightPanel.propTypes = {
-    children: PropTypes.node,
+  children: PropTypes.node,
+}
+
+PanelContainer.propTypes = {
+  currentStep: PropTypes.number,
+  totalSteps: PropTypes.number,
+  title: PropTypes.string,
 }

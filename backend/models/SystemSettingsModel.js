@@ -1,7 +1,29 @@
 import mongoose from 'mongoose'
 
 const SystemSettingsSchema = new mongoose.Schema({
+  generalSettings: {
+    systemName: {
+      type: String,
+      default: 'POS SYSTEM',
+    },
+    maxLoginAttempts: {
+      type: Number,
+      default: 3
+    },
+    turnOffPOS: {
+      type: Boolean,
+      default: false
+    },
+    allowAccountLocking: {
+      type: Boolean,
+      default: true
+    }
+  },
   inventorySettings: {
+    topProductsThreshold: {
+      type: Number,
+      default: 15
+    },
     lowStockThreshold: {
       type: Number,
       default: 10
@@ -87,10 +109,8 @@ const SystemSettingsSchema = new mongoose.Schema({
       default: true
     },
     vipIdInputField: {
-      enabled: {
-        type: Boolean,
-        default: true
-      }
+      type: Boolean,
+      default: true
     },
     inputLength: {
       firstName: {
@@ -119,7 +139,12 @@ const SystemSettingsSchema = new mongoose.Schema({
       }
     }
   }
-})
+});
+
+SystemSettingsSchema.statics.getSettings = async function () {
+  const settings = await this.findOne();
+  return settings;
+}
 
 const SystemSettings = mongoose.model('SystemSettings', SystemSettingsSchema)
 

@@ -1,7 +1,7 @@
 .st-container {
   width: auto;
   height: 100%;
-  background: #111111;
+  background: #141416; /* Sidebar core matching canvas */
   padding: 16px;
   box-sizing: border-box;
 }
@@ -17,6 +17,7 @@
   bottom: 0;
   font-size: 12px;
   font-weight: 200;
+  color: rgba(255, 255, 255, 0.4);
 }
 
 .st-top-contents .st-bigtitle {
@@ -39,10 +40,11 @@
 }
 
 .settings-sidebar {
-  width: 200px;
-  background-color: #1a1a1a;
+  width: 220px;
+  background-color: #141416; /* Dark theme sidebar match */
+  border: 0.5px solid rgba(255, 255, 255, 0.07); /* Sidebar matching border edge */
   border-radius: 8px;
-  padding: 16px 0;
+  padding: 12px 6px;
   flex-shrink: 0;
   overflow-y: auto;
 }
@@ -50,33 +52,58 @@
 .settings-sidebar nav {
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 3px;
 }
 
 .sidebar-item {
+  position: relative;
   background: none;
   border: none;
-  color: #fff;
-  padding: 20px 16px;
+  color: rgba(255, 255, 255, 0.45); /* Sidebar item typography dimming */
+  padding: 11px 14px;
   text-align: left;
   cursor: pointer;
   font-size: 14px;
-  border-left: 3px solid transparent;
+  border-radius: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: background 0.15s, color 0.15s;
 }
 
 .sidebar-item:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.05); /* Match row hover effect */
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .sidebar-item.active {
-  background: rgba(255, 255, 255, 0.1);
-  border-left-color: #ff0000;
+  background: rgba(255, 255, 255, 0.08); /* Match active row fill */
+  color: #fff;
+  font-weight: 500;
+}
+
+/* Red active left tab vertical notch indicator */
+.sidebar-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 18px;
+  border-radius: 0 3px 3px 0;
+  background: #e24b4a; /* Precise red accent tone */
 }
 
 .settings-main {
   width: 100%;
-  padding: 20px;
-  background-color: #1a1a1a;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #141416; /* Uniform deep container color */
+  border: 0.5px solid rgba(255, 255, 255, 0.07);
+  gap: 24px;
   border-radius: 8px;
   overflow-y: auto;
 }
@@ -84,25 +111,31 @@
 .settings-content {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 20px;
   color: #fff;
 }
 
 .settings-content .option-title {
   margin-top: 0;
+  font-size: 18px;
+  font-weight: 600;
   color: #fff;
-  border-bottom: 1px solid #444;
-  padding-bottom: 10px;
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.09); /* Seamless border accent splitter */
+  padding-bottom: 12px;
 }
+
 .settings-content .option-subtitle {
-  margin: 10px 0 5px;
-  color: #fff;
+  margin: 12px 0 4px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
   font-weight: 500;
 }
 
-
 .settings-actions {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   justify-content: flex-end;
+  border-top: 0.5px solid rgba(255, 255, 255, 0.07);
+  padding-top: 16px;
+  margin-top: auto;
 }

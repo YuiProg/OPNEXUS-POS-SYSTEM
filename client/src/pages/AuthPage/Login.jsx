@@ -9,6 +9,8 @@ import bg_image3 from "../../assets/images/ProductsLoginImage3.svg";
 import bg_logo from "../../assets/images/loginImageLogo.png";
 import Toast from "../../toast/Toast.jsx";
 import Button from "../../components/TRButton/Button.jsx";
+import { Modal, ModalConfim } from "../../TRModal/Modal.jsx";
+import ModalStore from "../../context/ModalStore.js";
 
 const {
     UNAUTHORIZED_MESS,
@@ -66,11 +68,26 @@ class Login extends React.Component {
         const loginUser = AuthStore.getState().loginUser;
         loginUser(email, password);
     };
+
+    lockedModal = () => {
+        const { setShowAccountLocked } = ModalStore.getState();
+        return (
+            <ModalConfim 
+                error 
+                onClose={() => setShowAccountLocked(false)} 
+                message='Your account has been locked'
+                subMessage="This is due to incorrect login multiple times or someone locked your account. Please contact administration."
+            />
+        );
+    }
+
     /* global __APP_VERSION__ */
     render() {
         const { loading } = this.state;
+        const { showAccountLocked } = ModalStore.getState();
         return (
             <>
+                {showAccountLocked && this.lockedModal()}
                 {/* {error && (
                     <Toast
                         error

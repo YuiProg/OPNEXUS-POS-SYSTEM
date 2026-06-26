@@ -11,12 +11,13 @@ import ProductStore from "../../context/ProductStore";
 import toast from "react-hot-toast";
 import BranchStore from "../../context/BranchStore";
 import { PanelPage, RightPanel } from "../../components/TRPanelPage/TRPanelPage";
+import { Link } from "react-router-dom";
+import SettingsStore from "../../context/SettingsStore";
 
 class Inventory extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchValue: '',
       isAdmin: false,
       showModal: false,
       isOpen: ModalStore.getState().isOpen,
@@ -55,10 +56,6 @@ class Inventory extends React.Component {
     const { unsubscribeToProducts } = ProductStore.getState();
     unsubscribeToProducts();
     if (this.unsubscribeModal) this.unsubscribeModal();
-  }
-
-  handleTableSearch = (value) => {
-    this.setState({ searchValue: value });
   }
 
   showDeleteModal = (item) => {
@@ -138,17 +135,10 @@ class Inventory extends React.Component {
     const branchNames = branches.map(d => d.location);
 
     const tableData = {
-      header: "ITEMS TEST",
+      header: "ITEMS",
       hasButton: this.state.isAdmin,
-      CB: () => ModalStore.getState().setModal(true),
+      CB: () => this.props.navigate('/inventory/add'),
       buttonInfo: "NEW ITEM",
-      search: (
-        <InputField
-          placeholder="Search item"
-          isSearch
-          onEnterDown={value => this.handleTableSearch(value)}
-        />
-      ),
       hasDelete: true,
       deleteBtnInfo: "Delete",
       CBD: (e) => this.showConfirmDelModal(e)
@@ -175,7 +165,6 @@ class Inventory extends React.Component {
           hasSelect={this.state.isAdmin}
           onDelete={(item) => this.showDeleteModal(item)}
           onEdit={(item) => this.showEditModal(item)}
-          search={this.state.searchValue}
           isLoading={fetchLoading}
         />
         {/* {this.state.filtersOpen && (

@@ -2,6 +2,10 @@ import React from "react";
 import "./InputField.css";
 import { Search, EyeClosed, Eye } from "lucide-react";
 
+/**
+ * @class InputField
+ * @component Full-stack design system custom input text controller field.
+ */
 class InputField extends React.Component {
   constructor(props) {
     super(props);
@@ -48,15 +52,15 @@ class InputField extends React.Component {
   };
 
   handleSearch = (e) => {
-      const value = e.target.value;
-      this.setState({ searchValue: value });
-      if (this.props.onChange) this.props.onChange(value);
-      return value;
+    const value = e.target.value;
+    this.setState({ searchValue: value });
+    if (this.props.onChange) this.props.onChange(value);
+    return value;
   };
 
   handleEnterDown = (e, CB) => {
     const key = e.key;
-    if (key === "Enter") {
+    if (key === "Enter" && CB) {
       return CB(e.target.value);
     }
   };
@@ -105,7 +109,7 @@ class InputField extends React.Component {
                 required={!!(required || isRequired)}
                 onChange={(e) => {
                   const val = this.checkNumber(e);
-                  if (val !== undefined) onChange(val);
+                  if (val !== undefined && onChange) onChange(val);
                 }}
                 disabled={disabled}
                 value={this.state.value}

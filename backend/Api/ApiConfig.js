@@ -17,6 +17,8 @@ const ApiConfig = Object.freeze({
     GET_USERS_BY_ID: apiEndpoint + 'getUsersById',
     UPDATE_USER: apiEndpoint + 'updateUser/:id',
     CHANGEPASSWORD: apiEndpoint + 'changePassword/:id',
+    VALIDATEUSER: apiEndpoint + 'validateUser',
+    GETACTIVEUSERS: apiEndpoint + 'getactiveusers',
     //==============================
 
     //=========add product==========
@@ -26,6 +28,7 @@ const ApiConfig = Object.freeze({
     deleteSingleProduct: apiEndpoint + 'deleteSingleProduct',
     fetchSingleProduct: apiEndpoint + 'fetchSingleProduct/:id',
     UPDATEPRODUCT: apiEndpoint + 'updateProduct/:id',
+    VALIDATEPRODUCT: apiEndpoint + 'validateProduct',
     //==============================
 
     //branch cards
@@ -80,7 +83,10 @@ const ApiConfig = Object.freeze({
     //SETTINGS
     GETSETTINGS: apiEndpoint + 'getSettings',
     UPDATESETTINGS: apiEndpoint + 'updateSettings/:id', //fetch the existing id in the db
-    RESETSETTINGS: apiEndpoint + 'resetSettings'
+    RESETSETTINGS: apiEndpoint + 'resetSettings',
+
+    //SEARCH FILTERS
+    INVENTORYSEARCH: apiEndpoint + '/inventorysearch'
 })
 
 export default ApiConfig;

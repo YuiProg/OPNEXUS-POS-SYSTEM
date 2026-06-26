@@ -169,6 +169,12 @@
     padding: 10px;
 }
 
+.modal-confirm-cross-circle {
+    background-color: #EF4444;
+    border-radius: 100%;
+    padding: 10px;
+}
+
 .modal-confirm-texts {
     display: flex;
     flex-direction: column;

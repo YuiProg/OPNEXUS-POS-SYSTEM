@@ -23,11 +23,14 @@ const {
     UPDATE_USER,
     UPDATEBRANCH,
     REMOVEADMINFROMBRANCH,
-    CHANGEPASSWORD
+    CHANGEPASSWORD,
+    VALIDATEUSER,
+    GETACTIVEUSERS,
 } = ApiConfig;
 
 const {
-    SUCCESS_MESS
+    SUCCESS_MESS,
+    ACCLOCK
 } = Strings;
 
 const AuthStore = create((set, get) => ({
@@ -52,7 +55,7 @@ const AuthStore = create((set, get) => ({
         address: '',
         branch: '',
         salary: null,
-        sendEmail: 0
+        sendEmail: false
     },
     users: [],
     onlineUsers: [],
@@ -66,6 +69,43 @@ const AuthStore = create((set, get) => ({
         confirmPassword: ''
     },
     changePasswordLoading: false,
+    steps: 1,
+    validateData: null,
+    activeUsers: [],
+
+    setValidateData: (data) => set({validateData: data}),
+
+    setStep: (val) => set({steps: val}),
+
+    getActiveUsers: async () => {
+        try {
+            const activeUsers = await axiosInstance.get(GETACTIVEUSERS);
+            set({activeUsers: activeUsers.data.data});
+        } catch (error) {
+            if (axiosError(error)) {
+                toast.error(error.response.data.status);
+            }
+        }
+    },
+
+    validateDataFunc: async () => {
+        const {isScreenLoading} = ModalStore.getState();
+        isScreenLoading(true);
+        set({authLoading: true});
+        const inputs = get().input;
+        try {
+            const validate = await axiosInstance.post(VALIDATEUSER, inputs);
+            set({validateData: validate.data});
+            return validate.data;
+        } catch (error) {
+            if (axiosError(error)) {
+                toast.error(error.response.data.status);
+            }
+        } finally {
+            set({authLoading: false});
+            isScreenLoading(false);
+        }
+    },
 
     setChangePasswordInput: (name, value) => {
         console.log(value);
@@ -132,6 +172,7 @@ const AuthStore = create((set, get) => ({
     },
 
     loginUser: async (email, password) => {
+        const { setShowAccountLocked } = ModalStore.getState();
         try {
             set({ AuthLoading: true, errorUser: null });
             
@@ -144,7 +185,12 @@ const AuthStore = create((set, get) => ({
             await get().checkAuth();
             
         } catch (error) {
-            toast.error(error.message);
+            if(axiosError(error)) {
+                if (error.response.data.status === ACCLOCK) {
+                    setShowAccountLocked(true);
+                }
+                toast.error(error.response.data.status);
+            }
             set({ errorUser: axiosError(error) });
         } finally {
             set({ AuthLoading: false });

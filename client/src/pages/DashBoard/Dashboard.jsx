@@ -38,6 +38,8 @@ class Dashboard extends React.Component {
 
   componentDidMount () {
     const {getBranch} = BranchStore.getState();
+    const {getActiveUsers} = AuthStore.getState();
+    getActiveUsers();
     getBranch();
   }
 
@@ -47,11 +49,11 @@ class Dashboard extends React.Component {
   // }
 
   render() {
-    const { onlineUsers, recentActivity, setSelectedBranch, selectedBranch } = AuthStore.getState();
+    const { activeUsers, recentActivity, setSelectedBranch, selectedBranch } = AuthStore.getState();
     const {branches} = BranchStore.getState();
     const branchNames = branches.map(d=>d.location);
 
-    const active = onlineUsers.filter((d) => d.role === "Clerk");
+    const active = activeUsers.filter((d) => d.role === "Clerk");
     return (
       <PanelPage
         user={this.props.user} 

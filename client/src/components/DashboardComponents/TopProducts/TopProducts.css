@@ -1,81 +1,154 @@
 .tp-container {
-  border-radius: 16px;
-  border: 1px solid #404040;
-  box-shadow: 0px 10px 15px rgba(0,0,0,0.3);
-  padding: 15px;
-  transition: transform 0.1s ease-in-out;
+  width: 100%;
+  background-color: #1C1C1E;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: background-color 0.15s ease, transform 0.15s ease;
 }
 
 .tp-container:hover {
-  transform: scale(1.02);
+  background-color: #242426;
+  transform: translateY(-1px);
+}
+
+.tp-header {
+  display: flex;
+  flex-direction: column;
+}
+
+.tp-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin: 0;
 }
 
 .tp-title {
-    font-size: 24px;
-    font-weight: 600;
-    color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+  margin: 4px 0 0 0;
+  line-height: 1.2;
+}
+
+.tp-content-body {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 .tp-table {
   width: 100%;
   border-collapse: collapse;
   color: #fff;
-  table-layout: fixed;  /* Add this */
-}
-.tp-table th, .tp-table td {
-  padding: 18px 0;
-  border-bottom: 1px solid #ffffff81;
-  text-align: left;
+  table-layout: fixed;
 }
 
-/* # */
+.tp-table th, 
+.tp-table td {
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  text-align: left;
+  font-size: 13px;
+  vertical-align: middle;
+}
+
+.tp-table th {
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 8px;
+}
+
+/* Column distribution weights */
 .tp-table th:nth-child(1),
 .tp-table td:nth-child(1) { 
   width: 10%;
+  color: rgba(255, 255, 255, 0.4);
+  padding-left: 4px;
 }
 
-/* Name */
 .tp-table th:nth-child(2),
 .tp-table td:nth-child(2) { 
-  width: 35%; 
+  width: 40%; 
 }
 
-/* Popularity */
 .tp-table th:nth-child(3),
 .tp-table td:nth-child(3) { 
   width: 35%; 
 }  
 
-/* Sales */
 .tp-table th:nth-child(4),
 .tp-table td:nth-child(4) { 
   width: 15%; 
+  text-align: right;
+  /* Adds safe breathing room away from the scrollbar/edge */
+  padding-right: 16px; 
 }  
 
+.tp-product-name {
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.tp-sales-value {
+  font-weight: 600;
+  color: #e24b4a;
+}
+
+/* ── Scrollable Body Area Styling ────────────────────────── */
 .tp-table-wrapper {
   max-height: 25vh;
   overflow-y: auto;
+  /* Adds a slight buffer on the right side so content doesn't crash into container border */
+  padding-right: 4px; 
 }
 
-.tp-table th {
-  font-size: 15px;
-  font-weight: 100;
+/* Custom modern scrollbar track to keep layout sleek and integrated */
+.tp-table-wrapper::-webkit-scrollbar {
+  width: 6px;
 }
 
+.tp-table-wrapper::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tp-table-wrapper::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+}
+
+.tp-table-wrapper::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* ── Loading Spinner ─────────────────────────────────────── */
 .tp-loading {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 200px;
+  height: 180px;
+  width: 100%;
 }
 
 .tp-loading .spinner {
-  width: 32px;
-  height: 32px;
-  border: 3px solid #2e2e2e;
-  border-top-color: #c0392b;
+  width: 24px;
+  height: 24px;
+  border: 2.5px solid rgba(255, 255, 255, 0.1);
+  border-top-color: #e24b4a;
   border-radius: 50%;
-  animation: spinner-rotate 0.8s linear infinite;
+  animation: spinner-rotate 0.7s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
 @keyframes spinner-rotate {
