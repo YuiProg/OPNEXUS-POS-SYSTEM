@@ -6,7 +6,6 @@ import User from '../models/UserModel.js'
 import Strings from '../strings/strings-codes.js'
 import sendMail from '../lib/sendEmail.js'
 
-
 const { SUCCESS_MESS, SUCCESS, ERROR, CREATED, DELETEUSER, NEWUSER, UPDATEUSER, PASSWORDEDIT } =
   Strings
 
@@ -18,63 +17,65 @@ const errorHandling = (error) => {
 }
 
 const logResponse = (req, status, data) => {
-  console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl} -> ${status}`, JSON.stringify(data))
+  console.log(
+    `[${new Date().toISOString()}] ${req.method} ${req.originalUrl} -> ${status}`,
+    JSON.stringify(data)
+  )
 }
 
 export const validateNewUser = async (req, res) => {
-  const data = req.body;
-  
+  const data = req.body
+
   if (data.username && data.password && data.firstName && data.lastName && data.email) {
     try {
-      const existingUser = await User.findOne({ username: data.username });
+      const existingUser = await User.findOne({ username: data.username })
       if (existingUser) {
-        return res.status(ERROR).json({ status: 'Username already exists' });
+        return res.status(ERROR).json({ status: 'Username already exists' })
       }
     } catch (error) {
-      return res.status(ERROR).json({ status: 'Error validating username', error: error.message });
+      return res.status(ERROR).json({ status: 'Error validating username', error: error.message })
     }
-    return res.status(SUCCESS).json({ status: 'Validation successful', data });
+    return res.status(SUCCESS).json({ status: 'Validation successful', data })
   } else {
-    return res.status(ERROR).json({ status: 'Missing required fields' });
+    return res.status(ERROR).json({ status: 'Missing required fields' })
   }
 }
 
 export const register = async (req, res) => {
   try {
-    const data = req.body;
+    const data = req.body
 
-    const { userId } = req.user;
-    const userData = await User.getUser(userId);
-    const createdUser = await User.registerUser(data);
+    const { userId } = req.user
+    const userData = await User.getUser(userId)
+    const createdUser = await User.registerUser(data)
 
     const logPayload = {
       user: userData.username,
       action: NEWUSER,
       branchLocation: userData.branchLocation,
       log: `${userData.username} created a new user called ${createdUser.username}`
-    };
-    console.log(data);
+    }
+
     if (data.sendEmail === true) {
-      //send email sa user
       try {
         const info = await sendMail({
-            from: `"OPNEXUS" <${process.env.SMTP_USER}>`,
-            to: data.email,
-            subject: 'Welcome to Our Service',
-            text: `Hello! you are now a ${data.role} of {POSNAME}. Your temporary password is: ${data.password}`,
-            html: `
-                <p>Hello! you are now a ${data.role} of {POSNAME}</p>
-                <p>Your Email is ${data.email}<p>
-                <p>Your temporary password is: <strong>${data.password}</strong></p>
-                <p>Please change your password after logging in.</p>
-                <p>THIS EMAIL IS CONFIDENTIAL AND SHALL BE USED FOR AUTHENTICATION PROCESSES.<p>
-            `
-        });
-        console.log('Email sent:', info.response);
+          to: data.email,
+          subject: 'Welcome to Our Service',
+          text: `Hello! you are now a ${data.role} of OPNEXUS.`,
+          html: `
+            <p>Hello! you are now a ${data.role} of OPNEXUS</p>
+            <p>Your Email is ${data.email}</p>
+            <p>Your temporary password is: <strong>${data.password}</strong></p>
+            <p>Please change your password after logging in.</p>
+            <p>THIS EMAIL IS CONFIDENTIAL AND SHALL BE USED FOR AUTHENTICATION PROCESSES.</p>
+          `
+        })
+        console.log('Email sent:', info)
       } catch (error) {
-        console.error('Error sending email:', error);
+        console.error('Error sending email:', error)
       }
     }
+
     await SystemLogs.addLog(logPayload)
     logResponse(req, CREATED, { status: SUCCESS_MESS, data: createdUser })
     ApiResponseModel(res, CREATED, SUCCESS_MESS, createdUser)
@@ -84,11 +85,10 @@ export const register = async (req, res) => {
     ApiResponseModel(res, ERROR, message)
   }
 }
-
 export const loginUser = async (req, res) => {
   try {
-    const { email, password } = req.body;
-    const user = await User.loginUser(email, password);
+    const { email, password } = req.body
+    const user = await User.loginUser(email, password)
     //const { _: _, ...userWithoutPassword } = user.toObject();
     generateToken(user._id, res)
     logResponse(req, SUCCESS, { status: SUCCESS_MESS, user: user.username || user.email })
@@ -211,7 +211,7 @@ export const deleteMultiple = async (req, res) => {
         branchLocation: userData.branchLocation,
         log: `${userData.username} deleted the user ${user.username}`
       }
-      await SystemLogs.addLog(logPayload);
+      await SystemLogs.addLog(logPayload)
     }
     const result = await User.deleteMultiple(list)
     logResponse(req, SUCCESS, { status: SUCCESS_MESS, data: result })
@@ -234,14 +234,14 @@ export const deleteSingle = async (req, res) => {
     if (user.branchLocation !== 'N/A') {
       await Branch.removeUserFromOldBranch(user.branchLocation, { Id: user._id })
     }
-    
+
     const logPayload = {
       user: user.username,
       action: DELETEUSER,
       branchLocation: user.branchLocation,
       log: `${user.username} deleted the user ${user.username}`
     }
-    await SystemLogs.addLog(logPayload);
+    await SystemLogs.addLog(logPayload)
     const result = await User.deleteSingleUser(id)
     logResponse(req, SUCCESS, { status: SUCCESS_MESS, data: result })
     ApiResponseModel(res, SUCCESS, SUCCESS_MESS, result)
@@ -255,7 +255,7 @@ export const changePassword = async (req, res) => {
   try {
     const { id } = req.params
     const { newPassword, oldPassword } = req.body
-    
+
     const updatedUser = await User.changePassword(id, newPassword, oldPassword)
     const logPayload = {
       user: updatedUser.username,
@@ -274,9 +274,9 @@ export const changePassword = async (req, res) => {
 
 export const fetchActiveUsers = async (req, res) => {
   try {
-    const users = await User.getActiveUsers();
-    logResponse(req, SUCCESS, { status: SUCCESS_MESS, data: users});
-    ApiResponseModel(res, SUCCESS, SUCCESS_MESS, users);
+    const users = await User.getActiveUsers()
+    logResponse(req, SUCCESS, { status: SUCCESS_MESS, data: users })
+    ApiResponseModel(res, SUCCESS, SUCCESS_MESS, users)
   } catch (error) {
     logResponse(req, ERROR, { status: error.message })
     ApiResponseModel(res, ERROR, error.message)

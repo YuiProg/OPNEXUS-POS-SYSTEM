@@ -6,7 +6,7 @@ import InputField from '../../components/TRInputField/InputFIeld'
 import { BooleanToggle } from '../../components/TRToggle/Toggle'
 import DropdownPortal from '../../components/TRDropDown/Dropdown'
 
-const { setStep, setInput, input, resetInput, validateDataFunc, addUser } = AuthStore.getState()
+const { setStep, setInput, resetInput, validateDataFunc, addUser } = AuthStore.getState()
 
 class AddStaffPage extends React.Component {
   constructor(props) {
@@ -14,6 +14,7 @@ class AddStaffPage extends React.Component {
     this.state = {
       step: 1,
       validateDate: null,
+      input: AuthStore.getState().input,
     }
   }
 
@@ -21,7 +22,10 @@ class AddStaffPage extends React.Component {
     resetInput();
     setStep(1)
     this.unsubscribeAuth = AuthStore.subscribe((state) => {
-      this.setState({ step: state.steps })
+      this.setState({ 
+        step: state.steps,
+        input: state.input,
+      })
     })
   }
 
@@ -31,6 +35,7 @@ class AddStaffPage extends React.Component {
 
   addStaff = (isView) => {
     const inputLength = this.props.settings.staffManagementSettings.inputLength
+    const { input } = this.state
 
     return (
       <>
@@ -144,7 +149,11 @@ class AddStaffPage extends React.Component {
         </InputRow>
         <InputRow titles={['Send Email Notification']} bottomMargin>
           {!isView ? (
-            <BooleanToggle defaultValue={false} hideLabel onChange={(val) => setInput('sendEmail', val)} />
+            <BooleanToggle 
+              value={input.sendEmail ?? false}
+              hideLabel 
+              onChange={(val) => setInput('sendEmail', val)} 
+            />
           ) : (
             <p>{input.sendEmail ? 'Yes' : 'No'}</p>
           )}
