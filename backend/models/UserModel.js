@@ -128,7 +128,7 @@ userSchema.statics.loginUser = async function (email, password) {
     const isMatch = await bcrypt.compare(password, userPassword.password);
     if (!isMatch) {
         if (user.role.toLocaleLowerCase() === 'clerk' && settings.generalSettings.allowAccountLocking) {
-            await this.findByIdAndUpdate(user._id, {$inc: {loginAttempts: 1, timedIn: false, time: null}});
+            await this.findByIdAndUpdate(user._id, {$inc: {loginAttempts: 1}, timedIn: false, time: null});
         }
         throw new Error(CRED_ERROR);
     }
