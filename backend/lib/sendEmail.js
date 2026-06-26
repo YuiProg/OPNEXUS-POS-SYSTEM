@@ -1,18 +1,18 @@
-// middleware/sendEmail.js
-import nodemailer from 'nodemailer';
+import axios from 'axios';
 
-const sendMail = (options) => {
-  const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true,  
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
-    },
-  });
+const sendMail = async ({ to, subject, html, text }) => {
+  const response = await axios.post(
+    'https://mailserver.automationlounge.com/api/v1/messages/send',
+    { to, subject, html, text },
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.API_MAIL_KEY}`,
+        'Content-Type': 'application/json',
+      },
+    }
+  );
 
-  return transporter.sendMail(options);
+  return response.data;
 };
 
 export default sendMail;

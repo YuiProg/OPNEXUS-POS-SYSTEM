@@ -40,7 +40,7 @@ import deleteCategoryConfirm from "./pages/Inventory/DeleteCategoryConfirm.jsx";
 import CustomerLogin from "./pages/CustomerPage/CustomerLogIn.jsx";
 import viewChangePasswordModal from "./pages/AuthPage/ChangePasswordModal.jsx";
 import SettingsPage from "./pages/Settings/Settings.jsx";
-import {Toggle} from "./components/TRToggle/Toggle.jsx";
+import {BooleanToggle, Toggle} from "./components/TRToggle/Toggle.jsx";
 import SettingsStore from "./context/SettingsStore.js";
 import { yesNoSettingsApplyModal, yesNoSettingsResetModal } from "./pages/Settings/ApplySettingsModal.jsx";
 import AddVipPage from "./pages/VIP/AddVipPage.jsx";
@@ -245,7 +245,7 @@ export default function App() {
   const showUserModal = (isUpdate) => {
     const mainBranches = branches?.map((d) => d.location);
     //console.log(mainBranches);
-    console.log(selectedItem);
+    console.log(settings.data.generalSettings?.maxLoginAttempts);
     return (
       <Modal
         onClose={() => setShowAddModal(false) || setEditUserModal(false)}
@@ -371,6 +371,7 @@ export default function App() {
             />
           </InputRow>
           {isUpdate ? (
+            <>
             <InputRow gap={15} titles={["Branch"]}>
               <DropDown
                 maxWidth
@@ -382,6 +383,7 @@ export default function App() {
                 isRequired
               />
             </InputRow>
+            </>
           ) : (
           <InputRow titles={["Send Email?"]}>
             <Toggle hideLabel currentStatus="INACTIVE" onToggle={(e) => setInput("sendEmail", e === 'INACTIVE' ? 0 : 1)}/>
