@@ -50,6 +50,9 @@ import InOutLogs from "./pages/Logs/InOutLogs.jsx";
 import SalesLogs from "./pages/Logs/SalesLogs.jsx";
 import SystemLogs from "./pages/Logs/SystemLogs.jsx";
 import Supplier from "./pages/Supplier/Supplier.jsx";
+import LockedStaffs from "./pages/StaffManagement/LockedStaffs.jsx";
+import confirmLockedModal from "./pages/StaffManagement/ConfirmLockAccounts.jsx";
+import confirmDeleteAccountModal from "./pages/StaffManagement/ConfirmDeleteAccount.jsx";
 
 
 const ServerError = lazy(
@@ -122,7 +125,9 @@ export default function App() {
     showVipDisableManyConfirm,
     setShowNewCategoryModal,
     showNewCategoryModal,
-    showConfirmDeleteCategory
+    showConfirmDeleteCategory,
+    showAccountLockedModal,
+    showAccountLockedModalDelete
   } = ModalStore();
   const {
     setProductData,
@@ -397,7 +402,7 @@ export default function App() {
   const showConfirmModal = () => {
     return (
       <ModalConfim
-        message={`Deleted ${selectedItems.length} item/s`}
+        message={`Deleted ${selectedItems.length || selectedItem.length} item/s`}
         onClose={() => setConfirmModal(false)}
       />
     );
@@ -1206,6 +1211,8 @@ export default function App() {
         {changePasswordModal && viewChangePasswordModal()}
         {yesNoSettingsApply && yesNoSettingsApplyModal()}
         {yesNoSettingsReset && yesNoSettingsResetModal()}
+        {showAccountLockedModal && confirmLockedModal()}
+        {showAccountLockedModalDelete && confirmDeleteAccountModal()}
       </>
     );
   };
@@ -1467,6 +1474,21 @@ export default function App() {
               ) : (
                 <Sidebar user={AuthUser} settings={settings}>
                   <Supplier/>
+                </Sidebar>
+              )
+            }
+          />
+
+          <Route
+            path="/staff/locked"
+            element={
+              AuthUser?.role.toLowerCase() === "clerk" ? (
+                <Navigate to="/timeinout" replace/>
+              ) : !AuthUser ? (
+                <Navigate to="/login" replace />
+              ) : (
+                <Sidebar user={AuthUser} settings={settings}>
+                  <LockedStaffs/>
                 </Sidebar>
               )
             }

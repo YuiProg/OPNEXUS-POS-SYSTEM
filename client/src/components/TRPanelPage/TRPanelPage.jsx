@@ -41,6 +41,8 @@ export class PanelPage extends React.Component {
       onClickNext,
       onClickBack,
       hasStepper,
+      nextButtonLabel,
+      backButtonLabel
     } = this.props;
 
     const mainChildren = React.Children.toArray(this.passPropsToChildren()).filter(
@@ -85,8 +87,8 @@ export class PanelPage extends React.Component {
         {hasStepper && (
           <div className='tr-panel-stepper-container'>
             <div className="tr-panel-stepper-inner">
-              <Button error text="Back" onClick={() => onClickBack()} />
-              <Button success text="Next" onClick={() => onClickNext()} />
+              <Button error text={backButtonLabel ? backButtonLabel : 'Back'} onClick={() => onClickBack()} />
+              <Button success text={nextButtonLabel ? nextButtonLabel : 'Next'} onClick={() => onClickNext()} />
             </div>
           </div>
         )}

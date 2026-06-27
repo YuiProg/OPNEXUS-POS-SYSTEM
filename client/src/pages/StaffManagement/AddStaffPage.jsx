@@ -19,7 +19,6 @@ class AddStaffPage extends React.Component {
   }
 
   componentDidMount() {
-    resetInput();
     setStep(1)
     this.unsubscribeAuth = AuthStore.subscribe((state) => {
       this.setState({ 
@@ -35,8 +34,8 @@ class AddStaffPage extends React.Component {
 
   addStaff = (isView) => {
     const inputLength = this.props.settings.staffManagementSettings.inputLength
-    const { input } = this.state
-
+    const { input } = this.state;
+    console.log(input);
     return (
       <>
         <div style={{marginBottom: '10px'}}>
@@ -190,6 +189,7 @@ class AddStaffPage extends React.Component {
         setStep(3);
         break;
       case 3: 
+        resetInput();
         this.setState({ validateDate: null });
         this.props.navigate('/staff');
         break;
@@ -204,6 +204,7 @@ class AddStaffPage extends React.Component {
   }
 
   render() {
+
     return (
       <PanelPage 
         titlePage="Add Staff" 

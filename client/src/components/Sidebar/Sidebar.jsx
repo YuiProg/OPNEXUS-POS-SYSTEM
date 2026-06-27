@@ -134,7 +134,7 @@ class Sidebar extends React.Component {
 
         const isAnyLogActive = ["/logs/system", "/logs/inout", "/logs/transactions"].includes(pathname);
         const isAnyInventoryActive = ["/inventory", "/inventory/add"].includes(pathname);
-        const isAnyStaffActive = ["/staff", "/staff/add"].includes(pathname);
+        const isAnyStaffActive = ["/staff", "/staff/add", "/staff/locked"].includes(pathname);
         const isAnySupplierActive = ["/supplier", "/supplier/add"].includes(pathname);
 
         return (
@@ -206,6 +206,7 @@ class Sidebar extends React.Component {
                                             items: [
                                                 { path: '/staff', title: 'View Staff' },
                                                 { path: '/staff/add', title: 'Add Staff' },
+                                                { path: '/staff/locked', title: 'Locked Staffs'}
                                             ],
                                         })}
                                         {vipEnabled && this.renderSimpleItem({ path: '/vip', icon: <Gem size={20} />, label: 'VIP Management', pathname })}

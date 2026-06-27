@@ -13,10 +13,6 @@ import {
 import PropTypes from 'prop-types'
 import Button from '../TRButton/Button'
 
-/**
- * @class
- * @component
- */
 export class Table extends React.Component {
   constructor(props) {
     super(props)
@@ -85,6 +81,12 @@ export class Table extends React.Component {
       for (let i = startIndex; i < endIndex && i < this.props.data.length; i++) {
         selected[i] = selectAll
       }
+
+      if (this.props.selectedItems) {
+        const selectedRows = this.props.data.filter((_, i) => selected[i])
+        this.props.selectedItems(selectedRows)
+      }
+
       return { selectAll, selected }
     })
   }
@@ -93,6 +95,12 @@ export class Table extends React.Component {
     this.setState((prev) => {
       const selected = [...prev.selected]
       selected[index] = !selected[index]
+
+      if (this.props.selectedItems) {
+        const selectedRows = this.props.data.filter((_, i) => selected[i])
+        this.props.selectedItems(selectedRows)
+      }
+
       return {
         selected,
         selectAll: selected.every(Boolean)
@@ -435,72 +443,24 @@ export class TableData extends React.Component {
     }
     if (value === 'ACTIVE') {
       return (
-        <span
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 6,
-            color: '#22C55E',
-            fontWeight: 500
-          }}
-        >
-          <span
-            style={{
-              width: 6,
-              height: 6,
-              borderRadius: '50%',
-              background: '#22C55E',
-              display: 'inline-block'
-            }}
-          />
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: '#22C55E', fontWeight: 500 }}>
+          <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#22C55E', display: 'inline-block' }} />
           ACTIVE
         </span>
       )
     }
     if (value === 'INACTIVE') {
       return (
-        <span
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 6,
-            color: '#6B7280',
-            fontWeight: 500
-          }}
-        >
-          <span
-            style={{
-              width: 6,
-              height: 6,
-              borderRadius: '50%',
-              background: '#6B7280',
-              display: 'inline-block'
-            }}
-          />
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: '#6B7280', fontWeight: 500 }}>
+          <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#6B7280', display: 'inline-block' }} />
           INACTIVE
         </span>
       )
     }
     if (value === 'PENDING') {
       return (
-        <span
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 6,
-            color: '#F97316',
-            fontWeight: 500
-          }}
-        >
-          <span
-            style={{
-              width: 6,
-              height: 6,
-              borderRadius: '50%',
-              background: '#F97316',
-              display: 'inline-block'
-            }}
-          />
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: '#F97316', fontWeight: 500 }}>
+          <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#F97316', display: 'inline-block' }} />
           PENDING
         </span>
       )
@@ -509,17 +469,14 @@ export class TableData extends React.Component {
   }
 
   render() {
-    const { data, hasSelect, selected, toggleRow, hasAction, CBD, CBE, onView, rowCB, noEdit } =
-      this.props
+    const { data, hasSelect, selected, toggleRow, hasAction, CBD, CBE, onView, rowCB, noEdit } = this.props
 
     return (
       <>
         {data.map((row, rowIndex) => {
           return (
             <tr
-              className={
-                selected[rowIndex] === true ? 'table-row table-row--selected' : 'table-row'
-              }
+              className={selected[rowIndex] === true ? 'table-row table-row--selected' : 'table-row'}
               key={rowIndex}
               onClick={() => rowCB(row)}
             >
@@ -611,6 +568,7 @@ Table.propTypes = {
   noEdit: PropTypes.bool,
   hasTableFilters: PropTypes.bool,
   onFilterToggle: PropTypes.func,
+  selectedItems: PropTypes.func,
   isDetailed: PropTypes.shape({
     header: PropTypes.string,
     search: PropTypes.node,
