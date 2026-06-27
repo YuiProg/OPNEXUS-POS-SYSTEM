@@ -268,6 +268,7 @@ const AuthStore = create((set, get) => ({
             toast.error(error.response.data.status);
             set({errorUser: axiosError(error)});
             setServerError(true);
+            window.location.href = '/servererror';
         } finally {
             set({changePasswordLoading: false});
         }
@@ -365,6 +366,7 @@ const AuthStore = create((set, get) => ({
             toast.error(error.response.data.status);
             set({errorUser: axiosError(error)});
             setServerError(true);
+            window.location.href = '/servererror';
         } finally {
             isScreenLoading(false);
         }
@@ -405,6 +407,7 @@ const AuthStore = create((set, get) => ({
             //toast.error(error.message);
             setServerError(true);
             set({errorUser: axiosError(error)});
+            window.location.href = '/servererror';
         } finally {
             set({fetchLoading: false});
         }
@@ -494,6 +497,7 @@ const AuthStore = create((set, get) => ({
             toast.error(error.message);
             set({errorUser: axiosError(error)});
             setServerError(true);
+            window.location.href = '/servererror';
         } finally {
             isScreenLoading(false);
         }
@@ -509,6 +513,7 @@ const AuthStore = create((set, get) => ({
                 toast.error(error.response.data.status);
                 set({errorUser: axiosError(error)});
             }
+            window.location.href = '/servererror';
         }
     },
 
@@ -530,6 +535,7 @@ const AuthStore = create((set, get) => ({
             toast.error(error.message);
             set({errorUser: axiosError(error)});
             setServerError(true);
+            window.location.href = '/servererror';
         } finally {
             isScreenLoading(false);
             setShowAccountLockedModalDelete(false);
@@ -553,7 +559,7 @@ const AuthStore = create((set, get) => ({
                 toast.error(error.response.data.status);
                 set({errorUser: axiosError(error)});
             }
-
+            window.location.href = '/servererror';
         } finally {
             setYesNoModal(false);
             isScreenLoading(false);
@@ -574,14 +580,16 @@ const AuthStore = create((set, get) => ({
                 toast.error(error.response.data.status);
                 set({errorUser: axiosError(error)});
             }
+            window.location.href = '/servererror';
         } finally {
             set({fetchLoading: false});
         }
     },
 
     unlockAccounts: async () => {
+        const { selectedItem, setShowAccountLockedModal, isScreenLoading } = ModalStore.getState();
         try {
-            const { selectedItem, setShowAccountLockedModal } = ModalStore.getState();
+            isScreenLoading(true);
             const res = await axiosInstance.post(UNLOCKACCOUNTS, selectedItem);
             toast.success('Accounts Unlocked');
             setShowAccountLockedModal(false);
@@ -591,6 +599,9 @@ const AuthStore = create((set, get) => ({
                 toast.error(error.response.data.status);
                 set({errorUser: axiosError(error)});
             }
+            window.location.href = '/servererror';
+        } finally {
+            isScreenLoading(false);
         }
     },
 
