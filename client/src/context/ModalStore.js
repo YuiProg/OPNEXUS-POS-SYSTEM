@@ -21,8 +21,12 @@ const ModalStore = create((set) => ({
     showNewCategoryModal: false,
     showConfirmDeleteCategory: false,
     showAccountLocked: false,
+    showAccountLockedModal: false,
+    showAccountLockedModalDelete: false,
 
     //account locked
+    setShowAccountLockedModal: (val) => set({showAccountLockedModal: val}),
+    setShowAccountLockedModalDelete: (val) => set({showAccountLockedModalDelete: val}),
     setShowAccountLocked: (val) => set({showAccountLocked: val}),
     
     //category

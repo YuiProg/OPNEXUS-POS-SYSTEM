@@ -110,6 +110,7 @@ const Strings = Object.freeze({
 
     //function codes
     ACCLOCK: 'FNCCD1',
+    FETCHLOCKEDACCOUNTNOBRANCH: 'FNCCD2',
 
     //status codes
     // 1xx Informational

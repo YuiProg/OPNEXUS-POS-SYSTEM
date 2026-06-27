@@ -26,11 +26,14 @@ const {
     CHANGEPASSWORD,
     VALIDATEUSER,
     GETACTIVEUSERS,
+    FETCHLOCKEDACCOUNTS,
+    UNLOCKACCOUNTS
 } = ApiConfig;
 
 const {
     SUCCESS_MESS,
-    ACCLOCK
+    ACCLOCK,
+    FETCHLOCKEDACCOUNTNOBRANCH
 } = Strings;
 
 const AuthStore = create((set, get) => ({
@@ -73,6 +76,7 @@ const AuthStore = create((set, get) => ({
     steps: 1,
     validateData: null,
     activeUsers: [],
+    lockedAccounts: [],
 
     setValidateData: (data) => set({validateData: data}),
 
@@ -363,7 +367,6 @@ const AuthStore = create((set, get) => ({
             setServerError(true);
         } finally {
             isScreenLoading(false);
-            get().resetInput();
         }
     },
 
@@ -510,8 +513,8 @@ const AuthStore = create((set, get) => ({
     },
 
     deleteMultipleUsers: async (data) => {
-        const { setServerError, isScreenLoading } = ModalStore.getState();
-        const ids = data.map((i, _) => i.Id);
+        const { setServerError, isScreenLoading, setShowAccountLockedModalDelete } = ModalStore.getState();
+        const ids = data.map((i, _) => i.Id || i.id);
         try {
             isScreenLoading(true);
             const res = await axiosInstance.post(deleteMultipleUsers, ids);
@@ -529,6 +532,8 @@ const AuthStore = create((set, get) => ({
             setServerError(true);
         } finally {
             isScreenLoading(false);
+            setShowAccountLockedModalDelete(false);
+            get().fetchLockedAccounts();
         }
     },
 
@@ -552,6 +557,40 @@ const AuthStore = create((set, get) => ({
         } finally {
             setYesNoModal(false);
             isScreenLoading(false);
+        }
+    },
+    
+    fetchLockedAccounts: async () => {
+        set({fetchLoading: true});
+        try {
+            const { selectedBranch } = AuthStore.getState();
+            console.log(selectedBranch);
+            const lockedAccounts = await axiosInstance.get(FETCHLOCKEDACCOUNTS.replace(':funcCd', FETCHLOCKEDACCOUNTNOBRANCH), {
+                params: {selectedBranch}
+            });
+            set({lockedAccounts: lockedAccounts.data});
+        } catch (error) {
+            if (axiosError(error)) {
+                toast.error(error.response.data.status);
+                set({errorUser: axiosError(error)});
+            }
+        } finally {
+            set({fetchLoading: false});
+        }
+    },
+
+    unlockAccounts: async () => {
+        try {
+            const { selectedItem, setShowAccountLockedModal } = ModalStore.getState();
+            const res = await axiosInstance.post(UNLOCKACCOUNTS, selectedItem);
+            toast.success('Accounts Unlocked');
+            setShowAccountLockedModal(false);
+            await get().fetchLockedAccounts();
+        } catch (error) {
+            if (axiosError(error)) {
+                toast.error(error.response.data.status);
+                set({errorUser: axiosError(error)});
+            }
         }
     },
 

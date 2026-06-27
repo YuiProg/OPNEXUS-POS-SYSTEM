@@ -87,15 +87,15 @@ export const register = async (req, res) => {
 }
 export const loginUser = async (req, res) => {
   try {
-    const { email, password } = req.body
-    const user = await User.loginUser(email, password)
+    const { email, password } = req.body;
+    const user = await User.loginUser(email, password);
     //const { _: _, ...userWithoutPassword } = user.toObject();
     generateToken(user._id, res)
-    logResponse(req, SUCCESS, { status: SUCCESS_MESS, user: user.username || user.email })
-    ApiResponseModel(res, SUCCESS, SUCCESS_MESS, user)
+    logResponse(req, SUCCESS, { status: SUCCESS_MESS, user: user.username || user.email });
+    ApiResponseModel(res, SUCCESS, SUCCESS_MESS, user);
   } catch (error) {
-    logResponse(req, ERROR, { status: error.message })
-    ApiResponseModel(res, ERROR, error.message)
+    logResponse(req, ERROR, { status: error.message });
+    ApiResponseModel(res, ERROR, error.message);
   }
 }
 
@@ -280,5 +280,48 @@ export const fetchActiveUsers = async (req, res) => {
   } catch (error) {
     logResponse(req, ERROR, { status: error.message })
     ApiResponseModel(res, ERROR, error.message)
+  }
+}
+
+export const fetchLockedAccounts = async (req, res) => {
+  try {
+    const data = req.query || {}
+    const { selectedBranch = null } = data
+    const { funcCd } = req.params
+
+    const accounts = await User.fetchLockedAccounts(funcCd, selectedBranch)
+    logResponse(req, SUCCESS, {
+      status: SUCCESS_MESS,
+      data: accounts
+    })
+    const tabledata = accounts.map(d => ({
+      id: d._id,
+      username: d.username,
+      email: d.email,
+      shift: d.shift,
+      salary: d.salary,
+      role: d.role,
+      phoneNumber: d.phoneNumber,
+      branchLocation: d.branchLocation || 'N/A'
+    }));
+    
+    ApiResponseModel(res, SUCCESS, SUCCESS_MESS, {
+      accounts,
+      tabledata
+    })
+  } catch (error) {
+    logResponse(req, ERROR, { status: error.message });
+    ApiResponseModel(res, ERROR, error.message);
+  }
+}
+
+export const unlockAccounts = async (req, res) => {
+  try {
+    const data = req.body;
+    const response = await User.unlockAccounts(data);
+    ApiResponseModel(res, SUCCESS, SUCCESS_MESS, response);
+  } catch (error) {
+    logResponse(req, ERROR, { status: error.message });
+    ApiResponseModel(res, ERROR, error.message);
   }
 }
