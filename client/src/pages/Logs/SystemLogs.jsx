@@ -11,7 +11,10 @@ class SystemLogs extends React.Component {
 
     render () {
         return (
-            <PanelPage>
+            <PanelPage 
+                titlePage="System Logs" 
+                subTitle="View system logs"
+            >
                 
             </PanelPage>
         );
