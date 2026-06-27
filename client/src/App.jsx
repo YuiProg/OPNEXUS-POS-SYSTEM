@@ -53,6 +53,7 @@ import Supplier from "./pages/Supplier/Supplier.jsx";
 import LockedStaffs from "./pages/StaffManagement/LockedStaffs.jsx";
 import confirmLockedModal from "./pages/StaffManagement/ConfirmLockAccounts.jsx";
 import confirmDeleteAccountModal from "./pages/StaffManagement/ConfirmDeleteAccount.jsx";
+import AddSuppler from "./pages/Supplier/AddSupplier.jsx";
 
 
 const ServerError = lazy(
@@ -1474,6 +1475,21 @@ export default function App() {
               ) : (
                 <Sidebar user={AuthUser} settings={settings}>
                   <Supplier/>
+                </Sidebar>
+              )
+            }
+          />
+
+          <Route
+            path="/supplier/add"
+            element={
+              AuthUser?.role.toLowerCase() === "clerk" ? (
+                <Navigate to="/timeinout" replace/>
+              ) : !AuthUser ? (
+                <Navigate to="/login" replace />
+              ) : (
+                <Sidebar user={AuthUser} settings={settings}>
+                  <AddSuppler/>
                 </Sidebar>
               )
             }
