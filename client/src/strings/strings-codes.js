@@ -15,6 +15,7 @@ const Strings = Object.freeze({
     USER_LOGOUT: 'User logged out.',
     SHIFT_ERR: 'Shift is required!',
     USER_C_P: 'Password changed.',
+    INCORRECTFUNCCD: 'Incorrect Function Code',
 
     //auth errors
     SALARY_ERR: 'PALDOOOOOOOO',
@@ -92,6 +93,7 @@ const Strings = Object.freeze({
     DELETEUSER: 'USER DELETION',
     EDITUSER: 'EDIT USER',
     PASSWORDEDIT: 'PASSWORD CHANGE',
+    ADDSUPPLIERLOG: 'ADD SUPPLIER',
 
     //settings
     UPDATESETTINGS: 'Settings updated.',
@@ -106,11 +108,17 @@ const Strings = Object.freeze({
     rl: 'role',
     br: 'branch',
     us: 'User',
-    em: 'Email',
+
+    //supplier
+    ADDSUPPLIER: 'Supplier Added',
 
     //function codes
     ACCLOCK: 'FNCCD1',
     FETCHLOCKEDACCOUNTNOBRANCH: 'FNCCD2',
+    ADDSUPPLIERCODE: 'FNCCD3',
+    GETSUPPLIERCODE: 'FNCCD4',
+    UPDATESUPPLIERCODE: 'FNCCD5',
+    DELETESUPPLIERCODE: 'FNCCD6',
 
     //status codes
     // 1xx Informational

@@ -1,15 +1,32 @@
 import React from "react";
-import { PanelPage } from "../../components/TRPanelPage/TRPanelPage";
+import { PanelContainer, PanelPage } from "../../components/TRPanelPage/TRPanelPage";
 
 class AddSuppler extends React.Component {
     constructor (props) {
         super(props);
     }
 
+    addStep = () => {
+        return (
+            <>
+            </>
+        );
+    }
+
+    currentStep = () => {
+        
+    }
+
     render () {
         return (
-            <PanelPage>
-                
+            <PanelPage 
+                titlePage="ADD SUPPLIERS" 
+                subTitle="Add or Delete Suppliers"
+                hasStepper
+            >
+                <PanelContainer currentStep={1} totalSteps={3}>
+
+                </PanelContainer>
             </PanelPage>
         );
     }

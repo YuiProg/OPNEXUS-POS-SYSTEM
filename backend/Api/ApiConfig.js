@@ -1,5 +1,3 @@
-
-
 const apiEndpoint = '/opnexus/';
 
 const ApiConfig = Object.freeze({
@@ -43,7 +41,6 @@ const ApiConfig = Object.freeze({
     REMOVEUSERFROMBRANCH: apiEndpoint + 'removeUserBranch/:location',
     REMOVEADMINFROMBRANCH: apiEndpoint + 'removeAdminFromBranch/:location',
     DELETEBRANCH: apiEndpoint + 'deleteBranch/:location',
-    //=================================
 
     //timein
     TIMEIN: apiEndpoint + 'timein',
@@ -72,7 +69,7 @@ const ApiConfig = Object.freeze({
     GETNETPROFIT: apiEndpoint + 'netProfit/:branch',
     GETTOPPRODUCTS: apiEndpoint + 'getTopProducts/:branch',
     GETTODAYSREVENUE: apiEndpoint + 'todayRevenue/:branch',
-
+    
     //CATEGORY
     CREATECATEGORY: apiEndpoint + 'createCategory',
     GETCATEGORIES: apiEndpoint + 'getCategories',
@@ -84,11 +81,15 @@ const ApiConfig = Object.freeze({
 
     //SETTINGS
     GETSETTINGS: apiEndpoint + 'getSettings',
-    UPDATESETTINGS: apiEndpoint + 'updateSettings/:id', //fetch the existing id in the db
+    UPDATESETTINGS: apiEndpoint + 'updateSettings/:id',
     RESETSETTINGS: apiEndpoint + 'resetSettings',
 
     //SEARCH FILTERS
-    INVENTORYSEARCH: apiEndpoint + '/inventorysearch'
+    INVENTORYSEARCH: apiEndpoint + '/inventorysearch',
+    
+    //SUPPLIER
+    ADDSUPPLIER: apiEndpoint + 'addSupplier',
+    GETSUPPLIERS: apiEndpoint + 'getSuppliers/:funcCd'
 })
 
 export default ApiConfig;
