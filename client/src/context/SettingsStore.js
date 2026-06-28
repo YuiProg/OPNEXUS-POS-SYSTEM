@@ -81,13 +81,14 @@ const SettingsStore = create((set, get) => ({
   },
 
   getSettings: async () => {
+    console.log("getSettings called, URL:", GETSETTINGS); // 👈 add this
     set({ settingsLoading: true });
     try {
       const response = await axiosInstance.get(GETSETTINGS);
       set({ settings: response.data });
       console.log(response.data);
     } catch (error) {
-      console.log(error);
+      console.error("getSettings ERROR:", error); // 👈 change to console.error
     } finally {
       set({ settingsLoading: false });
     }
