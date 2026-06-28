@@ -11,6 +11,7 @@ import {io} from 'socket.io-client';
 import toast from 'react-hot-toast';
 import ModalStore from './ModalStore';
 import BranchStore from './BranchStore';
+import SettingsStore from './SettingsStore';
 
 const { 
     loginUsers,
@@ -177,8 +178,11 @@ const AuthStore = create((set, get) => ({
         try {
             const user = await axiosInstance.get(getUser);
             set({AuthUser: user.data.data});
+            
+            
+            const { getSettings } = SettingsStore.getState();
+            await getSettings();
         } catch (error) {
-            //toast.error(error.message);
             set({errorUser: axiosError(error)});
             set({AuthUser: null});
         } finally {
