@@ -1,9 +1,10 @@
 import mongoose from "mongoose";
 import { customAlphabet } from "nanoid";
-import Strings from "../strings/strings-codes";
+import Strings from "../strings/strings-codes.js";
 
 const {
-    ID_SECRET
+    ID_SECRET,
+    GETSUPPLIERCODE
 } = Strings;
 
 const nanoid = customAlphabet(ID_SECRET, 4);
@@ -42,6 +43,18 @@ const supplierSchema = new mongoose.Schema({
         required: true
     }
 });
+
+supplierSchema.statics.addSupplier = async function (data) {
+    const supplier = await this.create(data);
+    return supplier;
+}
+
+supplierSchema.statics.getSuppliers = async function (funcCd, selectedBranch) {
+    if (funcCd === GETSUPPLIERCODE && !selectedBranch) {
+        return await this.find();
+    }
+    return await this.find({branch: selectedBranch});
+}
 
 const Supplier = mongoose.model('supplier', supplierSchema);
 

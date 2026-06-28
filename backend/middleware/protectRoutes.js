@@ -8,7 +8,7 @@ const {
 } = Strings;
 
 const protectRoutes = (req, res, next) => {
-    const token = req.cookies.jwt;
+    const token = req.cookies[process.env.COOKIE_VALUE];
     if (!token) {
         return ApiResponseModel(res, FORBIDDEN, FORBIDDEN_MESS);
     }
