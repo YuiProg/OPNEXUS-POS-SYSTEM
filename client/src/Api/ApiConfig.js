@@ -85,7 +85,11 @@ const ApiConfig = Object.freeze({
     RESETSETTINGS: apiEndpoint + 'resetSettings',
 
     //SEARCH FILTERS
-    INVENTORYSEARCH: apiEndpoint + '/inventorysearch'
+    INVENTORYSEARCH: apiEndpoint + '/inventorysearch',
+    
+    //SUPPLIER
+    ADDSUPPLIER: apiEndpoint + 'addSupplier',
+    GETSUPPLIERS: apiEndpoint + 'getSuppliers/:funcCd'
 })
 
 export default ApiConfig;

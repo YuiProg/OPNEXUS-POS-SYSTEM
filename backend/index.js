@@ -14,6 +14,7 @@ import dashboardRoutes from './routes/dashboard.routes.js';
 import categoryRoutes from './routes/category.routes.js';
 import logsRoutes from './routes/logs.routes.js';
 import settingsRoutes from './routes/settings.routes.js';
+import supplierRoutes from './routes/supplier.routes.js';
 import { app, server } from './lib/socket.js';
 
 dotenv.config();
@@ -52,6 +53,7 @@ app.use('/api', dashboardRoutes);
 app.use('/api', categoryRoutes);
 app.use('/api', logsRoutes);
 app.use('/api', settingsRoutes);
+app.use('/api', supplierRoutes);
 
 // Health check
 app.get('/test', (req, res) => {
