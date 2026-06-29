@@ -166,7 +166,7 @@ export default function App() {
   useEffect(() => {
     const init = async () => {
       await checkAuth();
-      await fetchUsers();
+      //await fetchUsers();
       await getCategories();
     };
     init();

@@ -7,12 +7,17 @@ import ProductStore from "./ProductStore";
 import BranchStore from "./BranchStore";
 import ModalStore from "./ModalStore";
 import axiosError from "../helpers/axiosError";
+import Strings from "../strings/strings-codes";
 
 const {
     NEWSALE,
     GETSALES,
     GETSINGLERECORD
 } = ApiConfig;
+
+const {
+    GETTOTALSALESCODE
+} = Strings;
 /* eslint-disable no-unused-vars */
 const SalesStore = create((set) => ({
     salesForTable: [],
@@ -122,7 +127,11 @@ const SalesStore = create((set) => ({
         const {selectedBranch} = AuthStore.getState();
         set({saleLoading: true});
         try {
-            const sales = await axiosInstance.get(GETSALES.replace(':branch', selectedBranch));
+            const sales = await axiosInstance.get(GETSALES.replace(':funcCd', GETTOTALSALESCODE), {
+                params: {
+                    branch: selectedBranch
+                }
+            });
             const data = sales.data.data;
 
             const cleanedData = data.map(({ items, clerkId, __v, ...rest }) => ({
