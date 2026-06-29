@@ -1,7 +1,8 @@
 import express from 'express'
-import ApiConfig from '../../client/src/Api/ApiConfig.js';
+import ApiConfig from '../Api/ApiConfig.js';
 import protectRoutes from '../middleware/protectRoutes.js';
 import { addSupplier, getSupplier } from '../controller/supplier.Controller.js';
+
 
 const {
     ADDSUPPLIER,
