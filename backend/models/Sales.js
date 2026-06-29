@@ -8,7 +8,8 @@ const {
     GETTODAYSALESCODE,
     GETTOTALSALESCODE,
     GETNETPROFITCODE,
-    GETREVENUECODE
+    GETREVENUECODE,
+    GETTOPPRODUCTSCODE
 } = Strings;
 
 const nanoid = customAlphabet(ID_SECRET, 4);
@@ -88,7 +89,8 @@ salesSchema.statics.getSales = async function (branch, funcCd) {
         funcCd === GETTODAYSALESCODE ||
         funcCd === GETTOTALSALESCODE || 
         funcCd === GETNETPROFITCODE ||
-        funcCd === GETREVENUECODE)
+        funcCd === GETREVENUECODE ||
+        funcCd === GETTOPPRODUCTSCODE)
         && !branch
     ) {
         return await this.find({}).sort({ createdAt: -1 });
