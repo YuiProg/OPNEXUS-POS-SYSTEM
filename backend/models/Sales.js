@@ -3,7 +3,12 @@ import Strings from '../strings/strings-codes.js';
 import { customAlphabet } from 'nanoid';
 
 const {
-    ID_SECRET
+    ID_SECRET,
+    GETMONTHLYSALESCODE,
+    GETTODAYSALESCODE,
+    GETTOTALSALESCODE,
+    GETNETPROFITCODE,
+    GETREVENUECODE
 } = Strings;
 
 const nanoid = customAlphabet(ID_SECRET, 4);
@@ -78,10 +83,18 @@ salesSchema.statics.createSale = async function (data) {
     return newSale;
 }
 
-salesSchema.statics.getSales = async function (branch) {
-    const hasBranch = branch && branch !== "null" && branch !== "Branch" && branch !== "any" ? { branchLocation: branch } : {};
-    const sales = await this.find(hasBranch).sort({createdAt: -1});
-    return sales;
+salesSchema.statics.getSales = async function (branch, funcCd) {
+    if ((funcCd === GETMONTHLYSALESCODE || 
+        funcCd === GETTODAYSALESCODE ||
+        funcCd === GETTOTALSALESCODE || 
+        funcCd === GETNETPROFITCODE ||
+        funcCd === GETREVENUECODE)
+        && !branch
+    ) {
+        return await this.find({}).sort({ createdAt: -1 });
+    }
+
+    return await this.find({branchLocation: branch }).sort({ createdAt: -1 });
 }
 
 salesSchema.statics.getSingle = async function (id) {

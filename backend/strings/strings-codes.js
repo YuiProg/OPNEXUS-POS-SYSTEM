@@ -108,6 +108,7 @@ const Strings = Object.freeze({
     rl: 'role',
     br: 'branch',
     us: 'User',
+    em: 'Email',
 
     //supplier
     ADDSUPPLIER: 'Supplier Added',
@@ -119,6 +120,13 @@ const Strings = Object.freeze({
     GETSUPPLIERCODE: 'FNCCD4',
     UPDATESUPPLIERCODE: 'FNCCD5',
     DELETESUPPLIERCODE: 'FNCCD6',
+    //dashboard codes
+    GETREVENUECODE: 'FNCCD7',
+    GETMONTHLYSALESCODE: 'FNCCD8',
+    GETNETPROFITCODE: 'FNCCD9',
+    GETTOPPRODUCTSCODE: 'FNCCD10',
+    GETTODAYSALESCODE: 'FNCCD11',
+    GETTOTALSALESCODE: 'FNCCD12',
 
     //status codes
     // 1xx Informational

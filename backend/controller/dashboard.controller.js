@@ -11,12 +11,13 @@ const {
 
 
 export const getMonthlySale = async (req, res) => {
-    const { branch } = req.params;
+    const { funcCd } = req.params; 
+    const { branch } = req.query;
+    
     try {
-        const sales = await Sales.getSales(branch);
+        const sales = await Sales.getSales(branch, funcCd);
 
         const months = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
-
         const monthlySales = months.map((month, index) => {
             const total = sales
                 .filter((sale) => new Date(sale.createdAt).getMonth() === index)
@@ -32,9 +33,11 @@ export const getMonthlySale = async (req, res) => {
 
 //code from claude AI
 export const todaysSale = async (req, res) => {
-    const { branch } = req.params;
+    const { funcCd } = req.params; 
+    const { branch } = req.query;
+    console.log('TODAY:', funcCd);
     try {
-        const sales = await Sales.getSales(branch);
+        const sales = await Sales.getSales(branch, funcCd);
         const products = await Product.fetchProducts(branch);
 
         // Filter today's sales
@@ -89,8 +92,9 @@ export const todaysSale = async (req, res) => {
 
 export const calculateNetProfit = async (req, res) => {
     try {
-        const { branch } = req.params;
-        const sales = await Sales.getSales(branch);
+        const { funcCd } = req.params; 
+        const { branch } = req.query;
+        const sales = await Sales.getSales(branch, funcCd);
 
         const months = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
 
@@ -125,8 +129,9 @@ export const calculateNetProfit = async (req, res) => {
 
 export const getTopProducts = async (req, res) => {
     try {
-        const { branch } = req.params;
-        const sales = await Sales.getSales(branch);
+        const { funcCd } = req.params; 
+        const { branch } = req.query;
+        const sales = await Sales.getSales(branch, funcCd);
 
         const colors = [
             { bgcolor: "#D63F14", bgcolor2: "#d63f1440" },
@@ -179,8 +184,9 @@ export const getTopProducts = async (req, res) => {
 
 export const todayRevenue = async (req, res) => {
     try {
-        const { branch } = req.params;
-        const sales = await Sales.getSales(branch);
+        const { funcCd } = req.params; 
+        const { branch } = req.query;
+        const sales = await Sales.getSales(branch, funcCd);
 
         const today = new Date();
         const mm = String(today.getMonth() + 1).padStart(2, '0');
