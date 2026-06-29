@@ -49,9 +49,10 @@ export const createSale = async (req, res) => {
 
 export const getSales = async (req, res) => {
     try {
-        const {branch} = req.params;
+        const { funcCd } = req.params;
+        const {branch} = req.query;
         console.log(branch);
-        const sales = await Sales.getSales(branch);
+        const sales = await Sales.getSales(branch, funcCd);
         logResponse(req, CREATED, { status: GETSALES, data: sales });
         ApiResponseModel(res, CREATED, GETSALES, sales);
     } catch (error) {

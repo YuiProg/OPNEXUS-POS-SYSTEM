@@ -135,7 +135,7 @@ export const updateUser = async (req, res) => {
 }
 
 export const logoutUser = async (req, res) => {
-  res.cookie('jwt', '', { maxAge: 0 })
+  res.cookie(process.env.COOKIE_VALUE, '', { maxAge: 0 })
   //res.status(SUCCESS).json({status: SUCCESS_MESS, message: USER_LOGOUT});
   logResponse(req, SUCCESS, { status: SUCCESS_MESS })
   ApiResponseModel(res, SUCCESS, SUCCESS_MESS)

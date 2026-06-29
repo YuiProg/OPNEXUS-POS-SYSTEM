@@ -50,7 +50,7 @@ const ApiConfig = Object.freeze({
 
     //SALES
     NEWSALE: apiEndpoint + 'procOrder',
-    GETSALES: apiEndpoint + 'getSales/:branch',
+    GETSALES: apiEndpoint + 'getSales/:funcCd',
     GETSINGLERECORD: apiEndpoint + 'getSingleRecordSale/:id',
 
     //VIP
@@ -64,11 +64,11 @@ const ApiConfig = Object.freeze({
     UPDATEVIP: apiEndpoint + 'updateVip/:id',
 
     //DASHBOARD
-    GETMONTHLYSALES: apiEndpoint + 'monthlySales/:branch',
-    GETTODAYSALES: apiEndpoint + 'todaysSales/:branch',
-    GETNETPROFIT: apiEndpoint + 'netProfit/:branch',
-    GETTOPPRODUCTS: apiEndpoint + 'getTopProducts/:branch',
-    GETTODAYSREVENUE: apiEndpoint + 'todayRevenue/:branch',
+    GETMONTHLYSALES: apiEndpoint + 'monthlySales/:funcCd',
+    GETTODAYSALES: apiEndpoint + 'todaysSales/:funcCd',
+    GETNETPROFIT: apiEndpoint + 'netProfit/:funcCd',
+    GETTOPPRODUCTS: apiEndpoint + 'getTopProducts/:funcCd',
+    GETTODAYSREVENUE: apiEndpoint + 'todayRevenue/:funcCd',
     
     //CATEGORY
     CREATECATEGORY: apiEndpoint + 'createCategory',

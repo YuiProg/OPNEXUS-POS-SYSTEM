@@ -411,7 +411,7 @@ const AuthStore = create((set, get) => ({
             //toast.error(error.message);
             setServerError(true);
             set({errorUser: axiosError(error)});
-            //window.location.href = '/servererror';
+            window.location.href = '/servererror';
         } finally {
             set({fetchLoading: false});
         }

@@ -5,14 +5,24 @@ import ApiConfig from "../Api/ApiConfig";
 import axiosInstance from "../helpers/axiosInstance";
 import BranchStore from "./BranchStore";
 import AuthStore from "./Authstore";
+import Strings from "../strings/strings-codes";
+
 
 const {
     GETMONTHLYSALES,
     GETTODAYSALES,
     GETNETPROFIT,
     GETTOPPRODUCTS,
-    GETTODAYSREVENUE
+    GETTODAYSREVENUE,
 } = ApiConfig;
+
+const {
+    GETMONTHLYSALESCODE,
+    GETREVENUECODE,
+    GETTODAYSALESCODE,
+    GETTOPPRODUCTSCODE,
+    GETNETPROFITCODE
+} = Strings;
 
 const DashboardStore = create((set) => ({
     monthlySales: null,
@@ -31,7 +41,11 @@ const DashboardStore = create((set) => ({
 
         set({statsLoading: true});
         try {
-            const sales = await axiosInstance.get(GETMONTHLYSALES.replace(':branch', selectedBranch));
+            const sales = await axiosInstance.get(GETMONTHLYSALES.replace(':funcCd', GETMONTHLYSALESCODE), {
+                params: {
+                    branch: selectedBranch
+                }
+            });
             set({monthlySales: sales.data});
         } catch (error) {
             if (axiosError(error)) {
@@ -45,9 +59,13 @@ const DashboardStore = create((set) => ({
     getTodaysSales: async () => {
         set({todayLoading: true});
         const { selectedBranch } = AuthStore.getState();
-        const branch = selectedBranch || 'any';
+        // const branch = selectedBranch || 'any';
         try {
-            const todayStats = await axiosInstance.get(GETTODAYSALES.replace(':branch', branch));
+            const todayStats = await axiosInstance.get(GETTODAYSALES.replace(':funcCd', GETTODAYSALESCODE), {
+                params: {
+                    branch: selectedBranch
+                }
+            });
             set({todaySales: todayStats.data});
         } catch (error) {
             if (axiosError(error)) {
@@ -62,7 +80,11 @@ const DashboardStore = create((set) => ({
         set({netProfitLoading: true});
         try {
             const {selectedBranch} = AuthStore.getState();
-            const netProfit = await axiosInstance.get(GETNETPROFIT.replace(':branch', selectedBranch));
+            const netProfit = await axiosInstance.get(GETNETPROFIT.replace(':funcCd', GETNETPROFITCODE), {
+                params: {
+                    branch: selectedBranch
+                }
+            });
             set({netProfit: netProfit.data});
         } catch (error) {
             if (axiosError(error)) {
@@ -77,7 +99,11 @@ const DashboardStore = create((set) => ({
         set({topProductsLoading: true});
         try {
             const { selectedBranch } = AuthStore.getState();
-            const topproducts = await axiosInstance.get(GETTOPPRODUCTS.replace(':branch', selectedBranch));
+            const topproducts = await axiosInstance.get(GETTOPPRODUCTS.replace(':funcCd', GETTOPPRODUCTSCODE), {
+                params: {
+                    branch: selectedBranch
+                }
+            });
             set({topProducts: topproducts.data});
         } catch (error) {
             if (axiosError(error)) {
@@ -93,7 +119,11 @@ const DashboardStore = create((set) => ({
         try {
             set({todayRevenueLoading: true});
             const { selectedBranch } = AuthStore.getState();
-            const todayRevenue = await axiosInstance.get(GETTODAYSREVENUE.replace(':branch', selectedBranch));
+            const todayRevenue = await axiosInstance.get(GETTODAYSREVENUE.replace(':funcCd', GETREVENUECODE), {
+                params: {
+                    branch: selectedBranch
+                }
+            });
             set({todayRevenue: todayRevenue.data.data});
         } catch (error) {
             if (axiosError(error)) {
