@@ -1,4 +1,3 @@
-import cron from 'node-cron';
 import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, remove } from 'firebase/database';
 
