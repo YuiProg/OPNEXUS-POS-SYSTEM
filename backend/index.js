@@ -16,6 +16,7 @@ import logsRoutes from './routes/logs.routes.js';
 import settingsRoutes from './routes/settings.routes.js';
 import supplierRoutes from './routes/supplier.routes.js';
 import { app, server } from './lib/socket.js';
+import { scheduleDailyReset } from './lib/firebasereset.js';
 
 dotenv.config();
 
@@ -65,6 +66,7 @@ const PORT = process.env.PORT || 3000;
 server.listen(PORT, async () => {
     const delay = (ms) => new Promise((res) => setTimeout(res, ms));
     const clearLine = () => process.stdout.write('\r\u001b[K');
+    scheduleDailyReset();
 
     const colors = {
         green:   '\u001b[1;32m',

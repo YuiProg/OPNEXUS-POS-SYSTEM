@@ -1,5 +1,6 @@
 import React from 'react';
 import { PanelPage } from '../../components/TRPanelPage/TRPanelPage';
+import { Table } from '../../components/TRTable/TrTable';
 
 class SystemLogs extends React.Component {
     constructor(props) {
@@ -15,7 +16,10 @@ class SystemLogs extends React.Component {
                 titlePage="System Logs" 
                 subTitle="View system logs"
             >
-                
+                <Table 
+                    data={this.state.logs}
+                    isDetailed={{header: 'System Logs'}}
+                />
             </PanelPage>
         );
     }
