@@ -1,122 +1,132 @@
 .settings-demo {
-    padding: 28px;
-    display: flex;
-    flex-direction: row;
-    gap: 26px;
-    width: fit-content;
+  padding: 28px;
+  display: flex;
+  flex-direction: row;
+  gap: 26px;
+  width: fit-content;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
 }
 
 .setting-row {
-    display: flex;
-    align-items: center;
-    gap: 18px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
 }
 
 .setting-control {
-    position: relative;
-    display: inline-flex;
-    cursor: pointer;
+  position: relative;
+  display: inline-flex;
+  cursor: pointer;
 }
 
 .setting-control input {
-    position: absolute;
-    opacity: 0;
-    pointer-events: none;
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .switch {
-    position: relative;
-    display: block;
-    border-radius: 999px;
-    transition: all 0.25s ease;
-    overflow: hidden;
+  position: relative;
+  display: block;
+  border-radius: 999px;
+  transition: all 0.25s ease;
+  overflow: hidden;
 }
 
+/* ── Shift / Theme Switch ── */
 .switch--shift {
-    width: 60px;
-    height: 30px;
-    background: #f2f2f2;
+  width: 56px;
+  height: 28px;
+  background: #cbd5e1;
 }
 
 .switch--shift::before {
-    content: "";
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    left: 4px;
-    top: 5px;
-    background: #f8a600;
-    transition: all 0.25s ease;
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  left: 4px;
+  top: 4px;
+  background: #f59e0b;
+  transition: all 0.25s ease;
 }
 
 .switch--shift::after {
-    content: "";
-    position: absolute;
-    width: 18px;
-    height: 17px;
-    border-radius: 50%;
-    left: 14px;
-    top: 5px;
-    background: #f2f2f2;
-    opacity: 0;
-    transition: all 0.25s ease;
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  left: 14px;
+  top: 4px;
+  background: #cbd5e1;
+  opacity: 0;
+  transition: all 0.25s ease;
 }
 
-.setting-control input:checked+.switch--shift {
-    background: #000;
+.setting-control input:checked + .switch--shift {
+  background: #0f172a;
 }
 
-.setting-control input:checked+.switch--shift::before {
-    left: 35px;
-    background: #8ddcff;
+.setting-control input:checked + .switch--shift::before {
+  left: 32px;
+  background: #38bdf8;
 }
 
-.setting-control input:checked+.switch--shift::after {
-    left: 31px;
-    background: #000;
-    opacity: 1;
+.setting-control input:checked + .switch--shift::after {
+  left: 28px;
+  background: #0f172a;
+  opacity: 1;
 }
 
+/* ── Availability Switch ── */
 .switch--availability {
-    width: 60px;
-    height: 30px;
-    background: #bfbfbf;
+  width: 56px;
+  height: 28px;
+  background: #cbd5e1;
 }
 
 .switch--availability::before {
-    content: "";
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    left: 5px;
-    top: 5px;
-    background: #f2f2f2;
-    transition: all 0.25s ease;
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  left: 4px;
+  top: 4px;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.15);
+  transition: all 0.25s ease;
 }
 
-.setting-control input:checked+.switch--availability {
-    background: #00f25c;
+.setting-control input:checked + .switch--availability {
+  background: #22c55e;
 }
 
-.setting-control input:checked+.switch--availability::before {
-    left: 35px;
+.setting-control input:checked + .switch--availability::before {
+  left: 32px;
 }
 
+/* ── Typography ── */
 .setting-text {
-    color: #fff;
+  color: #0f172a;
 }
 
 .setting-title {
-    font-size: 16px;
-    line-height: 1;
-    font-weight: 400;
-    margin-bottom: 8px;
+  font-size: 15px;
+  line-height: 1.2;
+  font-weight: 600;
+  color: #0f172a;
+  margin-bottom: 4px;
 }
 
 .setting-subtitle {
-    font-size: 12px;
-    line-height: 1;
-    color: rgba(255, 255, 255, 0.75);
+  font-size: 12px;
+  line-height: 1.2;
+  color: #64748b;
+  font-weight: 400;
 }

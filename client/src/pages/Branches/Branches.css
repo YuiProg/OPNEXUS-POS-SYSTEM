@@ -3,13 +3,14 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 23px;
-  border-bottom: 5px solid #222222;
+  margin-bottom: 24px;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 12px;
 }
 
 .branches-cards-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    column-gap: 15px;
-    row-gap: 15px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  column-gap: 16px;
+  row-gap: 16px;
 }
