@@ -101,9 +101,6 @@ jobs:
     needs: [docker-backend]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     steps:
-      - name: Trigger Render Deploy Hook (Backend 1)
-        run: |
-          curl -f ${{ secrets.RENDER_DEPLOY_HOOK }}
       - name: Trigger Render Deploy Hook (Backend 2)
         run: |
           curl -f ${{ secrets.RENDER_DEPLOY_HOOK_2 }}
