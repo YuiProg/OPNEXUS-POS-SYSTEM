@@ -1,5 +1,5 @@
 body {
-  background: #111111;
+  background: #f8fafc;
 }
 
 h1 {
@@ -9,9 +9,11 @@ h1 {
 .vm-container {
   width: auto;
   height: 100%;
-  background: #111111;
+  background: #ffffff;
   padding: 16px;
   box-sizing: border-box;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
 }
 
 .vm-header {
@@ -24,12 +26,13 @@ h1 {
   padding-top: 2%;
   bottom: 0;
   font-size: 12px;
-  font-weight: 200;
+  font-weight: 500;
+  color: #64748b;
 }
 
 .vm-top-contents .vm-bigtitle {
   font-weight: 600;
-  color: #fff;
+  color: #0f172a;
 }
 
 .vm-top-contents {
@@ -38,4 +41,37 @@ h1 {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+}
+
+/* ── Button Styles ── */
+.vm-btn-primary {
+  background-color: #2563eb;
+  color: #ffffff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.vm-btn-primary:hover {
+  background-color: #1d4ed8;
+}
+
+.vm-btn-secondary {
+  background-color: #ffffff;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.vm-btn-secondary:hover {
+  background-color: #f8fafc;
+  border-color: #94a3b8;
+  color: #0f172a;
 }

@@ -3,7 +3,6 @@ import './TRPanelPage.css';
 import DropDown from '../TRDropDown/Dropdown';
 import PropTypes from 'prop-types';
 import Button from '../TRButton/Button';
-import { InputRow } from '../TRInputForm/TRInputForm';
 
 export class RightPanel extends React.Component {
   render() {
@@ -87,8 +86,8 @@ export class PanelPage extends React.Component {
         {hasStepper && (
           <div className='tr-panel-stepper-container'>
             <div className="tr-panel-stepper-inner">
-              <Button error text={backButtonLabel ? backButtonLabel : 'Back'} onClick={() => onClickBack()} />
-              <Button success text={nextButtonLabel ? nextButtonLabel : 'Next'} onClick={() => onClickNext()} />
+              <Button cancel text={backButtonLabel ? backButtonLabel : 'Back'} onClick={() => onClickBack && onClickBack()} />
+              <Button primary text={nextButtonLabel ? nextButtonLabel : 'Next'} onClick={() => onClickNext && onClickNext()} />
             </div>
           </div>
         )}
@@ -124,6 +123,13 @@ PanelPage.propTypes = {
   hasBranch: PropTypes.bool,
   hasTableFilters: PropTypes.bool,
   onFilterToggle: PropTypes.func,
+  filtersOpen: PropTypes.bool,
+  rightPanel: PropTypes.node,
+  onClickNext: PropTypes.func,
+  onClickBack: PropTypes.func,
+  hasStepper: PropTypes.bool,
+  nextButtonLabel: PropTypes.string,
+  backButtonLabel: PropTypes.string,
 }
 
 RightPanel.propTypes = {
@@ -134,4 +140,5 @@ PanelContainer.propTypes = {
   currentStep: PropTypes.number,
   totalSteps: PropTypes.number,
   title: PropTypes.string,
+  children: PropTypes.node
 }

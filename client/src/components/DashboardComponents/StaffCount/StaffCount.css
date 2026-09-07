@@ -1,60 +1,63 @@
 .staff-count-link {
-    text-decoration: none;
-    display: block; /* Changed from contents to block to ensure layout consistency */
-    width: 100%;
+  text-decoration: none;
+  display: block;
+  width: 100%;
 }
 
 .active-clerks-container {
-    width: 100%;
-    height: 84px;
-    background-color: #1C1C1E;
-    border-radius: 12px;
-    box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.05); /* Added slight border for depth */
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 20px;
-    box-sizing: border-box;
-    transition: background-color 0.15s ease, transform 0.15s ease;
+  width: 100%;
+  height: 84px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0px 4px 6px -1px rgba(15, 23, 42, 0.05), 0px 2px 4px -2px rgba(15, 23, 42, 0.05);
+  border: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  box-sizing: border-box;
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .active-clerks-container:hover {
-    cursor: pointer;
-    background-color: #242426;
-    transform: translateY(-1px);
+  cursor: pointer;
+  background-color: #ffffff;
+  border-color: #cbd5e1;
+  box-shadow: 0px 10px 15px -3px rgba(15, 23, 42, 0.08), 0px 4px 6px -4px rgba(15, 23, 42, 0.04);
+  transform: translateY(-1px);
 }
 
 .ac-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
 }
 
 .ac-label {
-    font-size: 11px;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.4);
-    letter-spacing: 0.05em;
-    margin: 0;
-    text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 700;
+  color: #64748b;
+  letter-spacing: 0.05em;
+  margin: 0;
+  text-transform: uppercase;
 }
 
 .ac-value {
-    font-size: 28px;
-    font-weight: 600;
-    color: #fff;
-    margin: 0;
-    line-height: 1;
+  font-size: 28px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+  line-height: 1;
 }
 
 .ac-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: rgba(255, 255, 255, 0.3);
-    background: rgba(255, 255, 255, 0.03);
-    padding: 10px;
-    border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #2563eb;
+  background: #eff6ff;
+  border: 1px solid #dbeafe;
+  padding: 10px;
+  border-radius: 10px;
 }
