@@ -1,76 +1,85 @@
-.input-wrapper {
-  position: relative;
-  width: 100%; 
-  height: 50px;
-}
-
-.input-wrapper input[type="text"],
-.input-wrapper input[type="password"],
-.input-wrapper input[type="email"] {
-  width: 100%; 
-  height: 50px;
-  background-color: #2b2b2b;
-  border: none;
-  border-radius: 6px;
-  color: #d0d0d0;
-  font-size: 15px;
-  padding: 22px 16px 6px 16px; /* Adjusted padding to push input values down */
-  box-sizing: border-box;
-  outline: none;
-  font-family: sans-serif;
-}
-
-.input-wrapper input[type="password"] {
-  padding-right: 40px;
-}
-
-.input-wrapper input[type="email"] {
-  padding-right: 40px;
-}
-
 .input-container {
   display: flex;
   flex-direction: column;
   width: 100%;
 }
 
-.input-error-message {
-  color: #EF4444;
-  margin: 0px 0px 4px 0px;
-  font-size: 13px;
+.input-wrapper {
+  position: relative;
+  width: 100%;
+  height: 52px;
 }
 
+/* Base input field styling */
+.input-wrapper input[type="text"],
+.input-wrapper input[type="password"],
+.input-wrapper input[type="email"] {
+  width: 100%;
+  height: 52px;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  color: #0f172a;
+  font-size: 14px;
+  padding: 22px 16px 6px 16px;
+  box-sizing: border-box;
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input-wrapper input[type="password"],
+.input-wrapper input[type="email"] {
+  padding-right: 42px;
+}
+
+.input-error-message {
+  color: #ef4444;
+  margin: 0 0 6px 0;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* Focus states with crisp blue outline */
 .input-wrapper input[type="text"]:focus,
 .input-wrapper input[type="password"]:focus,
 .input-wrapper input[type="email"]:focus {
-  background-color: #323232;
+  background-color: #ffffff;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
 }
 
-/* ── FIX: Floating Label Core Engine ── */
+/* Floating Label Default State */
 .input-wrapper .floating-label {
   position: absolute;
   left: 16px;
-  top: 14px; /* Set a reliable static top offset */
-  color: #6e6e6e;
-  font-size: 15px;
-  font-family: sans-serif;
+  top: 16px;
+  color: #64748b;
+  font-size: 14px;
+  font-family: inherit;
   pointer-events: none;
-  transform-origin: top left; /* Smoothes text scaling transformations */
+  transform-origin: top left;
   transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1), color 0.2s ease;
 }
 
-/* ── FIX: Smooth CSS Matrix Transform Transitions ── */
+/* Floating Label Shifted State */
 .input-wrapper input[type="text"]:focus + .floating-label,
 .input-wrapper input[type="text"]:not(:placeholder-shown) + .floating-label,
 .input-wrapper input[type="password"]:focus + .floating-label,
 .input-wrapper input[type="password"]:not(:placeholder-shown) + .floating-label,
 .input-wrapper input[type="email"]:focus + .floating-label,
 .input-wrapper input[type="email"]:not(:placeholder-shown) + .floating-label {
-  transform: translateY(-8px) scale(0.72); /* Safely resizes layout rules without text clipping */
-  color: #a1a1aa;
+  transform: translateY(-9px) scale(0.75);
+  color: #2563eb;
+  font-weight: 600;
 }
 
-/* ── Search variant ── */
+/* Unfocused active state retains muted color */
+.input-wrapper input:not(:focus):not(:placeholder-shown) + .floating-label {
+  color: #64748b;
+}
+
+/* Search variant adjustments */
 .input-wrapper input.search-input {
   padding: 22px 16px 6px 38px;
 }
@@ -81,7 +90,7 @@
 
 .input-wrapper input.search-input:focus + .floating-label,
 .input-wrapper input.search-input:not(:placeholder-shown) + .floating-label {
-  transform: translate(-22px, -8px) scale(0.72); /* Re-aligns left boundary cleanly on zoom */
+  transform: translate(-22px, -9px) scale(0.75);
 }
 
 .search-icon {
@@ -89,7 +98,7 @@
   left: 14px;
   top: 50%;
   transform: translateY(-50%);
-  color: #6e6e6e;
+  color: #94a3b8;
   pointer-events: none;
   transition: color 0.2s ease;
   display: flex;
@@ -97,24 +106,40 @@
 }
 
 .input-wrapper input.search-input:focus ~ .search-icon {
-  color: #888888;
+  color: #2563eb;
 }
 
-/* ── Eye icon ── */
+/* Eye icon toggle */
 .input-wrapper .eye-icon {
   position: absolute;
   right: 14px;
   top: 50%;
   transform: translateY(-50%);
-  color: #6e6e6e;
+  color: #94a3b8;
   cursor: pointer;
   display: flex;
   align-items: center;
+  transition: color 0.2s ease;
 }
 
-/* ── Error state ── */
+.input-wrapper .eye-icon:hover {
+  color: #0f172a;
+}
+
+/* Error state styling */
 .input-error input[type="text"],
 .input-error input[type="password"],
 .input-error input[type="email"] {
-  outline: 1px solid #EF4444;
+  border-color: #ef4444 !important;
+  background-color: #fef2f2;
+}
+
+.input-error input[type="text"]:focus,
+.input-error input[type="password"]:focus,
+.input-error input[type="email"]:focus {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+}
+
+.input-error .floating-label {
+  color: #ef4444 !important;
 }

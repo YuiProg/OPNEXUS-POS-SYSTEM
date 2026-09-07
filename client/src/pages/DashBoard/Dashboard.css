@@ -1,32 +1,62 @@
 .dashboard-contents {
-  width: auto;
-  height: -webkit-fill-available;
+  width: 100%;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 20px;
+  gap: 24px;
 }
 
+/* KPI Top Grid Header */
 .top-three-contents {
   display: grid;
-  grid-template-columns: 0.48fr 0.5fr 1fr;
-  flex-direction: row;
-  align-items: center;
+  grid-template-columns: repeat(2, minmax(220px, 1fr)) 2fr;
   gap: 20px;
+  align-items: stretch;
 }
 
+/* Charts & Notes Layout Grid */
 .dashboard-container__graph-container {
   display: grid;
-  grid-template-columns: minmax(0, 2.07fr) minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: 2fr 1fr 1fr;
   gap: 20px;
-  height: auto;
   width: 100%;
 }
 
+.dashboard-container__chart-wrapper {
+  width: 100%;
+  min-width: 0; /* Prevents canvas/chart overflow bugs */
+}
+
+/* Sales & Top Products Section */
 .todays-sales__top-products {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 20px;
-  height: auto;
   width: 100%;
+}
+
+/* Responsive Adaptations */
+@media screen and (max-width: 1280px) {
+  .dashboard-container__graph-container {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .dashboard-container__chart-wrapper {
+    grid-column: span 2;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .top-three-contents {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-container__graph-container,
+  .todays-sales__top-products {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-container__chart-wrapper {
+    grid-column: span 1;
+  }
 }

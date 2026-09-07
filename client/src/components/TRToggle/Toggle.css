@@ -7,7 +7,8 @@
 .toggle-btn {
   display: flex;
   flex-direction: row;
-  gap: 8px;
+  align-items: center;
+  gap: 12px;
 }
 
 .toggle-btn-control {
@@ -25,50 +26,55 @@
 .toggle-switch {
   position: relative;
   display: block;
-  width: 50px;
-  height: 28px;
-  background: #c5c5c5;
+  width: 48px;
+  height: 26px;
+  background: #cbd5e1;
   border-radius: 999px;
-  transition: all 0.3s ease;
+  transition: background-color 0.2s ease;
   overflow: hidden;
 }
 
 .toggle-switch::before {
   content: "";
   position: absolute;
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
-  left: 2px;
-  top: 2px;
-  background: white;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  left: 3px;
+  top: 3px;
+  background: #ffffff;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.15), 0 1px 2px rgba(15, 23, 42, 0.1);
 }
 
 .toggle-btn-control input:checked + .toggle-switch {
-  background: #22c55e;
+  background: #2563eb;
 }
 
 .toggle-btn-control input:checked + .toggle-switch::before {
-  left: 24px;
+  transform: translateX(22px);
 }
 
 .toggle-btn-control input:disabled + .toggle-switch {
   opacity: 0.5;
   cursor: not-allowed;
+  background: #e2e8f0;
 }
 
 .toggle-subtitle {
-  font-size: 15px;
-  margin-top: 5px;
+  font-size: 14px;
   font-weight: 500;
+  color: #64748b;
+  margin: 0;
+  line-height: 1.4;
+  transition: color 0.15s ease;
 }
 
 .toggle-subtitle.active {
-  color: #22c55e;
+  color: #2563eb;
+  font-weight: 600;
 }
 
 .toggle-subtitle.inactive {
-  color: #ef4444;
+  color: #94a3b8;
 }

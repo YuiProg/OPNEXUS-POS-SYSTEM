@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import './Button.css';
+
 /**
  * @class
  * @component
@@ -11,7 +12,6 @@ class Button extends React.Component {
     }
 
     render () {
-
         const {
             success,
             error,
@@ -27,29 +27,26 @@ class Button extends React.Component {
             customBorder
         } = this.props;
 
+        // Fallback to primary corporate blue (#2563eb) if no status prop is provided
+        const getBackgroundColor = () => {
+            if (success) return "#22C55E";
+            if (warning) return "#F59E0B";
+            if (error) return "#EF4444";
+            if (cancel) return "transparent";
+            return "#2563eb"; // Modern corporate default blue
+        };
+
         return (
-            <div>
+            <div style={{ width: maxWidth ? "100%" : "auto" }}>
                 <button 
-                    type={`${submit ? 'submit' : 'button'}`} 
+                    type={submit ? 'submit' : 'button'} 
                     style={{
-                        background: `${
-                            success ? "#22C55E" 
-                            : warning ? "#F59E0B" 
-                            : error ? "#EF4444" 
-                            : cancel && "transparent"}`,
-                        width: `${
-                            maxWidth ? "100%" 
-                            : customWidth ? `${customWidth}px` 
-                            : "auto"
-                        }`,
-                        border: `${
-                            customBorder ? customBorder
-                            : cancel ? "1px solid white" 
-                            : null
-                        }`
+                        background: getBackgroundColor(),
+                        width: maxWidth ? "100%" : customWidth ? `${customWidth}px` : "auto",
+                        border: customBorder ? customBorder : cancel ? "1px solid #e2e8f0" : "none"
                     }}
-                    className={`TR-button ${disabled && 'tr-btn-disabled'} ${className || ''}`}
-                    onClick={() => onClick()}
+                    className={`TR-button ${disabled ? 'tr-btn-disabled' : ''} ${className || ''}`}
+                    onClick={(e) => onClick && onClick(e)}
                     disabled={disabled}
                 >
                     {text}
@@ -60,6 +57,7 @@ class Button extends React.Component {
 }
 
 Button.propTypes = {
+    primary: PropTypes.bool,
     success: PropTypes.bool,
     error: PropTypes.bool,
     warning: PropTypes.bool,
@@ -69,7 +67,9 @@ Button.propTypes = {
     text: PropTypes.string,
     onClick: PropTypes.func,
     disabled: PropTypes.bool,
-    cancel: PropTypes.bool
+    cancel: PropTypes.bool,
+    className: PropTypes.string,
+    customBorder: PropTypes.string
 }
 
 export default Button;
