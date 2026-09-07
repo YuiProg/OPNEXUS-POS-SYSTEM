@@ -3,9 +3,6 @@ import './Login.css';
 import AuthStore from "../../context/Authstore.js";
 import Strings from "../../strings/strings-codes.js";
 import InputField from "../../components/TRInputField/InputFIeld.jsx";
-import bg_image1 from "../../assets/images/ProductsLoginImage1.svg";
-import bg_image2 from "../../assets/images/ProductsLoginImage2.svg";
-import bg_image3 from "../../assets/images/ProductsLoginImage3.svg";
 import bg_logo from "../../assets/images/loginImageLogo.png";
 import Toast from "../../toast/Toast.jsx";
 import Button from "../../components/TRButton/Button.jsx";
@@ -19,7 +16,6 @@ const {
 } = Strings;
 
 class Login extends React.Component {
-    //wala namang props na naipipasa for now
     constructor(props) {
         super(props);
         this.state = {
@@ -29,13 +25,7 @@ class Login extends React.Component {
             loading: false,
         };
     }
-    
-    //ANO GINAGAWA NETO:
-    //LAHAT NG FUNCTION SA LOOB NETONG COMPONENT DID MOUNT
-    //WILL EXECUTE ONCE NA MAG RENDER SA BROWSER ETONG LOGIN PAGE
-    //KUKUNIN NATIN YUNG MGA STATE GLOBAL STORE (AUTHSTORE) PARA KUNG
-    //MAG UPDATE MAN YUNG DATA DON MAG EEXECUTE NG RERENDER ANG PAGE PARA 
-    //I DISPLAY AT UPDATE NATIN YUNG PAGE SA COMPONENT NATO
+
     componentDidMount() {
         this.unsubscribe = AuthStore.subscribe((state) => {
             this.setState({
@@ -45,21 +35,12 @@ class Login extends React.Component {
         });
     }
 
-
-    //ANO GINAGAWA NETO:
-    //THIS WILL UNSUBSCRIBE SA GLOBAL STORE MEANING HINDI
-    //NA TAYO HIHINGI PA NG UPDATES SA GLOBAL STORE
-    //WHY IS THIS IMPORTANT:
-    //IMPROVES PERFORMANCE
-    //DISABLES MEMORY LEAK
-    // ulol
     componentWillUnmount() {
         if (this.unsubscribe) this.unsubscribe();
     }
 
     handleKeyChange = (key, value) => {
-        this.setState({[key]: value });
-        console.log(key);
+        this.setState({ [key]: value });
     };
 
     handleLogin = (e) => {
@@ -88,70 +69,52 @@ class Login extends React.Component {
         return (
             <>
                 {showAccountLocked && this.lockedModal()}
-                {/* {error && (
-                    <Toast
-                        error
-                        message={error.status || 'Failed to login'}
-                        hasButton={false}
-                        CB={() => {}}
-                        onClose={() => AuthStore.setState({ error: null })}
-                    />
-                )} */}
                 <div className="login-container">
-                    <div className="login-container__marquee" aria-hidden="true">
-                        {Array.from({ length: 20 }).map((_, rowIndex) => (
-                            <div key={rowIndex} className="login-container__marquee-row">
-                                <div className="login-container__marquee-track">
-                                    <span>RELX JUICE</span>
-                                    <span>XULTRA JUICE</span>
-                                    <span>PUFFS BLACK</span>
-                                    <span>VAPE FLAVOR</span>
-                                    <span>CLOUD CART</span>
-                                    <span>RELX JUICE</span>
-                                    <span>XULTRA JUICE</span>
-                                    <span>PUFFS BLACK</span>
-                                    <span>VAPE FLAVOR</span>
-                                    <span>CLOUD CART</span>
-                                </div>
-                            </div>
-                        ))}
+                    <div className="login-container__hero">
+                        <div className="login-container__hero-content">
+                            <span className="login-container__badge">Enterprise Platform</span>
+                            <h1 className="login-container__title">Streamline your business operations</h1>
+                            <p className="login-container__subtitle">
+                                Secure, real-time inventory management and point-of-sale reporting for modern enterprise management.
+                            </p>
+                        </div>
                     </div>
-                    <div className="login-container__image">
-                        <img loading="lazy" fetchPriority="high" src={bg_image1} className="login-container__image-one"/>
-                        <img loading="lazy" fetchPriority="high" src={bg_image2} className="login-container__image-two"/>
-                        <img loading="lazy" fetchPriority="high" src={bg_image3} className="login-container__image-three"/>
-                    </div>
+                    
                     <div className="login-container__credentials">
-                        <img loading="lazy" fetchPriority="high" src={bg_logo}>
-                        </img>
-                        <p className="login-container__mobile-heading"> Vaporya POS System </p>    
+                        <div className="login-container__form-header">
+                            <img loading="lazy" src={bg_logo} alt="Company Logo" className="login-container__logo" />
+                            <h2>Welcome back</h2>
+                            <p>Please enter your credentials to log in.</p>
+                        </div>
+
                         <form onSubmit={(e) => this.handleLogin(e)}>
                             <InputField 
                                 email 
                                 required 
-                                onChange={(e) => this.setState({email: e})} 
+                                onChange={(e) => this.setState({ email: e })} 
                                 placeholder={em} 
                                 onEnterDown={() => {}}
                             />
                             <InputField 
                                 required 
                                 password 
-                                onChange={(e) => this.setState({password: e})} 
+                                onChange={(e) => this.setState({ password: e })} 
                                 placeholder={pw} 
                                 onEnterDown={() => {}}
                             />
                             <Button 
-                                error 
+                                primary 
                                 maxWidth
-                                text={loading ? 'Logging in…' : 'Login'} 
+                                text={loading ? 'Logging in…' : 'Sign In'} 
                                 submit 
                                 disabled={loading}
                             />
                         </form>
-                        <p className="login-container__credentials-footer">
-                            All Rights Reserved.
-                        </p>
-                        <p className="login-container__credentials-footer">v{__APP_VERSION__}</p>
+
+                        <div className="login-container__footer">
+                            <p>© All Rights Reserved.</p>
+                            <p>v{__APP_VERSION__}</p>
+                        </div>
                     </div>
                 </div>
             </>

@@ -1,5 +1,8 @@
+/* Loading.css */
+
 body {
-  background: #111111;
+  background: #f8fafc !important;
+  color: #0f172a;
 }
 
 .loading-container {
@@ -10,11 +13,12 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: #f8fafc;
 }
 
 .loading-container .loading-text {
   font-size: 24px;
-  font-weight: 200;
+  font-weight: 500;
   margin: 1%;
-  color: #fff;
+  color: #0f172a;
 }

@@ -7,8 +7,15 @@ class ScreenLoading extends React.Component {
     }
 
     render () {
+        const { message = "Loading..." } = this.props;
+
         return (
-            <div className="screenloading"/>
+            <div className="screenloading">
+                <div className="screenloading__card">
+                    <div className="screenloading__spinner" />
+                    {message && <p className="screenloading__text">{message}</p>}
+                </div>
+            </div>
         );
     }
 }
