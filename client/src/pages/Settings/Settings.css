@@ -1,7 +1,7 @@
 .st-container {
   width: auto;
   height: 100%;
-  background: #141416; /* Sidebar core matching canvas */
+  background: #f8fafc;
   padding: 16px;
   box-sizing: border-box;
 }
@@ -16,13 +16,13 @@
   padding-top: 2%;
   bottom: 0;
   font-size: 12px;
-  font-weight: 200;
-  color: rgba(255, 255, 255, 0.4);
+  font-weight: 500;
+  color: #64748b;
 }
 
 .st-top-contents .st-bigtitle {
   font-weight: 600;
-  color: #fff;
+  color: #0f172a;
 }
 
 .st-top-contents {
@@ -41,8 +41,8 @@
 
 .settings-sidebar {
   width: 220px;
-  background-color: #141416; /* Dark theme sidebar match */
-  border: 0.5px solid rgba(255, 255, 255, 0.07); /* Sidebar matching border edge */
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
   border-radius: 8px;
   padding: 12px 6px;
   flex-shrink: 0;
@@ -59,7 +59,7 @@
   position: relative;
   background: none;
   border: none;
-  color: rgba(255, 255, 255, 0.45); /* Sidebar item typography dimming */
+  color: #64748b;
   padding: 11px 14px;
   text-align: left;
   cursor: pointer;
@@ -72,17 +72,17 @@
 }
 
 .sidebar-item:hover {
-  background-color: rgba(255, 255, 255, 0.05); /* Match row hover effect */
-  color: rgba(255, 255, 255, 0.9);
+  background-color: #f1f5f9;
+  color: #0f172a;
 }
 
 .sidebar-item.active {
-  background: rgba(255, 255, 255, 0.08); /* Match active row fill */
-  color: #fff;
-  font-weight: 500;
+  background: #eff6ff;
+  color: #2563eb;
+  font-weight: 600;
 }
 
-/* Red active left tab vertical notch indicator */
+/* Accent active indicator notch */
 .sidebar-item.active::before {
   content: '';
   position: absolute;
@@ -92,7 +92,7 @@
   width: 3px;
   height: 18px;
   border-radius: 0 3px 3px 0;
-  background: #e24b4a; /* Precise red accent tone */
+  background: #2563eb;
 }
 
 .settings-main {
@@ -101,8 +101,8 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color: #141416; /* Uniform deep container color */
-  border: 0.5px solid rgba(255, 255, 255, 0.07);
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
   gap: 24px;
   border-radius: 8px;
   overflow-y: auto;
@@ -112,22 +112,22 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  color: #fff;
+  color: #0f172a;
 }
 
 .settings-content .option-title {
   margin-top: 0;
   font-size: 18px;
   font-weight: 600;
-  color: #fff;
-  border-bottom: 0.5px solid rgba(255, 255, 255, 0.09); /* Seamless border accent splitter */
+  color: #0f172a;
+  border-bottom: 1px solid #e2e8f0;
   padding-bottom: 12px;
 }
 
 .settings-content .option-subtitle {
   margin: 12px 0 4px;
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.6);
+  color: #64748b;
   font-weight: 500;
 }
 
@@ -135,7 +135,7 @@
   display: flex;
   gap: 12px;
   justify-content: flex-end;
-  border-top: 0.5px solid rgba(255, 255, 255, 0.07);
+  border-top: 1px solid #e2e8f0;
   padding-top: 16px;
   margin-top: auto;
 }
